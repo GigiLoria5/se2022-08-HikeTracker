@@ -11,7 +11,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ### Client
 
-- in client/se2022-08-oqm run `npm install`, then `npm start`
+- in client/ run `npm install`, then `npm start`
 
 ### Server
 
