@@ -21,6 +21,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 
+import Chip from '@mui/material/Chip';
+
 
 
 
@@ -381,16 +383,39 @@ export default function AvailableHikes() {
                         </AccordionSummary>
                         <AccordionDetails>
                         <Typography>
-                        Length : 12km <br/>
-                        Expected time : 3h <br/>
-                        Total ascent : 100m <br/>
-                        Geographic area : Torino <br/>
-                        Difficulty : Tourist <br/>
-                        Start point : location one <br/>
-                        End point : location two <br/>
-                        Reference points : hut1, hut2, hut3 <br/><br/>
+                        Length : 12 km
+
+                         <br/><br/>
+                        Expected time : 3 h
+
+                        <br/><br/>
+                        Total ascent : 100 m
+
+                        <br/><br/>
+                        Geographic area : 
+                        {" "}<Chip label="Torino" color="success" variant="outlined" />
+ 
+                        <br/><br/>
+                        Difficulty :  
+                        {" "}<Chip label="Tourist" color="success" variant="outlined" />
+
+                        <br/><br/>
+                        Start point :  
+                        {" "}<Chip label="location one" color="success" variant="outlined" />
+                        <br/><br/>
+                        End point : 
+                        {" "}<Chip label="location two" color="success" variant="outlined" />
+ 
+                        <br/><br/>
+                        Reference points :         
+                        {" "}<Chip label="hut 1" color="success" variant="outlined"/>{" "}
+                        <Chip label="hut 2" color="success" variant="outlined"/>{" "}
+                        <Chip label="hut 3" color="success" variant="outlined"/>
+
+                        <br/><br/>
 
                         Description : <br/>
+                        
                         It's a city tour. blablabalbalablabla
                         blablabalbalablabla
                         </Typography>
