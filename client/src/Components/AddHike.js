@@ -1,45 +1,286 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+//import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { TextField } from '@mui/material';
+
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 
 
 
+const refPoints = [
+    'hut1',
+    'hut2',
+    'hut3',
+    'hut4',
+    'hut5',
+    'hut6',
+    'parking lot 1',
+    'parking lot 2',
+    'parking lot 3',
+];
 
+
+function getStyles(refPoints, referencePoint, theme) {
+
+return {
+    fontWeight:
+    referencePoint.indexOf(refPoints) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+};
+}
 
 function AddHike() {
+
     const theme = createTheme({
         palette: {
           primary: {
             main: '#008037',
           },
           secondary: {
-            main: '#b0b0b0',
+            main: '#e3e3e3',
           },
+          third: {
+            main: "#ffffff"
+          }
         },
-      });
+    });
+
+    const [difficulty, setDifficulty] = useState(null);
+    const [referencePoint, setReferencePoint] = React.useState([]);
+
+    const handleChangeRefPoints = (event) => {
+        const {
+          target: { value },
+        } = event;
+        setReferencePoint(
+          // On autofill we get a stringified value.
+          typeof value === 'string' ? value.split(',') : value,
+        );
+      };
+
+
+    
 
     return (
     <div>
         <Grid container>
-            <Grid item xs={0.5}></Grid>
+            <ThemeProvider theme={theme}>
+                <Grid xs={12}>
+                    <Typography variant="h4" marginTop={1} gutterBottom>
+                        <br/>ADD A HIKE
+                    </Typography>
+                </Grid>
                 
-            <Grid item xs={11} marginTop={5}>
-                <ThemeProvider theme={theme}>
-                    <Paper elevation={3} background-color='secondary'>
-                        <Typography>
-                            <br/>
-                        </Typography>
-                        
-                    </Paper>
 
+                <Grid xs={0} md={3}></Grid>
+                    
+                <Grid  xs={12} md={6} marginTop={3}>
+                        <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
+                            <Typography>
+                                <br/>Please complete the following information:<br/>
+                            </Typography>
+
+                            <Grid item xs={12}>
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Title/label"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+
+                            </Grid>
+
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Length"
+                                    margin="normal"
+                                    type="number"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">km</InputAdornment>,
+                                    }}
+
+                                />{" "}
+                        
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Expected time"
+                                    margin="normal"
+                                    type="number"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">hours</InputAdornment>,
+                                    }}
+                                />{" "}
+                            
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Total ascent"
+                                    margin="normal"
+                                    type="number"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">m</InputAdornment>,
+                                    }}
+                                />{" "}
+                    
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Country"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+                            
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Province"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+                           
+                                <TextField 
+                                    variant="outlined" 
+                                    label="City"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+                        
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Start point"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+
+                                <TextField 
+                                    variant="outlined" 
+                                    label="End point"
+                                    margin="normal"
+                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
+
+                                />{" "}
+
+                                <Grid xs={12}>
+                                    <FormControl sx={{ width: 'fit-content', minWidth:'21ch', maxWidth: '25ch' }}>
+                                        <InputLabel>Reference Points</InputLabel>
+                                        <Select
+                                        multiple
+                                        value={referencePoint}
+                                        onChange={handleChangeRefPoints}
+                                        input={<OutlinedInput  label="Reference Points" />}
+                                        renderValue={(selected) => (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                            {selected.map((value) => (
+                                                <Chip key={value} label={value} />
+                                            ))}
+                                            </Box>
+                                        )}
+                                        MenuProps={MenuProps}
+                                        >
+                                        {refPoints.map((refPoints) => (
+                                            <MenuItem
+                                            key={refPoints}
+                                            value={refPoints}
+                                            style={getStyles(refPoints, referencePoint, theme)}
+                                            >
+                                            {refPoints}
+                                            </MenuItem>
+                                        ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+
+                                <Grid  xs={12} marginTop={1} > 
+                                    <FormControl sx={{width: 'fit-content' , minWidth:'21ch', maxWidth: '25ch'}} >
+                                        <InputLabel>Difficulty</InputLabel>
+                                        <Select
+                                            value={difficulty}
+                                            variant="outlined" 
+                                            onChange={e => setDifficulty(e.target.value)}
+                                            label="Difficulty"
+                                        >
+                                            <MenuItem value="">
+                                                <em>Select a difficulty</em>
+                                            </MenuItem>
+                                            <MenuItem value={"Tourist"}>Tourist</MenuItem>
+                                            <MenuItem value={"Hiker"}>Hiker</MenuItem>
+                                            <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
+
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+
+                                <TextField 
+                                    variant="outlined" 
+                                    label="Description"
+                                    multiline
+                                    rows={4}
+                                    margin="normal"
+                                    sx={{width: 'fit-content', maxWidth: '25ch' }}
+                                />{" "}
+
+                        </Paper>
+                </Grid>
+                <Grid xs={0} md={3}></Grid>
+
+
+                <Grid  xs={0} md={3} ></Grid>
+                <Grid  xs={12} md={6} marginTop={3}>
+                    <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
+                        <Typography>
+                            <br/>Upload a GPX file<br/><br/>
+                        </Typography>
+                            
+                    </Paper>
+                </Grid>
+                <Grid  xs={0} md={3}></Grid>
+
+                <Grid  xs={0.5}></Grid>
+                <Grid  xs={11}>
+                    <Grid><br/></Grid>
                     <Button  variant="contained" color='primary'>ADD A HIKE</Button>
-                </ThemeProvider>
-            </Grid>
-            <Grid item xs={0.5}></Grid>
+                    <Grid><br/></Grid>
+                    <Button  variant="contained" color='secondary'>CANCEL</Button>
+                    <Typography>
+                        <br/><br/>
+                    </Typography>
+                </Grid>
+                <Grid item xs={0.5}></Grid>
+
+            </ThemeProvider>
+
 
         </Grid>
         

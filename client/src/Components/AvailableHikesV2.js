@@ -27,14 +27,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 
-
-
-
-
-
-
-
-
 export default function AvailableHikesV2() {
 
     const [expanded, setExpanded] = React.useState(false);
