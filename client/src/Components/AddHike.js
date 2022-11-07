@@ -7,6 +7,8 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { TextField } from '@mui/material';
+import {Link} from "react-router-dom";
+
 
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -72,6 +74,35 @@ function AddHike() {
         },
     });
 
+    const [selectedFile, setSelectedFile] = useState();
+	const [isSelected, setIsSelected] = useState(false);
+
+    const changeHandler = (event) => {
+		setSelectedFile(event.target.files[0]);
+		setIsSelected(true);
+	};
+
+    const handleSubmission = () => {
+		const formData = new FormData();
+
+		formData.append('File', selectedFile);
+
+		fetch(
+			'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',//find an api to host gpx files bc this one only hosts images
+			{
+				method: 'POST',
+				body: formData,
+			}
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				console.log('Success:', result);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	};
+
     const [difficulty, setDifficulty] = useState(null);
     const [referencePoint, setReferencePoint] = React.useState([]);
 
@@ -83,10 +114,9 @@ function AddHike() {
           // On autofill we get a stringified value.
           typeof value === 'string' ? value.split(',') : value,
         );
-      };
-
-
+    };
     
+
 
     return (
     <div>
@@ -103,7 +133,7 @@ function AddHike() {
                     
                 <Grid  xs={12} md={6} marginTop={3}>
                         <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
-                            <Typography>
+                            <Typography variant="h5">
                                 <br/>Please complete the following information:<br/>
                             </Typography>
 
@@ -251,6 +281,10 @@ function AddHike() {
                                     sx={{width: 'fit-content', maxWidth: '25ch' }}
                                 />{" "}
 
+                                <Typography>
+                                    <br/>
+                                </Typography>
+
                         </Paper>
                 </Grid>
                 <Grid xs={0} md={3}></Grid>
@@ -259,8 +293,27 @@ function AddHike() {
                 <Grid  xs={0} md={3} ></Grid>
                 <Grid  xs={12} md={6} marginTop={3}>
                     <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
-                        <Typography>
+                        <Typography variant="h5">
                             <br/>Upload a GPX file<br/><br/>
+                        </Typography>
+                        <Button variant="contained" component="label" onChange={changeHandler} >
+                             Upload
+                            <input hidden accept=".gpx" multiple type="file" />  
+                        </Button>
+                        {isSelected ? (
+                            <div>
+                                <Typography><br/>Filename: {selectedFile.name}</Typography>
+                                <Typography>Size in bytes: {selectedFile.size}</Typography>
+                                <Typography>
+                                    Last Modified Date:{' '}
+                                    {selectedFile.lastModifiedDate.toLocaleDateString()}
+                                </Typography>
+                            </div>
+                        ) : (
+                            <Typography><br/>Select a file to show details</Typography>
+                        )}
+                        <Typography>
+                            <br/>
                         </Typography>
                             
                     </Paper>
@@ -270,9 +323,9 @@ function AddHike() {
                 <Grid  xs={0.5}></Grid>
                 <Grid  xs={11}>
                     <Grid><br/></Grid>
-                    <Button  variant="contained" color='primary'>ADD A HIKE</Button>
+                    <Button onClick={handleSubmission} variant="contained" color='primary'>ADD A HIKE</Button>
                     <Grid><br/></Grid>
-                    <Button  variant="contained" color='secondary'>CANCEL</Button>
+                    <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                     <Typography>
                         <br/><br/>
                     </Typography>
