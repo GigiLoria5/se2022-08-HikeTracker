@@ -439,7 +439,7 @@ export default function AvailableHikesV2() {
                             <Typography sx={{ width: '33%', flexShrink: 0 }}>
                                 Hike 1
                             </Typography>
-                            <Typography sx={{ color: 'text.secondary' }}>Torino</Typography>
+                            <Typography sx={{ color: 'text.secondary' }}>Torino, TO, Italy</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                             <Typography>
@@ -453,24 +453,26 @@ export default function AvailableHikesV2() {
 
                             <br/><br/>
                             Geographic area : 
-                            {" "}<Chip label="Torino" color="success" variant="outlined" />
+                            {" "}<Chip label="Torino" color="primary" variant="outlined" />
+                            {" "}<Chip label="TO" color="primary" variant="outlined" />
+                            {" "}<Chip label="Italy" color="primary" variant="outlined" />
     
                             <br/><br/>
                             Difficulty :  
-                            {" "}<Chip label="Tourist" color="success" variant="outlined" />
+                            {" "}<Chip label="Tourist" color="primary" variant="outlined" />
 
                             <br/><br/>
                             Start point :  
-                            {" "}<Chip label="location one" color="success" variant="outlined" />
+                            {" "}<Chip label="location one" color="primary" variant="outlined" />
                             <br/><br/>
                             End point : 
-                            {" "}<Chip label="location two" color="success" variant="outlined" />
+                            {" "}<Chip label="location two" color="primary" variant="outlined" />
     
                             <br/><br/>
                             Reference points :         
-                            {" "}<Chip label="hut 1" color="success" variant="outlined"/>{" "}
-                            <Chip label="hut 2" color="success" variant="outlined"/>{" "}
-                            <Chip label="hut 3" color="success" variant="outlined"/>
+                            {" "}<Chip label="hut 1" color="primary" variant="outlined"/>{" "}
+                            <Chip label="hut 2" color="primary" variant="outlined"/>{" "}
+                            <Chip label="hut 3" color="primary" variant="outlined"/>
 
                             <br/><br/>
 
