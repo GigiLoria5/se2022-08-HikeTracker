@@ -3,11 +3,8 @@
 // import packages and classes
 const express = require('express');
 const { check, validationResult } = require('express-validator'); // validation middleware
-const { errorFormatter, isLoggedIn } = require('../utils/utils');
+//const { errorFormatter, isLoggedIn } = require('../utils/utils');
 const hikeDao = require('../dao/HikeDAO');
-const hutDao = require('../dao/HutDAO');
-const locationDao = require('../dao/LocationDAO');
-const parkingDao = require('../dao/ParkingDAO');
 
 const router = express.Router();
 
@@ -60,7 +57,7 @@ router.get('/cities/:province',
 
 // /api/hikes/:city
 // Return hikes by a city
-router.get('/hikes/:city', 
+router.get('/hikes/city/:city', 
     check('city').exists(),
 
     async (req, res) => {
@@ -70,44 +67,13 @@ router.get('/hikes/:city',
             return res.status(422).json({ errors: errors.array() });
         }
         hikeDao.getHikeByCity(req.params.city)
-            .then((hikes) => {
-                if(hikes.start_point_type == "hut"){
-                    hutDAO.getHutById(hikes.start_point_id)
-                    .then((start_point) => hikes = {start_point: start_point})
-                    .catch(() => res.status(501).json({ error: `Database error while retrieving the hut` }));
-
-                } else if(hikes.start_point_type == "location"){
-                    locationDAO.getLocationById(hikes.start_point_id)
-                    .then((start_point) => hikes = {start_point: start_point})
-                    .catch(() => res.status(502).json({ error: `Database error while retrieving the location` }));
-                } else if(hikes.start_point_type == "parking_lot"){
-                    parkingDAO.getParkingLotById(hikes.start_point_id)
-                    .then((start_point) => hikes = {start_point: start_point})
-                    .catch(() => res.status(503).json({ error: `Database error while retrieving the parking lot` }));
-                }
-                
-                if(hikes.end_point_type == "hut"){
-                    hutDAO.getHutById(hikes.end_point_id)
-                    .then((end_point))
-                    .catch(() => res.status(501).json({ error: `Database error while retrieving the hut` }));
-
-                } else if(hikes.end_point_type == "location"){
-                    locationDAO.getLocationById(hikes.end_point_id)
-                    .then()
-                    .catch(() => res.status(502).json({ error: `Database error while retrieving the location` }));
-                } else if(hikes.end_point_type == "parking_lot"){
-                    parkingDAO.getParkingLotById(hikes.end_point_id)
-                    .then()
-                    .catch(() => res.status(503).json({ error: `Database error while retrieving the parking lot` }));
-                }
-                res.status(200).json(hikes);
-            })
+            .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
 // /api/hikes/:province
 // Return hikes by a province
-router.get('/hikes/:province', 
+router.get('/hikes/province/:province', 
     check('province').exists(),
 
     async (req, res) => {
@@ -124,7 +90,7 @@ router.get('/hikes/:province',
 
 // /api/hikes/:country
 // Return hikes by a country
-router.get('/hikes/:country', 
+router.get('/hikes/country/:country', 
     check('country').exists(),
 
     async (req, res) => {
@@ -141,7 +107,7 @@ router.get('/hikes/:country',
 
 // /api/hikes/:difficulty
 // Return hikes by a difficulty
-router.get('/hikes/:difficulty', 
+router.get('/hikes/difficulty/:difficulty', 
     check('difficulty').exists().isInt().toInt(),
 
     async (req, res) => {
@@ -158,7 +124,7 @@ router.get('/hikes/:difficulty',
 
 // /api/hikes/:track_length
 // Return hikes by a length
-router.get('/hikes/:track_length', 
+router.get('/hikes/length/:track_length', 
     check('track_length').exists(),
 
     async (req, res) => {
@@ -168,15 +134,27 @@ router.get('/hikes/:track_length',
             return res.status(422).json({ errors: errors.array() });
         }
 
-        hikeDao.getHikeByLength(req.params.track_length)
+        if(req.params.track_length == "0-5"){
+            hikeDao.getHikeByLength(0.0,5.0)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.track_length == "5-15"){
+            hikeDao.getHikeByLength(5.0,15.0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.track_length == "15-more"){
+            hikeDao.getHikeByLength(15.0,0.0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else {
+
+        }
 });
 
 // /api/hikes/:ascent
 // Return hikes by an ascent
-router.get('/hikes/:ascent', 
-    check('ascent').exists().isInt().toInt(),
+router.get('/hikes/ascent/:ascent', 
+    check('ascent').exists(),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -185,14 +163,30 @@ router.get('/hikes/:ascent',
             return res.status(422).json({ errors: errors.array() });
         }
 
-        hikeDao.getHikeByAscent(req.params.ascent)
+        if(req.params.ascent == "0-300"){
+            hikeDao.getHikeByAscent(0,300)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.ascent == "300-600") {
+            hikeDao.getHikeByAscent(300,600)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.ascent == "600-1000") {
+            hikeDao.getHikeByAscent(600,1000)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.ascent == "1000-more") {
+            hikeDao.getHikeByAscent(1000,0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else {
+        
+        }
 });
 
 // /api/hikes/:expected_time
 // Return hikes by an expected time
-router.get('/hikes/:expected_time', 
+router.get('/hikes/expected_time/:expected_time', 
     check('expected_time').exists(),
 
     async (req, res) => {
@@ -202,9 +196,25 @@ router.get('/hikes/:expected_time',
             return res.status(422).json({ errors: errors.array() });
         }
 
-        hikeDao.getHikeByExpectedTime(req.params.expected_time)
+        if(req.params.expected_time == "0-1"){
+            hikeDao.getHikeByExpectedTime(0.0,1.0)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.expected_time == "1-3") {
+            hikeDao.getHikeByExpectedTime(1.0,3.0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.expected_time == "3-5") {
+            hikeDao.getHikeByExpectedTime(3.0,5.0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else if(req.params.expected_time == "5.0-more") {
+            hikeDao.getHikeByExpectedTime(5.0,0.0)
+            .then((hikes) => res.status(200).json(hikes))
+            .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
+        } else {
+        
+        }
 });
 
 module.exports = router;
