@@ -27,11 +27,6 @@ router.get('/provinces/:country',
     check('country').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         hikeDao.getProvincesByCountry(req.params.country)
             .then((provinces) => res.status(200).json(provinces))
@@ -44,95 +39,66 @@ router.get('/cities/:province',
     check('province').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         hikeDao.getCitiesByProvince(req.params.province)
             .then((cities) => res.status(200).json(cities))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the cities` }));
 });
 
-// /api/hikes/:city
+// /api/hikes/city/:city
 // Return hikes by a city
 router.get('/hikes/city/:city', 
     check('city').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
         hikeDao.getHikeByCity(req.params.city)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
-// /api/hikes/:province
+// /api/hikes/province/:province
 // Return hikes by a province
 router.get('/hikes/province/:province', 
     check('province').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         hikeDao.getHikeByProvince(req.params.province)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
-// /api/hikes/:country
+// /api/hikes/country/:country
 // Return hikes by a country
 router.get('/hikes/country/:country', 
     check('country').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         hikeDao.getHikeByCountry(req.params.country)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
-// /api/hikes/:difficulty
+// /api/hikes/difficulty/:difficulty
 // Return hikes by a difficulty
 router.get('/hikes/difficulty/:difficulty', 
     check('difficulty').exists().isInt().toInt(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         hikeDao.getHikeByDifficulty(req.params.difficulty)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
-// /api/hikes/:track_length
+// /api/hikes/length/:track_length
 // Return hikes by a length
 router.get('/hikes/length/:track_length', 
     check('track_length').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         if(req.params.track_length == "0-5"){
             hikeDao.getHikeByLength(0.0,5.0)
@@ -147,21 +113,16 @@ router.get('/hikes/length/:track_length',
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
         } else {
-
+            res.status(400).json({ error: `Parameter not valid` });
         }
 });
 
-// /api/hikes/:ascent
+// /api/hikes/ascent/:ascent
 // Return hikes by an ascent
 router.get('/hikes/ascent/:ascent', 
     check('ascent').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         if(req.params.ascent == "0-300"){
             hikeDao.getHikeByAscent(0,300)
@@ -180,21 +141,16 @@ router.get('/hikes/ascent/:ascent',
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
         } else {
-        
+            res.status(400).json({ error: `Parameter not valid` });
         }
 });
 
-// /api/hikes/:expected_time
+// /api/hikes/expected_time/:expected_time
 // Return hikes by an expected time
 router.get('/hikes/expected_time/:expected_time', 
     check('expected_time').exists(),
 
     async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
 
         if(req.params.expected_time == "0-1"){
             hikeDao.getHikeByExpectedTime(0.0,1.0)
@@ -213,7 +169,7 @@ router.get('/hikes/expected_time/:expected_time',
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
         } else {
-        
+            res.status(400).json({ error: `Parameter not valid` });
         }
 });
 
