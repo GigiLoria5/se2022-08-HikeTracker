@@ -5,6 +5,9 @@ const express = require('express');
 const { check, validationResult } = require('express-validator'); // validation middleware
 const { errorFormatter, isLoggedIn } = require('../utils/utils');
 const hikeDao = require('../dao/HikeDAO');
+const hutDao = require('../dao/HutDAO');
+const locationDao = require('../dao/LocationDAO');
+const parkingDao = require('../dao/ParkingDAO');
 
 const router = express.Router();
 
@@ -33,7 +36,7 @@ router.get('/provinces/:country',
             return res.status(422).json({ errors: errors.array() });
         }
 
-        hikeDao.getProvincesByCountries(req.params.country)
+        hikeDao.getProvincesByCountry(req.params.country)
             .then((provinces) => res.status(200).json(provinces))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the provinces` }));
 });
@@ -66,9 +69,39 @@ router.get('/hikes/:city',
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
-
         hikeDao.getHikeByCity(req.params.city)
-            .then((hikes) => res.status(200).json(hikes))
+            .then((hikes) => {
+                if(hikes.start_point_type == "hut"){
+                    hutDAO.getHutById(hikes.start_point_id)
+                    .then((start_point) => hikes = {start_point: start_point})
+                    .catch(() => res.status(501).json({ error: `Database error while retrieving the hut` }));
+
+                } else if(hikes.start_point_type == "location"){
+                    locationDAO.getLocationById(hikes.start_point_id)
+                    .then((start_point) => hikes = {start_point: start_point})
+                    .catch(() => res.status(502).json({ error: `Database error while retrieving the location` }));
+                } else if(hikes.start_point_type == "parking_lot"){
+                    parkingDAO.getParkingLotById(hikes.start_point_id)
+                    .then((start_point) => hikes = {start_point: start_point})
+                    .catch(() => res.status(503).json({ error: `Database error while retrieving the parking lot` }));
+                }
+                
+                if(hikes.end_point_type == "hut"){
+                    hutDAO.getHutById(hikes.end_point_id)
+                    .then((end_point))
+                    .catch(() => res.status(501).json({ error: `Database error while retrieving the hut` }));
+
+                } else if(hikes.end_point_type == "location"){
+                    locationDAO.getLocationById(hikes.end_point_id)
+                    .then()
+                    .catch(() => res.status(502).json({ error: `Database error while retrieving the location` }));
+                } else if(hikes.end_point_type == "parking_lot"){
+                    parkingDAO.getParkingLotById(hikes.end_point_id)
+                    .then()
+                    .catch(() => res.status(503).json({ error: `Database error while retrieving the parking lot` }));
+                }
+                res.status(200).json(hikes);
+            })
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
 });
 
