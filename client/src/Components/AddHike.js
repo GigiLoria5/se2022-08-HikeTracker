@@ -18,6 +18,7 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import API from '../API';
 
 
 
@@ -60,6 +61,23 @@ return {
 
 function AddHike() {
 
+    const [title, setTitle] = useState("");
+    const [length, setLength] = useState(0.0);
+    const [expectedTime, setExpectedTime] = useState(0.0);
+    const [totalAscent, setTotalAscent] = useState(0);
+    const [country, setCountry] = useState("");
+    const [province, setProvince] = useState("");
+    const [city, setCity] = useState("");
+    const [startPoint, setStartPoint] = useState("");
+    const [endPoint, setEndPoint] = useState("");
+    const [referencePoint, setReferencePoint] = React.useState([]);
+    const [difficulty, setDifficulty] = useState("");
+    const [description, setDescription] = useState("");
+
+    const [selectedFile, setSelectedFile] = useState();
+	const [isSelected, setIsSelected] = useState(false);
+
+
     const theme = createTheme({
         palette: {
           primary: {
@@ -74,19 +92,52 @@ function AddHike() {
         },
     });
 
-    const [selectedFile, setSelectedFile] = useState();
-	const [isSelected, setIsSelected] = useState(false);
+
+    const changeLength = (l) => {
+        if(l<0) l=0;
+        setLength(l);
+    }
+
+    const changeExpectedTime = (t) => {
+        if(t<0) t=0;
+        setExpectedTime(t);
+    }
 
     const changeHandler = (event) => {
 		setSelectedFile(event.target.files[0]);
 		setIsSelected(true);
 	};
 
-    const handleSubmission = () => {
+    const handleSubmission = async (ev) => {
+        ev.preventDefault();
+
+        await API.createHike(
+            new API.Hike(
+                title,
+                0, //peak altitude is not requested in the form
+                city,
+                province,
+                country,
+                description,
+                totalAscent,
+                length,
+                expectedTime,
+                difficulty,
+                "location", //start point and end point are not handled in terms of type + id (and needs APis to know the available ones)
+                1,
+                "location",
+                2,
+                referencePoint.map(r => r.position) //reference points must be translated in an array of numbers. Of course not in this way
+            )
+        )
+
 		const formData = new FormData();
 
 		formData.append('File', selectedFile);
 
+        API.uploadFile(formData); //let's move the logic on API.js
+
+/*
 		fetch(
 			'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',//find an api to host gpx files bc this one only hosts images
 			{
@@ -101,10 +152,10 @@ function AddHike() {
 			.catch((error) => {
 				console.error('Error:', error);
 			});
+*/
 	};
 
-    const [difficulty, setDifficulty] = useState(null);
-    const [referencePoint, setReferencePoint] = React.useState([]);
+    
 
     const handleChangeRefPoints = (event) => {
         const {
@@ -143,6 +194,8 @@ function AddHike() {
                                     label="Title/label"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={title}
+                                    onChange={ev => setTitle(ev.target.value)}
 
                                 />{" "}
 
@@ -157,6 +210,9 @@ function AddHike() {
                                     InputProps={{
                                         endAdornment: <InputAdornment position="end">km</InputAdornment>,
                                     }}
+                                    value={length}
+                                    onChange={ev => changeLength(ev.target.value)}
+
 
                                 />{" "}
                         
@@ -169,6 +225,8 @@ function AddHike() {
                                     InputProps={{
                                         endAdornment: <InputAdornment position="end">hours</InputAdornment>,
                                     }}
+                                    value={expectedTime}
+                                    onChange={ev => changeExpectedTime(ev.target.value)}
                                 />{" "}
                             
                                 <TextField 
@@ -180,6 +238,8 @@ function AddHike() {
                                     InputProps={{
                                         endAdornment: <InputAdornment position="end">m</InputAdornment>,
                                     }}
+                                    value={totalAscent}
+                                    onChange={ev => setTotalAscent(ev.target.value)}
                                 />{" "}
                     
                                 <TextField 
@@ -187,6 +247,8 @@ function AddHike() {
                                     label="Country"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={country}
+                                    onChange={ev => setCountry(ev.target.value)}
 
                                 />{" "}
                             
@@ -195,6 +257,8 @@ function AddHike() {
                                     label="Province"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={province}
+                                    onChange={ev => setProvince(ev.target.value)}
 
                                 />{" "}
                            
@@ -203,6 +267,8 @@ function AddHike() {
                                     label="City"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={city}
+                                    onChange={ev => setCity(ev.target.value)}
 
                                 />{" "}
                         
@@ -211,6 +277,8 @@ function AddHike() {
                                     label="Start point"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={startPoint}
+                                    onChange={ev => setStartPoint(ev.target.value)}
 
                                 />{" "}
 
@@ -219,6 +287,8 @@ function AddHike() {
                                     label="End point"
                                     margin="normal"
                                     sx={{ width: 'fit-content', maxWidth: '25ch' }}
+                                    value={endPoint}
+                                    onChange={ev => setEndPoint(ev.target.value)}
 
                                 />{" "}
 
@@ -279,6 +349,8 @@ function AddHike() {
                                     rows={4}
                                     margin="normal"
                                     sx={{width: 'fit-content', maxWidth: '25ch' }}
+                                    value={description}
+                                    onChange={ev => setDescription(ev.target.value)}
                                 />{" "}
 
                                 <Typography>
