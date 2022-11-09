@@ -13,7 +13,7 @@ const router = express.Router();
 /////////////////////////////////////////////////////////////////////
 
 // /api/location/:id
-// Return hut by an id
+// Return location by an id
 router.get('/location/:id', 
     check('id').exists(),
 

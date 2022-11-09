@@ -164,7 +164,7 @@ router.get('/hikes/expected_time/:expected_time',
             hikeDao.getHikeByExpectedTime(3.0,5.0)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));
-        } else if(req.params.expected_time == "5.0-more") {
+        } else if(req.params.expected_time == "5-more") {
             hikeDao.getHikeByExpectedTime(5.0,0.0)
             .then((hikes) => res.status(200).json(hikes))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hikes` }));

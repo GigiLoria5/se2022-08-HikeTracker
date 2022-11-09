@@ -224,7 +224,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - GET /api/hikes/length/:track_length
 
-  - Description: Return an array containing all the hikes between a range of track length
+  - Description: Return an array containing all the hikes between a range of track length (All strings: "0-5","5-15","15-more")
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
@@ -256,7 +256,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - GET /api/hikes/ascent/:ascent
 
-  - Description: Return an array containing all the hikes between a range of ascent
+  - Description: Return an array containing all the hikes between a range of ascent (All strings: "0-300","300-600","600-1000","1000-more")
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
@@ -288,7 +288,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - GET /api/hikes/expected_time/:expected_time
 
-  - Description: Return an array containing all the hikes between a range of expected time
+  - Description: Return an array containing all the hikes between a range of expected time (All strings: "0-1","1-3","3-5","5-more")
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
