@@ -31,7 +31,8 @@ export default function SignIn(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const credentials = { email, password };         // define object having username and password as elements 
-        //props.login(credentials);                           // call login function in App.js
+        props.login(credentials);                           // call login function in App.js
+        //console.log(credentials);
     };
 
       /*
@@ -93,7 +94,7 @@ export default function SignIn(props) {
             >
             Login
             </Button>
-            <Grid container>
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link onClick = {()=>{ navigate('/signup')}} variant="body2">
                   {"Don't have an account? Sign Up"}

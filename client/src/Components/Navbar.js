@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar(props) {
 
     const navigate = useNavigate();
 
@@ -31,7 +31,10 @@ export default function ButtonAppBar() {
           <Typography onClick={()=>{navigate('/');}} variant="h6" component="div" sx={{ flexGrow: 1 } }>
             Hike Tracker
           </Typography>
-          <Button color="inherit" onClick={()=>{navigate('/login');}}>Login</Button>
+          {props.isloggedIn? 
+          <><Button color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout: {props.loggedUser.name}</Button> </> : 
+          <><Button color="inherit" onClick={()=>{navigate('/login');}}>Login</Button></>}
+          
         </Toolbar>
       </AppBar>
     </Box>

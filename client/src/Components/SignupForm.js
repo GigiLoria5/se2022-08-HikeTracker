@@ -11,21 +11,38 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp(props) {
+  const [type, setType] = useState(1);
+  const [name,setName] = useState('');
+  const [surname,setSurname] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const form = event.currentTarget;
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }else{
+      try{
+        const credentials = { type, name, surname, phone, email, password };         // define object having username and password as elements 
+        props.signUp(credentials);                           // call login function in App.js
+        navigate('/');  // go to home
+      }catch (err){
+            // Print an error
+      }
+    }
+   
+};
 
   return (
     <ThemeProvider theme={theme}>
@@ -45,8 +62,11 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} >
+              <TypeSelector setType={setType} type={type}></TypeSelector>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -56,6 +76,8 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={ev => setName(ev.target.value)} 
+
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -66,8 +88,23 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={ev => setSurname(ev.target.value)} 
+
                 />
               </Grid>
+              {type!==1? <Grid item xs={12} sm={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phone"
+                  label="Phone number"
+                  name="phoneNumber"
+                  minLength={9}
+                  maxLength={10}
+                  onChange={ev => setPhone(ev.target.value)} 
+                />
+              </Grid>: ""}
+              
               <Grid item xs={12}>
                 <TextField
                   required
@@ -76,6 +113,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type="email"
+                  onChange={ev => setEmail(ev.target.value)} 
                 />
               </Grid>
               <Grid item xs={12}>
@@ -86,7 +125,9 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  minLength={6}
                   autoComplete="new-password"
+                  onChange={ev => setPassword(ev.target.value)} 
                 />
               </Grid>
             </Grid>
@@ -98,7 +139,7 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link onClick = {()=>{ navigate('/login')}} variant="body2">
                   Already have an account? Login
@@ -110,4 +151,25 @@ export default function SignUp() {
       </Container>
     </ThemeProvider>
   );
+}
+
+function TypeSelector(props){
+  
+  return <>
+<FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">User type</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value= {props.type}
+    label="User type"
+    onChange={ev => props.setType(ev.target.value)} 
+  >
+    <MenuItem value={1}>Hiker</MenuItem>
+    <MenuItem value={2}>Hut worker</MenuItem>
+    <MenuItem value={3}>Local guide</MenuItem>
+    <MenuItem value={4}>Emergency operator</MenuItem>
+  </Select>
+</FormControl>
+  </>
 }
