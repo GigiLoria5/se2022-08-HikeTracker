@@ -76,4 +76,28 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   }
   ```
 
+- POST `/api/uploadFile`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Upload file
+  - Permissions allowed: Local guide
+  - Request body: File name
+  - File: gpx file
+
+  ```
+  {
+    "gpx" : ...
+    "name" : 1_monte_ferra
+  }  
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed) or `500 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
 ## Database Tables
