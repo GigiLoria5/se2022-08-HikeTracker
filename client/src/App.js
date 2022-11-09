@@ -47,12 +47,12 @@ function App() {
       //setMessage({ msg: 'Invalid username or password', type: 'danger' });
 
     }
-  }
+  };
 
   const handleLogout = async () =>{
     setLoggedIn(false);
     await API.logOut();
-  }
+  };
 
 
   return (
@@ -67,8 +67,8 @@ function App() {
             <Route path="/">
               <Route index key={"Available Hikes"} element={<AvailableHikes />} />
               <Route key={"Available Hikes v2"} path={"/available-hikes-v2"} element={<AvailableHikesV2 />} />
-              <Route path="/login" login={handleLogin} isloggedIn={loggedIn} element={ <LoginForm> </LoginForm> } ></Route>
-              <Route path="/signup" signUp ={handleSignUp} element={ <SignUpForm> </SignUpForm> } ></Route>
+              <Route path="/login"  element={ <LoginForm login={handleLogin} isloggedIn={loggedIn} > </LoginForm> } ></Route>
+              <Route path="/signup"  element={ <SignUpForm signUp ={handleSignUp}> </SignUpForm> } ></Route>
             </Route>
           </Route>
         </Routes>
