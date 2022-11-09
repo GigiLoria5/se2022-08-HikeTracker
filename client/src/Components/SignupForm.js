@@ -34,7 +34,15 @@ export default function SignUp(props) {
       event.stopPropagation();
     }else{
       try{
-        const credentials = { type, name, surname, phone, email, password };         // define object having username and password as elements 
+        let role = '';
+        switch(type){
+          case 1: role="hiker"; break;
+          case 2: role="hut_worker"; break;
+          case 3: role="local_guide"; break;
+          case 4: role="emergency_operator"; break;
+          default: break;
+        }
+        const credentials = { role, name, surname, phone, email, password };         // define object having username and password as elements 
         props.signUp(credentials);                           // call login function in App.js
         navigate('/');  // go to home
       }catch (err){
@@ -71,7 +79,7 @@ export default function SignUp(props) {
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
-                  required
+                  required={type!==1? true: false}
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -82,7 +90,7 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  required={type!==1? true: false}
                   fullWidth
                   id="lastName"
                   label="Last Name"
@@ -92,9 +100,9 @@ export default function SignUp(props) {
 
                 />
               </Grid>
-              {type!==1? <Grid item xs={12} sm={12}>
+              <Grid item xs={12} sm={12}>
                 <TextField
-                  required
+                  required={type!==1? true: false}
                   fullWidth
                   id="phone"
                   label="Phone number"
@@ -103,7 +111,7 @@ export default function SignUp(props) {
                   maxLength={10}
                   onChange={ev => setPhone(ev.target.value)} 
                 />
-              </Grid>: ""}
+              </Grid>
               
               <Grid item xs={12}>
                 <TextField
