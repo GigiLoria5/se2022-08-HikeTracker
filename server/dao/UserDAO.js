@@ -12,7 +12,15 @@ exports.getUser = (email, password) => {
             if (err) { reject(err); }
             else if (row === undefined) { resolve(false); }
             else {
-                const user = {id: row.id, name:row.name, surname:row.surname, email:row.email, password:row.password, salt:row.salt, email_verified: row.email_verified, phone_number: row.phone_number, role:row.role, token:row.token };
+                const user = {
+                    id: row.id, 
+                    name:row.name, 
+                    surname:row.surname, 
+                    email:row.email, 
+                    email_verified: row.email_verified, 
+                    phone_number: row.phone_number, 
+                    role:row.role, 
+                    token:row.token };
                 const salt = row.salt;
                 crypto.scrypt(password, salt, 32, (err, hashedPassword) => {
                     if (err) reject(err);

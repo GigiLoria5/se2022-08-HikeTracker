@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const UserDao = require('./dao/UserDAO.js');
+const UserDao = require('./dao/UserDAO');
 const cors = require('cors');
 const morgan = require('morgan');
 
@@ -25,12 +25,9 @@ app.use(cors(corsOptions));
 
 /* Passport: set up local strategy */
 
-passport.use(new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-  },
-  async function verify(email, password, cb) {
-  const user = await UserDao.getUser(email, password);
+passport.use(new LocalStrategy(
+  async function verify(username, password, cb) {
+  const user = await UserDao.getUser(username, password);
   if (!user)
     return cb(null, false, 'Incorrect email or password.');
 
@@ -47,13 +44,19 @@ passport.deserializeUser(function (user, cb) {          // this user is id + ema
 });
 
 
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.status(401).json({ error: 'Not authorized' });
+}
+
 app.use(session({
   secret: "shhhhh... it's a secret!",
   resave: false,
   saveUninitialized: false,
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.authenticate('session'));
 
 /* SESSION QUERY */
 app.post('/api/sessions', function(req, res, next) {

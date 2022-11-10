@@ -30,9 +30,9 @@ export default function SignIn(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const credentials = { email, password };         // define object having username and password as elements 
+        const credentials = { username:email, password };         // define object having username and password as elements 
         props.login(credentials);                           // call login function in App.js
-        //console.log(credentials);
+        console.log(credentials);
     };
 
       /*
