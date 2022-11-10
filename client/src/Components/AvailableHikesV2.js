@@ -34,13 +34,13 @@ export default function AvailableHikesV2() {
     const listAscent = ['0 - 300 m',' 300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
     const listTime = ['0 - 1 h',' 1 - 3 h', '3 - 5 h', 'More than 5 h'];
 
-    const [difficultyValue, setDificultyValue] = useState();
-    const [lengthValue, setLengthValue] = useState();
-    const [ascentValue, setAscentValue] = useState();
-    const [timeValue, setTimeValue] = useState();
-    const [province, setProvince] = useState(null);
-    const [city, setCity] = useState(null);
-    const [country, setCountry] = useState(null);
+    const [difficultyValue, setDificultyValue] = useState('');
+    const [lengthValue, setLengthValue] = useState('');
+    const [ascentValue, setAscentValue] = useState('');
+    const [timeValue, setTimeValue] = useState('');
+    const [province, setProvince] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
 
     const [hikes, setHikes] = useState([]);
 
@@ -103,6 +103,9 @@ export default function AvailableHikesV2() {
     const handleSubmit = (e) => {
         e.preventDefault();
         //post form
+        const formResult = {difficultyValue, lengthValue, ascentValue, timeValue, country, province, city}
+        console.log(formResult)
+        //api.postForm(formResult)
 
         //get hikes from api and put it in the "hikes" table
         //setHikes({api.getHikesFiltered})
