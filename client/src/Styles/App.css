@@ -34,11 +34,10 @@ svg {
     background-color: var(--main) !important;
 }
 
-/*
-.css-1oqqzyl-MuiContainer-root {
+
+.container-background-color {
     background-color: var(--main) !important;
 }
-*/
 
 .container-full-size {
     height: 100% !important;
@@ -63,6 +62,13 @@ svg {
 .css-1y942vo-MuiButtonBase-root-MuiButton-root:hover,
 .css-1uh6h56-MuiButtonBase-root-MuiButton-root:hover {
     background-color: var(--active) !important;
+}
+
+/* Homepage */
+
+.w-h-100 {
+    height: 100%;
+    width: 100%;
 }
 
 .homepage-background {

@@ -22,7 +22,7 @@ function Homepage(props) {
 
     return (
         <Container className="container-full-size">
-            <HomepageContent>
+            <HomepageContent className='w-h-100'>
                 <Container
                     sx={{
                         mt: 3,
