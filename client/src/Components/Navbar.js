@@ -32,7 +32,9 @@ function MyNavbar(props) {
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Container className="container-background-color">
                 <Container maxWidth="xs">
-                    <Logo />
+                    <Link href="/">
+                        <Logo />
+                    </Link>
                 </Container>
             </Container>
             <Divider />

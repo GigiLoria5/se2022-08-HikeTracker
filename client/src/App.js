@@ -22,12 +22,11 @@ function Root() {
         {/* Outlets */}
         <Route path='' element={<Homepage />} />
         <Route path='hikes' element={<><h1>Hikes List by Estelle</h1></>} />
+        <Route path='/login' element={<><h1>Login Page By Antonello</h1></>} />
+        <Route path='/register' element={<><h1>Register Page By Antonello</h1></>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}
-      <Route path='/login' element={<><h1>Login Page By Antonello</h1></>} />
-      <Route path='/register' element={<><h1>Register Page By Antonello</h1></>} />
-
       <Route path='*' element={<><h1>Oh no! Page not found.</h1> <p>Return to our <Link to="/" >homepage</ Link>. </p></>} />
     </Routes >
   );
