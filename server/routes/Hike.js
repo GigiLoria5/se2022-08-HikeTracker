@@ -64,47 +64,46 @@ router.get('/hikes/filters', async (req, res) => {
             .then(async (hikes) => {
                 var result = hikes;
                 if(city != undefined) {
-                    result = hikes.filter(h => h.city == city);
+                    result = result.filter(h => h.city == city);
                 }
                 if(province != undefined){
-                    result = hikes.filter(h => h.province == province);
+                    result = result.filter(h => h.province == province);
                 }
                 if(country != undefined) {
-                    result = hikes.filter(h => h.country == country);
+                    result = result.filter(h => h.country == country);
                 }
                 if(difficulty != undefined){
-                    console.log("Sono dentro")
-                    result = hikes.filter(h => h.difficulty == difficulty);
+                    result = result.filter(h => h.difficulty == difficulty);
                 }
                 if(track_length != undefined) {
                     if(track_length == "0-5"){
-                        result = hikes.filter(h => h.track_length >= 0.0 && h.track_length <= 5.0);
+                        result = result.filter(h => h.track_length >= 0.0 && h.track_length <= 5.0);
                     } else if(track_length == "5-15"){
-                        result = hikes.filter(h => h.track_length >= 5.0 && h.track_length <= 15.0);
+                        result = result.filter(h => h.track_length >= 5.0 && h.track_length <= 15.0);
                     } else if(track_length == "15-more"){
-                        result = hikes.filter(h => h.track_length >= 15.0);            
-                    }
+                        result = result.filter(h => h.track_length >= 15.0);            
+                    } 
                 }
                 if(ascent != undefined){
                     if(ascent == "0-300"){
-                        result = hikes.filter(h => h.ascent >= 0 && h.ascent <= 300);
+                        result = result.filter(h => h.ascent >= 0 && h.ascent <= 300);
                     } else if(ascent == "300-600"){
-                        result = hikes.filter(h => h.ascent >= 300 && h.ascent <= 600);
+                        result = result.filter(h => h.ascent >= 300 && h.ascent <= 600);
                     } else if(ascent == "600-1000"){
-                        result = hikes.filter(h => h.ascent >= 600 && h.ascent <= 1000);            
+                        result = result.filter(h => h.ascent >= 600 && h.ascent <= 1000);            
                     } else if(ascent == "1000-more"){
-                        result = hikes.filter(h => h.ascent >= 1000);            
+                        result = result.filter(h => h.ascent >= 1000);            
                     }
                 }
                 if(expected_time != undefined) {
                     if(expected_time == "0-1"){
-                        result = hikes.filter(h => h.expected_time >= 0.0 && h.expected_time <= 1.0);
+                        result = result.filter(h => h.expected_time >= 0.0 && h.expected_time <= 1.0);
                     } else if(expected_time == "1-3"){
-                        result = hikes.filter(h => h.expected_time >= 1.0 && h.expected_time <= 3.0);
+                        result = result.filter(h => h.expected_time >= 1.0 && h.expected_time <= 3.0);
                     } else if(expected_time == "3-5"){
-                        result = hikes.filter(h => h.expected_time >= 3.0 && h.expected_time <= 5.0);            
+                        result = result.filter(h => h.expected_time >= 3.0 && h.expected_time <= 5.0);            
                     } else if(expected_time == "5-more"){
-                        result = hikes.filter(h => h.expected_time >= 5.0);            
+                        result = result.filter(h => h.expected_time >= 5.0);            
                     } 
                 }
 
@@ -144,7 +143,6 @@ router.get('/hikes/filters', async (req, res) => {
                         }
                     } 
                 }
-                console.log(hike);
                 
                 res.status(200).json(result);
             })
