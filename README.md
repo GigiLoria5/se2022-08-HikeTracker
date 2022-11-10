@@ -94,9 +94,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/hikes/city/:city
+- GET /api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value
 
-  - Description: Return an array containing all the hikes of a specific city
+  - Description: Return an array containing all the hikes with filters
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -120,278 +120,48 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "start_point_type": "parking_lot",
       "start_point_id": 3,
       "end_point_type": "location",
-      "end_point_id": 18
+      "end_point_id": 18,
+      "start": [
+        {
+          "id": 3,
+          "city": "Carignano",
+          "province": "Torino",
+          "country": "Italy",
+          "address": "SP138, 10041"
+        }
+      ],
+      "end": [
+        {
+          "id": 18,
+          "value_type": "gps",
+          "value": "45.462770631936834, 7.693279470138337",
+          "description": "Mountain peak"
+        }
+      ],
+      "reference_points": [
+        [
+          {
+            "id": 17,
+            "value_type": "address",
+            "value": "SP138, 10041",
+            "description": "Chapel of the Visitation of Valinotto"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "value_type": "address",
+            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
+            "description": "Palasot Inn (Restaurant)"
+          }
+        ]
+      ]
     },
     ...
   ]
   ```
 
-- GET /api/hikes/province/:province
 
-  - Description: Return an array containing all the hikes of a specific province
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-- GET /api/hikes/country/:country
-
-  - Description: Return an array containing all the hikes of a specific country
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-- GET /api/hikes/difficulty/:difficulty
-
-  - Description: Return an array containing all the hikes with a specific difficulty
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-- GET /api/hikes/length/:track_length
-
-  - Description: Return an array containing all the hikes between a range of track length (All strings: "0-5","5-15","15-more")
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-- GET /api/hikes/ascent/:ascent
-
-  - Description: Return an array containing all the hikes between a range of ascent (All strings: "0-300","300-600","600-1000","1000-more")
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-- GET /api/hikes/expected_time/:expected_time
-
-  - Description: Return an array containing all the hikes between a range of expected time (All strings: "0-1","1-3","3-5","5-more")
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 8,
-      "title": "Ring for Monte Calvo",
-      "peak_altitude": 1357,
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "ascent": 320,
-      "track_length": 6.2,
-      "expected_time": 3.3,
-      "difficulty": 2,
-      "start_point_type": "parking_lot",
-      "start_point_id": 3,
-      "end_point_type": "location",
-      "end_point_id": 18
-    },
-    ...
-  ]
-  ```
-
-### Hut
-
-- GET /api/hut/:id
-
-  - Description: Return an array containing all the informations about a hut with a specified id
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing the hut, or an error message in case of failure
-
-  ```
-  [
-    {
-      "id": "1",
-      "name": "Rifugio Melezè",
-      "city": "Bellino",
-      "province": "Cuneo",
-      "country": "Italy",
-      "address": "Pian Melezè, 1, 12020",
-      "phone_number": 175956410,
-      "altitude": 1812,
-      "description": "The building was ...",
-      "beds_number": 50,
-      "opening_period": "Open all year"
-    }
-  ]
-  ```
-
-### Location
-
-- GET /api/location/:id
-
-  - Description: Return an array containing all the informations about a location with a specified id
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing the location, or an error message in case of failure
-
-  ```
-  [
-    {
-      "id": "2",
-      "value_type": "name",
-      "value": "Prarotto",
-      "description": "Chapel"
-    }
-  ]
-  ```
-
-### Parking
-
-- GET /api/parking/:id
-
-  - Description: Return an array containing all the informations about a parking lot with a specified id
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing the parking lot, or an error message in case of failure
-
-  ```
-  [
-    {
-      "id": "3",
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "address": "SP138, 10041"
-    }
-  ]
-  ```
-
-### Reference points
-
-- GET /api/reference/:id
 
   - Description: Return an array containing all the informations about all the reference points with a specified hike id
   - Request body: _None_
