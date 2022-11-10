@@ -262,7 +262,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '100%', flexShrink: 0 }}>
                                         Geographical area
                                     </Typography>
                                     </AccordionSummary>
@@ -283,7 +283,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '100%', flexShrink: 0 }}>
                                         Difficulty
                                     </Typography>
                                     </AccordionSummary>
@@ -308,7 +308,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
                                         Length
                                     </Typography>
                                     </AccordionSummary>
@@ -333,7 +333,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
                                         Total ascent
                                     </Typography>
                                     </AccordionSummary>
@@ -357,7 +357,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
                                         Expected time
                                     </Typography>
                                     </AccordionSummary>
