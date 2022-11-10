@@ -35,9 +35,36 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 - Jest
 
 ## React Client Application Routes
+- Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button. 
+
+- Route `/signup`: the page contains a form that allows the user to define a new account, by inserting 
+  - user account type: hiker, hut worker, local guide, emergency operator
+  - first name: not compulsory if type hiker has been selected
+  - last name: not compulsory if type hiker has been selected
+  - phone number: not compulsory if type hiker has been selected
+  - email address: compulsory, the value inserted is checked using html email validator
+  - password: compulsory, minimum lenght is 8 maximum is 64.
+At the bottom of this form there is a submit button and a link to go back to login route.
 
 ## API Format
+- POST `/api/sessions`
+  - <b>Request body:</b> a json object with an username and a password (both strings) and session cookies.<br>
+  <u>e.g.</u> { "username": "c.basile@hiker.it	", "password": "password" } and credentials cookies.
+  - <b>Response status codes:</b> 200 Created, 401 Unauthorized<br>
+  <b>Body:</b> a json object with user data (id, email, name, surname, phonenumber, role, email verified, token ) or json object with error.<br>
+  <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
 
+
+- GET `/api/sessions/current`
+  - <b>Request body:</b> session cookies
+  - <b>Response status codes:</b> 200 Ok, 401 Unauthorized, 500 Internal Server Error<br>
+  <b>Body:</b> a json object with user data or json object with error.<br>
+  <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
+
+- DELETE `/api/sessions/current`
+  - <b>Request body:</b> session cookies
+  - <b>Response status code:</b> 200 Ok (and 204 No Content)<br>
+  - 
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role
@@ -73,3 +100,16 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 | g.desantis@local_guide.it | password | local guide |
 | m.piccolo@guide_turin.it  | password | local guide |
 | i.folletti987@google.com  | password | local guide |
+
+## Main React Components 
+- `LoginForm`: this component provides a custom form to perform login operation. It consist of a mui Box including the following elements: one TextField for email, one TextField for password and one Button for submit the fields. Then, there is a GridContainer that includes a link to access the sign up operation.
+
+- `SignupForm`: this component provides a custom form to perform sign up operation. It consist of a mui Box structured using Grid, where each Grit Item contians the following elements: 
+  - TypeSelector for define the account type
+  - one TextField for name
+  - one TextField for surname
+  - one TextField for phone number
+  - one TextField for email
+  - one TextField for password 
+  - one Button for submit the fields. 
+Then, there is a GridContainer that includes a link to access the login operation.
