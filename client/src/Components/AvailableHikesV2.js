@@ -25,14 +25,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 
-
-
-
-
-
-
-
-
 export default function AvailableHikesV2() {
 
     const [expanded, setExpanded] = React.useState(false);
@@ -59,19 +51,25 @@ export default function AvailableHikesV2() {
             main: '#b0b0b0',
           },
         },
-      });
-
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-    } 
+    });
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
-      };
+    };
     
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        //post form
+        //get hikes in the "hikes" table
+
+        
+    } 
+
+    //fill this table with the api when api will be made
+    const hikes = [
+        {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
+        {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
+    ];
 
     return(
         <div>
@@ -262,60 +260,66 @@ export default function AvailableHikesV2() {
                         </Grid>
                             
                         
+                        {hikes.map((value) => { 
+                            return(
+                                    <Accordion expanded={expanded === `panel-${value.title}`} onChange={handleChange(`panel-${value.title}`)}>
+                                        <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                        >
+                                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                            {value.title}
+                                        </Typography>
+                                        <Typography sx={{ color: 'text.secondary' }}>{value.city}, {value.province}, {value.country}</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography>
+                                                Length : {value.length} km
 
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                            <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                            >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                Hike 1
-                            </Typography>
-                            <Typography sx={{ color: 'text.secondary' }}>Torino, TO, Italy</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                            <Typography>
-                            Length : 12 km
+                                                <br/><br/>
+                                                Expected time : {value.time} h
 
-                            <br/><br/>
-                            Expected time : 3 h
+                                                <br/><br/>
+                                                Total ascent : {value.ascent} m
 
-                            <br/><br/>
-                            Total ascent : 100 m
+                                                <br/><br/>
+                                                Geographic area : 
+                                                {" "}<Chip label={value.city} color="primary" variant="outlined" />
+                                                {" "}<Chip label={value.province} color="primary" variant="outlined" />
+                                                {" "}<Chip label={value.country} color="primary" variant="outlined" />
+                        
+                                                <br/><br/>
+                                                Difficulty :  
+                                                {" "}<Chip label={value.difficulty} color="primary" variant="outlined" />
 
-                            <br/><br/>
-                            Geographic area : 
-                            {" "}<Chip label="Torino" color="primary" variant="outlined" />
-                            {" "}<Chip label="TO" color="primary" variant="outlined" />
-                            {" "}<Chip label="Italy" color="primary" variant="outlined" />
-    
-                            <br/><br/>
-                            Difficulty :  
-                            {" "}<Chip label="Tourist" color="primary" variant="outlined" />
+                                                <br/><br/>
+                                                Start point :  
+                                                {" "}<Chip label={value.startPoint} color="primary" variant="outlined" />
+                                                <br/><br/>
+                                                End point : 
+                                                {" "}<Chip label={value.endPoint} color="primary" variant="outlined" />
+                        
+                                                <br/><br/>
+                                                Reference points :         
+                                                {" "}
+                                                {value.refPoints.map((valuee) => { 
+                                                        return(
+                                                            <Chip label={valuee} color="primary" variant="outlined"/>
+                                                        );
+                                                })}
+                                                
+                                                <br/><br/>
 
-                            <br/><br/>
-                            Start point :  
-                            {" "}<Chip label="location one" color="primary" variant="outlined" />
-                            <br/><br/>
-                            End point : 
-                            {" "}<Chip label="location two" color="primary" variant="outlined" />
-    
-                            <br/><br/>
-                            Reference points :         
-                            {" "}<Chip label="hut 1" color="primary" variant="outlined"/>{" "}
-                            <Chip label="hut 2" color="primary" variant="outlined"/>{" "}
-                            <Chip label="hut 3" color="primary" variant="outlined"/>
-
-                            <br/><br/>
-
-                            Description : <br/>
-                            
-                            It's a city tour. blablabalbalablabla
-                            blablabalbalablabla
-                            </Typography>
-                            </AccordionDetails>
-                        </Accordion>
+                                                Description : <br/>{value.description}
+                                            
+                                            
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                            );
+                        })}
+                        
 
                         
 
