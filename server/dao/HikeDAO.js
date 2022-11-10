@@ -332,3 +332,77 @@ exports.getHikeByExpectedTime = (min,max) => {
         }
     });
 };
+
+
+exports.addHike = (hike, author_id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO hike(title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id';
+        db.get(sql, [
+            hike.title,
+            hike.peak_altitude,
+            hike.city,
+            hike.province,
+            hike.country,
+            hike.description,
+            hike.ascent,
+            hike.track_length,
+            hike.expected_time,
+            hike.difficulty, 
+            hike.gps_track, 
+            hike.start_point_type, 
+            hike.start_point_id, 
+            hike.end_point_type, 
+            hike.end_point_id, 
+            hike.author_id
+        ], function (err, row) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(row.id);
+        });
+    });
+};
+
+exports.addReferencePoint = (hikeID, referencePointType, referencePointId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO reference_point(hike_id, ref_point_type, ref_point_id) VALUES(?, ?, ?)';
+        db.run(sql, [
+            hikeID,
+            referencePointType,
+            referencePointId
+        ], function (err, row) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
+
+exports.deleteHike = (hikeID) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM hike WHERE id = ?';
+        db.run(sql, [hikeID], function (err) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
+
+exports.deleteReferencePoints = (hikeID) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM reference_point WHERE hike_id = ?';
+        db.run(sql, [hikeID], function (err) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}

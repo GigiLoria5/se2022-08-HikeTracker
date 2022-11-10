@@ -41,10 +41,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## API Format
 - POST `/api/hikes`
-
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hike
   - Permissions allowed: Local guide
-  - Request body: Hike description
+  - Request body: Hike description, including gpx file with gpx tag
 
   ```
   {
@@ -62,12 +62,28 @@ Application developed during the Software Engineering II course (Year 2022-23) b
         "start_point_id": 3,
         "end_point_type": "location",
         "end_point_id": 18
-        "reference_points": [1, 2, 12]
+        "reference_points": {
+          "points": [
+            {
+              "type":"hut", 
+              "id":1
+            }, 
+            {
+              "type":"hut", 
+              "id":2
+            }, 
+            {
+              "type":"location", 
+              "id":12
+            }
+          ]
+        }
+        "gpx" : ...
   }
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed) or `500 Internal Server Error` (generic error)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
@@ -76,28 +92,5 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   }
   ```
 
-- POST `/api/uploadFile`
-  - Headers: ` {"Content-Type": "multipart/form-data"}`
-  - Description: Upload file
-  - Permissions allowed: Local guide
-  - Request body: File name
-  - File: gpx file
-
-  ```
-  {
-    "gpx" : ...
-    "name" : 1_monte_ferra
-  }  
-  ```
-
-  - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `422 Unprocessable Entity` (validation of request body failed) or `500 Internal Server Error` (generic error)
-  - Response body: An error message in case of failure
-
-  ```
-  {
-      "error": "message text"
-  }
-  ```
 
 ## Database Tables
