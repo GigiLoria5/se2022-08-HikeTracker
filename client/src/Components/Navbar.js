@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
@@ -13,13 +13,15 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import Logo from "./Logo";
 
 const drawerWidth = 240;
-const navItems = ['Hikes'];
+const navItems = { 'Hikes': '/hikes' };
 
 function MyNavbar(props) {
     const { window } = props;
+    const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
@@ -35,10 +37,10 @@ function MyNavbar(props) {
             </Container>
             <Divider />
             <List>
-                {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item} />
+                {Object.entries(navItems).map(([name, route]) => (
+                    <ListItem key={name} disablePadding>
+                        <ListItemButton sx={{ textAlign: 'center' }} onClick={() => navigate(route)}>
+                            <ListItemText primary={name} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -64,19 +66,21 @@ function MyNavbar(props) {
                             <MenuIcon />
                         </IconButton>
                         <Container sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1, ml: 1 }} maxWidth="xs">
-                            <Logo />
+                            <Link href="/">
+                                <Logo />
+                            </Link>
                         </Container>
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                            {navItems.map((item) => (
-                                <Button key={item} sx={{ color: '#fff' }}>
-                                    {item}
+                            {Object.entries(navItems).map(([name, route]) => (
+                                <Button key={name} sx={{ color: '#fff' }} onClick={() => navigate(route)}>
+                                    {name}
                                 </Button>
                             ))}
                         </Box>
                         <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
                             {/* Account User Buttons */}
-                            <Button variant="text" color="inherit" sx={{ mr: 2 }}>Login</Button>
-                            <Button variant="outlined" color="inherit">Register</Button>
+                            <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={() => navigate('/login')}>Login</Button>
+                            <Button variant="outlined" color="inherit" onClick={() => navigate('/register')}>Register</Button>
                         </Box>
                     </Toolbar>
                 </AppBar>

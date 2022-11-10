@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const HomepageContent = styled('section')(({ theme }) => ({
     color: theme.palette.common.white,
@@ -19,6 +20,7 @@ const HomepageContent = styled('section')(({ theme }) => ({
 
 function Homepage(props) {
     const { children } = props;
+    const navigate = useNavigate();
 
     return (
         <Container className="container-full-size">
@@ -65,6 +67,7 @@ function Homepage(props) {
                         component="a"
                         href=""
                         sx={{ minWidth: 200 }}
+                        onClick={() => navigate('/hikes')}
                     >
                         Find Out More
                     </Button>
