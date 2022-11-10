@@ -73,7 +73,7 @@ function MyNavbar(props) {
                                 </Button>
                             ))}
                         </Box>
-                        <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end">
+                        <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
                             {/* Account User Buttons */}
                             <Button variant="text" color="inherit" sx={{ mr: 2 }}>Login</Button>
                             <Button variant="outlined" color="inherit">Register</Button>

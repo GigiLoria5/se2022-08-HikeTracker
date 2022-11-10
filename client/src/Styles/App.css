@@ -2,6 +2,7 @@
 
 :root {
     --main: #008037;
+    --secondary: #CCE2EF;
     --active: #08961D;
 }
 
@@ -24,6 +25,18 @@ svg {
     height: 100%;
 }
 
+.margin-right-32 {
+    margin-right: 32px;
+}
+
+.main-background-color {
+    background-color: var(--main) !important;
+}
+
+.main-background-color:hover {
+    background-color: var(--active) !important;
+}
+
 /* Navbar */
 
 .box-end {
@@ -33,7 +46,6 @@ svg {
 .css-hip9hq-MuiPaper-root-MuiAppBar-root {
     background-color: var(--main) !important;
 }
-
 
 .container-background-color {
     background-color: var(--main) !important;
@@ -69,6 +81,20 @@ svg {
 .w-h-100 {
     height: 100%;
     width: 100%;
+}
+
+.btn-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.homepage-title {
+    max-height: 4;
+    max-width: 73;
+    display: 'block';
+    margin: '1 auto 0';
+    text-transform: uppercase;
+    color: var(--secondary) !important;
 }
 
 .homepage-background {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
@@ -46,17 +46,29 @@ function Homepage(props) {
                         }}
                     />
                     <Box className='homepage-background' />
+                    <Typography className="homepage-title" color="inherit" align="center" variant="h2" marked="center"
+                        sx={{
+                            fontSize: {
+                                lg: '4vw',
+                                md: '4.5vw',
+                                sm: '6vw',
+                                xs: '8vw'
+                            }
+                        }}>
+                        Find your next hike
+                    </Typography>
+                    <Button
+                        className='btn-center main-background-color'
+                        color="secondary"
+                        variant="contained"
+                        size="large"
+                        component="a"
+                        href=""
+                        sx={{ minWidth: 200 }}
+                    >
+                        Find Out More
+                    </Button>
                 </Container>
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    size="large"
-                    component="a"
-                    href=""
-                    sx={{ minWidth: 200 }}
-                >
-                    Register
-                </Button>
             </HomepageContent>
         </Container>
     );
