@@ -18,7 +18,7 @@ const router = express.Router();
 //////                          POST                           //////
 /////////////////////////////////////////////////////////////////////
 
-
+//TODO: still need to handle login check
 router.post('/hikes', async (req, res) => {
     try {
         if(!req.files) {
