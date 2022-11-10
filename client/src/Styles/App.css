@@ -10,8 +10,9 @@ body {
     margin: 0;
     padding: 0;
     min-width: 100%;
+    width: 100vw;
+    height: 100vh;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
-    height: 7000px;
 }
 
 a {
@@ -33,8 +34,21 @@ svg {
     background-color: var(--main) !important;
 }
 
+/*
 .css-1oqqzyl-MuiContainer-root {
     background-color: var(--main) !important;
+}
+*/
+
+.container-full-size {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: fixed;
+    right: 0;
 }
 
 .MuiContainer-maxWidthXs {
@@ -49,4 +63,19 @@ svg {
 .css-1y942vo-MuiButtonBase-root-MuiButton-root:hover,
 .css-1uh6h56-MuiButtonBase-root-MuiButton-root:hover {
     background-color: var(--active) !important;
+}
+
+.homepage-background {
+    background-image: url('../Assets//homepage_background.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: contain;
+    overflow-y: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -2;
 }
