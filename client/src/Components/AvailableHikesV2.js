@@ -14,12 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 import Chip from '@mui/material/Chip';
 
@@ -38,10 +36,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 export default function AvailableHikesV2() {
 
     const [expanded, setExpanded] = React.useState(false);
-    const [checked, setChecked] = React.useState([]);
 
+    const listDifficulty = ['Tourist',' Hiker', 'Professionnal Hiker'];
+    const listLength = ['0 - 5 km',' 5 - 15 km', 'More than 15 km'];
+    const listAscent = ['0 - 300 m',' 300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
+    const listTime = ['0 - 1 h',' 1 - 3 h', '3 - 5 h', 'More than 5 h'];
 
-    
+    const [difficultyValue, setDificultyValue] = useState();
+    const [lengthValue, setLengthValue] = useState();
+    const [ascentValue, setAscentValue] = useState();
+    const [timeValue, setTimeValue] = useState();
     const [province, setProvince] = useState(null);
     const [city, setCity] = useState(null);
     const [country, setCountry] = useState(null);
@@ -67,19 +71,6 @@ export default function AvailableHikesV2() {
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
       };
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
-    };
     
 
     return(
@@ -171,50 +162,16 @@ export default function AvailableHikesV2() {
                                     </AccordionSummary>
                                     <AccordionDetails>
 
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(0)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(0) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Tourist`} />
-                                                </ListItemButton>
-                                            </ListItem>
+                                        <FormControl>
+                                            <RadioGroup value={difficultyValue} onChange={e => setDificultyValue(e.target.value)}>
+                                                {listDifficulty.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
 
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(1)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(1) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Hiker`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(2)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(2) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Professionnal Hiker`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                        </List>
                                     </AccordionDetails>
                                 </Accordion>
                             
@@ -229,49 +186,17 @@ export default function AvailableHikesV2() {
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(3)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(3) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 5 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(4)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(4) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`5 - 15 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(5)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(5) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 15 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={lengthValue} onChange={e => setLengthValue(e.target.value)}>
+                                                {listLength.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+                                        
+                                        
                                     </AccordionDetails>
                                 </Accordion>
                                 
@@ -286,60 +211,15 @@ export default function AvailableHikesV2() {
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(6)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(6) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 300 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(7)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(7) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`300 - 600 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(8)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(8) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`600 - 1000 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(9)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(9) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 1000 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={ascentValue} onChange={e => setAscentValue(e.target.value)}>
+                                                {listAscent.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
 
@@ -355,62 +235,15 @@ export default function AvailableHikesV2() {
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-
-                            
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(10)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(10) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 1 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(11)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(11) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`1 - 3 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(12)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(12) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`3 - 5 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(13)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(13) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 5 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={timeValue} onChange={e => setTimeValue(e.target.value)}>
+                                                {listTime.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
 
