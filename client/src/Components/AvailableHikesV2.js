@@ -42,6 +42,8 @@ export default function AvailableHikesV2() {
     const [city, setCity] = useState(null);
     const [country, setCountry] = useState(null);
 
+    const [hikes, setHikes] = useState([]);
+
     const theme = createTheme({
         palette: {
           primary: {
@@ -83,20 +85,31 @@ export default function AvailableHikesV2() {
             listProvinces
         )
     };
+
+    //here get the list from the API, for now I created one bc i don't have the api : when API made, make list empty
+    
+
+    //Get from api the list of available hikes (no filter)
+    
+    const getListHikes = () => {
+        //setHikes({api.getlistOfHikes})
+        setHikes([
+            {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
+            {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
+        ])
+    };
+    
     
     const handleSubmit = (e) => {
         e.preventDefault();
         //post form
-        //get hikes in the "hikes" table
 
+        //get hikes from api and put it in the "hikes" table
+        //setHikes({api.getHikesFiltered})
         
     } 
 
-    //fill this table with the api when api will be made
-    const hikes = [
-        {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
-        {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
-    ];
+    
 
     const cityDisabled = (province, country) => {
         let citySelect
@@ -262,7 +275,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '100%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }}>
                                         Geographical area
                                     </Typography>
                                     </AccordionSummary>
@@ -283,7 +296,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '100%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }}>
                                         Difficulty
                                     </Typography>
                                     </AccordionSummary>
@@ -308,7 +321,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Length
                                     </Typography>
                                     </AccordionSummary>
@@ -333,7 +346,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Total ascent
                                     </Typography>
                                     </AccordionSummary>
@@ -357,7 +370,7 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '100%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Expected time
                                     </Typography>
                                     </AccordionSummary>
@@ -376,6 +389,8 @@ export default function AvailableHikesV2() {
 
                                 <Grid containers marginTop={3}>
                                     <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
+                                    <Typography> <br/></Typography>
+                                    <Button variant="text" color='primary' onClick={e => getListHikes()}>See all hikes</Button>
                                 </Grid>
                                 </form>
                                 <Grid containers>
@@ -388,7 +403,7 @@ export default function AvailableHikesV2() {
                             <br/>
                         </Grid>
                             
-                        
+
                         {hikes.map((value) => { 
                             return(
                                     <Accordion expanded={expanded === `panel-${value.title}`} onChange={handleChange(`panel-${value.title}`)}>
@@ -432,9 +447,10 @@ export default function AvailableHikesV2() {
                                                 <br/><br/>
                                                 Reference points :         
                                                 {" "}
-                                                {value.refPoints.map((valuee) => { 
+                                                {value.refPoints.map((valuee) => {
                                                         return(
                                                             <Chip label={valuee} color="primary" variant="outlined"/>
+                                                            
                                                         );
                                                 })}
                                                 
