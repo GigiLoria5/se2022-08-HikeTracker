@@ -8,10 +8,13 @@ import SignUpForm from "./Components/SignupForm";
 import './App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
+import Alert from '@mui/material/Alert';
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);        /* Boolean user login status (true,false) */
   const [loggedUser, setLoggedUser] = useState(false);    /* Contains logged user info */
+  const [message, setMessage] = useState('');             /* Contains Welcome messages for login */
 
 /* Reload session after refresh */
   useEffect(() => {
@@ -28,10 +31,10 @@ function App() {
       const user= await API.logIn(credentials);
       setLoggedUser(user);
       setLoggedIn(true);
-      //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
-
+      setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
+      
     } catch (err) {
-      //setMessage({ msg: 'Invalid username or password', type: 'danger' });
+      setMessage({ msg: 'Invalid email or password', type: 'error' });
 
     }
   };
@@ -42,7 +45,6 @@ function App() {
       setLoggedUser(user);
       setLoggedIn(true);
       //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
-
     } catch (err) {
       //setMessage({ msg: 'Invalid username or password', type: 'danger' });
 
@@ -52,6 +54,8 @@ function App() {
   const handleLogout = async () =>{
     setLoggedIn(false);
     await API.logOut();
+    setMessage('');
+
   };
 
 
@@ -62,6 +66,9 @@ function App() {
           <Route element={
             <>
               <Navbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />
+              {message && 
+                <div><Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert></div>
+              }
               <Outlet />
             </>}>
             <Route path="/">

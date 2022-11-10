@@ -26,13 +26,15 @@ export default function SignIn(props) {
   useEffect(() => {
     setEmail('');
     setPassword('');
-  }, [props.isloggedIn])
+    if(props.isloggedIn===true){
+      navigate('/');
+    }
+  }, [props.isloggedIn,navigate])
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const credentials = { username:email, password };         // define object having username and password as elements 
         props.login(credentials);                           // call login function in App.js
-        console.log(credentials);
     };
 
       /*

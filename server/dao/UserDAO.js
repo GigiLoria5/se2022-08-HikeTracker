@@ -26,7 +26,6 @@ exports.getUser = (email, password) => {
                     if (err) reject(err);
 
                     const passwordHex = Buffer.from(row.password, 'hex');
-
                     if(!crypto.timingSafeEqual(passwordHex, hashedPassword))
                     resolve(false);
                     else resolve(user); 
