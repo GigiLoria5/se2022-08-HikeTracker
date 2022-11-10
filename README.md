@@ -99,7 +99,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Return an array containing all the hikes with filters
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
+  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the hikes, or an error message in case of failure
 
   ```
