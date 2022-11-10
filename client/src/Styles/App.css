@@ -2,6 +2,16 @@
 
 :root {
     --main: #008037;
+    --active: #08961D;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 100%;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 7000px;
 }
 
 a {
@@ -15,12 +25,28 @@ svg {
 
 /* Navbar */
 
+.box-end {
+    margin-left: auto;
+}
+
 .css-hip9hq-MuiPaper-root-MuiAppBar-root {
+    background-color: var(--main) !important;
+}
+
+.css-1oqqzyl-MuiContainer-root {
     background-color: var(--main) !important;
 }
 
 .MuiContainer-maxWidthXs {
     max-width: 200px !important;
+    background-color: var(--main);
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.css-1kkpk3h-MuiButtonBase-root-MuiButton-root:hover,
+.css-sbfmij-MuiButtonBase-root-MuiButton-root:hover,
+.css-1y942vo-MuiButtonBase-root-MuiButton-root:hover,
+.css-1uh6h56-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: var(--active) !important;
 }
