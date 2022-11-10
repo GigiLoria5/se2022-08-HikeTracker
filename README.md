@@ -161,26 +161,6 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-
-
-  - Description: Return an array containing all the informations about all the reference points with a specified hike id
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the reference points, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "hike_id": "4",
-      "ref_point_type": "location",
-      "ref_point_id": 7
-    },
-    ...
-  ]
-  ```
-
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role

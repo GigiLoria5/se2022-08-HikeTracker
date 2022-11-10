@@ -107,7 +107,7 @@ router.get('/hikes/filters', async (req, res) => {
                         result = hikes.filter(h => h.expected_time >= 5.0);            
                     } 
                 }
-                // hike.map(obj => ({ ...obj, start: start }))
+
                 for (var hike of result){
                     if(hike.start_point_type == 'hut'){
                         const start = await hutDao.getHutById(hike.start_point_id);
