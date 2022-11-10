@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './Styles/App.css';
+import Homepage from './Components/Homepage';
 import MyNavbar from './Components/Navbar';
 
 function App() {
@@ -18,7 +20,7 @@ function Root() {
     <Routes>
       <Route path='/' element={<MyNavbar />}>
         {/* Outlets */}
-        <Route path='' element={<h1>Homepage</h1>} />
+        <Route path='' element={<Homepage />} />
         <Route path='hikes' element={<><h1>Hikes List by Estelle</h1></>} />
       </Route>
 

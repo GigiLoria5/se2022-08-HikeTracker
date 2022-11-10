@@ -1,0 +1,26 @@
+/* General */
+
+:root {
+    --main: #008037;
+}
+
+a {
+    text-decoration: none;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Navbar */
+
+.css-hip9hq-MuiPaper-root-MuiAppBar-root {
+    background-color: var(--main) !important;
+}
+
+.MuiContainer-maxWidthXs {
+    max-width: 200px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

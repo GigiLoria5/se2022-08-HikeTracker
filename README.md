@@ -31,10 +31,15 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ### Testing
 
-- Mocha
-- Jest
+- Integration Tests: Mocha
+- Unit Tests: Jest
 
 ## React Client Application Routes
+
+- Route `/` : a simple welcome page that acts as an entry point for all users
+- Route `/hikes` :
+- Route `/login` : contains the login form used to allow users to be authenticated with their own credentials
+- Route `/register` : contains the registration form that allows visitors to authenticate themselves later and be able to unlock all the features offered by our application
 
 ## API Format
 
