@@ -56,6 +56,33 @@ export default function AvailableHikesV2() {
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
+
+    //Get from api the list of available countries to do hikes
+    const getListCountries = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listCountries = ['Italy', 'France']
+        return (
+            listCountries
+        )
+    };
+    
+    //Get from api the list of available cities to do hikes
+    const getListCities = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listCities = ['Torino', 'Aix-en-Provence', 'Lyon']
+        return (
+            listCities
+        )
+    };
+
+    //Get from api the list of available provinces to do hikes
+    const getListProvinces = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listProvinces = ['TO', 'AQ', 'CH', 'PE']
+        return (
+            listProvinces
+        )
+    };
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -70,6 +97,146 @@ export default function AvailableHikesV2() {
         {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
         {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
     ];
+
+    const cityDisabled = (province, country) => {
+        let citySelect
+        if (province || country ) {
+            citySelect = 
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>City</InputLabel>
+                <Select
+                    value={city}
+                    label="City"
+                    onChange={e => setCity(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a city</em>
+                    </MenuItem>
+                    {getListCities().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>;
+        } else {
+            citySelect = 
+            <FormControl sx={{ m: 1, minWidth: 200 }} >
+                <InputLabel>City</InputLabel>
+                <Select
+                    value={city}
+                    label="City"
+                    onChange={e => setCity(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a city</em>
+                    </MenuItem>
+                    {getListCities().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+        }
+        
+        return citySelect
+
+    }
+
+    const countryDisabled = (province, city) => {
+        let countrySelect
+        if (province || city ) {
+            countrySelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>Country</InputLabel>
+                <Select
+                    value={country}
+                    label="Country"
+                    onChange={e => setCountry(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a country</em>
+                    </MenuItem>
+                    {getListCountries().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+
+        } else {
+            countrySelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} >
+                <InputLabel>Country</InputLabel>
+                <Select
+                    value={country}
+                    label="Country"
+                    onChange={e => setCountry(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a country</em>
+                    </MenuItem>
+                    {getListCountries().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+
+        }
+        return countrySelect
+    }
+
+    const provinceDisabled = (country, city) => {
+        let provinceSelect
+        if (country || city ) {
+            provinceSelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>Province</InputLabel>
+                <Select
+                    value={province}
+                    label="Province"
+                    onChange={e => setProvince(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a province</em>
+                    </MenuItem>
+                    {getListProvinces().map((value) => { 
+                            return(
+                                <MenuItem value={value}>{value}</MenuItem>
+                            );
+                    })}
+                </Select>
+            </FormControl>
+            
+
+        } else {
+            provinceSelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }}>
+                <InputLabel>Province</InputLabel>
+                <Select
+                    value={province}
+                    label="Province"
+                    onChange={e => setProvince(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a province</em>
+                    </MenuItem>
+                    {getListProvinces().map((value) => { 
+                            return(
+                                <MenuItem value={value}>{value}</MenuItem>
+                            );
+                    })}
+                </Select>
+            </FormControl>
+
+        }
+        return provinceSelect
+    }
+    
 
     return(
         <div>
@@ -100,48 +267,10 @@ export default function AvailableHikesV2() {
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>Province</InputLabel>
-                                            <Select
-                                                value={province}
-                                                label="Province"
-                                                onChange={e => setProvince(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a province</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Torino"}>Torino</MenuItem>
-                                                <MenuItem value={"toto"}>toto</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>City</InputLabel>
-                                            <Select
-                                                value={city}
-                                                label="City"
-                                                onChange={e => setCity(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a city</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Torino"}>Torino</MenuItem>
-                                                <MenuItem value={"Genova"}>genova</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>Country</InputLabel>
-                                            <Select
-                                                value={country}
-                                                label="Country"
-                                                onChange={e => setCountry(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a country</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Italy"}>Italy</MenuItem>
-                                                <MenuItem value={"France"}>France</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        {countryDisabled(province, city)}
+                                        {provinceDisabled(country, city)}
+                                        {cityDisabled(province, country)}
+                                        
                                 
                                     </AccordionDetails>
                                 </Accordion>
