@@ -6,12 +6,14 @@ const cors = require('cors');
 const morgan = require('morgan');
 const nodemailer = require('./config/nodemailer.config');
 const crypto = require('crypto');
-
+const fileupload = require("express-fileupload");
 
 /* Passport-related imports */
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+
+
 
 /* init express */
 const app = new express();
@@ -89,6 +91,14 @@ app.post('/api/sessions', function(req, res, next) {
       });
   })(req, res, next);
 });
+
+///////////////*API*//////////////////
+// declare routes
+
+const hikeRoute = require('./routes/Hike.js');
+app.use(fileupload());
+// apply routes
+app.use('/api', hikeRoute);
 
 // GET /api/sessions/current
 app.get('/api/sessions/current', (req, res) => {

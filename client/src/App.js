@@ -2,14 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AvailableHikes from "./Components/AvailableHikes";
 import AvailableHikesV2 from "./Components/AvailableHikesV2";
-import Homepage from './Components/Homepage';
-import MyNavbar from './Components/Navbar';
-import LoginForm from "./Components/Loginform";
-import SignUpForm from "./Components/SignupForm";
-import './Styles/App.css';
-import { useState, useEffect } from 'react';
-import API from './API';
-import Alert from '@mui/material/Alert';
+
+import Map from './Components/Map';
 
 
 function App() {
@@ -81,10 +75,11 @@ function Root() {
        </>}>   
         {/* Outlets */}
         <Route path='' element={<Homepage />} />
-        <Route path='hikes' element={<AvailableHikes />} />
+        <Route path='hikes' element={<AvailableHikes loggedUser={loggedUser} />} />
         <Route path='hikesv2' element={<AvailableHikesV2 />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} />} />
+        <Route path='/hiker/hikes' element={<AvailableHikes loggedUser={true /** TO FIX */}/>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}
