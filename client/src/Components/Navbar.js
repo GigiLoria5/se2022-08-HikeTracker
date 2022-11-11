@@ -23,9 +23,14 @@ function MyNavbar(props) {
     const { window, isloggedIn, loggedUser } = props;
     const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [activePage, setActivePage] = React.useState(null);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const changeActivePage = (activePageName) => {
+        setActivePage(activePageName);
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -55,7 +60,8 @@ function MyNavbar(props) {
                         {/* Nav Links */}
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             {Object.entries(navItems).map(([name, route]) => (
-                                <Button key={name} sx={{ color: '#fff' }} onClick={() => navigate(route)}>
+                                <Button className={`${activePage === name ? 'active-link' : ''}`} key={name} sx={{ color: '#fff' }}
+                                    onClick={() => { changeActivePage(name); navigate(route); }}>
                                     {name}
                                 </Button>
                             ))}
@@ -68,8 +74,8 @@ function MyNavbar(props) {
                                     <Button variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout: {loggedUser.name}</Button>
                                 </> :
                                 <>
-                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={() => { navigate('/login'); }}>Login</Button>
-                                    <Button variant="outlined" color="inherit" onClick={() => navigate('/register')}>Register</Button>
+                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
+                                    <Button variant="outlined" color="inherit" onClick={() => { changeActivePage(null); navigate('/register'); }}>Register</Button>
                                 </>
                             }
                         </Box>
@@ -106,7 +112,8 @@ function MyNavbar(props) {
                             <List>
                                 {Object.entries(navItems).map(([name, route]) => (
                                     <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} onClick={() => navigate(route)}>
+                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${activePage === name ? 'active-link' : ''}`}
+                                            onClick={() => { changeActivePage(name); navigate(route); }}>
                                             <ListItemText primary={name} />
                                         </ListItemButton>
                                     </ListItem>

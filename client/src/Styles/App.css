@@ -51,6 +51,10 @@ svg {
     background-color: var(--main) !important;
 }
 
+.active-link {
+    text-decoration: underline 2px !important;
+}
+
 .container-full-size {
     height: 100% !important;
     width: 100% !important;

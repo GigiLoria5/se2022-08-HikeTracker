@@ -37,8 +37,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 ## React Client Application Routes
 
 - Route `/` : a simple welcome page that acts as an entry point for all users
-- Route `/hikes` :
-- Route `/login` : contains the login form used to allow users to be authenticated with their own credentials
+- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of showing everyone various information about them, and for authenticated users also shows the map
+- Route `/login` : contains the login form used to allow users to be authenticated with their own credentials (once registered)
 - Route `/register` : contains the registration form that allows visitors to authenticate themselves later and be able to unlock all the features offered by our application
 
 ## API Format
