@@ -9,6 +9,8 @@ import SignUpForm from "./Components/SignupForm";
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
+import Alert from '@mui/material/Alert';
+
 
 function App() {
   /* A little Router trick */
@@ -23,6 +25,7 @@ function App() {
 function Root() {
   const [loggedIn, setLoggedIn] = useState(false);        /* Boolean user login status (true,false) */
   const [loggedUser, setLoggedUser] = useState(false);    /* Contains logged user info */
+  const [message, setMessage] = useState('');             /* Contains Welcome messages for login */
 
   /* Reload session after refresh */
   useEffect(() => {
@@ -39,36 +42,36 @@ function Root() {
       const user = await API.logIn(credentials);
       setLoggedUser(user);
       setLoggedIn(true);
-      //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
-
+      setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
+      
     } catch (err) {
-      //setMessage({ msg: 'Invalid username or password', type: 'danger' });
-
+      setMessage({ msg: `${err}!`, type: 'error' });
     }
   };
 
   const handleSignUp = async (credentials) => {
     try {
-      const user = await API.addUser(credentials);
-      setLoggedUser(user);
-      setLoggedIn(true);
-      //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
-
+      await API.addUser(credentials);
+      setMessage({ msg: 'Check your email to validate your account, then perform the login', type: 'info' });
     } catch (err) {
-      //setMessage({ msg: 'Invalid username or password', type: 'danger' });
-
+      setMessage({ msg: `${err}!`, type: 'error' });
     }
-  }
+  };
 
   const handleLogout = async () => {
     setLoggedIn(false);
     await API.logOut();
-  }
+    setMessage('');
+
+  };
 
 
   return (
     <Routes>
       <Route path='/' element={<MyNavbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />}>
+      {message && 
+                <div><Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert></div>
+              }
         {/* Outlets */}
         <Route path='' element={<Homepage />} />
         <Route path='hikes' element={<AvailableHikes />} />
