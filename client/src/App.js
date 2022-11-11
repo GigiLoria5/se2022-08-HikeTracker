@@ -11,6 +11,8 @@ import { useState, useEffect } from 'react';
 import API from './API';
 import Alert from '@mui/material/Alert';
 
+import Map from './Components/Map';
+
 
 function App() {
   /* A little Router trick */
@@ -85,6 +87,7 @@ function Root() {
         <Route path='hikesv2' element={<AvailableHikesV2 />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} />} />
+        <Route path='/hiker/hikes' element={/*<AvailableHikes loggedUser={loggedUser}/>*/<Map/>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -23,6 +23,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 import Chip from '@mui/material/Chip';
 
+import Map from './Map';
 
 
 
@@ -34,21 +35,20 @@ export default function AvailableHikes() {
     const [checked, setChecked] = React.useState([]);
 
 
-    
-    const [province, setProvince] = useState(null);
-    const [city, setCity] = useState(null);
-    const [country, setCountry] = useState(null);
 
+    const [province, setProvince] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-    } 
+
+    }
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
-      };
+    };
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -62,9 +62,9 @@ export default function AvailableHikes() {
 
         setChecked(newChecked);
     };
-    
 
-    return(
+
+    return (
         <>
             <Grid container>
                 <Grid item xs={0.333}>
@@ -72,18 +72,18 @@ export default function AvailableHikes() {
                 <Grid item xs={3} marginTop={2}>
                     <Paper elevation={3}>
 
-                        <Grid containers item sm >
+                        <Grid container item sm >
                             <form onSubmit={handleSubmit}>
                                 <Grid item xs={1} marginTop={5}>
-                                    <br/> 
+                                    <br />
                                 </Grid>
 
                                 <Typography variant="h6" gutterBottom>
                                     Geographical area
                                 </Typography>
 
-                                <Grid containers item sm>
-                                <FormControl sx={{ m: 1, minWidth: 200 }}>
+                                <Grid container item sm>
+                                    <FormControl sx={{ m: 1, minWidth: 200 }}>
                                         <InputLabel>Province</InputLabel>
                                         <Select
                                             value={province}
@@ -98,7 +98,7 @@ export default function AvailableHikes() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid containers item sm>
+                                <Grid container item sm>
                                     <FormControl sx={{ m: 1, minWidth: 200 }}>
                                         <InputLabel>City</InputLabel>
                                         <Select
@@ -114,8 +114,8 @@ export default function AvailableHikes() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid containers item sm>
-                                <FormControl sx={{ m: 1, minWidth: 200 }}>
+                                <Grid container item sm>
+                                    <FormControl sx={{ m: 1, minWidth: 200 }}>
                                         <InputLabel>Country</InputLabel>
                                         <Select
                                             value={country}
@@ -138,43 +138,43 @@ export default function AvailableHikes() {
                                 <List sx={{ width: '100%', maxWidth: 360 }}>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(0)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(0) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Tourist`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(0) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`Tourist`} />
                                         </ListItemButton>
                                     </ListItem>
 
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(1)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(1) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Hiker`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(1) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`Hiker`} />
                                         </ListItemButton>
                                     </ListItem>
 
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(2)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(2) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Professionnal Hiker`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(2) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`Professionnal Hiker`} />
                                         </ListItemButton>
                                     </ListItem>
 
@@ -188,42 +188,42 @@ export default function AvailableHikes() {
                                 <List sx={{ width: '100%', maxWidth: 360 }}>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(3)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(3) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`0 - 5 km`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(3) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`0 - 5 km`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(4)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(4) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`5 - 15 km`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(4) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`5 - 15 km`} />
                                         </ListItemButton>
                                     </ListItem>
 
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(5)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(5) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`More than 15 km`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(5) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`More than 15 km`} />
                                         </ListItemButton>
                                     </ListItem>
                                 </List>
@@ -236,54 +236,54 @@ export default function AvailableHikes() {
                                 <List sx={{ width: '100%', maxWidth: 360 }}>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(6)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(6) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`0 - 300 m`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(6) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`0 - 300 m`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(7)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(7) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`300 - 600 m`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(7) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`300 - 600 m`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(8)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(8) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`600 - 1000 m`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(8) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`600 - 1000 m`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(9)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(9) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`More than 1000 m`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(9) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`More than 1000 m`} />
                                         </ListItemButton>
                                     </ListItem>
                                 </List>
@@ -296,54 +296,54 @@ export default function AvailableHikes() {
                                 <List sx={{ width: '100%', maxWidth: 360 }}>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(10)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(10) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`0 - 1 h`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(10) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`0 - 1 h`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(11)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(11) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`1 - 3 h`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(11) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`1 - 3 h`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(12)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(12) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`3 - 5 h`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(12) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`3 - 5 h`} />
                                         </ListItemButton>
                                     </ListItem>
                                     <ListItem disablePadding >
                                         <ListItemButton role={undefined} onClick={handleToggle(13)} dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(13) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`More than 5 h`} />
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={checked.indexOf(13) !== -1}
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText primary={`More than 5 h`} />
                                         </ListItemButton>
                                     </ListItem>
                                 </List>
@@ -351,15 +351,15 @@ export default function AvailableHikes() {
 
 
 
-                                <Grid containers marginTop={3}>
+                                <Grid container marginTop={3}>
                                     <Button variant="outlined" color='success' type="submit">Apply filters</Button>
                                 </Grid>
                             </form>
                         </Grid>
 
-                        
+
                         <Typography variant="h5" gutterBottom>
-                            <br/>
+                            <br />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -367,67 +367,76 @@ export default function AvailableHikes() {
                 </Grid>
                 <Grid item xs={8}>
                     <Typography variant="h4" marginTop={1} gutterBottom>
-                        <br/>AVALAIBLE HIKES
+                        <br />AVALAIBLE HIKES
                     </Typography>
 
                     <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                         <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
                         >
-                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                            Hike 1
-                        </Typography>
-                        <Typography sx={{ color: 'text.secondary' }}>Torino</Typography>
+                            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                Hike 1
+                            </Typography>
+                            <Typography sx={{ color: 'text.secondary' }}>Torino</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                        <Typography>
-                        Length : 12 km
+                            <Typography>
+                                Length : 12 km
 
-                         <br/><br/>
-                        Expected time : 3 h
+                                <br /><br />
+                                Expected time : 3 h
 
-                        <br/><br/>
-                        Total ascent : 100 m
+                                <br /><br />
+                                Total ascent : 100 m
 
-                        <br/><br/>
-                        Geographic area : 
-                        {" "}<Chip label="Torino" color="success" variant="outlined" />
- 
-                        <br/><br/>
-                        Difficulty :  
-                        {" "}<Chip label="Tourist" color="success" variant="outlined" />
+                                <br /><br />
 
-                        <br/><br/>
-                        Start point :  
-                        {" "}<Chip label="location one" color="success" variant="outlined" />
-                        <br/><br/>
-                        End point : 
-                        {" "}<Chip label="location two" color="success" variant="outlined" />
- 
-                        <br/><br/>
-                        Reference points :         
-                        {" "}<Chip label="hut 1" color="success" variant="outlined"/>{" "}
-                        <Chip label="hut 2" color="success" variant="outlined"/>{" "}
-                        <Chip label="hut 3" color="success" variant="outlined"/>
+{/*
 
-                        <br/><br/>
+                                Geographic area :
+                                {" "}<Chip label="Torino" color="success" variant="outlined" />
 
-                        Description : <br/>
-                        
-                        It's a city tour. blablabalbalablabla
-                        blablabalbalablabla
-                        </Typography>
+                                <br /><br />
+                                Difficulty :
+                                {" "}<Chip label="Tourist" color="success" variant="outlined" />
+
+                                <br /><br />
+                                Start point :
+                                {" "}<Chip label="location one" color="success" variant="outlined" />
+                                <br /><br />
+                                End point :
+                                {" "}<Chip label="location two" color="success" variant="outlined" />
+
+                                <br /><br />
+                                Reference points :
+                                {" "}<Chip label="hut 1" color="success" variant="outlined" />{" "}
+                                <Chip label="hut 2" color="success" variant="outlined" />{" "}
+                                <Chip label="hut 3" color="success" variant="outlined" />
+
+                                <br /><br />
+
+*/}
+
+                                Description : <br />
+
+                                It's a city tour. blablabalbalablabla
+                                blablabalbalablabla
+
+                                <br /><br />
+
+
+                            </Typography>
+                            <Grid>
+                                <Map></Map>
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>
 
-                    
 
-
-                    
                     <Typography variant="h5" gutterBottom>
-                        <br/>
+                        <br />
                     </Typography>
 
                 </Grid>
