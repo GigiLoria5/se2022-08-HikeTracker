@@ -41,13 +41,10 @@ function App() {
 
   const handleSignUp = async (credentials) =>{
     try {
-      const user= await API.addUser(credentials);
-      setLoggedUser(user);
-      setLoggedIn(true);
-      //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
+      await API.addUser(credentials);
+      setMessage({ msg: 'Check your email to validate your account, then perform the login', type: 'info' });
     } catch (err) {
-      //setMessage({ msg: 'Invalid username or password', type: 'danger' });
-
+      setMessage({ msg: `${err}!`, type: 'error' });
     }
   };
 

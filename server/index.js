@@ -4,6 +4,9 @@ const express = require('express');
 const UserDao = require('./dao/UserDAO');
 const cors = require('cors');
 const morgan = require('morgan');
+const nodemailer = require('./config/nodemailer.config');
+const crypto = require('crypto');
+
 
 /* Passport-related imports */
 const passport = require('passport');
@@ -93,6 +96,51 @@ app.delete('/api/sessions/current', (req, res) => {
   req.logout(() => {
     res.end();
   });
+});
+
+app.post('/api/users', async (req,res) =>{
+  try {
+    // Check if the user email already exists
+    const exists= await UserDao.getUserByEmail(req.body.email);
+    if(exists===false){
+      const token = crypto.randomBytes(16).toString('hex'); 
+      await UserDao.addUser(req.body,token); //Create a new user in the DB having email_verified=0, returns the personal tokenc reated for the user 
+      const link = 'http://localhost:3001/api/users/confirm/'+token;
+      nodemailer.sendConfirmationEmail(req.body.email,req.body.email,link);
+
+      return res.status(201).end();
+    }else{
+      return res.status(422).json({ error: "Email already exists" });
+    }
+
+  } catch (err) {
+    console.log(err);
+    return res.status(503).json({ error: err });
+  }
+});
+
+// Confirmation route 
+app.get("/api/users/confirm/:token", async (req,res)=>{
+  try{
+    const token = req.params.token; // Get token from params
+    if(token!==undefined){ // Checks if the token exists
+
+     const value = await UserDao.islegit(token); //Checks if is legit to update the status of the given token
+     if(value===true){
+      const result = await UserDao.activate(token); //Updates the user account
+      return res.status(200).json(result);
+
+     }else{
+      return res.status(404).json({ error: err });
+     }
+
+    }else{
+      return res.status(422).json({ error: "Missing token" });
+    }
+  }catch (err) {
+    console.log(err);
+    return res.status(503).json({ error: err });
+  }
 });
 
 

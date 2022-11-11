@@ -33,8 +33,7 @@ export default function SignUp(props) {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }else{
-      try{
-        let role = '';
+      let role = '';
         switch(type){
           case 1: role="hiker"; break;
           case 2: role="hut_worker"; break;
@@ -44,10 +43,8 @@ export default function SignUp(props) {
         }
         const credentials = { role, name, surname, phone, email, password };         // define object having username and password as elements 
         props.signUp(credentials);                           // call login function in App.js
-        navigate('/');  // go to home
-      }catch (err){
-            // Print an error
-      }
+        navigate('/login');  // go to home
+      
     }
    
 };
