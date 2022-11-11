@@ -68,5 +68,30 @@ async function addUser(credentials) {
     }
 }
 
-const API ={ logIn, logOut, getUserInfo, addUser };
+
+//get 
+//return a Service object given its id 
+async function getAllHikes() {
+    const url = APIURL + '/hikes/all' ; 
+
+    try {
+        const response = await fetch(url);
+        /* Fetch request accepted */
+        if (response.ok) {
+            
+            const jsonhikes = await response.json();
+            return jsonhikes;
+
+        } else {
+            /* Application error (404, 500, 503 ...) */
+            const text = await response.text();
+            throw new TypeError(text);
+        }
+    } catch (err) {
+        /* Network error */
+        throw err;
+    }
+}
+
+const API ={ logIn, logOut, getUserInfo, addUser, getAllHikes };
 export default API;
