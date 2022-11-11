@@ -14,7 +14,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#008037',
+      contrastText: '#CCE2EF',
+    },
+  },
+});
 
 export default function SignIn(props) {
   const navigate = useNavigate();

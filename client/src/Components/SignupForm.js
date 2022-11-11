@@ -14,7 +14,14 @@ import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#008037',
+      contrastText: '#CCE2EF',
+    },
+  },
+});
 
 export default function SignUp(props) {
   const [type, setType] = useState(1);
