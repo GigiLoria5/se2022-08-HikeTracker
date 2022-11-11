@@ -2,14 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AvailableHikes from "./Components/AvailableHikes";
 import AvailableHikesV2 from "./Components/AvailableHikesV2";
-import Homepage from './Components/Homepage';
-import MyNavbar from './Components/Navbar';
-import LoginForm from "./Components/Loginform";
-import SignUpForm from "./Components/SignupForm";
-import './Styles/App.css';
-import { useState, useEffect } from 'react';
-import API from './API';
-import Alert from '@mui/material/Alert';
 
 
 function App() {
