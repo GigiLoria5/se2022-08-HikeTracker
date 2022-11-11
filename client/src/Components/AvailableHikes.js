@@ -29,13 +29,13 @@ import Map from './Map';
 
 
 
-export default function AvailableHikes() {
+export default function AvailableHikes(props) {
 
     const [expanded, setExpanded] = React.useState(false);
     const [checked, setChecked] = React.useState([]);
 
 
-
+    //form fields
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [country, setCountry] = useState("");
@@ -382,54 +382,47 @@ export default function AvailableHikes() {
                             <Typography sx={{ color: 'text.secondary' }}>Torino</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
-                                Length : 12 km
+                            Length : 12 km
 
-                                <br /><br />
-                                Expected time : 3 h
+                            <br /><br />
+                            Expected time : 3 h
 
-                                <br /><br />
-                                Total ascent : 100 m
+                            <br /><br />
+                            Total ascent : 100 m
 
-                                <br /><br />
+                            <br /><br />
 
-{/*
+                            Geographic area :
+                            {" "}<Chip label="Torino" color="success" variant="outlined" />
 
-                                Geographic area :
-                                {" "}<Chip label="Torino" color="success" variant="outlined" />
+                            <br /><br />
+                            Difficulty :
+                            {" "}<Chip label="Tourist" color="success" variant="outlined" />
 
-                                <br /><br />
-                                Difficulty :
-                                {" "}<Chip label="Tourist" color="success" variant="outlined" />
+                            <br /><br />
+                            Start point :
+                            {" "}<Chip label="location one" color="success" variant="outlined" />
+                            <br /><br />
+                            End point :
+                            {" "}<Chip label="location two" color="success" variant="outlined" />
 
-                                <br /><br />
-                                Start point :
-                                {" "}<Chip label="location one" color="success" variant="outlined" />
-                                <br /><br />
-                                End point :
-                                {" "}<Chip label="location two" color="success" variant="outlined" />
+                            <br /><br />
+                            Reference points :
+                            {" "}<Chip label="hut 1" color="success" variant="outlined" />{" "}
+                            <Chip label="hut 2" color="success" variant="outlined" />{" "}
+                            <Chip label="hut 3" color="success" variant="outlined" />
 
-                                <br /><br />
-                                Reference points :
-                                {" "}<Chip label="hut 1" color="success" variant="outlined" />{" "}
-                                <Chip label="hut 2" color="success" variant="outlined" />{" "}
-                                <Chip label="hut 3" color="success" variant="outlined" />
+                            <br /><br />
 
-                                <br /><br />
+                            Description : <br />
 
-*/}
+                            It's a city tour. blablabalbalablabla
+                            blablabalbalablabla
 
-                                Description : <br />
+                            <br /><br />
 
-                                It's a city tour. blablabalbalablabla
-                                blablabalbalablabla
-
-                                <br /><br />
-
-
-                            </Typography>
                             <Grid>
-                                <Map></Map>
+                                {props.loggedUser.role === "hiker" ? <Map></Map> : false}
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
