@@ -48,7 +48,56 @@ router.post('/hikes', async (req, res) => {
                 req.body.end_point_id
             )
             let hike_id;
-            let added = true;
+
+            if(!hike.isValid()){
+                throw "invalid arguments"
+            }
+
+            switch(hike.start_point_type){
+                case "location":
+                    {const res = await locationDao.getLocationById(hike.start_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid start point"
+                    }
+                    break};
+                case "hut":
+                    {const res = await hutDao.getHutById(hike.start_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid start point"
+                    }
+                    break};
+                case "parking_lot":
+                    {const res = await parkingDao.getParkingLotById(hike.start_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid start point"
+                    }
+                    break};
+                default:
+                    throw "invalid start point"
+            }
+
+            switch(hike.end_point_type){
+                case "location":
+                    {const res = await locationDao.getLocationById(hike.end_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid end point"
+                    }
+                    break};
+                case "hut":
+                    {const res = await hutDao.getHutById(hike.end_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid end point"
+                    }
+                    break};
+                case "parking_lot":
+                    {const res = await parkingDao.getParkingLotById(hike.end_point_id);
+                    if (res == null || res == undefined || res.length == 0){
+                        throw "invalid end point"
+                    }
+                    break};
+                default:
+                    throw "invalid end point"
+            }
             const id = await hikeDao.addHike(hike, author_id)
             
             hike_id = id;
