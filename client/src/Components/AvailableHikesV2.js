@@ -14,12 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 import Chip from '@mui/material/Chip';
 
@@ -30,13 +28,21 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 export default function AvailableHikesV2() {
 
     const [expanded, setExpanded] = React.useState(false);
-    const [checked, setChecked] = React.useState([]);
 
+    const listDifficulty = ['Tourist',' Hiker', 'Professionnal Hiker'];
+    const listLength = ['0 - 5 km',' 5 - 15 km', 'More than 15 km'];
+    const listAscent = ['0 - 300 m',' 300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
+    const listTime = ['0 - 1 h',' 1 - 3 h', '3 - 5 h', 'More than 5 h'];
 
-    
-    const [province, setProvince] = useState(null);
-    const [city, setCity] = useState(null);
-    const [country, setCountry] = useState(null);
+    const [difficultyValue, setDificultyValue] = useState('');
+    const [lengthValue, setLengthValue] = useState('');
+    const [ascentValue, setAscentValue] = useState('');
+    const [timeValue, setTimeValue] = useState('');
+    const [province, setProvince] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+
+    const [hikes, setHikes] = useState([]);
 
     const theme = createTheme({
         palette: {
@@ -47,31 +53,205 @@ export default function AvailableHikesV2() {
             main: '#b0b0b0',
           },
         },
-      });
-
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-    } 
+    });
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
-      };
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
     };
+
+    //Get from api the list of available countries to do hikes
+    const getListCountries = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listCountries = ['Italy', 'France']
+        return (
+            listCountries
+        )
+    };
+    
+    //Get from api the list of available cities to do hikes
+    const getListCities = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listCities = ['Torino', 'Aix-en-Provence', 'Lyon']
+        return (
+            listCities
+        )
+    };
+
+    //Get from api the list of available provinces to do hikes
+    const getListProvinces = () => {
+        //here get the list from the API, for now I created one bc i don't have the api
+        const listProvinces = ['TO', 'AQ', 'CH', 'PE']
+        return (
+            listProvinces
+        )
+    };
+
+    //here get the list from the API, for now I created one bc i don't have the api : when API made, make list empty
+    
+
+    //Get from api the list of available hikes (no filter)
+    
+    const getListHikes = () => {
+        //setHikes({api.getlistOfHikes})
+        setHikes([
+            {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
+            {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
+        ])
+    };
+    
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        //post form
+        const formResult = {difficultyValue, lengthValue, ascentValue, timeValue, country, province, city}
+        console.log(formResult)
+        //api.postForm(formResult)
+
+        //get hikes from api and put it in the "hikes" table
+        //setHikes({api.getHikesFiltered})
+        
+    } 
+
+    
+
+    const cityDisabled = (province, country) => {
+        let citySelect
+        if (province || country ) {
+            citySelect = 
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>City</InputLabel>
+                <Select
+                    value={city}
+                    label="City"
+                    onChange={e => setCity(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a city</em>
+                    </MenuItem>
+                    {getListCities().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>;
+        } else {
+            citySelect = 
+            <FormControl sx={{ m: 1, minWidth: 200 }} >
+                <InputLabel>City</InputLabel>
+                <Select
+                    value={city}
+                    label="City"
+                    onChange={e => setCity(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a city</em>
+                    </MenuItem>
+                    {getListCities().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+        }
+        
+        return citySelect
+
+    }
+
+    const countryDisabled = (province, city) => {
+        let countrySelect
+        if (province || city ) {
+            countrySelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>Country</InputLabel>
+                <Select
+                    value={country}
+                    label="Country"
+                    onChange={e => setCountry(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a country</em>
+                    </MenuItem>
+                    {getListCountries().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+
+        } else {
+            countrySelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} >
+                <InputLabel>Country</InputLabel>
+                <Select
+                    value={country}
+                    label="Country"
+                    onChange={e => setCountry(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a country</em>
+                    </MenuItem>
+                    {getListCountries().map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+
+        }
+        return countrySelect
+    }
+
+    const provinceDisabled = (country, city) => {
+        let provinceSelect
+        if (country || city ) {
+            provinceSelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+                <InputLabel>Province</InputLabel>
+                <Select
+                    value={province}
+                    label="Province"
+                    onChange={e => setProvince(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a province</em>
+                    </MenuItem>
+                    {getListProvinces().map((value) => { 
+                            return(
+                                <MenuItem value={value}>{value}</MenuItem>
+                            );
+                    })}
+                </Select>
+            </FormControl>
+            
+
+        } else {
+            provinceSelect =
+            <FormControl sx={{ m: 1, minWidth: 200 }}>
+                <InputLabel>Province</InputLabel>
+                <Select
+                    value={province}
+                    label="Province"
+                    onChange={e => setProvince(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a province</em>
+                    </MenuItem>
+                    {getListProvinces().map((value) => { 
+                            return(
+                                <MenuItem value={value}>{value}</MenuItem>
+                            );
+                    })}
+                </Select>
+            </FormControl>
+
+        }
+        return provinceSelect
+    }
     
 
     return(
@@ -98,53 +278,15 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }}>
                                         Geographical area
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>Province</InputLabel>
-                                            <Select
-                                                value={province}
-                                                label="Province"
-                                                onChange={e => setProvince(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a province</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Torino"}>Torino</MenuItem>
-                                                <MenuItem value={"toto"}>toto</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>City</InputLabel>
-                                            <Select
-                                                value={city}
-                                                label="City"
-                                                onChange={e => setCity(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a city</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Torino"}>Torino</MenuItem>
-                                                <MenuItem value={"Genova"}>genova</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                        <FormControl sx={{ m: 1, minWidth: 200 }}>
-                                            <InputLabel>Country</InputLabel>
-                                            <Select
-                                                value={country}
-                                                label="Country"
-                                                onChange={e => setCountry(e.target.value)}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>Select a country</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Italy"}>Italy</MenuItem>
-                                                <MenuItem value={"France"}>France</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        {countryDisabled(province, city)}
+                                        {provinceDisabled(country, city)}
+                                        {cityDisabled(province, country)}
+                                        
                                 
                                     </AccordionDetails>
                                 </Accordion>
@@ -157,56 +299,22 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }}>
                                         Difficulty
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
 
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(0)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(0) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Tourist`} />
-                                                </ListItemButton>
-                                            </ListItem>
+                                        <FormControl>
+                                            <RadioGroup value={difficultyValue} onChange={e => setDificultyValue(e.target.value)}>
+                                                {listDifficulty.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
 
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(1)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(1) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Hiker`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(2)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(2) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`Professionnal Hiker`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                        </List>
                                     </AccordionDetails>
                                 </Accordion>
                             
@@ -216,54 +324,22 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Length
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(3)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(3) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 5 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(4)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(4) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`5 - 15 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(5)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(5) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 15 km`} />
-                                                </ListItemButton>
-                                            </ListItem>
-
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={lengthValue} onChange={e => setLengthValue(e.target.value)}>
+                                                {listLength.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+                                        
+                                        
                                     </AccordionDetails>
                                 </Accordion>
                                 
@@ -273,65 +349,20 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Total ascent
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(6)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(6) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 300 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(7)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(7) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`300 - 600 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(8)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(8) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`600 - 1000 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(9)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(9) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 1000 m`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={ascentValue} onChange={e => setAscentValue(e.target.value)}>
+                                                {listAscent.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
 
@@ -342,72 +373,27 @@ export default function AvailableHikesV2() {
                                     aria-controls="panel1bh-content"
                                     id="panel1bh-header"
                                     >
-                                    <Typography sx={{ width: '33%', flexShrink: 0 }} >
+                                    <Typography sx={{ width: '102%', flexShrink: 0 }} >
                                         Expected time
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-
-                            
-                                        <List sx={{ width: '100%', maxWidth: 360 }}>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(10)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(10) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`0 - 1 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(11)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(11) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`1 - 3 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(12)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(12) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`3 - 5 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <ListItem disablePadding >
-                                                <ListItemButton role={undefined} onClick={handleToggle(13)} dense>
-                                                <ListItemIcon>
-                                                    <Checkbox
-                                                    edge="start"
-                                                    checked={checked.indexOf(13) !== -1}
-                                                    tabIndex={-1}
-                                                    disableRipple
-                                                    />
-                                                </ListItemIcon>
-                                                <ListItemText primary={`More than 5 h`} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        </List>
+                                        <FormControl>
+                                            <RadioGroup value={timeValue} onChange={e => setTimeValue(e.target.value)}>
+                                                {listTime.map((value) => { 
+                                                        return(
+                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                        );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
 
                                 <Grid containers marginTop={3}>
                                     <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
+                                    <Typography> <br/></Typography>
+                                    <Button variant="text" color='primary' onClick={e => getListHikes()}>See all hikes</Button>
                                 </Grid>
                                 </form>
                                 <Grid containers>
@@ -420,61 +406,68 @@ export default function AvailableHikesV2() {
                             <br/>
                         </Grid>
                             
+
+                        {hikes.map((value) => { 
+                            return(
+                                    <Accordion expanded={expanded === `panel-${value.title}`} onChange={handleChange(`panel-${value.title}`)}>
+                                        <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                        >
+                                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                            {value.title}
+                                        </Typography>
+                                        <Typography sx={{ color: 'text.secondary' }}>{value.city}, {value.province}, {value.country}</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography>
+                                                Length : {value.length} km
+
+                                                <br/><br/>
+                                                Expected time : {value.time} h
+
+                                                <br/><br/>
+                                                Total ascent : {value.ascent} m
+
+                                                <br/><br/>
+                                                Geographic area : 
+                                                {" "}<Chip label={value.city} color="primary" variant="outlined" />
+                                                {" "}<Chip label={value.province} color="primary" variant="outlined" />
+                                                {" "}<Chip label={value.country} color="primary" variant="outlined" />
                         
+                                                <br/><br/>
+                                                Difficulty :  
+                                                {" "}<Chip label={value.difficulty} color="primary" variant="outlined" />
 
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                            <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                            >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                Hike 1
-                            </Typography>
-                            <Typography sx={{ color: 'text.secondary' }}>Torino, TO, Italy</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                            <Typography>
-                            Length : 12 km
+                                                <br/><br/>
+                                                Start point :  
+                                                {" "}<Chip label={value.startPoint} color="primary" variant="outlined" />
+                                                <br/><br/>
+                                                End point : 
+                                                {" "}<Chip label={value.endPoint} color="primary" variant="outlined" />
+                        
+                                                <br/><br/>
+                                                Reference points :         
+                                                {" "}
+                                                {value.refPoints.map((valuee) => {
+                                                        return(
+                                                            <Chip label={valuee} color="primary" variant="outlined"/>
+                                                            
+                                                        );
+                                                })}
+                                                
+                                                <br/><br/>
 
-                            <br/><br/>
-                            Expected time : 3 h
-
-                            <br/><br/>
-                            Total ascent : 100 m
-
-                            <br/><br/>
-                            Geographic area : 
-                            {" "}<Chip label="Torino" color="primary" variant="outlined" />
-                            {" "}<Chip label="TO" color="primary" variant="outlined" />
-                            {" "}<Chip label="Italy" color="primary" variant="outlined" />
-    
-                            <br/><br/>
-                            Difficulty :  
-                            {" "}<Chip label="Tourist" color="primary" variant="outlined" />
-
-                            <br/><br/>
-                            Start point :  
-                            {" "}<Chip label="location one" color="primary" variant="outlined" />
-                            <br/><br/>
-                            End point : 
-                            {" "}<Chip label="location two" color="primary" variant="outlined" />
-    
-                            <br/><br/>
-                            Reference points :         
-                            {" "}<Chip label="hut 1" color="primary" variant="outlined"/>{" "}
-                            <Chip label="hut 2" color="primary" variant="outlined"/>{" "}
-                            <Chip label="hut 3" color="primary" variant="outlined"/>
-
-                            <br/><br/>
-
-                            Description : <br/>
-                            
-                            It's a city tour. blablabalbalablabla
-                            blablabalbalablabla
-                            </Typography>
-                            </AccordionDetails>
-                        </Accordion>
+                                                Description : <br/>{value.description}
+                                            
+                                            
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                            );
+                        })}
+                        
 
                         
 
