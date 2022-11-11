@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AvailableHikes from "./Components/AvailableHikes";
 import AvailableHikesV2 from "./Components/AvailableHikesV2";
 
+import Map from './Components/Map';
+
 
 function App() {
   /* A little Router trick */
@@ -73,10 +75,11 @@ function Root() {
        </>}>   
         {/* Outlets */}
         <Route path='' element={<Homepage />} />
-        <Route path='hikes' element={<AvailableHikes />} />
+        <Route path='hikes' element={<AvailableHikes loggedUser={loggedUser} />} />
         <Route path='hikesv2' element={<AvailableHikesV2 />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} />} />
+        <Route path='/hiker/hikes' element={<AvailableHikes loggedUser={true /** TO FIX */}/>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}
