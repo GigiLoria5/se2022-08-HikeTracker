@@ -30,9 +30,13 @@ function Root() {
   /* Reload session after refresh */
   useEffect(() => {
     const checkAuth = async () => {
-      const user = await API.getUserInfo();               // Reload session and retrieve user info
-      setLoggedIn(true);
-      setLoggedUser(user);
+      try{
+        const user = await API.getUserInfo();               // Reload session and retrieve user info
+        setLoggedIn(true);
+        setLoggedUser(user);
+      }catch (err){
+        // Not managed, just for reload session
+      }
     };
     checkAuth();
   }, []); // Use effect with empty array is called only at the first render 
