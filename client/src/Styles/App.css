@@ -1,0 +1,113 @@
+/* General */
+
+:root {
+    --main: #008037;
+    --secondary: #CCE2EF;
+    --active: #08961D;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 100%;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.margin-right-32 {
+    margin-right: 32px;
+}
+
+.main-background-color {
+    background-color: var(--main) !important;
+}
+
+.main-background-color:hover {
+    background-color: var(--active) !important;
+}
+
+/* Navbar */
+
+.box-end {
+    margin-left: auto;
+}
+
+.css-hip9hq-MuiPaper-root-MuiAppBar-root {
+    background-color: var(--main) !important;
+}
+
+.container-background-color {
+    background-color: var(--main) !important;
+}
+
+.container-full-size {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: fixed;
+    right: 0;
+}
+
+.navbar-container {
+    max-width: 200px !important;
+    background-color: var(--main);
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.css-1kkpk3h-MuiButtonBase-root-MuiButton-root:hover,
+.css-sbfmij-MuiButtonBase-root-MuiButton-root:hover,
+.css-1y942vo-MuiButtonBase-root-MuiButton-root:hover,
+.css-1uh6h56-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: var(--active) !important;
+}
+
+/* Homepage */
+
+.w-h-100 {
+    height: 100%;
+    width: 100%;
+}
+
+.btn-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.homepage-title {
+    max-height: 4;
+    max-width: 73;
+    display: 'block';
+    margin: '1 auto 0';
+    text-transform: uppercase;
+    color: var(--secondary) !important;
+}
+
+.homepage-background {
+    background-image: url('../Assets//homepage_background.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: contain;
+    overflow-y: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -2;
+}

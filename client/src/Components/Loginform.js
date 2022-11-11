@@ -17,9 +17,9 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export default function SignIn(props) {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   /* Every time user is logged, username and password are wiped out */
 
@@ -28,22 +28,22 @@ export default function SignIn(props) {
     setPassword('');
   }, [props.isloggedIn])
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const credentials = { email, password };         // define object having username and password as elements 
-        props.login(credentials);                           // call login function in App.js
-        //console.log(credentials);
-    };
-
-      /*
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  }; */
+    const credentials = { email, password };         // define object having username and password as elements 
+    props.login(credentials);                           // call login function in App.js
+    //console.log(credentials);
+  };
+
+  /*
+const handleSubmit = (event) => {
+event.preventDefault();
+const data = new FormData(event.currentTarget);
+console.log({
+  email: data.get('email'),
+  password: data.get('password'),
+});
+}; */
 
   return (
     <ThemeProvider theme={theme}>
@@ -73,7 +73,7 @@ export default function SignIn(props) {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={ev => setEmail(ev.target.value)} 
+              onChange={ev => setEmail(ev.target.value)}
             />
             <TextField
               margin="normal"
@@ -92,11 +92,11 @@ export default function SignIn(props) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-            Login
+              Login
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link onClick = {()=>{ navigate('/signup')}} variant="body2">
+                <Link onClick={() => { navigate('/register') }} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

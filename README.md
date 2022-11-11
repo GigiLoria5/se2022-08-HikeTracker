@@ -1,7 +1,7 @@
-# se2022-08-HireTracker
+# se2022-08-HikeTracker
 
-[![Unit Tests](https://github.com/GigiLoria5/se2022-08-HireTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HireTracker/actions)
-[![Integration Tests](https://github.com/GigiLoria5/se2022-08-HireTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HireTracker/actions)
+[![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+[![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -31,10 +31,15 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ### Testing
 
-- Mocha
-- Jest
+- Integration Tests: Mocha
+- Unit Tests: Jest
 
 ## React Client Application Routes
+
+- Route `/` : a simple welcome page that acts as an entry point for all users
+- Route `/hikes` :
+- Route `/login` : contains the login form used to allow users to be authenticated with their own credentials
+- Route `/register` : contains the registration form that allows visitors to authenticate themselves later and be able to unlock all the features offered by our application
 
 ## API Format
 
