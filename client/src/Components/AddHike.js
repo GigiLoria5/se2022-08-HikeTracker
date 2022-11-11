@@ -19,6 +19,8 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
+import {Hike} from "./Utils"
+
 
 
 
@@ -111,8 +113,12 @@ function AddHike() {
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
+		const formData = new FormData();
+
+		formData.append('File', selectedFile);
+
         await API.createHike(
-            new API.Hike(
+            new Hike(
                 title,
                 0, //peak altitude is not requested in the form
                 city,
@@ -127,32 +133,10 @@ function AddHike() {
                 1,
                 "location",
                 2,
-                referencePoint.map(r => r.position) //reference points must be translated in an array of numbers. Of course not in this way
+                referencePoint.map(r => r.position), //reference points must be translated in an array of numbers. Of course not in this way
+                formData
             )
         )
-
-		const formData = new FormData();
-
-		formData.append('File', selectedFile);
-
-        API.uploadFile(formData); //let's move the logic on API.js
-
-/*
-		fetch(
-			'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',//find an api to host gpx files bc this one only hosts images
-			{
-				method: 'POST',
-				body: formData,
-			}
-		)
-			.then((response) => response.json())
-			.then((result) => {
-				console.log('Success:', result);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-*/
 	};
 
     

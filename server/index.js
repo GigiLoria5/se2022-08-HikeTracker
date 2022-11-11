@@ -2,10 +2,18 @@
 
 const express = require('express');
 const fileupload = require("express-fileupload");
+const cors = require('cors');
 
 // init express
 const app = new express(); 
 const PORT = 3001;
+
+/* Set up and enable cors */
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  };
+  app.use(cors(corsOptions));
 
 ///////////////*API*//////////////////
 // declare routes
