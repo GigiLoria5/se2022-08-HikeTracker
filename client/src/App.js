@@ -2,7 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import AvailableHikes from "./Components/AvailableHikes";
 import AvailableHikesV2 from "./Components/AvailableHikesV2";
-
+import Navbar from "./Components/Navbar";
+import LoginForm from "./Components/Loginform";
+import SignUpForm from "./Components/SignupForm";
+import Homepage from "./Components/Homepage"
+import './Styles/App.css';
+import { useState, useEffect } from 'react';
+import API from './API';
+import Alert from '@mui/material/Alert';
 import Map from './Components/Map';
 
 
@@ -68,7 +75,7 @@ function Root() {
     <Routes>
       <Route path='/' element={
       <>
-      <MyNavbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />
+      <Navbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />
       {message && 
                 <Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert>
               }
