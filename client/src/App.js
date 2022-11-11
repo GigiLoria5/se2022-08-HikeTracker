@@ -68,10 +68,13 @@ function Root() {
 
   return (
     <Routes>
-      <Route path='/' element={<MyNavbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />}>
+      <Route path='/' element={
+      <>
+      <MyNavbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />
       {message && 
-                <div><Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert></div>
+                <Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert>
               }
+       </>}>   
         {/* Outlets */}
         <Route path='' element={<Homepage />} />
         <Route path='hikes' element={<AvailableHikes />} />
