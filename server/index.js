@@ -27,14 +27,22 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 /* Passport: set up local strategy */
-
+/* Given username and password, checks if the user exists using the getUser function.
+Then, checks if the account is active by means of checkActive function.  */
 passport.use(new LocalStrategy(
   async function verify(username, password, cb) {
   const user = await UserDao.getUser(username, password);
-  if (!user)
+  if (!user){
     return cb(null, false, 'Incorrect email or password.');
-
-  return cb(null, user);
+  }
+  else {
+  const active = await UserDao.checkActive(username);
+  if(active===true){
+    return cb(null, user);
+  }else{
+    return cb(null, false, 'Pending activation, please validate your account.');
+  }
+  }
 }));
 
 passport.serializeUser(function (user, cb) {
@@ -67,7 +75,7 @@ app.post('/api/sessions', function(req, res, next) {
     if (err)
       return next(err);
       if (!user) {
-        // display wrong login messages
+        // display wrong login messages (wrong credentials, pending account)
         return res.status(401).json(info);
       }
       // success, perform the login
@@ -98,15 +106,17 @@ app.delete('/api/sessions/current', (req, res) => {
   });
 });
 
+// POST /api/users
 app.post('/api/users', async (req,res) =>{
   try {
-    // Check if the user email already exists
+    // Checks if the user email already exists
     const exists= await UserDao.getUserByEmail(req.body.email);
     if(exists===false){
-      const token = crypto.randomBytes(16).toString('hex'); 
-      await UserDao.addUser(req.body,token); //Create a new user in the DB having email_verified=0, returns the personal tokenc reated for the user 
-      const link = 'http://localhost:3001/api/users/confirm/'+token;
-      nodemailer.sendConfirmationEmail(req.body.email,req.body.email,link);
+      const token = crypto.randomBytes(16).toString('hex'); // Generate a token for account verification
+      await UserDao.addUser(req.body,token); //Create a new user in the DB having email_verified=0
+      const link = 'http://localhost:3001/api/users/confirm/'+token; // This link will be sent to the user 
+      
+      nodemailer.sendConfirmationEmail(req.body.email,req.body.email,link); // Send an email to the user containg the url
 
       return res.status(201).end();
     }else{
@@ -119,23 +129,24 @@ app.post('/api/users', async (req,res) =>{
   }
 });
 
-// Confirmation route 
+// GET /api/users/confirm/:token
+// Confirmation route
 app.get("/api/users/confirm/:token", async (req,res)=>{
   try{
     const token = req.params.token; // Get token from params
     if(token!==undefined){ // Checks if the token exists
 
-     const value = await UserDao.islegit(token); //Checks if is legit to update the status of the given token
+     const value = await UserDao.islegit(token); //Checks if its legit to update the status of the user associated to the given token
      if(value===true){
-      const result = await UserDao.activate(token); //Updates the user account
+      const result = await UserDao.activate(token); //Updates the user account status
       return res.status(200).json(result);
 
      }else{
-      return res.status(404).json({ error: err });
+      return res.status(422).json({ error: "Wrong token or account already verified" });
      }
 
     }else{
-      return res.status(422).json({ error: "Missing token" });
+      return res.status(404).json({ error: "Missing token" });
     }
   }catch (err) {
     console.log(err);

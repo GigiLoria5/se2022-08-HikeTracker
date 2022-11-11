@@ -36,6 +36,22 @@ exports.getUser = (email, password) => {
     });
 };
 
+exports.checkActive = (email) =>{
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM user WHERE email = ? AND email_verified = 1';
+          db.get(sql, [email], (err, row) => {
+              if (err) { reject(err); }
+              else 
+                if (row === undefined) { 
+                        resolve(false); 
+                }
+                else {
+                        resolve(true);
+              }
+          });
+      });
+}
+
 
 exports.getUserById = (userId) => {
     return new Promise((resolve, reject) => {
@@ -113,7 +129,7 @@ exports.activate = (token) =>{
             if (err) {
                 reject(err);
             } else {
-                resolve(" Account verified successfully!");
+                resolve("Account verified successfully!");
             }
         });
     });

@@ -28,6 +28,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 - Sqlite3 **5.1.2**
 - express **4.18.2**
 - passport **0.6.0**
+- nodemailer **6.8.0**
 
 ### Testing
 
@@ -64,7 +65,27 @@ At the bottom of this form there is a submit button and a link to go back to log
 - DELETE `/api/sessions/current`
   - <b>Request body:</b> session cookies
   - <b>Response status code:</b> 200 Ok (and 204 No Content)<br>
-  - 
+
+- POST `/api/users`
+  - <b>Request body:</b> a json object with user data defined in the registration form
+  - <u>e.g.</u>{
+    "role": "hut_worker",
+    "name": "Test",
+    "surname": "Test",
+    "phone": "3331111111",
+    "email": "test@test.it",
+    "password": "password"
+                }
+  - <b>Response status codes:</b> 201 Created, 422 Email already exists, 503 Internal Server Error<br>
+  <b>Body:</b> None or json object with error.
+  
+- GET `/api/users/confirm/:token`
+  - <b>Request parameters:</b> token (integer code)<br>
+  - <b>Request body:</b> None
+  - <b>Response status codes:</b> 200 Ok, 422 Wrong token or account already verified, 404 Missing token, 503 Internal Server Error<br>
+  <b>Body:</b> Json object containing the result status <br>
+  <u>e.g.</u> { Account verified successfully! }
+
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role

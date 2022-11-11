@@ -34,8 +34,7 @@ function App() {
       setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
       
     } catch (err) {
-      setMessage({ msg: 'Invalid email or password', type: 'error' });
-
+      setMessage({ msg: `${err}!`, type: 'error' });
     }
   };
 
