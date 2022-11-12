@@ -91,6 +91,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - <b>Response status codes:</b> 200 Ok, 422 Wrong token or account already verified, 404 Missing token, 503 Internal Server Error<br>
     <b>Body:</b> Json object containing the result status <br>
     <u>e.g.</u> { Account verified successfully! }
+
+### Hike
+    
 - POST `/api/hikes`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
@@ -142,6 +145,127 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "error": "message text"
   }
+  ```
+
+- GET /api/countries
+
+  - Description: Return an array containing all the countries
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the countries, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "country": "Italy"
+    },
+    ...
+  ]
+  ```
+
+- GET /api/provinces/:country
+
+  - Description: Return an array containing all the provinces of a specific country
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the provinces, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "province": "Cuneo"
+    },
+    ...
+  ]
+  ```
+
+- GET /api/cities/:province
+
+  - Description: Return an array containing all the cities of a specific province
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the cities, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "city": "Condove"
+    },
+    ...
+  ]
+  ```
+
+- GET /api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value
+
+  - Description: Return an array containing all the hikes with filters
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": 8,
+      "title": "Ring for Monte Calvo",
+      "peak_altitude": 1357,
+      "city": "Carignano",
+      "province": "Torino",
+      "country": "Italy",
+      "description": "It runs between ...",
+      "ascent": 320,
+      "track_length": 6.2,
+      "expected_time": 3.3,
+      "difficulty": 2,
+      "start_point_type": "parking_lot",
+      "start_point_id": 3,
+      "end_point_type": "location",
+      "end_point_id": 18,
+      "start": [
+        {
+          "id": 3,
+          "city": "Carignano",
+          "province": "Torino",
+          "country": "Italy",
+          "address": "SP138, 10041"
+        }
+      ],
+      "end": [
+        {
+          "id": 18,
+          "value_type": "gps",
+          "value": "45.462770631936834, 7.693279470138337",
+          "description": "Mountain peak"
+        }
+      ],
+      "reference_points": [
+        [
+          {
+            "id": 17,
+            "value_type": "address",
+            "value": "SP138, 10041",
+            "description": "Chapel of the Visitation of Valinotto"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "value_type": "address",
+            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
+            "description": "Palasot Inn (Restaurant)"
+          }
+        ]
+      ]
+    },
+    ...
+  ]
   ```
 
 ## Database Tables

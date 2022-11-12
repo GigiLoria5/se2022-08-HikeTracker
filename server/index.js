@@ -13,6 +13,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
 
+///////////////*API*//////////////////
+// declare routes
+
+const hikeRoute = require('./routes/Hike.js');
+
+// apply routes
+app.use('/api', hikeRoute);
 
 
 /* init express */
