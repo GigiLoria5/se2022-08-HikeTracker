@@ -22,6 +22,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Chip from '@mui/material/Chip';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import API from "../API";
+
 
 
 
@@ -61,54 +63,190 @@ export default function AvailableHikesV2() {
 
     //Get from api the list of available countries to do hikes
     const getListCountries = () => {
-        //here get the list from the API, for now I created one bc i don't have the api
-        const listCountries = ['Italy', 'France']
+        const listCountries = API.getCountries()
+        //const listCountries = ['TO', 'AQ', 'CH', 'PE']
+
         return (
             listCountries
         )
     };
     
     //Get from api the list of available cities to do hikes
-    const getListCities = () => {
-        //here get the list from the API, for now I created one bc i don't have the api
-        const listCities = ['Torino', 'Aix-en-Provence', 'Lyon']
+    const getListCities = (province) => {
+        const listCities = API.getCitiesByProvince(province)
+        //const listCities = ['TO', 'AQ', 'CH', 'PE']
         return (
             listCities
         )
     };
 
     //Get from api the list of available provinces to do hikes
-    const getListProvinces = () => {
-        //here get the list from the API, for now I created one bc i don't have the api
-        const listProvinces = ['TO', 'AQ', 'CH', 'PE']
+    const getListProvinces = (country) => {
+        //const listProvinces = ['TO', 'AQ', 'CH', 'PE']
+        const listProvinces = API.getProvincesByCountry(country)
         return (
             listProvinces
         )
     };
-
-    //here get the list from the API, for now I created one bc i don't have the api : when API made, make list empty
     
 
     //Get from api the list of available hikes (no filter)
-    
     const getListHikes = () => {
-        //setHikes({api.getlistOfHikes})
+        /*
         setHikes([
-            {title:'City Tour', length:'12', time:'3', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one', endPoint:'location two', description:'It is a city tour blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3']},
-            {title:'City Tour2', length:'16', time:'4', ascent:'100', city:'Torino', province:'TO', country:'Italy', difficulty:'Tourist', startPoint:'location one bis', endPoint:'location two bis', description:'It is a city tour2 blabdcfejbfhjsbfhjsbchfcnfdjvbdjvbdjvbdhjvbdhjvbdjbvdhjf', refPoints:['hut1','hut2','hut3','hut4','hut5']}
+            {
+                id: 7,
+                title: "Ring for Monte Calvo",
+                peak_altitude: 1357,
+                city: "Carignano",
+                province: "Torino",
+                country: "Italy",
+                description: "It runs between ...",
+                ascent: 320,
+                track_length: 6.2,
+                expected_time: 3.3,
+                difficulty: "Tourist",
+                start_point_type: "parking_lot",
+                start_point_id: 3,
+                end_point_type: "location",
+                end_point_id: 18,
+                start: [
+                    {
+                        id: 3,
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041"
+                    }
+                ],
+                end: [
+                    {
+                        id: 18,
+                        value_type: "gps",
+                        value: "45.462770631936834, 7.693279470138337",
+                        description: "Mountain peak"
+                    }
+                ],
+                reference_points: [
+                    [
+                        {
+                        id: 17,
+                        ref_point_type: "parking_lot",
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041"
+                        }
+                    ],
+                    [
+                        {
+                        id: 18,
+                        ref_point_type: "location",
+                        value_type: "address",
+                        value: "SP138, 10041",
+                        description: "Location description"
+                        }
+                    ],
+                    [
+                        {
+                        id: 19,
+                        ref_point_type: "hut",
+                        name: "test hut", 
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041",
+                        phone_number: "0666450221", 
+                        altitude: 100, 
+                        description: "hut description", 
+                        beds_number: 12, 
+                        opening_period: "september - may"
+                        }
+                    ]
+                ]
+            },
+            {
+                id: 8,
+                title: "Ring for Monte Calvo",
+                peak_altitude: 1357,
+                city: "Carignano",
+                province: "Torino",
+                country: "Italy",
+                description: "It runs between ...",
+                ascent: 320,
+                track_length: 6.2,
+                expected_time: 3.3,
+                difficulty: "Tourist",
+                start_point_type: "parking_lot",
+                start_point_id: 3,
+                end_point_type: "location",
+                end_point_id: 18,
+                start: [
+                    {
+                        id: 3,
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041"
+                    }
+                ],
+                end: [
+                    {
+                        id: 11,
+                        value_type: "gps",
+                        value: "45.462770631936834, 7.693279470138337",
+                        description: "Mountain peak"
+                    }
+                ],
+                reference_points: [
+                    [
+                        {
+                        id: 17,
+                        ref_point_type: "parking_lot",
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041"
+                        }
+                    ],
+                    [
+                        {
+                        id: 18,
+                        ref_point_type: "location",
+                        value_type: "address",
+                        value: "SP138, 10041",
+                        description: "Location description"
+                        }
+                    ],
+                    [
+                        {
+                        id: 19,
+                        ref_point_type: "hut",
+                        name: "test hut", 
+                        city: "Carignano",
+                        province: "Torino",
+                        country: "Italy",
+                        address: "SP138, 10041",
+                        phone_number: "0666450221", 
+                        altitude: 100, 
+                        description: "hut description", 
+                        beds_number: 12, 
+                        opening_period: "september - may"
+                        }
+                    ]
+                ]
+            }
         ])
+        */
+
+        setHikes(API.getHikesWithFilters(null, null, null, null, null, null, null))
+
     };
     
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        //post form
-        const formResult = {difficultyValue, lengthValue, ascentValue, timeValue, country, province, city}
-        console.log(formResult)
-        //api.postForm(formResult)
-
-        //get hikes from api and put it in the "hikes" table
-        //setHikes({api.getHikesFiltered})
+        setHikes(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue))
         
     } 
 
@@ -116,7 +254,26 @@ export default function AvailableHikesV2() {
 
     const cityDisabled = (province, country) => {
         let citySelect
-        if (province || country ) {
+        if (province && country ) {
+            citySelect = 
+            <FormControl sx={{ m: 1, minWidth: 200 }}>
+                <InputLabel>City</InputLabel>
+                <Select
+                    value={city}
+                    label="City"
+                    onChange={e => setCity(e.target.value)}
+                >
+                    <MenuItem value="">
+                        <em>Select a city</em>
+                    </MenuItem>
+                    {getListCities(province).map((value) => { 
+                        return(
+                            <MenuItem value={value}>{value}</MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>;
+        } else {
             citySelect = 
             <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
                 <InputLabel>City</InputLabel>
@@ -128,26 +285,7 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a city</em>
                     </MenuItem>
-                    {getListCities().map((value) => { 
-                        return(
-                            <MenuItem value={value}>{value}</MenuItem>
-                        );
-                    })}
-                </Select>
-            </FormControl>;
-        } else {
-            citySelect = 
-            <FormControl sx={{ m: 1, minWidth: 200 }} >
-                <InputLabel>City</InputLabel>
-                <Select
-                    value={city}
-                    label="City"
-                    onChange={e => setCity(e.target.value)}
-                >
-                    <MenuItem value="">
-                        <em>Select a city</em>
-                    </MenuItem>
-                    {getListCities().map((value) => { 
+                    {getListCities(province).map((value) => { 
                         return(
                             <MenuItem value={value}>{value}</MenuItem>
                         );
@@ -160,57 +298,60 @@ export default function AvailableHikesV2() {
 
     }
 
-    const countryDisabled = (province, city) => {
-        let countrySelect
-        if (province || city ) {
-            countrySelect =
-            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
-                <InputLabel>Country</InputLabel>
-                <Select
-                    value={country}
-                    label="Country"
-                    onChange={e => setCountry(e.target.value)}
-                >
-                    <MenuItem value="">
-                        <em>Select a country</em>
-                    </MenuItem>
-                    {getListCountries().map((value) => { 
-                        return(
-                            <MenuItem value={value}>{value}</MenuItem>
-                        );
-                    })}
-                </Select>
-            </FormControl>
-
-        } else {
-            countrySelect =
-            <FormControl sx={{ m: 1, minWidth: 200 }} >
-                <InputLabel>Country</InputLabel>
-                <Select
-                    value={country}
-                    label="Country"
-                    onChange={e => setCountry(e.target.value)}
-                >
-                    <MenuItem value="">
-                        <em>Select a country</em>
-                    </MenuItem>
-                    {getListCountries().map((value) => { 
-                        return(
-                            <MenuItem value={value}>{value}</MenuItem>
-                        );
-                    })}
-                </Select>
-            </FormControl>
-
+    const handleStartPointTypes = (value) => {
+        let chipStartPoint
+        if (value.start_point_type === "parking_lot"){
+            chipStartPoint = <Chip label={[value.start[0].city, ' ', value.start[0].province, ' ',value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" />
+        } else if (value.start_point_type === "location") {
+            chipStartPoint = <Chip label={[value.start[0].description, " : ", value.start[0].value]} color="primary" variant="outlined" />        
+        } else if (value.start_point_type === "hut") {
+            chipStartPoint = <Chip label={[value.start[0].name, " ",value.start[0].city, ' ', value.start[0].province, ' ',value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" />
         }
-        return countrySelect
+
+        return chipStartPoint
     }
 
-    const provinceDisabled = (country, city) => {
+    const handleEndPointTypes = (value) => {
+        let chipEndPoint
+        if (value.end_point_type === "parking_lot"){
+            chipEndPoint = <Chip label={[value.end[0].city, ' ', value.end[0].province, ' ',value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" />
+        } else if (value.end_point_type === "location") {
+            chipEndPoint = <Chip label={[value.end[0].description, " : ", value.end[0].value]} color="primary" variant="outlined" />        
+        } else if (value.end_point_type === "hut") {
+            chipEndPoint = <Chip label={[value.end[0].name, " ",value.end[0].city, ' ', value.end[0].province, ' ',value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" />
+        }
+
+        return chipEndPoint
+    }
+
+    const handleRef = (value) => {
+        let tab = []
+        for (var i = 0 ; i<value.reference_points.length; i++) {
+            value.reference_points[i].map((valuee) => {
+                let chipsRefPoints 
+                console.log(valuee)
+                //console.log(value.reference_points)
+                if (valuee.ref_point_type === "parking_lot"){
+                    chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ',valuee.country, " : ", valuee.address]} color="primary" variant="outlined" /> 
+                } 
+                else if (valuee.ref_point_type === "location") {
+                    chipsRefPoints = <Chip label={[valuee.description, ' : ', valuee.value]} color="primary" variant="outlined" />
+                }
+                else if (valuee.ref_point_type === "hut") {
+                    chipsRefPoints = <Chip label={[valuee.name, ' ',valuee.city, ' ', valuee.province, ' ',valuee.country, " : ", valuee.address]} color="primary" variant="outlined" />
+                }
+                return tab.push(chipsRefPoints)
+            })
+        }
+        return tab
+    }
+
+
+    const provinceDisabled = (country) => {
         let provinceSelect
-        if (country || city ) {
+        if (country) {
             provinceSelect =
-            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
+            <FormControl sx={{ m: 1, minWidth: 200 }} >
                 <InputLabel>Province</InputLabel>
                 <Select
                     value={province}
@@ -220,7 +361,7 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a province</em>
                     </MenuItem>
-                    {getListProvinces().map((value) => { 
+                    {getListProvinces(country).map((value) => { 
                             return(
                                 <MenuItem value={value}>{value}</MenuItem>
                             );
@@ -231,7 +372,7 @@ export default function AvailableHikesV2() {
 
         } else {
             provinceSelect =
-            <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
                 <InputLabel>Province</InputLabel>
                 <Select
                     value={province}
@@ -241,7 +382,7 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a province</em>
                     </MenuItem>
-                    {getListProvinces().map((value) => { 
+                    {getListProvinces(country).map((value) => { 
                             return(
                                 <MenuItem value={value}>{value}</MenuItem>
                             );
@@ -283,8 +424,24 @@ export default function AvailableHikesV2() {
                                     </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        {countryDisabled(province, city)}
-                                        {provinceDisabled(country, city)}
+                                        <FormControl sx={{ m: 1, minWidth: 200 }} >
+                                            <InputLabel>Country</InputLabel>
+                                            <Select
+                                                value={country}
+                                                label="Country"
+                                                onChange={e => setCountry(e.target.value)}
+                                            >
+                                                <MenuItem value="">
+                                                    <em>Select a country</em>
+                                                </MenuItem>
+                                                {getListCountries().map((value) => { 
+                                                    return(
+                                                        <MenuItem value={value}>{value}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                        {provinceDisabled(country)}
                                         {cityDisabled(province, country)}
                                         
                                 
@@ -409,7 +566,7 @@ export default function AvailableHikesV2() {
 
                         {hikes.map((value) => { 
                             return(
-                                    <Accordion expanded={expanded === `panel-${value.title}`} onChange={handleChange(`panel-${value.title}`)}>
+                                    <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)}>
                                         <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls="panel1bh-content"
@@ -421,11 +578,11 @@ export default function AvailableHikesV2() {
                                         <Typography sx={{ color: 'text.secondary' }}>{value.city}, {value.province}, {value.country}</Typography>
                                         </AccordionSummary>
                                         <AccordionDetails>
-                                            <Typography>
-                                                Length : {value.length} km
+                                            <Typography component={'div'}>
+                                                Length : {value.track_length} km
 
                                                 <br/><br/>
-                                                Expected time : {value.time} h
+                                                Expected time : {value.expected_time} h
 
                                                 <br/><br/>
                                                 Total ascent : {value.ascent} m
@@ -441,21 +598,20 @@ export default function AvailableHikesV2() {
                                                 {" "}<Chip label={value.difficulty} color="primary" variant="outlined" />
 
                                                 <br/><br/>
-                                                Start point :  
-                                                {" "}<Chip label={value.startPoint} color="primary" variant="outlined" />
+                                                Start point : 
+                                                {" "}
+                                                {handleStartPointTypes(value)}
                                                 <br/><br/>
                                                 End point : 
-                                                {" "}<Chip label={value.endPoint} color="primary" variant="outlined" />
-                        
+                                                {" "}
+                                                {handleEndPointTypes(value)}                  
                                                 <br/><br/>
                                                 Reference points :         
                                                 {" "}
-                                                {value.refPoints.map((valuee) => {
-                                                        return(
-                                                            <Chip label={valuee} color="primary" variant="outlined"/>
-                                                            
-                                                        );
+                                                {handleRef(value).map((value) => { 
+                                                    return value
                                                 })}
+                                                
                                                 
                                                 <br/><br/>
 
@@ -467,11 +623,6 @@ export default function AvailableHikesV2() {
                                     </Accordion>
                             );
                         })}
-                        
-
-                        
-
-
                         
                         <Typography variant="h5" gutterBottom>
                             <br/>
