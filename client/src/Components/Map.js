@@ -1,21 +1,17 @@
 import { useEffect } from 'react';
-import { Grid } from '@mui/material';
-import { MapContainer, Polygon, Polyline, TileLayer, FeatureGroup } from 'react-leaflet';
+import { MapContainer, Polyline, TileLayer } from 'react-leaflet';
 import { Marker, Popup } from 'react-leaflet';
-import { useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
-import L from "leaflet";
 
-import { Point, Trail, coordArray } from './Utils';
-
-//test
-const p1 = new Point("P1", 45.06968, 7.70493);
-const p2 = new Point("P2", 45.05942, 7.80493);
-const p3 = new Point("P3", 45.06988, 7.90493);
-const p4 = new Point("P4", 45.06968, 7.70493);
-
-const trail = new Trail(p1, p4, [p2, p3]);
-
+/**
+ *  TO TRY WITH A GPX PARSED FROM BACKEND
+ *  
+ *  props.gpx is a gpx file already parsed (with a xml parser or a gpx parser) in the backend,
+ *  since in the frontend it doesn't work.
+ * 
+ *  I tried with simple files transcripted as string, and it worked. But usually gpx files are very very long...
+ * 
+ */
 export default function Map(props) {
 
   useEffect(() => {
@@ -31,60 +27,51 @@ export default function Map(props) {
 
   }, []);
 
-  const position = [45.06968, 7.70493];
+  //while there is not an api to retrieve a gpx-parsed file
+  const positions = [
+    [40.689818841705, -74.04511194542516],
+    [40.75853187779803, -73.98495720388513],
+    [40.86151538060051, -74.06201170384256],
+    [40.80981015620906, -74.03656769139772],
+    [40.80721155324825, -74.04274750092904],
+    [40.78901848327006, -74.081199649124],
+    [40.764319913561216, -74.08840942691056],
+    [40.749756455072884, -74.09493255919364],
+    [40.74793579843903, -74.07673645335137],
+    [40.675849802727335, -74.19758606169779],
+    [40.60394644123212, -74.05991363796608],
+    [40.6495463256113, -73.96000671720954],
+  ]
 
-  //const positions = [[45.06968, 7.70493], [45.05942, 7.80493], [45.06988, 7.90493], [45.06968, 7.70493]];
-  const positions = [[45.06968, 7.70493], [45.05942, 7.80493]];
+  if(props.gpx.tracks)
+    positions = props.gpx.tracks[0].points.map(p => [p.lat, p.lon]);
 
   return (
     <>
-
-      {/** */}
-      <MapContainer center={position} zoom={11} scrollWheelZoom={false} style={{ height: "50vh" }}>
-        
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-
-        <FeatureGroup>
-          {positions?.map((mark, i) => (
-            <Marker key={i} position={mark}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-          ))}
-
-          <Polyline positions={positions} color="red" />
-        </FeatureGroup>
-
-
-        <Polygon color="red" positions={positions} />
-
-        <Marker position={p2.coord}>
-          <Popup>
-            {p2.label}
-          </Popup>
-        </Marker>
-
-        <Marker position={p3.coord}>
-          <Popup>
-            {p3.label}
-          </Popup>
-        </Marker>
-
+      <MapContainer
+        // for simplicty set center to first gpx point
+        center={positions[0]}
+        zoom={11}
+        scrollWheelZoom={false}
+        style={{ height: "70vh" }}
+      >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        <Polyline
+          pathOptions={{ fillColor: 'red', color: 'blue' }}
+          positions={positions}
+        />
+
+        <Marker position={positions[0]}>
+          <Popup>
+            Start point
+          </Popup>
+        </Marker>
       </MapContainer>
-      {/**/}
-
-
-
     </>
   )
 }
+

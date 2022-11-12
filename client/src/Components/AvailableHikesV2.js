@@ -464,7 +464,7 @@ export default function AvailableHikesV2(props) {
                                             Description : <br />{value.description}
 
                                         <Grid>
-                                            {props.loggedUser.role === "hiker" ? <Map></Map> : false}
+                                            {props.loggedUser.role === "hiker" ? <><br /><br /><Map gpx={"A gpx-parsed object from backend"}/></> : false}
                                         </Grid>
                                     </AccordionDetails>
                                 </Accordion>

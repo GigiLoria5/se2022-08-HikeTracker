@@ -33,27 +33,3 @@ export function Hike(
     this.reference_points = reference_points;
     this.gpx = gpx;
 }
-
-export function Point(label, lat, long) {
-    this.label = label;
-    this.coord = [lat, long];
-}
-
-export function Trail(startPoint, endPoint, points) {
-    this.startPoint = startPoint;
-    this.endPoint = endPoint;
-    this.points = points;
-}
-
-export function coordArray(trail){
-
-    const innerArray = trail.points.map(p => p.coord);
-
-    return(
-        [
-            trail.startPoint.coord,
-            ...innerArray,
-            trail.endPoint.coord
-        ]
-    )
-}
