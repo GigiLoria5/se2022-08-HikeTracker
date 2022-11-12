@@ -144,7 +144,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
             "id": 17,
             "value_type": "address",
             "value": "SP138, 10041",
-            "description": "Chapel of the Visitation of Valinotto"
+            "description": "Chapel of the Visitation of Valinotto",
+            "ref_point_type": "location"
           }
         ],
         [
@@ -152,7 +153,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
             "id": 19,
             "value_type": "address",
             "value": "Ca' Palasot, Frazione Campo, 1, 10081",
-            "description": "Palasot Inn (Restaurant)"
+            "description": "Palasot Inn (Restaurant)",
+            "ref_point_type": "location"
           }
         ]
       ]
