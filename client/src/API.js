@@ -80,10 +80,16 @@ async function getHikesWithFilters(city, province, country, difficulty, track_le
             country: h.country, 
             description: h.description, 
             ascent: h.ascent,
-            track_length: h.track_length, expected_time: h.expected_time, difficulty: h.difficulty, start_point_type: h.start_point_type, 
+            track_length: h.track_length, 
+            expected_time: h.expected_time, 
+            difficulty: h.difficulty, 
+            start_point_type: h.start_point_type, 
             start_point_id: h.start_point_id, 
             end_point_type: h.end_point_type,
-            end_point_id: h.end_point_id}));
+            end_point_id: h.end_point_id,
+            start: h.start,
+            end: h.end,
+            reference_points: h.reference_points}));
     } else{
         throw hikesJson;
     }
