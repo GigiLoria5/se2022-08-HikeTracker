@@ -56,45 +56,126 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 ### User Login and Logout
 
 - POST `/api/sessions`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Perform login
+  - Request body: Object containing username and password
+  
+  ```
+  { 
+    "username": "c.basile@hiker.it"
+    "password": "password"
+  }
+  ```
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
 
-  - <b>Request body:</b> a json object with an username and a password (both strings) and session cookies.<br>
-    <u>e.g.</u> { "username": "c.basile@hiker.it ", "password": "password" } and credentials cookies.
-  - <b>Response status codes:</b> 200 Created, 401 Unauthorized<br>
-    <b>Body:</b> a json object with user data (id, email, name, surname, phonenumber, role, email verified, token ) or json object with error.<br>
-    <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
+
 
 - GET `/api/sessions/current`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Retrieve session cookies
+  - Permissions allowed: Authenticated user
+  - Request body: Session cookies
+  
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
 
-  - <b>Request body:</b> session cookies
-  - <b>Response status codes:</b> 200 Ok, 401 Unauthorized, 500 Internal Server Error<br>
-    <b>Body:</b> a json object with user data or json object with error.<br>
-    <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
 
 - DELETE `/api/sessions/current`
 
-  - <b>Request body:</b> session cookies
-  - <b>Response status code:</b> 200 Ok (and 204 No Content)<br>
+  - Description: Logout
+  - Request body: _None_
+  - Response: `204 No Content` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: _TBC_
 
 ### User Registration
 
 - POST `/api/users`
-  - <b>Request body:</b> a json object with user data defined in the registration form
-  - <u>e.g.</u>{
-    "role": "hut_worker",
-    "name": "Test",
-    "surname": "Test",
-    "phone": "3331111111",
-    "email": "test@test.it",
-    "password": "password"
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add new user
+  - Permissions allowed: _None_
+  - Request body: User object 
+  
+    ```
+    {
+      "role": "hut_worker",
+      "name": "Test",
+      "surname": "Test",
+      "phone": "3331111111",
+      "email": "test@test.it",
+      "password": "password"
     }
-  - <b>Response status codes:</b> 201 Created, 422 Email already exists, 503 Internal Server Error<br>
-    <b>Body:</b> None or json object with error.
+      ```
+  - Response: `201 OK` (Created)
+  - Error responses: `422 Unprocessable entity` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+ 
+
 - GET `/api/users/confirm/:token`
-  - <b>Request parameters:</b> token (integer code)<br>
-  - <b>Request body:</b> None
-  - <b>Response status codes:</b> 200 Ok, 422 Wrong token or account already verified, 404 Missing token, 503 Internal Server Error<br>
-    <b>Body:</b> Json object containing the result status <br>
-    <u>e.g.</u> { Account verified successfully! }
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Account verification 
+  - Permissions allowed: _None_
+  - Request body: _None_
+  - Request parameters: token (integer)
+  
+  - Response: HTML page when the account has to be verified or has already been verified 
+  - Error responses: `404 Missing token` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+	    <meta charset="UTF-8">
+	      <title> HikeTracker account already verified! </title>
+
+    </head>
+
+    <body>
+	    <h1> Account already verified<h1>
+			  <h2> Your account has already been verified! </h2>
+			    <p> You just have to perform the login with the credentials you choose. </p>
+			<a href="http://localhost:3000/login"> Click here to perform the login</a>
+			</div>
+    </body>
+
+    </html>
+
+  ```
 
 ### Hikes
 

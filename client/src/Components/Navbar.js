@@ -69,10 +69,10 @@ function MyNavbar(props) {
                             {isloggedIn ?
                                 <>
                                     <Box  >
-                                        {loggedUser.name || loggedUser.surname !== undefined ? 
+                                        {loggedUser.name || loggedUser.surname !== '' ? 
                                         <>
                                         <Typography variant="button" color="inherit" component="div"> {   loggedUser.name } </Typography>
-                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.surname   } </Typography>                                        </> :
+                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.surname   } </Typography></> :
                                         <Typography variant="button" color="inherit" component="div"> {   loggedUser.email } </Typography>
                                         }
                                     </Box>

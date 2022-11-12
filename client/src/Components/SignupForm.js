@@ -30,7 +30,7 @@ export default function SignUp(props) {
   const [type, setType] = useState(1);
   const [name,setName] = useState('');
   const [surname,setSurname] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone_number, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -55,7 +55,7 @@ export default function SignUp(props) {
           case 4: role="emergency_operator"; break;
           default: break;
         }
-        const credentials = { role, name, surname, phone, email, password };         // define object having username and password as elements 
+        const credentials = { role, name, surname, phone_number, email, password };         // define object having username and password as elements 
         props.signUp(credentials);                           // call login function in App.js
       
     }
@@ -114,9 +114,9 @@ export default function SignUp(props) {
                 <TextField
                   required={type!==1 && type!==4? true: false}
                   fullWidth
-                  id="phone"
+                  id="phone_number"
                   label="Phone number"
-                  name="phoneNumber"
+                  name="phone_number"
                   minLength={9}
                   maxLength={10}
                   onChange={ev => setPhone(ev.target.value)} 

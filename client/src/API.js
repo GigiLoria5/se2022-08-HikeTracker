@@ -44,7 +44,7 @@ const getUserInfo = async () => {
     }
 };
 
-/* Addthe riddle specified as parameter, credentials required  */
+/* Addthe the user specified as parameter, credentials required  */
 async function addUser(credentials) {
     const url = APIURL + '/users';
     try {

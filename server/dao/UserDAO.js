@@ -4,6 +4,8 @@
 const crypto = require('crypto');
 const { resolve } = require('path');
 const db = require('./db'); // open the database
+const User = require('../models/User.js');
+
 
 
 exports.getUser = (email, password) => {
@@ -13,16 +15,7 @@ exports.getUser = (email, password) => {
             if (err) { reject(err); }
             else if (row === undefined) { resolve(false); }
             else {
-                const user = {
-                    id: row.id,
-                    name: row.name,
-                    surname: row.surname,
-                    email: row.email,
-                    email_verified: row.email_verified,
-                    phone_number: row.phone_number,
-                    role: row.role,
-                    token: row.token
-                };
+                const user = new User(row.id,row.name,row.surname,row.email,"","",row.email_verified,row.phone_number,row.role,row.token);
                 const salt = row.salt;
                 crypto.scrypt(password, salt, 32, (err, hashedPassword) => {
                     if (err) reject(err);
@@ -53,6 +46,33 @@ exports.checkActive = (email) => {
     });
 }
 
+exports.getAllUsers = () =>{
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM user';
+        db.all(sql, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows.map((row) =>
+                new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token)
+                ));
+            }
+        });
+    });
+}
+
+exports.deleteUser = (id) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM user WHERE id = ?`;
+        db.run(sql, [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve();
+        });
+    });
+}
+
 
 exports.getUserById = (userId) => {
     return new Promise((resolve, reject) => {
@@ -63,7 +83,7 @@ exports.getUserById = (userId) => {
             else if (row === undefined)
                 resolve(null); // user not found
             else {
-                const user = { id: row.id, name: row.name, surname: row.surname, email: row.email, password: row.password, salt: row.salt, email_verified: row.email_verified, phone_number: row.phone_number, role: row.role, token: row.token };
+                const user = new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token);
                 resolve(user);
             }
         });
@@ -79,7 +99,7 @@ exports.getUserByEmail = (email) => {
             else if (row === undefined)
                 resolve(false); // user not found
             else {
-                const user = { id: row.id, name: row.name, surname: row.surname, email: row.email, password: row.password, salt: row.salt, email_verified: row.email_verified, phone_number: row.phone_number, role: row.role, token: row.token };
+                const user = new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token);
                 resolve(user);
             }
         });
