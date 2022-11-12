@@ -5,6 +5,8 @@ import Navbar from "./Components/Navbar";
 import LoginForm from "./Components/Loginform";
 import SignUpForm from "./Components/SignupForm";
 import Homepage from "./Components/Homepage"
+import LocalGuidePage from "./Components/LocalGuidePage"
+import AddHike from "./Components/AddHike"
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
@@ -68,6 +70,7 @@ function Root() {
 
   const handleLogout = async () => {
     setLoggedIn(false);
+    setLoggedUser(false);
     await API.logOut();
     setMessage('');
   };
@@ -81,6 +84,8 @@ function Root() {
         <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
+        <Route key={"Local Guide Page"} exact path={"/local-guide-page"} element={<LocalGuidePage/>} />
+        <Route key={"Add Hikes"} exact path={"/local-guide-add-hikes"} element={<AddHike/>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}

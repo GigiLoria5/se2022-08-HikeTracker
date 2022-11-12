@@ -140,6 +140,11 @@ function AddHike() {
 	};
 
     
+    const thm = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      };
 
     const handleChangeRefPoints = (event) => {
         const {
@@ -155,10 +160,10 @@ function AddHike() {
 
     return (
     <div>
-        <Grid container>
+        <Grid container >
             <ThemeProvider theme={theme}>
                 <Grid xs={12}>
-                    <Typography variant="h4" marginTop={1} gutterBottom>
+                    <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
                         <br/>ADD A HIKE
                     </Typography>
                 </Grid>
@@ -166,13 +171,13 @@ function AddHike() {
 
                 <Grid xs={0} md={3}></Grid>
                     
-                <Grid  xs={12} md={6} marginTop={3}>
+                <Grid  xs={12} md={6} marginTop={3}  sx={thm}>
                         <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
-                            <Typography variant="h5">
+                            <Typography variant="h5"  sx={thm}>
                                 <br/>Please complete the following information:<br/>
                             </Typography>
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12}  sx={thm}>
                                 <TextField 
                                     variant="outlined" 
                                     label="Title/label"
@@ -266,7 +271,7 @@ function AddHike() {
 
                                 />{" "}
 
-                                <TextField 
+                                <TextField  
                                     variant="outlined" 
                                     label="End point"
                                     margin="normal"
@@ -276,7 +281,7 @@ function AddHike() {
 
                                 />{" "}
 
-                                <Grid xs={12}>
+                                <Grid xs={12}  sx={thm}>
                                     <FormControl sx={{ width: 'fit-content', minWidth:'21ch', maxWidth: '25ch' }}>
                                         <InputLabel>Reference Points</InputLabel>
                                         <Select
@@ -306,7 +311,7 @@ function AddHike() {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid  xs={12} marginTop={1} > 
+                                <Grid  xs={12} marginTop={1}  sx={thm}> 
                                     <FormControl sx={{width: 'fit-content' , minWidth:'21ch', maxWidth: '25ch'}} >
                                         <InputLabel>Difficulty</InputLabel>
                                         <Select
@@ -332,7 +337,7 @@ function AddHike() {
                                     multiline
                                     rows={4}
                                     margin="normal"
-                                    sx={{width: 'fit-content', maxWidth: '25ch' }}
+                                    sx={{width: 'fit-content', maxWidth: '25ch'}}
                                     value={description}
                                     onChange={ev => setDescription(ev.target.value)}
                                 />{" "}
@@ -347,9 +352,9 @@ function AddHike() {
 
 
                 <Grid  xs={0} md={3} ></Grid>
-                <Grid  xs={12} md={6} marginTop={3}>
-                    <Paper elevation={3}  sx = {{backgroundColor : theme.palette.secondary.main}} >
-                        <Typography variant="h5">
+                <Grid  xs={12} md={6} marginTop={3} >
+                    <Paper elevation={3}  sx = {{...{backgroundColor : theme.palette.secondary.main}, ...thm}} >
+                        <Typography variant="h5" sx={thm}>
                             <br/>Upload a GPX file<br/><br/>
                         </Typography>
                         <Button variant="contained" component="label" onChange={changeHandler} >
@@ -377,7 +382,7 @@ function AddHike() {
                 <Grid  xs={0} md={3}></Grid>
 
                 <Grid  xs={0.5}></Grid>
-                <Grid  xs={11}>
+                <Grid  xs={11}  sx={thm}>
                     <Grid><br/></Grid>
                     <Button onClick={handleSubmission} variant="contained" color='primary'>ADD A HIKE</Button>
                     <Grid><br/></Grid>

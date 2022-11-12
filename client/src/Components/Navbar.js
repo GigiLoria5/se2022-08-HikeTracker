@@ -19,6 +19,7 @@ import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = { 'Hikes': '/hikes' };
+const guideItems = { 'Local Guide Page': '/local-guide-page' };
 
 function MyNavbar(props) {
     
@@ -29,9 +30,7 @@ function MyNavbar(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
     const container = window !== undefined ? () => window().document.body : undefined;
-
     return (
         <>
             <Box sx={{ display: 'flex' }}>
@@ -62,6 +61,14 @@ function MyNavbar(props) {
                                     {name}
                                 </Button>
                             ))}
+                            {
+                                loggedUser.role == "local_guide" ? Object.entries(guideItems).map(([name, route]) => (
+                                    <Button className={`${activePage === name ? 'active-link' : ''}`} key={name} sx={{ color: '#fff' }}
+                                        onClick={() => { changeActivePage(name); navigate(route); }}>
+                                        {name}
+                                    </Button>
+                                )) : <></>
+                            }
                         </Box>
                         {/* User Account Actions */}
                         <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">

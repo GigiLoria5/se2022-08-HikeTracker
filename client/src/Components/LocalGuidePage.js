@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 
 function LocalGuidePage() {
     const theme = createTheme({
+      
         palette: {
           primary: {
             main: '#008037',
@@ -25,7 +26,7 @@ function LocalGuidePage() {
         <div>
             <Grid container>
                 
-                <Grid item xs={12} marginTop={10}>
+                <Grid item xs={12} marginTop={10} sx = {{display: 'flex',    flexDirection: 'column', alignItems: 'center'}}>
                     <ThemeProvider theme={theme}>
                         <Button component={Link} to={"/local-guide-add-hikes"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
                     </ThemeProvider>
