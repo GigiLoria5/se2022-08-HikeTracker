@@ -33,7 +33,7 @@ export default function AvailableHikesV2(props) {
     const listAscent = ['0 - 300 m','300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
     const listTime = ['0 - 1 h','1 - 3 h', '3 - 5 h', 'More than 5 h'];
 
-    const [difficultyValue, setDificultyValue] = useState('');
+    const [difficultyValue, setDifficultyValue] = useState('');
     const [lengthValue, setLengthValue] = useState('');
     const [ascentValue, setAscentValue] = useState('');
     const [timeValue, setTimeValue] = useState('');
@@ -93,7 +93,15 @@ export default function AvailableHikesV2(props) {
         }
     }, [province]);
 
-    
+    const resetFilters = () => {
+        setDifficultyValue('');
+        setLengthValue('');
+        setAscentValue('');
+        setTimeValue('');
+        setProvince('');
+        setCity('');
+        setCountry('');
+    }
     
     const timeFromState = () => {
         let val = null;
@@ -135,7 +143,7 @@ export default function AvailableHikesV2(props) {
 
     const lengthFromState = () => {
         let val = null;
-        switch (ascentValue){
+        switch (lengthValue){
             case "0 - 5 km":
                 val = "0-5";
                 break;
@@ -400,7 +408,7 @@ export default function AvailableHikesV2(props) {
                                     <AccordionDetails>
 
                                         <FormControl>
-                                            <RadioGroup value={difficultyValue} onChange={e => setDificultyValue(e.target.value)}>
+                                            <RadioGroup value={difficultyValue} onChange={e => setDifficultyValue(e.target.value)}>
                                                 {listDifficulty.map((value) => { 
                                                         return(
                                                             <FormControlLabel key={value} value={value} control={<Radio />} label={value}/>
@@ -484,8 +492,9 @@ export default function AvailableHikesV2(props) {
                                     </AccordionDetails>
                                 </Accordion>
 
-                                <Grid containers marginTop={3}>
+                                <Grid containers marginTop={3} marginLeft={2}>
                                     <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
+                                    <Button style={{marginLeft:10}} variant="outlined" color='primary' color='error' onClick={e => resetFilters()}>Reset filters</Button>
                                     <Typography> <br/></Typography>
                                     <Button variant="text" color='primary' onClick={e => getListHikes()}>See all hikes</Button>
                                 </Grid>

@@ -78,7 +78,7 @@ function Root() {
         handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
         {/* Outlets */}
         <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
-        <Route path='hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
+        <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
       </Route>
