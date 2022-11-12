@@ -4,7 +4,7 @@ const APIURL = 'http://localhost:3001'
 
 /* Performs login, Input: {email, password} Output: user {id,name,email,score} */
 const logIn = async (credentials) => {
-    const url = APIURL + '/sessions';
+    const url = APIURL + '/api/sessions';
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -25,7 +25,7 @@ const logIn = async (credentials) => {
 
 /* Performs logout Input: credentials */
 const logOut = async () => {
-    const response = await fetch(APIURL + '/sessions/current', {
+    const response = await fetch(APIURL + '/api/sessions/current', {
         method: 'DELETE',
         credentials: 'include'
     });
@@ -35,7 +35,7 @@ const logOut = async () => {
 
 /* Returns user information when performing refresh operation, retrieving the current session data*/
 const getUserInfo = async () => {
-    const response = await fetch(APIURL + '/sessions/current', {
+    const response = await fetch(APIURL + '/api/sessions/current', {
         credentials: 'include',
     });
     const user = await response.json();
@@ -48,7 +48,7 @@ const getUserInfo = async () => {
 
 /* Addthe the user specified as parameter, credentials required  */
 async function addUser(credentials) {
-    const url = APIURL + '/users';
+    const url = APIURL + '/api/users';
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -79,7 +79,7 @@ async function addUser(credentials) {
  * @param hike is a Hike descripted in ./Utils.js
  */
 const createHike = async (hike) => {
-    let response = await fetch(APIURL + '/hikes', {
+    let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
         credentials: 'include',
         headers: {
