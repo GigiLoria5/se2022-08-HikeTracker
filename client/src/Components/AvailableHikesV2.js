@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -32,9 +32,9 @@ export default function AvailableHikesV2() {
     const [expanded, setExpanded] = React.useState(false);
 
     const listDifficulty = ['Tourist',' Hiker', 'Professionnal Hiker'];
-    const listLength = ['0 - 5 km',' 5 - 15 km', 'More than 15 km'];
-    const listAscent = ['0 - 300 m',' 300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
-    const listTime = ['0 - 1 h',' 1 - 3 h', '3 - 5 h', 'More than 5 h'];
+    const listLength = ['0 - 5 km','5 - 15 km', 'More than 15 km'];
+    const listAscent = ['0 - 300 m','300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
+    const listTime = ['0 - 1 h','1 - 3 h', '3 - 5 h', 'More than 5 h'];
 
     const [difficultyValue, setDificultyValue] = useState('');
     const [lengthValue, setLengthValue] = useState('');
@@ -43,6 +43,10 @@ export default function AvailableHikesV2() {
     const [province, setProvince] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
+
+    const [countries, setCountries] = useState([]);
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
 
     const [hikes, setHikes] = useState([]);
 
@@ -61,219 +65,120 @@ export default function AvailableHikesV2() {
         setExpanded(isExpanded ? panel : false);
     };
 
-    //Get from api the list of available countries to do hikes
-    const getListCountries = () => {
-        const listCountries = []
-        for (var i = 0 ; i<API.getCountries().length; i++) {
-            console.log(API.getCountries()[i])
-            listCountries.push(API.getCountries()[i].country)
-        }
+    useEffect(()=>{
+        API.getCountries().then(cn=>{
+            setCountries([...country, ...cn.map(a=>a.country)]);
+        })
+    }, []);
 
-        //const listCountries = ['TO', 'AQ', 'CH', 'PE']
-
-        return (
-            listCountries
-        )
-    };
     
-    //Get from api the list of available cities to do hikes
-    const getListCities = (province) => {
-        //const listCities = API.getCitiesByProvince(province)
-        //const listCities = ['TO', 'AQ', 'CH', 'PE']
-        const listCities = []
-        for (var i = 0 ; i<API.getCitiesByProvince(province).length; i++) {
-            listCities.push(API.getCitiesByProvince(province)[i].city)
+    useEffect(()=>{
+        if(country != ''){
+            API.getProvincesByCountry(country).then(pv=>{
+                setProvinces([...provinces, ...pv.map(a=>a.province)]);
+            })
         }
+        
+    }, [country]);
 
-
-        return (
-            listCities
-        )
-    };
-
-    //Get from api the list of available provinces to do hikes
-    const getListProvinces = (country) => {
-        //const listProvinces = ['TO', 'AQ', 'CH', 'PE']
-        //const listProvinces = API.getProvincesByCountry(country)
-        const listProvinces = []
-        for (var i = 0 ; i<API.getProvincesByCountry(country).length; i++) {
-            listProvinces.push(API.getProvincesByCountry(country)[i].province)
+    useEffect(()=>{
+        if(province != ''){
+            API.getCitiesByProvince(province).then(c=>{
+                setCities([...cities, ...c.map(a=>a.city)]);
+            })
         }
+    }, [province]);
 
-
-
-        return (
-            listProvinces
-        )
-    };
     
+    
+    const timeFromState = () => {
+        let val = null;
+        switch (timeValue){
+            case "0 - 1 h":
+                val = "0-1";
+                break;
+            case "1 - 3 h":
+                val = "1-3";
+                break;
+            case "3 - 5 h":
+                val = "3-5";
+                break;
+            case "More than 5 h":
+                val = "5-more";
+                break;
+        }
+        return val;
+    }
+
+    const ascentFromState = () => {
+        let val = null;
+        switch (ascentValue){
+            case "0 - 300 m":
+                val = "0-300";
+                break;
+            case "300 - 600 m":
+                val = "300-600";
+                break;
+            case "600 - 1000 m":
+                val = "600-1000";
+                break;
+            case "More than 1000 m":
+                val = "1000-more";
+                break;
+        }
+        return val;
+    }
+
+    const lengthFromState = () => {
+        let val = null;
+        switch (ascentValue){
+            case "0 - 5 km":
+                val = "0-5";
+                break;
+            case "5 - 15 km":
+                val = "5-15";
+                break;
+            case "More than 15 km":
+                val = "15-more";
+                break;
+        }
+        return val;
+    }
+
+    const difficultyFromState = () => {
+        let val = null;
+        switch (difficultyValue){
+            case "Tourist":
+                val = 1;
+                break;
+            case "Hiker":
+                val = 2;
+                break;
+            case "Professionnal Hiker":
+                val = 3;
+                break;
+        }
+        return val;
+    }
 
     //Get from api the list of available hikes (no filter)
     const getListHikes = () => {
-        /*
-        setHikes([
-            {
-                id: 7,
-                title: "Ring for Monte Calvo",
-                peak_altitude: 1357,
-                city: "Carignano",
-                province: "Torino",
-                country: "Italy",
-                description: "It runs between ...",
-                ascent: 320,
-                track_length: 6.2,
-                expected_time: 3.3,
-                difficulty: "Tourist",
-                start_point_type: "parking_lot",
-                start_point_id: 3,
-                end_point_type: "location",
-                end_point_id: 18,
-                start: [
-                    {
-                        id: 3,
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041"
-                    }
-                ],
-                end: [
-                    {
-                        id: 18,
-                        value_type: "gps",
-                        value: "45.462770631936834, 7.693279470138337",
-                        description: "Mountain peak"
-                    }
-                ],
-                reference_points: [
-                    [
-                        {
-                        id: 17,
-                        ref_point_type: "parking_lot",
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041"
-                        }
-                    ],
-                    [
-                        {
-                        id: 18,
-                        ref_point_type: "location",
-                        value_type: "address",
-                        value: "SP138, 10041",
-                        description: "Location description"
-                        }
-                    ],
-                    [
-                        {
-                        id: 19,
-                        ref_point_type: "hut",
-                        name: "test hut", 
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041",
-                        phone_number: "0666450221", 
-                        altitude: 100, 
-                        description: "hut description", 
-                        beds_number: 12, 
-                        opening_period: "september - may"
-                        }
-                    ]
-                ]
-            },
-            {
-                id: 8,
-                title: "Ring for Monte Calvo",
-                peak_altitude: 1357,
-                city: "Carignano",
-                province: "Torino",
-                country: "Italy",
-                description: "It runs between ...",
-                ascent: 320,
-                track_length: 6.2,
-                expected_time: 3.3,
-                difficulty: "Tourist",
-                start_point_type: "parking_lot",
-                start_point_id: 3,
-                end_point_type: "location",
-                end_point_id: 18,
-                start: [
-                    {
-                        id: 3,
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041"
-                    }
-                ],
-                end: [
-                    {
-                        id: 11,
-                        value_type: "gps",
-                        value: "45.462770631936834, 7.693279470138337",
-                        description: "Mountain peak"
-                    }
-                ],
-                reference_points: [
-                    [
-                        {
-                        id: 17,
-                        ref_point_type: "parking_lot",
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041"
-                        }
-                    ],
-                    [
-                        {
-                        id: 18,
-                        ref_point_type: "location",
-                        value_type: "address",
-                        value: "SP138, 10041",
-                        description: "Location description"
-                        }
-                    ],
-                    [
-                        {
-                        id: 19,
-                        ref_point_type: "hut",
-                        name: "test hut", 
-                        city: "Carignano",
-                        province: "Torino",
-                        country: "Italy",
-                        address: "SP138, 10041",
-                        phone_number: "0666450221", 
-                        altitude: 100, 
-                        description: "hut description", 
-                        beds_number: 12, 
-                        opening_period: "september - may"
-                        }
-                    ]
-                ]
-            }
-        ])
-        */
-
-        const allHikes = []
-        for (var i = 0 ; i<API.getHikesWithFilters(null, null, null, null, null, null, null).length; i++) {
-            allHikes.push(API.getHikesWithFilters(null, null, null, null, null, null, null)[i])
-        }
-        setHikes(allHikes)
+    
+        API.getHikesWithFilters(null, null, null, null, null, null, null).then(hikes => {
+            //console.log(hikes);
+            hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty-1]);
+            setHikes(hikes);
+        })       
 
     };
     
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        const filteredHikes = []
-        for (var i = 0 ; i<API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue).length; i++) {
-            filteredHikes.push(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue)[i])
-        }
-        setHikes(filteredHikes)
-        //setHikes(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue))
+        API.getHikesWithFilters(city, province, country, difficultyFromState(), lengthFromState(), ascentFromState(), timeFromState()).then(hikes => {
+            hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty-1]);
+            setHikes(hikes);
+        })
         
     } 
 
@@ -293,9 +198,9 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a city</em>
                     </MenuItem>
-                    {getListCities(province).map((value) => { 
+                    {cities.map((value) => { 
                         return(
-                            <MenuItem value={value}>{value}</MenuItem>
+                            <MenuItem key={value} value={value}>{value}</MenuItem>
                         );
                     })}
                 </Select>
@@ -312,7 +217,7 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a city</em>
                     </MenuItem>
-                    {getListCities(province).map((value) => { 
+                    {cities.map((value) => { 
                         return(
                             <MenuItem value={value}>{value}</MenuItem>
                         );
@@ -356,7 +261,7 @@ export default function AvailableHikesV2() {
         for (var i = 0 ; i<value.reference_points.length; i++) {
             value.reference_points[i].map((valuee) => {
                 let chipsRefPoints 
-                console.log(valuee)
+                //console.log(valuee)
                 //console.log(value.reference_points)
                 if (valuee.ref_point_type === "parking_lot"){
                     chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ',valuee.country, " : ", valuee.address]} color="primary" variant="outlined" /> 
@@ -388,9 +293,9 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a province</em>
                     </MenuItem>
-                    {getListProvinces(country).map((value) => { 
+                    {provinces.map((value) => { 
                             return(
-                                <MenuItem value={value}>{value}</MenuItem>
+                                <MenuItem key={value} value={value}>{value}</MenuItem>
                             );
                     })}
                 </Select>
@@ -409,7 +314,7 @@ export default function AvailableHikesV2() {
                     <MenuItem value="">
                         <em>Select a province</em>
                     </MenuItem>
-                    {getListProvinces(country).map((value) => { 
+                    {provinces.map((value) => { 
                             return(
                                 <MenuItem value={value}>{value}</MenuItem>
                             );
@@ -461,9 +366,9 @@ export default function AvailableHikesV2() {
                                                 <MenuItem value="">
                                                     <em>Select a country</em>
                                                 </MenuItem>
-                                                {getListCountries().map((value) => { 
+                                                {countries.map((value) => { 
                                                     return(
-                                                        <MenuItem value={value}>{value}</MenuItem>
+                                                        <MenuItem key={value} value={value}>{value}</MenuItem>
                                                     );
                                                 })}
                                             </Select>
@@ -493,7 +398,7 @@ export default function AvailableHikesV2() {
                                             <RadioGroup value={difficultyValue} onChange={e => setDificultyValue(e.target.value)}>
                                                 {listDifficulty.map((value) => { 
                                                         return(
-                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value}/>
                                                         );
                                                 })}
                                             </RadioGroup>
@@ -517,7 +422,7 @@ export default function AvailableHikesV2() {
                                             <RadioGroup value={lengthValue} onChange={e => setLengthValue(e.target.value)}>
                                                 {listLength.map((value) => { 
                                                         return(
-                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value}/>
                                                         );
                                                 })}
                                             </RadioGroup>
@@ -542,7 +447,7 @@ export default function AvailableHikesV2() {
                                             <RadioGroup value={ascentValue} onChange={e => setAscentValue(e.target.value)}>
                                                 {listAscent.map((value) => { 
                                                         return(
-                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value}/>
                                                         );
                                                 })}
                                             </RadioGroup>
@@ -566,7 +471,7 @@ export default function AvailableHikesV2() {
                                             <RadioGroup value={timeValue} onChange={e => setTimeValue(e.target.value)}>
                                                 {listTime.map((value) => { 
                                                         return(
-                                                            <FormControlLabel value={value} control={<Radio />} label={value}/>
+                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value}/>
                                                         );
                                                 })}
                                             </RadioGroup>
