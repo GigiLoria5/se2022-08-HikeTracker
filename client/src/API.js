@@ -1,6 +1,6 @@
 'use strict'
 
-const APIURL = 'http://localhost:3001';
+const APIURL = 'http://localhost:3001
 
 //===========================================================================================
 //          HIKE API
@@ -34,6 +34,7 @@ async function getProvincesByCountry(country){
 // Return cities by a province
 async function getCitiesByProvince(province){
     const response = await fetch(new URL('/api/cities/' + province, APIURL), {credentials: 'include'});
+
     const citiesJson = await response.json();
     if(response.ok){
         return citiesJson.map((c) => ({city: c.city}));
