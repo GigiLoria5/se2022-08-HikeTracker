@@ -48,10 +48,11 @@ function Root() {
       const user = await API.logIn(credentials);
       setLoggedUser(user);
       setLoggedIn(true);
-      setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
+      //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
 
     } catch (err) {
-      setMessage({ msg: `${err}!`, type: 'error' });
+      var obj = JSON.parse(err);
+      setMessage({ msg: `${obj.error}!`, type: 'error' });
     }
   };
 
@@ -60,7 +61,8 @@ function Root() {
       await API.addUser(credentials);
       setMessage({ msg: 'Check your email to validate your account, then perform the login', type: 'info' });
     } catch (err) {
-      setMessage({ msg: `${err}!`, type: 'error' });
+      var obj = JSON.parse(err);
+      setMessage({ msg: `${obj.error}!`, type: 'error' });
     }
   };
 
@@ -77,8 +79,8 @@ function Root() {
         {/* Outlets */}
         <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
         <Route path='hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
-        <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} />} />
-        <Route path='/register' element={<SignUpForm signUp={handleSignUp} />} />
+        <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
+        <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}

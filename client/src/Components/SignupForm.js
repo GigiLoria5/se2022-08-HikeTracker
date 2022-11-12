@@ -12,7 +12,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Alert from '@mui/material/Alert';
+
+
 
 const theme = createTheme({
   palette: {
@@ -33,6 +36,10 @@ export default function SignUp(props) {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    props.setMessage('');
+  }, [])
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -50,7 +57,6 @@ export default function SignUp(props) {
         }
         const credentials = { role, name, surname, phone, email, password };         // define object having username and password as elements 
         props.signUp(credentials);                           // call login function in App.js
-        navigate('/login');  // go to home
       
     }
    
@@ -83,7 +89,7 @@ export default function SignUp(props) {
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
-                  required={type!==1? true: false}
+                  required={type!==1 && type!==4? true: false}
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -94,7 +100,7 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required={type!==1? true: false}
+                  required={type!==1 && type!==4? true: false}
                   fullWidth
                   id="lastName"
                   label="Last Name"
@@ -106,7 +112,7 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12} sm={12}>
                 <TextField
-                  required={type!==1? true: false}
+                  required={type!==1 && type!==4? true: false}
                   fullWidth
                   id="phone"
                   label="Phone number"
@@ -143,6 +149,9 @@ export default function SignUp(props) {
                 />
               </Grid>
             </Grid>
+            {props.message &&
+                <Alert severity={props.message.type} onClose={() => props.setMessage('')}>{props.message.msg}</Alert>
+            }
             <Button
               type="submit"
               fullWidth

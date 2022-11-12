@@ -12,6 +12,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+
 
 
 const theme = createTheme({
@@ -33,15 +35,22 @@ export default function SignIn(props) {
   useEffect(() => {
     setEmail('');
     setPassword('');
+    props.setMessage('');
     if(props.isloggedIn===true){
       navigate('/');
     }
   }, [props.isloggedIn,navigate])
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+      event.preventDefault();
+      const form = event.currentTarget;
+
+      if (form.checkValidity() === false) {
+        event.stopPropagation();
+      }else{
         const credentials = { username:email, password };         // define object having username and password as elements 
-        props.login(credentials);                           // call login function in App.js
+        props.login(credentials);                                 // call login function in App.js
+      }
     };
 
 
@@ -63,7 +72,7 @@ export default function SignIn(props) {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -72,6 +81,7 @@ export default function SignIn(props) {
               label="Email Address"
               name="email"
               autoComplete="email"
+              type="email"
               autoFocus
               onChange={ev => setEmail(ev.target.value)}
             />
@@ -86,6 +96,9 @@ export default function SignIn(props) {
               autoComplete="current-password"
               onChange={ev => setPassword(ev.target.value)}
             />
+            {props.message &&
+                <Alert severity={props.message.type} onClose={() => props.setMessage('')}>{props.message.msg}</Alert>
+            }
             <Button
               type="submit"
               fullWidth
@@ -101,6 +114,7 @@ export default function SignIn(props) {
                 </Link>
               </Grid>
             </Grid>
+            
           </Box>
         </Box>
       </Container>

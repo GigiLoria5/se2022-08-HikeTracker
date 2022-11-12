@@ -43,7 +43,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
 
-  - user account type: hiker, hut worker, local guide, emergency operator
+  - user account type: hiker, hut worker, local guide, emergency operator. <ins>Platform managers cannot be registered in this way, but requires system administrator the creation of their accounts. <ins>
   - first name: not compulsory if type hiker has been selected
   - last name: not compulsory if type hiker has been selected
   - phone number: not compulsory if type hiker has been selected

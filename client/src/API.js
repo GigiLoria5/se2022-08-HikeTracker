@@ -59,8 +59,8 @@ async function addUser(credentials) {
             return true;
         } else {
             /* Application error (404, 500, 503 ...) */
-            const text = await response.text();
-            throw new TypeError(text);
+            const errDetails = await response.text();
+            throw errDetails;
         }
     } catch (err) {
         /* Network error */

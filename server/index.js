@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const nodemailer = require('./config/nodemailer.config');
 const crypto = require('crypto');
 const fileupload = require("express-fileupload");
+const path = require('path');
+
 
 /* Passport-related imports */
 const passport = require('passport');
@@ -33,14 +35,14 @@ passport.use(new LocalStrategy(
   async function verify(username, password, cb) {
     const user = await UserDao.getUser(username, password);
     if (!user) {
-      return cb(null, false, 'Incorrect email or password.');
+      return cb(null, false, {error: 'Incorrect email or password'});
     }
     else {
       const active = await UserDao.checkActive(username);
       if (active === true) {
         return cb(null, user);
       } else {
-        return cb(null, false, 'Pending activation, please validate your account.');
+        return cb(null, false, {error:'Pending activation, please validate your account'});
       }
     }
   }));
@@ -138,7 +140,7 @@ app.post('/api/users', async (req, res) => {
 });
 
 // GET /api/users/confirm/:token
-// Confirmation route
+// Verification route
 app.get("/api/users/confirm/:token", async (req, res) => {
   try {
     const token = req.params.token; // Get token from params
@@ -147,10 +149,12 @@ app.get("/api/users/confirm/:token", async (req, res) => {
       const value = await UserDao.islegit(token); //Checks if its legit to update the status of the user associated to the given token
       if (value === true) {
         const result = await UserDao.activate(token); //Updates the user account status
-        return res.status(200).json(result);
+        if(result===true){
+          return res.sendFile(path.join(__dirname, './verification_html_pages/verification.html'));
+        }
 
       } else {
-        return res.status(422).json({ error: "Wrong token or account already verified" });
+        return res.sendFile(path.join(__dirname, './verification_html_pages/error.html'));
       }
 
     } else {

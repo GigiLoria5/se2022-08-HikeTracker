@@ -130,7 +130,7 @@ exports.activate = (token) => {
             if (err) {
                 reject(err);
             } else {
-                resolve("Account verified successfully!");
+                resolve(true);
             }
         });
     });
