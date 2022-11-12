@@ -1,6 +1,6 @@
 'use strict'
 
-const APIURL = 'http://localhost:3001/api';
+const APIURL = 'http://localhost:3001'
 
 /* Performs login, Input: {email, password} Output: user {id,name,email,score} */
 const logIn = async (credentials) => {
@@ -139,7 +139,7 @@ const uploadFile = async (formData) => {
 //get
 // Return the countries
 async function getCountries(){
-    const response = await fetch(new URL('/countries', APIURL), {credentials: 'include'});
+    const response = await fetch(new URL('/api/countries', APIURL), {credentials: 'include'});
     const countriesJson = await response.json();
     if(response.ok){
         return countriesJson.map((c) => ({country: c.country}));
@@ -151,7 +151,7 @@ async function getCountries(){
 //get
 // Return provinces by a country
 async function getProvincesByCountry(country){
-    const response = await fetch(new URL('/provinces/' + country, APIURL), {credentials: 'include'});
+    const response = await fetch(new URL('/api/provinces/' + country, APIURL), {credentials: 'include'});
     const provincesJson = await response.json();
     if(response.ok){
         return provincesJson.map((p) => ({province: p.province}));
@@ -163,7 +163,8 @@ async function getProvincesByCountry(country){
 //get
 // Return cities by a province
 async function getCitiesByProvince(province){
-    const response = await fetch(new URL('/cities/' + province, APIURL), {credentials: 'include'});
+    const response = await fetch(new URL('/api/cities/' + province, APIURL), {credentials: 'include'});
+
     const citiesJson = await response.json();
     if(response.ok){
         return citiesJson.map((c) => ({city: c.city}));
@@ -176,30 +177,22 @@ async function getCitiesByProvince(province){
 // Return hikes by the filters
 async function getHikesWithFilters(city, province, country, difficulty, track_length, ascent, expected_time ){
     var data = {};
-    if(city != null){
-        data = { city: city };
-    }
-    if(province != null){
-        data = { province: province };
-    }
-    if(country != null){
-        data = { country: country };
-    }
-    if(difficulty != null){
-        data = { difficulty: difficulty };
-    }
-    if(track_length != null){
-        data = { track_length: track_length };
-    }
-    if(ascent != null){
-        data = { ascent: ascent };
-    }
-    if(expected_time != null){
-        data = { expected_time: expected_time };
-    }
-
+    if(city != null && city != '')
+        data.city = city;
+    if(province != null && province != '')
+        data.province = province;
+    if(country != null && country != '')
+        data.country = country;
+    if(difficulty != null && difficulty != '')
+        data.difficulty = difficulty;
+    if(track_length != null && track_length != '')
+        data.track_length = track_length;
+    if(ascent != null && ascent != '')
+        data.ascent = ascent;
+    if(expected_time != null && expected_time != '')
+        data.expected_time = expected_time;
     const searchParams = new URLSearchParams(data);
-    const response = await fetch(new URL('/hikes/filters?' + searchParams, APIURL), {credentials: 'include'});
+    const response = await fetch(new URL('/api/hikes/filters?' + searchParams, APIURL), {credentials: 'include'});
     const hikesJson = await response.json();
     if(response.ok){
         return hikesJson.map((h) => ({id: h.id,

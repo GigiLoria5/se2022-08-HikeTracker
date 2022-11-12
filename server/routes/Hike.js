@@ -288,7 +288,7 @@ router.get('/hikes/filters', async (req, res) => {
                     hike.reference_points = [];
                     for ( const r of references){
                         if( r.ref_point_type == 'hut'){
-                            const point = await hutDao.getHutById(r.ref_point_id);
+                            const point = await hutDao.getHutById(r.ref_point_id); 
                             point[0].ref_point_type = r.ref_point_type;
                             hike.reference_points.push(point);
                         } else if(r.ref_point_type == 'parking_lot') {
