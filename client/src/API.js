@@ -1,6 +1,6 @@
 'use strict'
 
-const URL = 'http://localhost:3001/api';
+const APIURL = 'http://localhost:3001/api';
 
 //===========================================================================================
 //          HIKE API
@@ -9,7 +9,7 @@ const URL = 'http://localhost:3001/api';
 //get
 // Return the countries
 async function getCountries(){
-    const response = await fetch(new URL('/countries', URL), {credentials: 'include'});
+    const response = await fetch(new URL('/countries', APIURL), {credentials: 'include'});
     const countriesJson = await response.json();
     if(response.ok){
         return countriesJson.map((c) => ({country: c.country}));
@@ -21,7 +21,7 @@ async function getCountries(){
 //get
 // Return provinces by a country
 async function getProvincesByCountry(country){
-    const response = await fetch(new URL('/provinces/' + country, URL), {credentials: 'include'});
+    const response = await fetch(new URL('/provinces/' + country, APIURL), {credentials: 'include'});
     const provincesJson = await response.json();
     if(response.ok){
         return provincesJson.map((p) => ({province: p.province}));
@@ -33,7 +33,7 @@ async function getProvincesByCountry(country){
 //get
 // Return cities by a province
 async function getCitiesByProvince(province){
-    const response = await fetch(new URL('/cities/' + province, URL), {credentials: 'include'});
+    const response = await fetch(new URL('/cities/' + province, APIURL), {credentials: 'include'});
     const citiesJson = await response.json();
     if(response.ok){
         return citiesJson.map((c) => ({city: c.city}));
@@ -69,7 +69,7 @@ async function getHikesWithFilters(city, province, country, difficulty, track_le
     }
 
     const searchParams = new URLSearchParams(data);
-    const response = await fetch(new URL('/hikes/filters?' + searchParams, URL), {credentials: 'include'});
+    const response = await fetch(new URL('/hikes/filters?' + searchParams, APIURL), {credentials: 'include'});
     const hikesJson = await response.json();
     if(response.ok){
         return hikesJson.map((h) => ({id: h.id,
