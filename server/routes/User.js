@@ -6,13 +6,28 @@ const path = require('path');
 const nodemailer = require('../config/nodemailer.config');
 const crypto = require('crypto');
 const UserDao = require('../dao/UserDAO');
-
+const { body, validationResult } = require('express-validator'); // validation middleware
 
 const router = express.Router();
 
 // POST /api/users
-router.post('/users', async (req, res) => {
+router.post('/users', [
+    body('email').isEmail(),
+    body('role').isString().isIn(['hiker','hut_worker','local_guide','emergency_operator']),
+    body('password').notEmpty().isString(),
+    body('name').if(body('role').isIn(['hut_worker','local_guide'])).notEmpty().isString(),
+    body('surname').if(body('role').isIn(['hut_worker','local_guide'])).notEmpty().isString(),
+    body('name').isString(),
+    body('surname').isString(),
+    body('phone_number').if(body('role').isIn(['hut_worker','local_guide'])).notEmpty().isMobilePhone(),
+
+] ,async (req, res) => {
+    
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ error: "Fields validation failed! Check phone number"  });
+        }
         // Checks if the user email already exists
         const exists = await UserDao.getUserByEmail(req.body.email);
         if (exists === false) {

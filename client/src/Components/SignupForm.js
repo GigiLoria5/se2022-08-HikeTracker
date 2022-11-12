@@ -112,6 +112,7 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12} sm={12}>
                 <TextField
+                  pattern="[7][0-9]{9}"
                   required={type!==1 && type!==4? true: false}
                   fullWidth
                   id="phone_number"
