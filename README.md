@@ -43,7 +43,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
 
-  - user account type: hiker, hut worker, local guide, emergency operator
+  - user account type: hiker, hut worker, local guide, emergency operator. <ins>Platform managers cannot be registered in this way, but requires system administrator the creation of their accounts. <ins>
   - first name: not compulsory if type hiker has been selected
   - last name: not compulsory if type hiker has been selected
   - phone number: not compulsory if type hiker has been selected
@@ -53,47 +53,132 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## API Format
 
-- POST `/api/sessions`
+### User Login and Logout
 
-  - <b>Request body:</b> a json object with an username and a password (both strings) and session cookies.<br>
-    <u>e.g.</u> { "username": "c.basile@hiker.it ", "password": "password" } and credentials cookies.
-  - <b>Response status codes:</b> 200 Created, 401 Unauthorized<br>
-    <b>Body:</b> a json object with user data (id, email, name, surname, phonenumber, role, email verified, token ) or json object with error.<br>
-    <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
+- POST `/api/sessions`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Perform login
+  - Request body: Object containing username and password
+  
+  ```
+  { 
+    "username": "c.basile@hiker.it"
+    "password": "password"
+  }
+  ```
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
+
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
+
 
 - GET `/api/sessions/current`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Retrieve session cookies
+  - Permissions allowed: Authenticated user
+  - Request body: Session cookies
+  
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
 
-  - <b>Request body:</b> session cookies
-  - <b>Response status codes:</b> 200 Ok, 401 Unauthorized, 500 Internal Server Error<br>
-    <b>Body:</b> a json object with user data or json object with error.<br>
-    <u>e.g.</u> {"id":1,"name":"Cataldo","surname":"Basile","email":"c.basile@hiker.it","email_verified":1,"phone_number":"3399957495","role":"hiker","token":null}
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
 
 - DELETE `/api/sessions/current`
 
-  - <b>Request body:</b> session cookies
-  - <b>Response status code:</b> 200 Ok (and 204 No Content)<br>
+  - Description: Logout
+  - Request body: _None_
+  - Response: `204 No Content` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: _TBC_
+
+### User Registration
 
 - POST `/api/users`
-  - <b>Request body:</b> a json object with user data defined in the registration form
-  - <u>e.g.</u>{
-    "role": "hut_worker",
-    "name": "Test",
-    "surname": "Test",
-    "phone": "3331111111",
-    "email": "test@test.it",
-    "password": "password"
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add new user
+  - Permissions allowed: _None_
+  - Request body: User object 
+  
+    ```
+    {
+      "role": "hut_worker",
+      "name": "Test",
+      "surname": "Test",
+      "phone": "3331111111",
+      "email": "test@test.it",
+      "password": "password"
     }
-  - <b>Response status codes:</b> 201 Created, 422 Email already exists, 503 Internal Server Error<br>
-    <b>Body:</b> None or json object with error.
-- GET `/api/users/confirm/:token`
-  - <b>Request parameters:</b> token (integer code)<br>
-  - <b>Request body:</b> None
-  - <b>Response status codes:</b> 200 Ok, 422 Wrong token or account already verified, 404 Missing token, 503 Internal Server Error<br>
-    <b>Body:</b> Json object containing the result status <br>
-    <u>e.g.</u> { Account verified successfully! }
+      ```
+  - Response: `201 OK` (Created)
+  - Error responses: `422 Unprocessable entity` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
 
-### Hike
-    
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+ 
+
+- GET `/api/users/confirm/:token`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Account verification 
+  - Permissions allowed: _None_
+  - Request body: _None_
+  - Request parameters: token (integer)
+  
+  - Response: HTML page when the account has to be verified or has already been verified 
+  - Error responses: `404 Missing token` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+	    <meta charset="UTF-8">
+	      <title> HikeTracker account already verified! </title>
+
+    </head>
+
+    <body>
+	    <h1> Account already verified<h1>
+			  <h2> Your account has already been verified! </h2>
+			    <p> You just have to perform the login with the credentials you choose. </p>
+			<a href="http://localhost:3000/login"> Click here to perform the login</a>
+			</div>
+    </body>
+
+    </html>
+
+  ```
+
+### Hikes
+
 - POST `/api/hikes`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
@@ -272,9 +357,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## Database Tables
 
-- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role
+- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
+  - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
 - Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
   - _altitude_ is in meters
@@ -305,17 +391,3 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 | g.desantis@local_guide.it | password | local guide |
 | m.piccolo@guide_turin.it  | password | local guide |
 | i.folletti987@google.com  | password | local guide |
-
-## Main React Components
-
-- `LoginForm`: this component provides a custom form to perform login operation. It consist of a mui Box including the following elements: one TextField for email, one TextField for password and one Button for submit the fields. Then, there is a GridContainer that includes a link to access the sign up operation.
-
-- `SignupForm`: this component provides a custom form to perform sign up operation. It consist of a mui Box structured using Grid, where each Grit Item contians the following elements:
-  - TypeSelector for define the account type
-  - one TextField for name
-  - one TextField for surname
-  - one TextField for phone number
-  - one TextField for email
-  - one TextField for password
-  - one Button for submit the fields.
-    Then, there is a GridContainer that includes a link to access the login operation.

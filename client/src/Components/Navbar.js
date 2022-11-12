@@ -5,7 +5,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -16,12 +15,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Logo from "./Logo";
+import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = { 'Hikes': '/hikes' };
 
 function MyNavbar(props) {
-    const { window, activePage, changeActivePage, isloggedIn, loggedUser, message, setMessage } = props;
+    
+    const { window, activePage, changeActivePage, isloggedIn, loggedUser } = props;
     const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -67,7 +68,16 @@ function MyNavbar(props) {
                             {/* Account User Buttons */}
                             {isloggedIn ?
                                 <>
-                                    <Button variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout: {loggedUser.name}</Button>
+                                    <Box  >
+                                        {loggedUser.name || loggedUser.surname !== '' ? 
+                                        <>
+                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.name } </Typography>
+                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.surname   } </Typography></> :
+                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.email } </Typography>
+                                        }
+                                    </Box>
+                                    <Button sx={{ m: 0.5}} variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
+
                                 </> :
                                 <>
                                     <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
@@ -119,10 +129,6 @@ function MyNavbar(props) {
                     </Drawer>
                 </Box>
             </Box>
-            {/* Show messagges */}
-            {message &&
-                <Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert>
-            }
             {/* Page Content (defined in other routes) */}
             <Outlet />
         </>

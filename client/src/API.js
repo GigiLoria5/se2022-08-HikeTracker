@@ -46,7 +46,7 @@ const getUserInfo = async () => {
     }
 };
 
-/* Addthe riddle specified as parameter, credentials required  */
+/* Addthe the user specified as parameter, credentials required  */
 async function addUser(credentials) {
     const url = APIURL + '/users';
     try {
@@ -61,8 +61,8 @@ async function addUser(credentials) {
             return true;
         } else {
             /* Application error (404, 500, 503 ...) */
-            const text = await response.text();
-            throw new TypeError(text);
+            const errDetails = await response.text();
+            throw errDetails;
         }
     } catch (err) {
         /* Network error */
