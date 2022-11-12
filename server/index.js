@@ -5,6 +5,8 @@ const UserDao = require('./dao/UserDAO');
 const cors = require('cors');
 const morgan = require('morgan');
 const fileupload = require("express-fileupload");
+const { body, validationResult } = require('express-validator'); // validation middleware
+
 
 
 /* Passport-related imports */
@@ -80,8 +82,16 @@ app.use(fileupload());
 
 
 //////*About the login and logout*////////
-app.post('/api/sessions', function (req, res, next) {
+app.post('/api/sessions', [
+  body('password').notEmpty().isString(),
+  body('username').isEmail()
+], function (req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({ error: "Fields validation failed! Check email and password"  });
+  }
   passport.authenticate('local', (err, user, info) => {
+
     if (err)
       return next(err);
     if (!user) {
