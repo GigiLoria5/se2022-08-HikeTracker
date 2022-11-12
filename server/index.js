@@ -1,11 +1,15 @@
 'use strict';
 
 const express = require('express');
-
+const cors = require('cors');
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials : true
+}
 // init express
 const app = new express(); 
 const PORT = 3001;
-
+app.use(cors(corsOptions));
 ///////////////*API*//////////////////
 // declare routes
 

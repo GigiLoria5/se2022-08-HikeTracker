@@ -1,6 +1,6 @@
 'use strict'
 
-const APIURL = 'http://localhost:3001
+const APIURL = 'http://localhost:3001'
 
 //===========================================================================================
 //          HIKE API
