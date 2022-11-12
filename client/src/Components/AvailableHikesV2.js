@@ -494,7 +494,7 @@ export default function AvailableHikesV2(props) {
 
                                 <Grid containers marginTop={3} marginLeft={2}>
                                     <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
-                                    <Button style={{marginLeft:10}} variant="outlined" color='primary' color='error' onClick={e => resetFilters()}>Reset filters</Button>
+                                    <Button style={{marginLeft:10}} variant="outlined"  color='error' onClick={e => resetFilters()}>Reset filters</Button>
                                     <Typography> <br/></Typography>
                                     <Button variant="text" color='primary' onClick={e => getListHikes()}>See all hikes</Button>
                                 </Grid>
