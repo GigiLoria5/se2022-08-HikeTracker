@@ -23,11 +23,8 @@ import Chip from '@mui/material/Chip';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import API from "../API";
-
-
-
-
-export default function AvailableHikesV2() {
+import Map from './Map';
+export default function AvailableHikesV2(props) {
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -52,14 +49,21 @@ export default function AvailableHikesV2() {
 
     const theme = createTheme({
         palette: {
-          primary: {
-            main: '#008037',
-          },
-          secondary: {
-            main: '#b0b0b0',
-          },
+            primary: {
+                main: '#008037',
+            },
+            secondary: {
+                main: '#b0b0b0',
+            },
         },
     });
+
+
+
+    /*const handleSubmit = (e) => {
+        e.preventDefault();
+
+    }*/
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -327,7 +331,8 @@ export default function AvailableHikesV2() {
     }
     
 
-    return(
+
+    return (
         <div>
 
             <Grid container>
@@ -338,7 +343,7 @@ export default function AvailableHikesV2() {
                     </Grid>
                     <Grid item xs={11} marginTop={2}>
                         <Typography variant="h4" marginTop={1} gutterBottom>
-                            <br/>AVALAIBLE HIKES
+                            <br />AVALAIBLE HIKES
                         </Typography>
                         <Grid containers item sm >
 

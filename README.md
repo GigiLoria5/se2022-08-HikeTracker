@@ -1,7 +1,7 @@
-# se2022-08-HireTracker
+# se2022-08-HikeTracker
 
-[![Unit Tests](https://github.com/GigiLoria5/se2022-08-HireTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HireTracker/actions)
-[![Integration Tests](https://github.com/GigiLoria5/se2022-08-HireTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HireTracker/actions)
+[![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+[![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -28,17 +28,209 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 - Sqlite3 **5.1.2**
 - express **4.18.2**
 - passport **0.6.0**
+- nodemailer **6.8.0**
 
 ### Testing
 
-- Mocha
-- Jest
+- Integration Tests: Mocha
+- Unit Tests: Jest
 
 ## React Client Application Routes
 
+- Route `/` : a simple welcome page that acts as an entry point for all users
+- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of showing everyone various information about them, and for authenticated users also shows the map
+- Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
+
+- Route `/register`: the page contains a form that allows the user to define a new account, by inserting
+
+  - user account type: hiker, hut worker, local guide, emergency operator. <ins>Platform managers cannot be registered in this way, but requires system administrator the creation of their accounts. <ins>
+  - first name: not compulsory if type hiker has been selected
+  - last name: not compulsory if type hiker has been selected
+  - phone number: not compulsory if type hiker has been selected
+  - email address: compulsory, the value inserted is checked using html email validator
+  - password: compulsory, minimum lenght is 8 maximum is 64.
+    At the bottom of this form there is a submit button and a link to go back to login route.
+
 ## API Format
 
-### Hike
+### User Login and Logout
+
+- POST `/api/sessions`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Perform login
+  - Request body: Object containing username and password
+  
+  ```
+  { 
+    "username": "c.basile@hiker.it"
+    "password": "password"
+  }
+  ```
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
+
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
+
+
+- GET `/api/sessions/current`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Retrieve session cookies
+  - Permissions allowed: Authenticated user
+  - Request body: Session cookies
+  
+  - Response: `200 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An object containing user data 
+
+  ```
+  {
+     "id":1,
+     "name":"Cataldo",
+     "surname":"Basile",
+     "email":"c.basile@hiker.it",
+     "email_verified":1,
+     "phone_number":"3399957495",
+     "role":"hiker",
+     "token":null}
+  }
+  ```
+
+- DELETE `/api/sessions/current`
+
+  - Description: Logout
+  - Request body: _None_
+  - Response: `204 No Content` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: _TBC_
+
+### User Registration
+
+- POST `/api/users`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add new user
+  - Permissions allowed: _None_
+  - Request body: User object 
+  
+    ```
+    {
+      "role": "hut_worker",
+      "name": "Test",
+      "surname": "Test",
+      "phone": "3331111111",
+      "email": "test@test.it",
+      "password": "password"
+    }
+      ```
+  - Response: `201 OK` (Created)
+  - Error responses: `422 Unprocessable entity` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+ 
+
+- GET `/api/users/confirm/:token`
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Account verification 
+  - Permissions allowed: _None_
+  - Request body: _None_
+  - Request parameters: token (integer)
+  
+  - Response: HTML page when the account has to be verified or has already been verified 
+  - Error responses: `404 Missing token` (Email already exists), `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+	    <meta charset="UTF-8">
+	      <title> HikeTracker account already verified! </title>
+
+    </head>
+
+    <body>
+	    <h1> Account already verified<h1>
+			  <h2> Your account has already been verified! </h2>
+			    <p> You just have to perform the login with the credentials you choose. </p>
+			<a href="http://localhost:3000/login"> Click here to perform the login</a>
+			</div>
+    </body>
+
+    </html>
+
+  ```
+
+### Hikes
+
+- POST `/api/hikes`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add description for hike
+  - Permissions allowed: Local guide
+  - Request body: Hike description, including gpx file with gpx tag
+
+  ```
+  {
+        "title": "Ring for Monte Calvo",
+        "peak_altitude": 1357,
+        "city": "Carignano",
+        "province": "Torino",
+        "country": "Italy",
+        "description": "It runs between ...",
+        "ascent": 320,
+        "track_length": 6.2,
+        "expected_time": 3.3,
+        "difficulty": 2,
+        "start_point_type": "parking_lot",
+        "start_point_id": 3,
+        "end_point_type": "location",
+        "end_point_id": 18
+        "reference_points": {
+          "points": [
+            {
+              "type":"hut",
+              "id":1
+            },
+            {
+              "type":"hut",
+              "id":2
+            },
+            {
+              "type":"location",
+              "id":12
+            }
+          ]
+        }
+        "gpx" : ...
+  }
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
 
 - GET /api/countries
 
@@ -165,9 +357,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## Database Tables
 
-- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role
+- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
+  - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
 - Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
   - _altitude_ is in meters
