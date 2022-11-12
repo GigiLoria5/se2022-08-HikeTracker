@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Alert from '@mui/material/Alert';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
 
 
 
@@ -111,17 +113,12 @@ export default function SignUp(props) {
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField
-                  pattern="[7][0-9]{9}"
-                  required={type!==1 && type!==4? true: false}
-                  fullWidth
-                  id="phone_number"
-                  label="Phone number"
-                  name="phone_number"
-                  minLength={9}
-                  maxLength={10}
-                  onChange={ev => setPhone(ev.target.value)} 
-                />
+              <PhoneInput
+              required={type!==1 && type!==4? true: false}
+              placeholder="Enter phone number"
+              value={phone_number}
+              onChange={setPhone}/>
+
               </Grid>
               
               <Grid item xs={12}>
@@ -144,8 +141,8 @@ export default function SignUp(props) {
                   label="Password"
                   type="password"
                   id="password"
-                  minLength={6}
                   autoComplete="new-password"
+                  inputProps={{ minLength: 8 }}
                   onChange={ev => setPassword(ev.target.value)} 
                 />
               </Grid>

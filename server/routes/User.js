@@ -20,7 +20,7 @@ router.post('/users', [
     body('name').isString(),
     body('surname').isString(),
     body('phone_number').if(body('role').isIn(['hut_worker','local_guide'])).notEmpty().isMobilePhone(),
-
+    body('phone_number').if(body('phone_number').notEmpty()).isMobilePhone(),
 ] ,async (req, res) => {
     
     try {
