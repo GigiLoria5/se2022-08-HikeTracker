@@ -63,7 +63,12 @@ export default function AvailableHikesV2() {
 
     //Get from api the list of available countries to do hikes
     const getListCountries = () => {
-        const listCountries = API.getCountries()
+        const listCountries = []
+        for (var i = 0 ; i<API.getCountries().length; i++) {
+            console.log(API.getCountries()[i])
+            listCountries.push(API.getCountries()[i].country)
+        }
+
         //const listCountries = ['TO', 'AQ', 'CH', 'PE']
 
         return (
@@ -73,8 +78,14 @@ export default function AvailableHikesV2() {
     
     //Get from api the list of available cities to do hikes
     const getListCities = (province) => {
-        const listCities = API.getCitiesByProvince(province)
+        //const listCities = API.getCitiesByProvince(province)
         //const listCities = ['TO', 'AQ', 'CH', 'PE']
+        const listCities = []
+        for (var i = 0 ; i<API.getCitiesByProvince(province).length; i++) {
+            listCities.push(API.getCitiesByProvince(province)[i].city)
+        }
+
+
         return (
             listCities
         )
@@ -83,7 +94,14 @@ export default function AvailableHikesV2() {
     //Get from api the list of available provinces to do hikes
     const getListProvinces = (country) => {
         //const listProvinces = ['TO', 'AQ', 'CH', 'PE']
-        const listProvinces = API.getProvincesByCountry(country)
+        //const listProvinces = API.getProvincesByCountry(country)
+        const listProvinces = []
+        for (var i = 0 ; i<API.getProvincesByCountry(country).length; i++) {
+            listProvinces.push(API.getProvincesByCountry(country)[i].province)
+        }
+
+
+
         return (
             listProvinces
         )
@@ -239,14 +257,23 @@ export default function AvailableHikesV2() {
         ])
         */
 
-        setHikes(API.getHikesWithFilters(null, null, null, null, null, null, null))
+        const allHikes = []
+        for (var i = 0 ; i<API.getHikesWithFilters(null, null, null, null, null, null, null).length; i++) {
+            allHikes.push(API.getHikesWithFilters(null, null, null, null, null, null, null)[i])
+        }
+        setHikes(allHikes)
 
     };
     
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        setHikes(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue))
+        const filteredHikes = []
+        for (var i = 0 ; i<API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue).length; i++) {
+            filteredHikes.push(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue)[i])
+        }
+        setHikes(filteredHikes)
+        //setHikes(API.getHikesWithFilters(city, province, country, difficultyValue, lengthValue, ascentValue, timeValue))
         
     } 
 
