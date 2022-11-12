@@ -5,6 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -17,20 +18,15 @@ import Link from '@mui/material/Link';
 import Logo from "./Logo";
 
 const drawerWidth = 240;
-const navItems = { 'Hikes': '/hikes', 'HikesV2': '/hikesv2' };
+const navItems = { 'Hikes': '/hikes' };
 
 function MyNavbar(props) {
-    const { window, isloggedIn, loggedUser } = props;
+    const { window, activePage, changeActivePage, isloggedIn, loggedUser, message, setMessage } = props;
     const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [activePage, setActivePage] = React.useState(null);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
-    };
-
-    const changeActivePage = (activePageName) => {
-        setActivePage(activePageName);
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -123,6 +119,10 @@ function MyNavbar(props) {
                     </Drawer>
                 </Box>
             </Box>
+            {/* Show messagges */}
+            {message &&
+                <Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert>
+            }
             {/* Page Content (defined in other routes) */}
             <Outlet />
         </>

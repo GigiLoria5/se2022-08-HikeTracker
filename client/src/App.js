@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AvailableHikes from "./Components/AvailableHikes";
 import AvailableHikesV2 from "./Components/AvailableHikesV2";
 import Navbar from "./Components/Navbar";
 import LoginForm from "./Components/Loginform";
@@ -9,9 +8,6 @@ import Homepage from "./Components/Homepage"
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
-import Alert from '@mui/material/Alert';
-import Map from './Components/Map';
-
 
 function App() {
   /* A little Router trick */
@@ -27,15 +23,20 @@ function Root() {
   const [loggedIn, setLoggedIn] = useState(false);        /* Boolean user login status (true,false) */
   const [loggedUser, setLoggedUser] = useState(false);    /* Contains logged user info */
   const [message, setMessage] = useState('');             /* Contains Welcome messages for login */
+  const [activePage, setActivePage] = useState(null);
+
+  const changeActivePage = (activePageName) => {
+    setActivePage(activePageName);
+  };
 
   /* Reload session after refresh */
   useEffect(() => {
     const checkAuth = async () => {
-      try{
+      try {
         const user = await API.getUserInfo();               // Reload session and retrieve user info
         setLoggedIn(true);
         setLoggedUser(user);
-      }catch (err){
+      } catch (err) {
         // Not managed, just for reload session
       }
     };
@@ -48,7 +49,7 @@ function Root() {
       setLoggedUser(user);
       setLoggedIn(true);
       setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
-      
+
     } catch (err) {
       setMessage({ msg: `${err}!`, type: 'error' });
     }
@@ -67,26 +68,17 @@ function Root() {
     setLoggedIn(false);
     await API.logOut();
     setMessage('');
-
   };
-
 
   return (
     <Routes>
-      <Route path='/' element={
-      <>
-      <Navbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} />
-      {message && 
-                <Alert severity={message.type} onClose={() => setMessage('')}>{message.msg}</Alert>
-              }
-       </>}>   
+      <Route path='/' element={<Navbar activePage={activePage} changeActivePage={changeActivePage}
+        handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
         {/* Outlets */}
-        <Route path='' element={<Homepage />} />
-        <Route path='hikes' element={<AvailableHikes loggedUser={loggedUser} />} />
-        <Route path='hikesv2' element={<AvailableHikesV2 />} />
+        <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
+        <Route path='hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
         <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} />} />
         <Route path='/register' element={<SignUpForm signUp={handleSignUp} />} />
-        <Route path='/hiker/hikes' element={<AvailableHikes loggedUser={true /** TO FIX */}/>} />
       </Route>
 
       {/* The following routes will NOT have the navbar */}

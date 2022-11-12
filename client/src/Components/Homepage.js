@@ -19,8 +19,16 @@ const HomepageContent = styled('section')(({ theme }) => ({
 }));
 
 function Homepage(props) {
-    const { children } = props;
+    const { children, changeActivePage } = props;
     const navigate = useNavigate();
+
+    const actionPageName = 'Hikes';
+    const actionPageRoute = '/hikes';
+    const clickHandle = event => {
+        event.preventDefault();
+        changeActivePage(actionPageName);
+        navigate(actionPageRoute);
+    }
 
     return (
         <Container className="container-full-size">
@@ -67,7 +75,7 @@ function Homepage(props) {
                         component="a"
                         href=""
                         sx={{ minWidth: 200 }}
-                        onClick={() => navigate('/hikes')}
+                        onClick={clickHandle}
                     >
                         Find Out More
                     </Button>
