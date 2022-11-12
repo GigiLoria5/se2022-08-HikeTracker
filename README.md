@@ -53,6 +53,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## API Format
 
+### User Login and Logout
+
 - POST `/api/sessions`
 
   - <b>Request body:</b> a json object with an username and a password (both strings) and session cookies.<br>
@@ -73,6 +75,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - <b>Request body:</b> session cookies
   - <b>Response status code:</b> 200 Ok (and 204 No Content)<br>
 
+### User Registration
+
 - POST `/api/users`
   - <b>Request body:</b> a json object with user data defined in the registration form
   - <u>e.g.</u>{
@@ -91,6 +95,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - <b>Response status codes:</b> 200 Ok, 422 Wrong token or account already verified, 404 Missing token, 503 Internal Server Error<br>
     <b>Body:</b> Json object containing the result status <br>
     <u>e.g.</u> { Account verified successfully! }
+
+### Hikes
+
 - POST `/api/hikes`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
@@ -146,9 +153,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## Database Tables
 
-- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone number, role
+- Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
+  - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
 - Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
   - _altitude_ is in meters
@@ -179,17 +187,3 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 | g.desantis@local_guide.it | password | local guide |
 | m.piccolo@guide_turin.it  | password | local guide |
 | i.folletti987@google.com  | password | local guide |
-
-## Main React Components
-
-- `LoginForm`: this component provides a custom form to perform login operation. It consist of a mui Box including the following elements: one TextField for email, one TextField for password and one Button for submit the fields. Then, there is a GridContainer that includes a link to access the sign up operation.
-
-- `SignupForm`: this component provides a custom form to perform sign up operation. It consist of a mui Box structured using Grid, where each Grit Item contians the following elements:
-  - TypeSelector for define the account type
-  - one TextField for name
-  - one TextField for surname
-  - one TextField for phone number
-  - one TextField for email
-  - one TextField for password
-  - one Button for submit the fields.
-    Then, there is a GridContainer that includes a link to access the login operation.
