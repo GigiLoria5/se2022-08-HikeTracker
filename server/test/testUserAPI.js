@@ -4,11 +4,119 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = chai.expect;
 const request = require('supertest');
+const { user } = require("../config/auth.config.js");
 const app = require('../index.js');
 const serverURL = "http://localhost:3001/api/";
 
 chai.use(chaiHttp);
 chai.should();
+
+describe("User Login - Wrong Fields", function (){
+    it("T1 wrong Email type", (done) => {
+        const user = {
+            "username" : 9876213,
+            "password": "password"
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    it("T2 wrong Email format", (done) => {
+        const user = {
+            "username" : "@google.it",
+            "password": "password"
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    it("T3 wrong password format", (done) => {
+        const user = {
+            "username" : "test@google.it",
+            "password": 111
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    it("T4 missing email", (done) => {
+        const user = {
+            "username" : "",
+            "password": "password"
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    it("T5 missing password", (done) => {
+        const user = {
+            "username" : "test@google.it",
+            "password": ""
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    it("T6 wrong password", (done) => {
+        const user = {
+            "username" : "c.basile@hiker.it",
+            "password": "password1"
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(401);
+                done();
+            });
+    });
+
+    it("T7 wrong email", (done) => {
+        const user = {
+            "username" : "c1.basile@hiker.it",
+            "password": "password"
+        }
+        chai
+            .request(serverURL)
+            .post('sessions')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(401);
+                done();
+            });
+    });
+});
 
 describe("User Registration - Wrong Fields", function () {
 
