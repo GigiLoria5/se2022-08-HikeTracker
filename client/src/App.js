@@ -84,8 +84,8 @@ function Root() {
                 <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
-                <Route key={"Local Guide Page"} exact path={"/local-guide-page"} element={<LocalGuidePage />} />
-                <Route key={"Add Hikes"} exact path={"/local-guide-add-hikes"} element={<AddHike />} />
+                <Route path="/local-guide-page" element={<LocalGuidePage />} />
+                <Route path="/local-guide-add-hikes" element={<AddHike />} />
             </Route>
 
             {/* The following routes will NOT have the navbar */}

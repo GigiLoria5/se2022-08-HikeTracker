@@ -23,7 +23,8 @@ import Chip from '@mui/material/Chip';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import API from "../API";
-import Map from './Map';
+
+
 export default function AvailableHikesV2(props) {
 
     const [expanded, setExpanded] = React.useState(false);
@@ -67,9 +68,11 @@ export default function AvailableHikesV2(props) {
             setCountries([...country, ...cn.map(a => a.country)]);
         });
 
-        getListHikes();
+        API.getHikesWithFilters(null, null, null, null, null, null, null).then(hikes => {
+            hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
+            setHikes(hikes);
+        });
     }, []);
-
 
     useEffect(() => {
         if (country != '') {
@@ -77,7 +80,6 @@ export default function AvailableHikesV2(props) {
                 setProvinces([...provinces, ...pv.map(a => a.province)]);
             })
         }
-
     }, [country]);
 
     useEffect(() => {
@@ -96,7 +98,7 @@ export default function AvailableHikesV2(props) {
         setProvince('');
         setCity('');
         setCountry('');
-    }
+    };
 
     const timeFromState = () => {
         let val = null;
@@ -168,27 +170,13 @@ export default function AvailableHikesV2(props) {
         return val;
     }
 
-    //Get from api the list of available hikes (no filter)
-    const getListHikes = () => {
-
-        API.getHikesWithFilters(null, null, null, null, null, null, null).then(hikes => {
-            //console.log(hikes);
-            hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
-            setHikes(hikes);
-        })
-
-    };
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
         API.getHikesWithFilters(city, province, country, difficultyFromState(), lengthFromState(), ascentFromState(), timeFromState()).then(hikes => {
             hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
             setHikes(hikes);
         })
-
     }
-
 
     const cityDisabled = (province, country) => {
         let citySelect
@@ -231,9 +219,7 @@ export default function AvailableHikesV2(props) {
                     </Select>
                 </FormControl>
         }
-
         return citySelect
-
     }
 
     const handleStartPointTypes = (value) => {
@@ -245,7 +231,6 @@ export default function AvailableHikesV2(props) {
         } else if (value.start_point_type === "hut") {
             chipStartPoint = <Chip label={[value.start[0].name, " ", value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" />
         }
-
         return chipStartPoint
     }
 
@@ -258,7 +243,6 @@ export default function AvailableHikesV2(props) {
         } else if (value.end_point_type === "hut") {
             chipEndPoint = <Chip label={[value.end[0].name, " ", value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" />
         }
-
         return chipEndPoint
     }
 
@@ -266,9 +250,7 @@ export default function AvailableHikesV2(props) {
         let tab = []
         for (var i = 0; i < value.reference_points.length; i++) {
             value.reference_points[i].map((valuee) => {
-                let chipsRefPoints
-                //console.log(valuee)
-                //console.log(value.reference_points)
+                let chipsRefPoints;
                 if (valuee.ref_point_type === "parking_lot") {
                     chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" />
                 }
@@ -337,21 +319,17 @@ export default function AvailableHikesV2(props) {
     return (
         <div>
 
-            <Grid container>
+            <Grid container spacing={1}>
                 <ThemeProvider theme={theme}>
                     {/* Title */}
-                    <Grid item xs={12}>
+                    <Grid item xs={12} marginLeft={2}>
                         <Typography variant="h4" marginTop={1} gutterBottom>
                             <br />AVALAIBLE HIKES
                         </Typography>
                     </Grid>
 
-                    {/* Why margin like this? */}
-                    <Grid item xs={0.5}>
-                    </Grid>
-
                     {/* Filter */}
-                    <Grid item xs={3} marginTop={2}>
+                    <Grid item md={12} lg={3} marginLeft={2} marginRight={2}>
                         <Grid containers item sm >
 
                             <Paper elevation={3}>
@@ -510,7 +488,7 @@ export default function AvailableHikesV2(props) {
                     </Grid>
 
                     {/* Hikes */}
-                    <Grid item xs={8}>
+                    <Grid item md={12} lg={8} marginLeft={2} marginRight={2}>
                         {hikes.map((value) => {
                             return (
                                 <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)} key={value.id}>
@@ -576,8 +554,6 @@ export default function AvailableHikesV2(props) {
                         </Typography>
                     </Grid>
 
-                    {/* Why margin like this? */}
-                    <Grid item xs={0.5}></Grid>
                 </ThemeProvider>
 
             </Grid>
