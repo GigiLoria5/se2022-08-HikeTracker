@@ -84,7 +84,6 @@ function MyNavbar(props) {
                                     </Grid>
                                     <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" className="btn-color-active"
                                         onClick={() => { props.handleLogout(); changeActivePage(null); navigate('/') }} >Logout</Button>
-
                                 </> :
                                 <>
                                     <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>

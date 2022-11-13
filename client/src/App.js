@@ -10,10 +10,10 @@ import AddHike from "./Components/AddHike"
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
+import ProtectedRoute from './Utils/ProtectedRoute';
 
 function App() {
     /* A little Router trick */
-
     return (
         <Router>
             <Root />
@@ -82,10 +82,16 @@ function Root() {
                 {/* Outlets */}
                 <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
                 <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
+                
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
-                <Route path="/local-guide-page" element={<LocalGuidePage />} />
-                <Route path="/local-guide-add-hikes" element={<AddHike />} />
+                
+                <Route path='/local-guide-page' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} roleAllowed={['local_guide']} />} >
+                    <Route path="" element={<LocalGuidePage />} />
+                </Route>
+                <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} roleAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddHike />} />
+                </Route>
             </Route>
 
             {/* The following routes will NOT have the navbar */}
