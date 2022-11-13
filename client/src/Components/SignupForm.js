@@ -11,7 +11,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, InputAdornment, IconButton } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState, useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import 'react-phone-number-input/style.css';
@@ -35,6 +37,11 @@ export default function SignUp(props) {
     const [phone_number, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     const navigate = useNavigate();
 
@@ -50,6 +57,13 @@ export default function SignUp(props) {
         if (form.checkValidity() === false) {
             event.stopPropagation();
         } else {
+            if (confirmPassword !== password) {
+                console.log("pippo");
+                event.stopPropagation();
+                props.setMessage({ msg: `The password confirmation does not match`, type: 'error' });
+                return;
+            }
+
             let role = '';
             switch (type) {
                 case 1: role = "hiker"; break;
@@ -60,9 +74,7 @@ export default function SignUp(props) {
             }
             const credentials = { role, name, surname, phone_number, email, password };         // define object having username and password as elements 
             props.signUp(credentials);                           // call login function in App.js
-
         }
-
     };
 
     return (
@@ -118,6 +130,7 @@ export default function SignUp(props) {
                                     required={type !== 1 && type !== 4 ? true : false}
                                     placeholder="Enter phone number"
                                     value={phone_number}
+                                    defaultCountry="IT"
                                     onChange={setPhone} />
 
                             </Grid>
@@ -140,11 +153,48 @@ export default function SignUp(props) {
                                     fullWidth
                                     name="password"
                                     label="Password"
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="password"
                                     autoComplete="new-password"
                                     inputProps={{ minLength: 8 }}
                                     onChange={ev => setPassword(ev.target.value)}
+                                    InputProps={{ // <-- This is where the toggle button is added.
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                >
+                                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="confirmpassword"
+                                    label="Confirm Password"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    id="confirmpassword"
+                                    autoComplete="new-password"
+                                    inputProps={{ minLength: 8 }}
+                                    onChange={ev => setConfirmPassword(ev.target.value)}
+                                    InputProps={{ // <-- This is where the toggle button is added.
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowConfirmPassword}
+                                                >
+                                                    {showConfirmPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
                                 />
                             </Grid>
                         </Grid>

@@ -56,7 +56,6 @@ router.post('/hikes', async (req, res) => {
             if (!hike.isValid()) {
                 throw "invalid arguments"
             }
-
             switch (hike.start_point_type) {
                 case "location":
                     {
@@ -85,7 +84,6 @@ router.post('/hikes', async (req, res) => {
                 default:
                     throw "invalid start point"
             }
-
             switch (hike.end_point_type) {
                 case "location":
                     {
@@ -114,9 +112,18 @@ router.post('/hikes', async (req, res) => {
                 default:
                     throw "invalid end point"
             }
-            const id = await hikeDao.addHike(hike, author_id)
 
+            /* Check types before adding hike */
+            const possibleTypes = ['location', 'hut', 'parking_lot'];
+            const refPointTypes = JSON.parse(req.body.reference_points).points.map((point) => point.type);
+            const checkRefPointTypes = refPointTypes.every((type) => possibleTypes.includes(type));
+            if (!checkRefPointTypes)
+                throw "invalid reference points";
+
+            /* Add hike after everything is correct */
+            const id = await hikeDao.addHike(hike, author_id)
             hike_id = id;
+
             for (const p of JSON.parse(req.body.reference_points).points) {
                 let res = null;
                 switch (p.type) {
@@ -137,7 +144,6 @@ router.post('/hikes', async (req, res) => {
                     });
                     throw "invalid reference points"
                 }
-
                 hikeDao.addReferencePoint(id, p.type, p.id).catch(err => {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
@@ -146,7 +152,6 @@ router.post('/hikes', async (req, res) => {
                     throw "invalid reference points"
                 })
             }
-
             if (gpx.mimetype != "application/gpx+xml") {
                 hikeDao.deleteHike(hike_id).then(_a => {
                     hikeDao.deleteReferencePoints(hike_id);
@@ -163,7 +168,6 @@ router.post('/hikes', async (req, res) => {
                     throw err;
                 }
             });
-
             //send response
             res.status(201).send({
                 message: 'Hike uploaded'
