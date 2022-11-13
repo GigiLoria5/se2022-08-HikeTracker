@@ -1,5 +1,6 @@
 /* IMPORTS */
 const hikeDao = require('../dao/HikeDAO');
+const fs = require('fs');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { step } = require('mocha-steps');
@@ -12,6 +13,7 @@ const expect = chai.expect;
 describe('Add hike', () => {
 
     let last_hike_id;
+    let last_gps_track;
 
     step('T1: POST/api/hikes [GOOD]', async function () {
         await agent.post('/api/hikes')
@@ -56,7 +58,14 @@ describe('Add hike', () => {
         const hikes = await hikeDao.getAllHikes();
         for (h of hikes) {
             last_hike_id = h.id;
+            last_gps_track = h.gps_track;
         }
+
+        fs.unlink('gpx_files/' + last_gps_track + '.gpx',function(err,results){
+            if(err)   console.log('File Doesnt exists');
+             else console.log('deleted!');
+           });
+
         hikeDao.deleteHike(last_hike_id).then(_a => {
             hikeDao.deleteReferencePoints(last_hike_id);
         });

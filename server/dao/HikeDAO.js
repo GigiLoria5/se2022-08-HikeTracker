@@ -335,7 +335,7 @@ exports.getHikeByExpectedTime = (min,max) => {
 
 exports.getAllHikes = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike`;
+        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
@@ -352,6 +352,7 @@ exports.getAllHikes = () => {
                     track_length: row.track_length, 
                     expected_time: row.expected_time, 
                     difficulty: row.difficulty, 
+                    gps_track: row.gps_track,
                     start_point_type: row.start_point_type, 
                     start_point_id: row.start_point_id, 
                     end_point_type: row.end_point_type,
