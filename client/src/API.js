@@ -113,29 +113,6 @@ const createHike = async (hike) => {
     }
 }
 
-/* NOT NEEDED
-const uploadFile = async (formData) => {
-    try {
-        let response = await axios({
-            method: "post",
-            url: URL + "/uploadFile",              //need the server API URL
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-        });
-
-        let err = new Error();
-        if (!response.ok) {
-
-            err.message = "OTHER ERROR"
-            throw err;
-        }
-    } catch (error) {
-        console.log(error)
-    }
-
-}
-*/
-
 //get
 // Return the countries
 async function getCountries() {

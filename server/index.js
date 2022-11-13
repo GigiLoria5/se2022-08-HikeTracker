@@ -65,6 +65,9 @@ app.use(session({
     secret: "shhhhh... it's a secret!",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        sameSite: 'strict', // Remove SameSite Warning
+    }
 }));
 app.use(passport.authenticate('session'));
 

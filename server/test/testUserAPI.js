@@ -369,7 +369,13 @@ describe("User Registration - New Users", function () {
             .send(user)
             .end(async (err, res) => {
                 res.should.have.status(201);
-                idUserToDelete = await UserDao.getUserByEmail(user.email).id;
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
                 done();
             });
     });
@@ -394,7 +400,13 @@ describe("User Registration - New Users", function () {
             .send(user)
             .end(async (err, res) => {
                 res.should.have.status(201);
-                idUserToDelete = await UserDao.getUserByEmail(user.email).id;
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
                 done();
             });
     });
@@ -419,7 +431,13 @@ describe("User Registration - New Users", function () {
             .send(user)
             .end(async (err, res) => {
                 res.should.have.status(201);
-                idUserToDelete = await UserDao.getUserByEmail(user.email).id;
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
                 done();
             });
     });
@@ -434,7 +452,7 @@ describe("User Registration - New Users", function () {
     step("confirm account with token", async (done) => {
         chai
             .request(serverURL)
-            .get(`confirm/${token}`)
+            .get(`users/confirm/${token}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 done();
@@ -444,7 +462,7 @@ describe("User Registration - New Users", function () {
     step("try confirm again account with token", async (done) => {
         chai
             .request(serverURL)
-            .get(`confirm/${token}`)
+            .get(`users/confirm/${token}`)
             .end((err, res) => {
                 res.should.have.status(422);
                 done();
@@ -454,7 +472,7 @@ describe("User Registration - New Users", function () {
     step("missing token", (done) => {
         chai
             .request(serverURL)
-            .get(`confirm/`)
+            .get(`users/confirm/`)
             .end((err, res) => {
                 res.should.have.status(404);
                 done();

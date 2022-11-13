@@ -58,13 +58,6 @@ export default function AvailableHikesV2(props) {
         },
     });
 
-
-
-    /*const handleSubmit = (e) => {
-        e.preventDefault();
-
-    }*/
-
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -72,7 +65,9 @@ export default function AvailableHikesV2(props) {
     useEffect(() => {
         API.getCountries().then(cn => {
             setCountries([...country, ...cn.map(a => a.country)]);
-        })
+        });
+
+        getListHikes();
     }, []);
 
 
@@ -193,7 +188,6 @@ export default function AvailableHikesV2(props) {
         })
 
     }
-
 
 
     const cityDisabled = (province, country) => {
@@ -345,14 +339,19 @@ export default function AvailableHikesV2(props) {
 
             <Grid container>
                 <ThemeProvider theme={theme}>
-
-
-                    <Grid item xs={0.5}>
-                    </Grid>
-                    <Grid item xs={11} marginTop={2}>
+                    {/* Title */}
+                    <Grid item xs={12}>
                         <Typography variant="h4" marginTop={1} gutterBottom>
                             <br />AVALAIBLE HIKES
                         </Typography>
+                    </Grid>
+
+                    {/* Why margin like this? */}
+                    <Grid item xs={0.5}>
+                    </Grid>
+
+                    {/* Filter */}
+                    <Grid item xs={3} marginTop={2}>
                         <Grid containers item sm >
 
                             <Paper elevation={3}>
@@ -496,7 +495,6 @@ export default function AvailableHikesV2(props) {
                                         <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
                                         <Button style={{ marginLeft: 10 }} variant="outlined" color='error' onClick={e => resetFilters()}>Reset filters</Button>
                                         <Typography> <br /></Typography>
-                                        <Button variant="text" color='primary' onClick={e => getListHikes()}>See all hikes</Button>
                                     </Grid>
                                 </form>
                                 <Grid containers>
@@ -509,10 +507,13 @@ export default function AvailableHikesV2(props) {
                             <br />
                         </Grid>
 
+                    </Grid>
 
+                    {/* Hikes */}
+                    <Grid item xs={8}>
                         {hikes.map((value) => {
                             return (
-                                <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)}>
+                                <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)} key={value.id}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls="panel1bh-content"
@@ -573,8 +574,9 @@ export default function AvailableHikesV2(props) {
                         <Typography variant="h5" gutterBottom>
                             <br />
                         </Typography>
-
                     </Grid>
+
+                    {/* Why margin like this? */}
                     <Grid item xs={0.5}></Grid>
                 </ThemeProvider>
 

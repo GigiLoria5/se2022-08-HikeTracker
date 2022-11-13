@@ -6,8 +6,6 @@ const { resolve } = require('path');
 const db = require('./db'); // open the database
 const User = require('../models/User.js');
 
-
-
 exports.getUser = (email, password) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM user WHERE email = ?';
@@ -15,16 +13,13 @@ exports.getUser = (email, password) => {
             if (err) { reject(err); }
             else if (row === undefined) { resolve(false); }
             else {
-                const user = new User(row.id,row.name,row.surname,row.email,"","",row.email_verified,row.phone_number,row.role,row.token);
+                const user = new User(row.id, row.name, row.surname, row.email, "", "", row.email_verified, row.phone_number, row.role, row.token);
                 const salt = row.salt;
-                crypto.scrypt(password, salt, 32, (err, hashedPassword) => {
-                    if (err) reject(err);
-
-                    const passwordHex = Buffer.from(row.password, 'hex');
-                    if (!crypto.timingSafeEqual(passwordHex, hashedPassword))
-                        resolve(false);
-                    else resolve(user);
-                });
+                const hashedPassword = crypto.createHash('sha256')
+                    .update(password, "utf8")
+                    .update(makeHash(salt))
+                    .digest("base64");
+                resolve(hashedPassword === row.password ? user : false);
             }
         });
     });
@@ -46,7 +41,7 @@ exports.checkActive = (email) => {
     });
 }
 
-exports.getAllUsers = () =>{
+exports.getAllUsers = () => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM user';
         db.all(sql, (err, rows) => {
@@ -54,14 +49,14 @@ exports.getAllUsers = () =>{
                 reject(err);
             } else {
                 resolve(rows.map((row) =>
-                new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token)
+                    new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token)
                 ));
             }
         });
     });
 }
 
-exports.deleteUser = (id) =>{
+exports.deleteUser = (id) => {
     return new Promise((resolve, reject) => {
         const sql = `DELETE FROM user WHERE id = ?`;
         db.run(sql, [id], function (err) {
@@ -83,7 +78,7 @@ exports.getUserById = (userId) => {
             else if (row === undefined)
                 resolve(null); // user not found
             else {
-                const user = new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token);
+                const user = new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token);
                 resolve(user);
             }
         });
@@ -99,7 +94,7 @@ exports.getUserByEmail = (email) => {
             else if (row === undefined)
                 resolve(false); // user not found
             else {
-                const user = new User(row.id,row.name,row.surname,row.email,row.password,row.salt,row.email_verified,row.phone_number,row.role,row.token);
+                const user = new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token);
                 resolve(user);
             }
         });
@@ -109,20 +104,21 @@ exports.getUserByEmail = (email) => {
 /*  Creates a new user inside the database  */
 exports.addUser = (body, token) => {
     const salt = crypto.randomBytes(16).toString('hex');
-    crypto.scrypt(body.password, salt, 32, (err, hashedPassword) => {
-        if (err) reject(err);
-        return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO user (name,surname,email,password,salt,email_verified,phone_number,role,token) VALUES(?,?,?,?,?,?,?,?,?)';
-            db.run(sql, [body.name, body.surname, body.email, hashedPassword.toString('hex'), salt, 0, body.phone_number, body.role, token], (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(true);
-                }
-            });
+    const hashedPassword = crypto.createHash('sha256')
+        .update(body.password, "utf8")
+        .update(makeHash(salt))
+        .digest("base64");
+
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO user (name,surname,email,password,salt,email_verified,phone_number,role,token) VALUES(?,?,?,?,?,?,?,?,?)';
+        db.run(sql, [body.name, body.surname, body.email, hashedPassword.toString('hex'), salt, 0, body.phone_number, body.role, token], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
         });
     });
-
 }
 
 /* Activate the user given its token received by email */
@@ -154,4 +150,8 @@ exports.activate = (token) => {
             }
         });
     });
+}
+
+function makeHash(val) {
+    return crypto.createHash('sha256').update(val, "utf8").digest();
 }
