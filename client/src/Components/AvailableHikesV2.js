@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import Chip from '@mui/material/Chip';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -18,18 +19,16 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-
-import Chip from '@mui/material/Chip';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import API from "../API";
-
+import { timeFromState, ascentFromState, lengthFromState, difficultyFromState } from "../Utils/HikesFilter";
+import { handleStartPointTypes, handleEndPointTypes, handleRef } from "../Utils/HikesList";
 
 export default function AvailableHikesV2(props) {
 
     const [expanded, setExpanded] = React.useState(false);
 
-    const listDifficulty = ['Tourist', ' Hiker', 'Professionnal Hiker'];
+    const listDifficulty = ['Tourist', 'Hiker', 'Professionnal Hiker'];
     const listLength = ['0 - 5 km', '5 - 15 km', 'More than 15 km'];
     const listAscent = ['0 - 300 m', '300 - 600 m', '600 - 1000 m', 'More than 1000 m'];
     const listTime = ['0 - 1 h', '1 - 3 h', '3 - 5 h', 'More than 5 h'];
@@ -78,18 +77,16 @@ export default function AvailableHikesV2(props) {
     useEffect(() => {
         if (country !== '') {
             API.getProvincesByCountry(country).then(pv => {
-                setProvinces([...provinces, ...pv.map(a => a.province)]);
+                setProvinces([...pv.map(a => a.province)]);
             })
         }
         if (province !== '') {
             API.getCitiesByProvince(province).then(c => {
-                setCities([...cities, ...c.map(a => a.city)]);
+                setCities([...c.map(a => a.city)]);
             })
         }
         // eslint-disable-next-line
     }, [country, province]);
-
-
 
     const resetFilters = () => {
         setDifficultyValue('');
@@ -101,90 +98,13 @@ export default function AvailableHikesV2(props) {
         setCountry('');
     };
 
-    const timeFromState = () => {
-        let val = null;
-        switch (timeValue) {
-            case "0 - 1 h":
-                val = "0-1";
-                break;
-            case "1 - 3 h":
-                val = "1-3";
-                break;
-            case "3 - 5 h":
-                val = "3-5";
-                break;
-            case "More than 5 h":
-                val = "5-more";
-                break;
-            default:
-                break;
-        }
-        return val;
-    }
-
-    const ascentFromState = () => {
-        let val = null;
-        switch (ascentValue) {
-            case "0 - 300 m":
-                val = "0-300";
-                break;
-            case "300 - 600 m":
-                val = "300-600";
-                break;
-            case "600 - 1000 m":
-                val = "600-1000";
-                break;
-            case "More than 1000 m":
-                val = "1000-more";
-                break;
-            default:
-                break;
-        }
-        return val;
-    }
-
-    const lengthFromState = () => {
-        let val = null;
-        switch (lengthValue) {
-            case "0 - 5 km":
-                val = "0-5";
-                break;
-            case "5 - 15 km":
-                val = "5-15";
-                break;
-            case "More than 15 km":
-                val = "15-more";
-                break;
-            default:
-                break;
-        }
-        return val;
-    }
-
-    const difficultyFromState = () => {
-        let val = null;
-        switch (difficultyValue) {
-            case "Tourist":
-                val = 1;
-                break;
-            case "Hiker":
-                val = 2;
-                break;
-            case "Professionnal Hiker":
-                val = 3;
-                break;
-            default:
-                break;
-        }
-        return val;
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        API.getHikesWithFilters(city, province, country, difficultyFromState(), lengthFromState(), ascentFromState(), timeFromState()).then(hikes => {
-            hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
-            setHikes(hikes);
-        })
+        API.getHikesWithFilters(city, province, country, difficultyFromState(difficultyValue), lengthFromState(lengthValue), ascentFromState(ascentValue), timeFromState(timeValue))
+            .then(hikes => {
+                hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
+                setHikes(hikes);
+            })
     }
 
     const cityDisabled = (province, country) => {
@@ -231,51 +151,6 @@ export default function AvailableHikesV2(props) {
         return citySelect
     }
 
-    const handleStartPointTypes = (value) => {
-        let chipStartPoint
-        if (value.start_point_type === "parking_lot") {
-            chipStartPoint = <Chip label={[value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" key={"sp_parking_lot"+value.id} />
-        } else if (value.start_point_type === "location") {
-            chipStartPoint = <Chip label={[value.start[0].description, " : ", value.start[0].value]} color="primary" variant="outlined" key={"sp_location"+value.id} />
-        } else if (value.start_point_type === "hut") {
-            chipStartPoint = <Chip label={[value.start[0].name, " ", value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" key={"sp_hut"+value.id} />
-        }
-        return chipStartPoint
-    }
-
-    const handleEndPointTypes = (value) => {
-        let chipEndPoint
-        if (value.end_point_type === "parking_lot") {
-            chipEndPoint = <Chip label={[value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined"  key={"ep_parking_lot"+value.id} />
-        } else if (value.end_point_type === "location") {
-            chipEndPoint = <Chip label={[value.end[0].description, " : ", value.end[0].value]} color="primary" variant="outlined" key={"ep_location"+value.id} />
-        } else if (value.end_point_type === "hut") {
-            chipEndPoint = <Chip label={[value.end[0].name, " ", value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" key={"ep_hut"+value.id} />
-        }
-        return chipEndPoint
-    }
-
-    const handleRef = (value) => {
-        let tab = []
-        for (var i = 0; i < value.reference_points.length; i++) {
-            value.reference_points[i].map((valuee) => {
-                let chipsRefPoints;
-                if (valuee.ref_point_type === "parking_lot") {
-                    chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" key={"rp_parking_lot_"+valuee.id} />
-                }
-                else if (valuee.ref_point_type === "location") {
-                    chipsRefPoints = <Chip label={[valuee.description, ' : ', valuee.value]} color="primary" variant="outlined" key={"rp_location_"+valuee.id} />
-                }
-                else if (valuee.ref_point_type === "hut") {
-                    chipsRefPoints = <Chip label={[valuee.name, ' ', valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" key={"rp_hut_"+valuee.id} />
-                }
-                return tab.push(chipsRefPoints)
-            })
-        }
-        return tab
-    }
-
-
     const provinceDisabled = (country) => {
         let provinceSelect
         if (country) {
@@ -285,7 +160,7 @@ export default function AvailableHikesV2(props) {
                     <Select
                         value={province}
                         label="Province"
-                        onChange={e => setProvince(e.target.value)}
+                        onChange={e => { setProvince(e.target.value); setCity(''); }}
                     >
                         <MenuItem value="" key={"menu-province"}>
                             <em>Select a province</em>
@@ -297,8 +172,6 @@ export default function AvailableHikesV2(props) {
                         })}
                     </Select>
                 </FormControl>
-
-
         } else {
             provinceSelect =
                 <FormControl sx={{ m: 1, minWidth: 200 }} disabled>
@@ -318,261 +191,244 @@ export default function AvailableHikesV2(props) {
                         })}
                     </Select>
                 </FormControl>
-
         }
         return provinceSelect
     }
 
-
-
     return (
-        <div>
+        <Grid container spacing={1}>
+            <ThemeProvider theme={theme}>
+                {/* Title */}
+                <Grid item xs={12} marginLeft={2}>
+                    <Typography variant="h4" marginTop={1} gutterBottom>
+                        <br />Find your next trail
+                    </Typography>
+                </Grid>
 
-            <Grid container spacing={1}>
-                <ThemeProvider theme={theme}>
-                    {/* Title */}
-                    <Grid item xs={12} marginLeft={2}>
-                        <Typography variant="h4" marginTop={1} gutterBottom>
-                            <br />AVALAIBLE HIKES
-                        </Typography>
-                    </Grid>
-
-                    {/* Filter */}
-                    <Grid item md={12} lg={3} marginLeft={2} marginRight={2}>
-                        <Grid container item sm >
-
-                            <Paper elevation={3}>
-                                <form onSubmit={handleSubmit}>
-
-                                    <Accordion expanded={expanded === 'panel'} onChange={handleChange('panel')}>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1bh-content"
-                                            id="panel1bh-header"
-                                        >
-                                            <Typography sx={{ width: '102%', flexShrink: 0 }}>
-                                                Geographical area
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <FormControl sx={{ m: 1, minWidth: 200 }} >
-                                                <InputLabel>Country</InputLabel>
-                                                <Select
-                                                    value={country}
-                                                    label="Country"
-                                                    onChange={e => setCountry(e.target.value)}
-                                                >
-                                                    <MenuItem value="" key="menu-country">
-                                                        <em>Select a country</em>
-                                                    </MenuItem>
-                                                    {countries.map((value) => {
-                                                        return (
-                                                            <MenuItem key={value} value={value}>{value}</MenuItem>
-                                                        );
-                                                    })}
-                                                </Select>
-                                            </FormControl>
-                                            {provinceDisabled(country)}
-                                            {cityDisabled(province, country)}
-
-
-                                        </AccordionDetails>
-                                    </Accordion>
-
-
-
-                                    <Accordion expanded={expanded === 'panelA'} onChange={handleChange('panelA')}>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1bh-content"
-                                            id="panel1bh-header"
-                                        >
-                                            <Typography sx={{ width: '102%', flexShrink: 0 }}>
-                                                Difficulty
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-
-                                            <FormControl>
-                                                <RadioGroup value={difficultyValue} onChange={e => setDifficultyValue(e.target.value)}>
-                                                    {listDifficulty.map((value) => {
-                                                        return (
-                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
-                                                        );
-                                                    })}
-                                                </RadioGroup>
-                                            </FormControl>
-
-                                        </AccordionDetails>
-                                    </Accordion>
-
-                                    <Accordion expanded={expanded === 'panelB'} onChange={handleChange('panelB')}>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1bh-content"
-                                            id="panel1bh-header"
-                                        >
-                                            <Typography sx={{ width: '102%', flexShrink: 0 }} >
-                                                Length
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <FormControl>
-                                                <RadioGroup value={lengthValue} onChange={e => setLengthValue(e.target.value)}>
-                                                    {listLength.map((value) => {
-                                                        return (
-                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
-                                                        );
-                                                    })}
-                                                </RadioGroup>
-                                            </FormControl>
-
-
-                                        </AccordionDetails>
-                                    </Accordion>
-
-                                    <Accordion expanded={expanded === 'panelC'} onChange={handleChange('panelC')}>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1bh-content"
-                                            id="panel1bh-header"
-                                        >
-                                            <Typography sx={{ width: '102%', flexShrink: 0 }} >
-                                                Total ascent
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <FormControl>
-                                                <RadioGroup value={ascentValue} onChange={e => setAscentValue(e.target.value)}>
-                                                    {listAscent.map((value) => {
-                                                        return (
-                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
-                                                        );
-                                                    })}
-                                                </RadioGroup>
-                                            </FormControl>
-                                        </AccordionDetails>
-                                    </Accordion>
-
-
-                                    <Accordion expanded={expanded === 'panelD'} onChange={handleChange('panelD')}>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1bh-content"
-                                            id="panel1bh-header"
-                                        >
-                                            <Typography sx={{ width: '102%', flexShrink: 0 }} >
-                                                Expected time
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <FormControl>
-                                                <RadioGroup value={timeValue} onChange={e => setTimeValue(e.target.value)}>
-                                                    {listTime.map((value) => {
-                                                        return (
-                                                            <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
-                                                        );
-                                                    })}
-                                                </RadioGroup>
-                                            </FormControl>
-                                        </AccordionDetails>
-                                    </Accordion>
-
-                                    <Grid container marginTop={3} marginLeft={2}>
-                                        <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
-                                        <Button style={{ marginLeft: 10 }} variant="outlined" color='error' onClick={e => resetFilters()}>Reset filters</Button>
-                                        <Typography> <br /></Typography>
-                                    </Grid>
-                                </form>
-                                <Grid container>
-                                    <br />
-                                </Grid>
-
-                            </Paper>
-                        </Grid>
-                        <Grid container marginTop={3}>
-                            <br />
-                        </Grid>
-
-                    </Grid>
-
-                    {/* Hikes */}
-                    <Grid item md={12} lg={8} xs={11} marginLeft={2} marginRight={2}>
-                        {hikes.map((value) => {
-                            return (
-                                <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)} key={value.id}>
+                {/* Filter */}
+                <Grid item md={12} lg={3} marginLeft={2} marginRight={2}>
+                    <Grid container item sm >
+                        <Paper elevation={3}>
+                            <form onSubmit={handleSubmit}>
+                                <Accordion expanded={expanded === 'panel'} onChange={handleChange('panel')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls="panel1bh-content"
                                         id="panel1bh-header"
                                     >
-                                        <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                            {value.title}
+                                        <Typography sx={{ width: '102%', flexShrink: 0 }}>
+                                            Geographical area
                                         </Typography>
-                                        <Typography sx={{ color: 'text.secondary' }}>{value.city}, {value.province}, {value.country}</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <Typography component={'div'}>
-                                            Author: {value.author}
-                                            
-                                            <br /><br />
-                                            Length : {value.track_length} km
-
-                                            <br /><br />
-                                            Expected time : {value.expected_time} h
-
-                                            <br /><br />
-                                            Total ascent : {value.ascent} m
-
-                                            <br /><br />
-                                            Peak altitude : {value.peak_altitude} m
-
-                                            <br /><br />
-                                            Geographic area :
-                                            {" "}<Chip label={value.city} color="primary" variant="outlined" />
-                                            {" "}<Chip label={value.province} color="primary" variant="outlined" />
-                                            {" "}<Chip label={value.country} color="primary" variant="outlined" />
-
-                                            <br /><br />
-                                            Difficulty :
-                                            {" "}<Chip label={value.difficulty} color="primary" variant="outlined" />
-
-                                            <br /><br />
-                                            Start point :
-                                            {" "}
-                                            {handleStartPointTypes(value)}
-                                            <br /><br />
-                                            End point :
-                                            {" "}
-                                            {handleEndPointTypes(value)}
-                                            <br /><br />
-                                            Reference points :
-                                            {" "}
-                                            {handleRef(value).map((value) => {
-                                                return value
-                                            })}
-
-
-                                            <br /><br />
-
-                                            Description : <br />{value.description}
-
-
-                                        </Typography>
+                                        <FormControl sx={{ m: 1, minWidth: 200 }} >
+                                            <InputLabel>Country</InputLabel>
+                                            <Select
+                                                value={country}
+                                                label="Country"
+                                                onChange={e => { setCountry(e.target.value); setProvince(''); setCity(''); }}
+                                            >
+                                                <MenuItem value="" key="menu-country">
+                                                    <em>Select a country</em>
+                                                </MenuItem>
+                                                {countries.map((value) => {
+                                                    return (
+                                                        <MenuItem key={value} value={value}>{value}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                        {provinceDisabled(country)}
+                                        {cityDisabled(province, country)}
                                     </AccordionDetails>
                                 </Accordion>
-                            );
-                        })}
 
-                        <Typography variant="h5" gutterBottom>
-                            <br />
-                        </Typography>
+                                <Accordion expanded={expanded === 'panelA'} onChange={handleChange('panelA')}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                    >
+                                        <Typography sx={{ width: '102%', flexShrink: 0 }}>
+                                            Difficulty
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+
+                                        <FormControl>
+                                            <RadioGroup value={difficultyValue} onClick={e => setDifficultyValue(e.target.value === difficultyValue ? "" : e.target.value)}>
+                                                {listDifficulty.map((value) => {
+                                                    return (
+                                                        <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                                                    );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion expanded={expanded === 'panelB'} onChange={handleChange('panelB')}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                    >
+                                        <Typography sx={{ width: '102%', flexShrink: 0 }} >
+                                            Length
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <FormControl>
+                                            <RadioGroup value={lengthValue} onClick={e => setLengthValue(e.target.value === lengthValue ? "" : e.target.value)}>
+                                                {listLength.map((value) => {
+                                                    return (
+                                                        <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                                                    );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+
+
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion expanded={expanded === 'panelC'} onChange={handleChange('panelC')}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                    >
+                                        <Typography sx={{ width: '102%', flexShrink: 0 }} >
+                                            Total ascent
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <FormControl>
+                                            <RadioGroup value={ascentValue} onClick={e => setAscentValue(e.target.value === ascentValue ? "" : e.target.value)}>
+                                                {listAscent.map((value) => {
+                                                    return (
+                                                        <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                                                    );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+
+                                <Accordion expanded={expanded === 'panelD'} onChange={handleChange('panelD')}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                    >
+                                        <Typography sx={{ width: '102%', flexShrink: 0 }} >
+                                            Expected time
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <FormControl>
+                                            <RadioGroup value={timeValue} onClick={e => setTimeValue(e.target.value === timeValue ? "" : e.target.value)}>
+                                                {listTime.map((value) => {
+                                                    return (
+                                                        <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                                                    );
+                                                })}
+                                            </RadioGroup>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Grid container margin={1} spacing={2}>
+                                    <Grid xs={6}>
+                                        <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
+                                    </Grid>
+                                    <Grid xs={6}>
+                                        <Button variant="outlined" color='error' onClick={e => resetFilters()}>Reset filters</Button>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                            <Grid container>
+                                <br />
+                            </Grid>
+
+                        </Paper>
+                    </Grid>
+                    <Grid container marginTop={3}>
+                        <br />
                     </Grid>
 
-                </ThemeProvider>
+                </Grid>
 
-            </Grid>
+                {/* Hikes */}
+                <Grid item md={12} lg={8} xs={11} marginLeft={2} marginRight={2}>
+                    {!hikes.length ? <Typography variant="h5" gutterBottom>
+                        Unfortunately, there is no track with these filters. Try changing something...
+                    </Typography> : (hikes.map((value) => {
+                        return (
+                            <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)} key={value.id}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1bh-content"
+                                    id="panel1bh-header"
+                                >
+                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                        {value.title}
+                                    </Typography>
+                                    <Typography sx={{ color: 'text.secondary' }}>
+                                        {value.city}, {value.province}, {value.country}
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography component={'div'}>
+                                        Author: {value.author}
 
-        </div>
+                                        <br /><br />
+                                        Length : {value.track_length} km
+
+                                        <br /><br />
+                                        Expected time : {value.expected_time} h
+
+                                        <br /><br />
+                                        Total ascent : {value.ascent} m
+
+                                        <br /><br />
+                                        Peak altitude : {value.peak_altitude} m
+
+                                        <br /><br />
+                                        Difficulty :
+                                        {" "}<Chip label={value.difficulty} color="primary" variant="outlined" />
+
+                                        <br /><br />
+                                        Start point :
+                                        {" "}
+                                        {handleStartPointTypes(value)}
+                                        <br /><br />
+                                        End point :
+                                        {" "}
+                                        {handleEndPointTypes(value)}
+                                        <br /><br />
+                                        Reference points :
+                                        {" "}
+                                        {handleRef(value).map((value) => {
+                                            return value
+                                        })}
+
+                                        <br /><br />
+                                        Description : <br />{value.description}
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        );
+                    }))}
+
+                    <Typography variant="h5" gutterBottom>
+                        <br />
+                    </Typography>
+                </Grid>
+
+            </ThemeProvider>
+        </Grid>
     )
 }
