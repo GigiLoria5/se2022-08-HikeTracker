@@ -12,7 +12,6 @@ const hutDao = require('../dao/HutDAO');
 const locationDao = require('../dao/LocationDAO');
 const parkingDao = require('../dao/ParkingDAO');
 const referenceDao = require('../dao/ReferenceDAO');
-
 const router = express.Router();
 
 /////////////////////////////////////////////////////////////////////
@@ -22,6 +21,9 @@ const router = express.Router();
 //TODO: still need to handle login check
 router.post('/hikes', async (req, res) => {
     try {
+        if(!req.isAuthenticated() || req.user.role!="local_guide"){
+            return res.status(401).json({ error: 'Not logged in' });
+        }
         if(!req.files) {
             throw "no file uploaded"
         } else {
