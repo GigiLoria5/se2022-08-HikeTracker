@@ -9,6 +9,7 @@ const { check, validationResult } = require('express-validator'); // validation 
 //const { errorFormatter, isLoggedIn } = require('../utils/utils');
 const hikeDao = require('../dao/HikeDAO');
 const hutDao = require('../dao/HutDAO');
+const userDao = require('../dao/UserDao');
 const locationDao = require('../dao/LocationDAO');
 const parkingDao = require('../dao/ParkingDAO');
 const referenceDao = require('../dao/ReferenceDAO');
@@ -18,7 +19,7 @@ const router = express.Router();
 //////                          POST                           //////
 /////////////////////////////////////////////////////////////////////
 
-//TODO: still need to handle login check
+
 router.post('/hikes', async (req, res) => {
     try {
         if(!req.isAuthenticated() || req.user.role!="local_guide"){
@@ -303,6 +304,8 @@ router.get('/hikes/filters', async (req, res) => {
                             hike.reference_points.push(point);
                         }
                     } 
+                    const author = await userDao.getUserById(hike.author_id)
+                    hike.author = author.name + " " + author.surname;
                 }
                 
                 res.status(200).json(result);

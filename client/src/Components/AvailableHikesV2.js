@@ -504,6 +504,9 @@ export default function AvailableHikesV2(props) {
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography component={'div'}>
+                                            Author: {value.author}
+                                            
+                                            <br /><br />
                                             Length : {value.track_length} km
 
                                             <br /><br />
