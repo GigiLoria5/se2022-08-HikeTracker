@@ -40,6 +40,7 @@ export default function SignUp(props) {
 
     useEffect(() => {
         props.setMessage('');
+        // eslint-disable-next-line
     }, [])
 
     const handleSubmit = (event) => {

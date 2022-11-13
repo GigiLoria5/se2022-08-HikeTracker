@@ -1,4 +1,4 @@
-'use strict'
+
 
 const APIURL = 'http://localhost:3001'
 
@@ -154,19 +154,19 @@ async function getCitiesByProvince(province) {
 // Return hikes by the filters
 async function getHikesWithFilters(city, province, country, difficulty, track_length, ascent, expected_time) {
     var data = {};
-    if (city != null && city != '')
+    if (city !== null && city !== '')
         data.city = city;
-    if (province != null && province != '')
+    if (province !== null && province !== '')
         data.province = province;
-    if (country != null && country != '')
+    if (country !== null && country !== '')
         data.country = country;
-    if (difficulty != null && difficulty != '')
+    if (difficulty !== null && difficulty !== '')
         data.difficulty = difficulty;
-    if (track_length != null && track_length != '')
+    if (track_length !== null && track_length !== '')
         data.track_length = track_length;
-    if (ascent != null && ascent != '')
+    if (ascent !== null && ascent !== '')
         data.ascent = ascent;
-    if (expected_time != null && expected_time != '')
+    if (expected_time !== null && expected_time !== '')
         data.expected_time = expected_time;
     const searchParams = new URLSearchParams(data);
     const response = await fetch(new URL('/api/hikes/filters?' + searchParams, APIURL), { credentials: 'include' });
