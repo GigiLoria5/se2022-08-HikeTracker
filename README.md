@@ -281,6 +281,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     ...,
     {
       "id": 8,
+      "author": "Giovanni De Santis"
       "title": "Ring for Monte Calvo",
       "peak_altitude": 1357,
       "city": "Carignano",

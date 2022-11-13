@@ -72,23 +72,24 @@ export default function AvailableHikesV2(props) {
             hikes.forEach(a => a.difficulty = listDifficulty[a.difficulty - 1]);
             setHikes(hikes);
         });
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        if (country != '') {
+        if (country !== '') {
             API.getProvincesByCountry(country).then(pv => {
                 setProvinces([...provinces, ...pv.map(a => a.province)]);
             })
         }
-    }, [country]);
-
-    useEffect(() => {
-        if (province != '') {
+        if (province !== '') {
             API.getCitiesByProvince(province).then(c => {
                 setCities([...cities, ...c.map(a => a.city)]);
             })
         }
-    }, [province]);
+        // eslint-disable-next-line
+    }, [country, province]);
+
+
 
     const resetFilters = () => {
         setDifficultyValue('');
@@ -115,6 +116,8 @@ export default function AvailableHikesV2(props) {
             case "More than 5 h":
                 val = "5-more";
                 break;
+            default:
+                break;
         }
         return val;
     }
@@ -134,6 +137,8 @@ export default function AvailableHikesV2(props) {
             case "More than 1000 m":
                 val = "1000-more";
                 break;
+            default:
+                break;
         }
         return val;
     }
@@ -150,6 +155,8 @@ export default function AvailableHikesV2(props) {
             case "More than 15 km":
                 val = "15-more";
                 break;
+            default:
+                break;
         }
         return val;
     }
@@ -165,6 +172,8 @@ export default function AvailableHikesV2(props) {
                 break;
             case "Professionnal Hiker":
                 val = 3;
+                break;
+            default:
                 break;
         }
         return val;
@@ -189,7 +198,7 @@ export default function AvailableHikesV2(props) {
                         label="City"
                         onChange={e => setCity(e.target.value)}
                     >
-                        <MenuItem value="">
+                        <MenuItem value="" key={"menu"}>
                             <em>Select a city</em>
                         </MenuItem>
                         {cities.map((value) => {
@@ -208,12 +217,12 @@ export default function AvailableHikesV2(props) {
                         label="City"
                         onChange={e => setCity(e.target.value)}
                     >
-                        <MenuItem value="">
+                        <MenuItem value="" key={"menu-city2"}>
                             <em>Select a city</em>
                         </MenuItem>
                         {cities.map((value) => {
                             return (
-                                <MenuItem value={value}>{value}</MenuItem>
+                                <MenuItem key={value} value={value}>{value}</MenuItem>
                             );
                         })}
                     </Select>
@@ -225,11 +234,11 @@ export default function AvailableHikesV2(props) {
     const handleStartPointTypes = (value) => {
         let chipStartPoint
         if (value.start_point_type === "parking_lot") {
-            chipStartPoint = <Chip label={[value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" />
+            chipStartPoint = <Chip label={[value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" key={"sp_parking_lot"+value.id} />
         } else if (value.start_point_type === "location") {
-            chipStartPoint = <Chip label={[value.start[0].description, " : ", value.start[0].value]} color="primary" variant="outlined" />
+            chipStartPoint = <Chip label={[value.start[0].description, " : ", value.start[0].value]} color="primary" variant="outlined" key={"sp_location"+value.id} />
         } else if (value.start_point_type === "hut") {
-            chipStartPoint = <Chip label={[value.start[0].name, " ", value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" />
+            chipStartPoint = <Chip label={[value.start[0].name, " ", value.start[0].city, ' ', value.start[0].province, ' ', value.start[0].country, " : ", value.start[0].address]} color="primary" variant="outlined" key={"sp_hut"+value.id} />
         }
         return chipStartPoint
     }
@@ -237,11 +246,11 @@ export default function AvailableHikesV2(props) {
     const handleEndPointTypes = (value) => {
         let chipEndPoint
         if (value.end_point_type === "parking_lot") {
-            chipEndPoint = <Chip label={[value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" />
+            chipEndPoint = <Chip label={[value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined"  key={"ep_parking_lot"+value.id} />
         } else if (value.end_point_type === "location") {
-            chipEndPoint = <Chip label={[value.end[0].description, " : ", value.end[0].value]} color="primary" variant="outlined" />
+            chipEndPoint = <Chip label={[value.end[0].description, " : ", value.end[0].value]} color="primary" variant="outlined" key={"ep_location"+value.id} />
         } else if (value.end_point_type === "hut") {
-            chipEndPoint = <Chip label={[value.end[0].name, " ", value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" />
+            chipEndPoint = <Chip label={[value.end[0].name, " ", value.end[0].city, ' ', value.end[0].province, ' ', value.end[0].country, " : ", value.end[0].address]} color="primary" variant="outlined" key={"ep_hut"+value.id} />
         }
         return chipEndPoint
     }
@@ -252,13 +261,13 @@ export default function AvailableHikesV2(props) {
             value.reference_points[i].map((valuee) => {
                 let chipsRefPoints;
                 if (valuee.ref_point_type === "parking_lot") {
-                    chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" />
+                    chipsRefPoints = <Chip label={[valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" key={"rp_parking_lot_"+valuee.id} />
                 }
                 else if (valuee.ref_point_type === "location") {
-                    chipsRefPoints = <Chip label={[valuee.description, ' : ', valuee.value]} color="primary" variant="outlined" />
+                    chipsRefPoints = <Chip label={[valuee.description, ' : ', valuee.value]} color="primary" variant="outlined" key={"rp_location_"+valuee.id} />
                 }
                 else if (valuee.ref_point_type === "hut") {
-                    chipsRefPoints = <Chip label={[valuee.name, ' ', valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" />
+                    chipsRefPoints = <Chip label={[valuee.name, ' ', valuee.city, ' ', valuee.province, ' ', valuee.country, " : ", valuee.address]} color="primary" variant="outlined" key={"rp_hut_"+valuee.id} />
                 }
                 return tab.push(chipsRefPoints)
             })
@@ -278,7 +287,7 @@ export default function AvailableHikesV2(props) {
                         label="Province"
                         onChange={e => setProvince(e.target.value)}
                     >
-                        <MenuItem value="">
+                        <MenuItem value="" key={"menu-province"}>
                             <em>Select a province</em>
                         </MenuItem>
                         {provinces.map((value) => {
@@ -299,12 +308,12 @@ export default function AvailableHikesV2(props) {
                         label="Province"
                         onChange={e => setProvince(e.target.value)}
                     >
-                        <MenuItem value="">
+                        <MenuItem value="" key={"menu-province2"}>
                             <em>Select a province</em>
                         </MenuItem>
                         {provinces.map((value) => {
                             return (
-                                <MenuItem value={value}>{value}</MenuItem>
+                                <MenuItem key={value} value={value}>{value}</MenuItem>
                             );
                         })}
                     </Select>
@@ -330,7 +339,7 @@ export default function AvailableHikesV2(props) {
 
                     {/* Filter */}
                     <Grid item md={12} lg={3} marginLeft={2} marginRight={2}>
-                        <Grid containers item sm >
+                        <Grid container item sm >
 
                             <Paper elevation={3}>
                                 <form onSubmit={handleSubmit}>
@@ -353,7 +362,7 @@ export default function AvailableHikesV2(props) {
                                                     label="Country"
                                                     onChange={e => setCountry(e.target.value)}
                                                 >
-                                                    <MenuItem value="">
+                                                    <MenuItem value="" key="menu-country">
                                                         <em>Select a country</em>
                                                     </MenuItem>
                                                     {countries.map((value) => {
@@ -469,19 +478,19 @@ export default function AvailableHikesV2(props) {
                                         </AccordionDetails>
                                     </Accordion>
 
-                                    <Grid containers marginTop={3} marginLeft={2}>
+                                    <Grid container marginTop={3} marginLeft={2}>
                                         <Button variant="outlined" type="submit" color='primary'>Apply filters</Button>
                                         <Button style={{ marginLeft: 10 }} variant="outlined" color='error' onClick={e => resetFilters()}>Reset filters</Button>
                                         <Typography> <br /></Typography>
                                     </Grid>
                                 </form>
-                                <Grid containers>
+                                <Grid container>
                                     <br />
                                 </Grid>
 
                             </Paper>
                         </Grid>
-                        <Grid containers marginTop={3}>
+                        <Grid container marginTop={3}>
                             <br />
                         </Grid>
 
@@ -504,6 +513,9 @@ export default function AvailableHikesV2(props) {
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography component={'div'}>
+                                            Author: {value.author}
+                                            
+                                            <br /><br />
                                             Length : {value.track_length} km
 
                                             <br /><br />
