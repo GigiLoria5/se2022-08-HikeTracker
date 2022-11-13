@@ -21,15 +21,15 @@ const router = express.Router();
 //TODO: still need to handle login check
 router.post('/hikes', async (req, res) => {
     try {
-        if(!req.files) {
+        if (!req.files) {
             throw "no file uploaded"
         } else {
             //let name = req.body.name;
             const gpx = req.files.gpx;
             const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
-            
+
             const author_id = req.user && req.user.id;
-            
+
             const hike = new Hike(
                 req.body.title,
                 req.body.peak_altitude,
@@ -40,67 +40,89 @@ router.post('/hikes', async (req, res) => {
                 req.body.ascent,
                 req.body.track_length,
                 req.body.expected_time,
-                req.body.difficulty, 
-                name, 
-                req.body.start_point_type, 
-                req.body.start_point_id, 
-                req.body.end_point_type, 
+                req.body.difficulty,
+                name,
+                req.body.start_point_type,
+                req.body.start_point_id,
+                req.body.end_point_type,
                 req.body.end_point_id
             )
             let hike_id;
 
-            if(!hike.isValid()){
+            if (!hike.isValid()) {
                 throw "invalid arguments"
             }
-            switch(hike.start_point_type){
+            switch (hike.start_point_type) {
                 case "location":
-                    {const res = await locationDao.getLocationById(hike.start_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid start point"
-                    }
-                    break};
+                    {
+                        const res = await locationDao.getLocationById(hike.start_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid start point"
+                        }
+                        break
+                    };
                 case "hut":
-                    {const res = await hutDao.getHutById(hike.start_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid start point"
-                    }
-                    break};
+                    {
+                        const res = await hutDao.getHutById(hike.start_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid start point"
+                        }
+                        break
+                    };
                 case "parking_lot":
-                    {const res = await parkingDao.getParkingLotById(hike.start_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid start point"
-                    }
-                    break};
+                    {
+                        const res = await parkingDao.getParkingLotById(hike.start_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid start point"
+                        }
+                        break
+                    };
                 default:
                     throw "invalid start point"
             }
-            switch(hike.end_point_type){
+            switch (hike.end_point_type) {
                 case "location":
-                    {const res = await locationDao.getLocationById(hike.end_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid end point"
-                    }
-                    break};
+                    {
+                        const res = await locationDao.getLocationById(hike.end_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid end point"
+                        }
+                        break
+                    };
                 case "hut":
-                    {const res = await hutDao.getHutById(hike.end_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid end point"
-                    }
-                    break};
+                    {
+                        const res = await hutDao.getHutById(hike.end_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid end point"
+                        }
+                        break
+                    };
                 case "parking_lot":
-                    {const res = await parkingDao.getParkingLotById(hike.end_point_id);
-                    if (res == null || res == undefined || res.length == 0){
-                        throw "invalid end point"
-                    }
-                    break};
+                    {
+                        const res = await parkingDao.getParkingLotById(hike.end_point_id);
+                        if (res == null || res == undefined || res.length == 0) {
+                            throw "invalid end point"
+                        }
+                        break
+                    };
                 default:
                     throw "invalid end point"
             }
+
+            /* Check types before adding hike */
+            const possibleTypes = ['location', 'hut', 'parking_lot'];
+            const refPointTypes = JSON.parse(req.body.reference_points).points.map((point) => point.type);
+            const checkRefPointTypes = refPointTypes.every((type) => possibleTypes.includes(type));
+            if (!checkRefPointTypes)
+                throw "invalid reference points";
+
+            /* Add hike after everything is correct */
             const id = await hikeDao.addHike(hike, author_id)
             hike_id = id;
-            for (const p of JSON.parse(req.body.reference_points).points){
+
+            for (const p of JSON.parse(req.body.reference_points).points) {
                 let res = null;
-                switch(p.type){
+                switch (p.type) {
                     case "location":
                         res = await locationDao.getLocationById(p.id);
                         break;
@@ -111,14 +133,14 @@ router.post('/hikes', async (req, res) => {
                         res = await parkingDao.getParkingLotById(p.id);
                         break;
                 }
-                if (res == null || res == undefined || res.length == 0){
+                if (res == null || res == undefined || res.length == 0) {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
                         hikeDao.deleteReferencePoints(id);
                     });
                     throw "invalid reference points"
                 }
-                hikeDao.addReferencePoint(id, p.type, p.id).catch( err => {
+                hikeDao.addReferencePoint(id, p.type, p.id).catch(err => {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
                         hikeDao.deleteReferencePoints(id);
@@ -126,7 +148,7 @@ router.post('/hikes', async (req, res) => {
                     throw "invalid reference points"
                 })
             }
-            if(gpx.mimetype!="application/gpx+xml") {
+            if (gpx.mimetype != "application/gpx+xml") {
                 hikeDao.deleteHike(hike_id).then(_a => {
                     hikeDao.deleteReferencePoints(hike_id);
                 });
@@ -134,7 +156,7 @@ router.post('/hikes', async (req, res) => {
             }
             //
             gpx.mv(`./gpx_files/${name}.gpx`, err => {
-                if (err){
+                if (err) {
                     hikeDao.deleteHike(hike_id).then(_a => {
                         hikeDao.deleteReferencePoints(hike_id);
                     });
