@@ -37,6 +37,12 @@ svg {
     background-color: var(--active) !important;
 }
 
+.vertical-align-center {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 /* Navbar */
 
 .box-end {
@@ -73,10 +79,7 @@ svg {
     padding-bottom: 10px;
 }
 
-.css-1kkpk3h-MuiButtonBase-root-MuiButton-root:hover,
-.css-sbfmij-MuiButtonBase-root-MuiButton-root:hover,
-.css-1y942vo-MuiButtonBase-root-MuiButton-root:hover,
-.css-1uh6h56-MuiButtonBase-root-MuiButton-root:hover {
+.btn-color-active:hover {
     background-color: var(--active) !important;
 }
 

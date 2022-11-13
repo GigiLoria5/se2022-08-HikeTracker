@@ -14,12 +14,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import Grid from "@mui/material/Grid";
 import Logo from "./Logo";
 import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
-const navItems = { 'Hikes': '/hikes' };
-const guideItems = { 'Local Guide Page': '/local-guide-page' };
+let navItems = { 'Hikes': '/hikes' };
 
 function MyNavbar(props) {
 
@@ -30,7 +30,13 @@ function MyNavbar(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
     const container = window !== undefined ? () => window().document.body : undefined;
+
+    /* SETUP HIDDEN NAV ITEMS LINKS */
+    if (isloggedIn && loggedUser.role === "local_guide")
+        navItems = { ...navItems, 'Platform Content': '/local-guide-page' };
+
     return (
         <>
             <Box sx={{ display: 'flex' }}>
@@ -56,39 +62,33 @@ function MyNavbar(props) {
                         {/* Nav Links */}
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             {Object.entries(navItems).map(([name, route]) => (
-                                <Button className={`${activePage === name ? 'active-link' : ''}`} key={name} sx={{ color: '#fff' }}
+                                <Button className={`${activePage === name ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
                                     onClick={() => { changeActivePage(name); navigate(route); }}>
                                     {name}
                                 </Button>
                             ))}
-                            {
-                                loggedUser.role === "local_guide" ? Object.entries(guideItems).map(([name, route]) => (
-                                    <Button className={`${activePage === name ? 'active-link' : ''}`} key={name} sx={{ color: '#fff' }}
-                                        onClick={() => { changeActivePage(name); navigate(route); }}>
-                                        {name}
-                                    </Button>
-                                )) : <></>
-                            }
                         </Box>
                         {/* User Account Actions */}
                         <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
-                            {/* Account User Buttons */}
                             {isloggedIn ?
                                 <>
-                                    <Box  >
-                                        {loggedUser.name || loggedUser.surname !== '' ?
-                                            <>
-                                                <Typography variant="button" color="inherit" component="div"> {loggedUser.name} </Typography>
-                                                <Typography variant="button" color="inherit" component="div"> {loggedUser.surname} </Typography></> :
-                                            <Typography variant="button" color="inherit" component="div"> {loggedUser.email} </Typography>
-                                        }
-                                    </Box>
-                                    <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
+                                    <Grid container className="vertical-align-center" >
+                                        <Grid item xs={12} color="#eeeeee">
+                                            <Typography color="inherit" component="div">
+                                                {loggedUser.name && loggedUser.surname ? loggedUser.name + " " + loggedUser.surname : loggedUser.email}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12} color="#e0e0e0">
+                                            <Typography color="inherit" component="div"> {(loggedUser.role).replace('_', ' ')} </Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" className="btn-color-active"
+                                        onClick={() => { props.handleLogout(); changeActivePage(null); navigate('/') }} >Logout</Button>
 
                                 </> :
                                 <>
-                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
-                                    <Button variant="outlined" color="inherit" onClick={() => { changeActivePage(null); navigate('/register'); }}>Register</Button>
+                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
+                                    <Button variant="outlined" color="inherit" className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/register'); }}>Register</Button>
                                 </>
                             }
                         </Box>
@@ -131,16 +131,6 @@ function MyNavbar(props) {
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
-                                {
-                                loggedUser.role === "local_guide" ? Object.entries(guideItems).map(([name, route]) => (
-                                    <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${activePage === name ? 'active-link' : ''}`}
-                                            onClick={() => { changeActivePage(name); navigate(route); }}>
-                                            <ListItemText primary={name} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                )) : <></>
-                            }
                             </List>
                         </Box>
                     </Drawer>

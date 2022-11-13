@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
-import { Hike } from "./Utils"
+import { Hike } from "../Utils/Hike"
 
 
 

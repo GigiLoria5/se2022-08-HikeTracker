@@ -84,7 +84,7 @@ export default function SignIn(props) {
                             autoComplete="email"
                             type="email"
                             autoFocus
-                            onChange={ev => setEmail(ev.target.value)}
+                            onChange={ev => setEmail(ev.target.value.replace(/\s/g, ''))}
                         />
                         <TextField
                             margin="normal"
