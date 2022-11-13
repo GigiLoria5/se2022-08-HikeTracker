@@ -488,7 +488,7 @@ export default function AvailableHikesV2(props) {
                     </Grid>
 
                     {/* Hikes */}
-                    <Grid item md={12} lg={8} marginLeft={2} marginRight={2}>
+                    <Grid item md={12} lg={8} xs={11} marginLeft={2} marginRight={2}>
                         {hikes.map((value) => {
                             return (
                                 <Accordion expanded={expanded === `panel-${value.id}`} onChange={handleChange(`panel-${value.id}`)} key={value.id}>
