@@ -56,19 +56,21 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 ### User Login and Logout
 
 - POST `/api/sessions`
+
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Perform login
   - Request body: Object containing username and password
-  
+
   ```
-  { 
+  {
     "username": "c.basile@hiker.it"
     "password": "password"
   }
   ```
+
   - Response: `200 OK` (Created)
   - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
-  - Response body: An object containing user data 
+  - Response body: An object containing user data
 
   ```
   {
@@ -83,16 +85,16 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   }
   ```
 
-
 - GET `/api/sessions/current`
+
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Retrieve session cookies
   - Permissions allowed: Authenticated user
   - Request body: Session cookies
-  
+
   - Response: `200 OK` (Created)
   - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
-  - Response body: An object containing user data 
+  - Response body: An object containing user data
 
   ```
   {
@@ -118,23 +120,25 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 ### User Registration
 
 - POST `/api/users`
+
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add new user
   - Permissions allowed: _None_
-  - Request body: User object 
-  
+  - Request body: User object
+
     ```
     {
       "role": "hut_worker",
       "name": "Test",
       "surname": "Test",
-      "phone": "3331111111",
+      "phone_number": "3331111111",
       "email": "test@test.it",
       "password": "password"
     }
-      ```
+    ```
+
   - Response: `201 OK` (Created)
-  - Error responses: `422 Unprocessable entity` (Email already exists), `503 Internal Server Error` (generic error)
+  - Error responses: `422 Unprocessable entity` (Validation of body failed), `503 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
@@ -142,40 +146,18 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "error": "message text"
   }
   ```
- 
 
 - GET `/api/users/confirm/:token`
+
   - Headers: ` {"Content-Type": "multipart/form-data"}`
-  - Description: Account verification 
+  - Description: Account verification
   - Permissions allowed: _None_
   - Request body: _None_
   - Request parameters: token (integer)
-  
-  - Response: HTML page when the account has to be verified or has already been verified 
-  - Error responses: `404 Missing token` (Email already exists), `503 Internal Server Error` (generic error)
+
+  - Response: `200 OK` (success) + HTML page when the account has been verified or `422 Unprocessable Entity` (token can't be activated) + html when the token has already been verified or it's wrong
+  - Error responses: `404 Missing token` (Missing token), `422 Unprocessable Entity` (Wrong token or account already verified), `503 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
-
-  ```
-  <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-	    <meta charset="UTF-8">
-	      <title> HikeTracker account already verified! </title>
-
-    </head>
-
-    <body>
-	    <h1> Account already verified<h1>
-			  <h2> Your account has already been verified! </h2>
-			    <p> You just have to perform the login with the credentials you choose. </p>
-			<a href="http://localhost:3000/login"> Click here to perform the login</a>
-			</div>
-    </body>
-
-    </html>
-
-  ```
 
 ### Hikes
 
@@ -291,7 +273,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Return an array containing all the hikes with filters
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses:  `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the hikes, or an error message in case of failure
 
   ```

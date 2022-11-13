@@ -2,19 +2,20 @@
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
+const { step } = require("mocha-steps");
 const expect = chai.expect;
 const request = require('supertest');
-const { user } = require("../config/auth.config.js");
+const UserDao = require('../dao/UserDAO');
 const app = require('../index.js');
 const serverURL = "http://localhost:3001/api/";
 
 chai.use(chaiHttp);
 chai.should();
 
-describe("User Login - Wrong Fields", function (){
+describe("User Login - Wrong Fields", function () {
     it("T1 wrong Email type", (done) => {
         const user = {
-            "username" : 9876213,
+            "username": 9876213,
             "password": "password"
         }
         chai
@@ -29,7 +30,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T2 wrong Email format", (done) => {
         const user = {
-            "username" : "@google.it",
+            "username": "@google.it",
             "password": "password"
         }
         chai
@@ -44,7 +45,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T3 wrong password format", (done) => {
         const user = {
-            "username" : "test@google.it",
+            "username": "test@google.it",
             "password": 111
         }
         chai
@@ -59,7 +60,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T4 missing email", (done) => {
         const user = {
-            "username" : "",
+            "username": "",
             "password": "password"
         }
         chai
@@ -74,7 +75,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T5 missing password", (done) => {
         const user = {
-            "username" : "test@google.it",
+            "username": "test@google.it",
             "password": ""
         }
         chai
@@ -89,7 +90,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T6 wrong password", (done) => {
         const user = {
-            "username" : "c.basile@hiker.it",
+            "username": "c.basile@hiker.it",
             "password": "password1"
         }
         chai
@@ -104,7 +105,7 @@ describe("User Login - Wrong Fields", function (){
 
     it("T7 wrong email", (done) => {
         const user = {
-            "username" : "c1.basile@hiker.it",
+            "username": "c1.basile@hiker.it",
             "password": "password"
         }
         chai
@@ -324,23 +325,171 @@ describe("User Registration - New Users", function () {
         "email": "test@test.it",
         "password": "password"
     };
+    let idUserToDelete;
+    let token;
 
-    /*
-        it("T11 hut_worker with mandatory fields", (done) => {
-
+    before('get all users before tests', async function () {
+        initialUsers = await UserDao.getAllUsers();
     });
 
-        it("T13 local_guide with mandatory fields", (done) => {
+    step("hut_worker with mandatory fields", (done) => {
+        let user = { ...userDummy };
 
+        chai
+            .request(serverURL)
+            .post('users')
+            .send(user)
+            .end(async (err, res) => {
+                res.should.have.status(201);
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
+                done();
+            });
     });
 
-        it("T14 hiker without mandatory fields", (done) => {
-
+    step("delete hut_worker created", async (done) => {
+        await UserDao.deleteUser(idUserToDelete);
+        const newUsersList = await UserDao.getAllUsers();
+        expect(newUsersList.length).to.be.equal(initialUsers.length);
+        done();
     });
 
-    it("T15 emergency_operator without mandatory fields", (done) => {
+    step("local_guide with mandatory fields", (done) => {
+        let user = { ...userDummy };
+        user.role = "local_guide";
 
+        chai
+            .request(serverURL)
+            .post('users')
+            .send(user)
+            .end(async (err, res) => {
+                res.should.have.status(201);
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
+                done();
+            });
     });
-    
-    */
+
+    step("delete local_guide created", async (done) => {
+        await UserDao.deleteUser(idUserToDelete);
+        const newUsersList = await UserDao.getAllUsers();
+        expect(newUsersList.length).to.be.equal(initialUsers.length);
+        done();
+    });
+
+    step("hiker without mandatory fields", (done) => {
+        let user = { ...userDummy };
+        user.role = "hiker";
+        user.name = "";
+        user.surname = "";
+        user.phone_number = "";
+
+        chai
+            .request(serverURL)
+            .post('users')
+            .send(user)
+            .end(async (err, res) => {
+                res.should.have.status(201);
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
+                done();
+            });
+    });
+
+    step("delete hiker created", async (done) => {
+        await UserDao.deleteUser(idUserToDelete);
+        const newUsersList = await UserDao.getAllUsers();
+        expect(newUsersList.length).to.be.equal(initialUsers.length);
+        done();
+    });
+
+    step("emergency_operator without mandatory fields", (done) => {
+        let user = { ...userDummy };
+        user.role = "emergency_operator";
+        user.name = "";
+        user.surname = "";
+        user.phone_number = "";
+
+        chai
+            .request(serverURL)
+            .post('users')
+            .send(user)
+            .end(async (err, res) => {
+                res.should.have.status(201);
+                const newUser = await UserDao.getUserByEmail(user.email);
+                expect(newUser.role).to.be.equal(user.role);
+                expect(newUser.name).to.be.equal(user.name);
+                expect(newUser.surname).to.be.equal(user.surname);
+                expect(newUser.phone_number).to.be.equal(user.phone_number);
+                expect(newUser.email).to.be.equal(user.email);
+                idUserToDelete = newUser.id;
+                done();
+            });
+    });
+
+    step("retrieve token", async (done) => {
+        const userInserted = await UserDao.getUserById(idUserToDelete);
+        expect(userDummy.email).to.be.equal(userInserted.email);
+        token = userInserted.token;
+        done();
+    });
+
+    step("confirm account with token", async (done) => {
+        chai
+            .request(serverURL)
+            .get(`users/confirm/${token}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    step("try confirm again account with token", async (done) => {
+        chai
+            .request(serverURL)
+            .get(`users/confirm/${token}`)
+            .end((err, res) => {
+                res.should.have.status(422);
+                done();
+            });
+    });
+
+    step("missing token", (done) => {
+        chai
+            .request(serverURL)
+            .get(`users/confirm/`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
+
+    step("confirm emergency_operator token verification", async (done) => {
+        const userInserted = await UserDao.getUserById(idUserToDelete);
+        expect(userInserted.email_verified).to.be.equal(1);
+        done();
+    });
+
+    step("delete emergency_operator created", async (done) => {
+        await UserDao.deleteUser(idUserToDelete);
+        const newUsersList = await UserDao.getAllUsers();
+        expect(newUsersList.length).to.be.equal(initialUsers.length);
+        done();
+    });
+
 });

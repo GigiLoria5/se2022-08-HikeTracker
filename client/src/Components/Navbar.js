@@ -22,7 +22,7 @@ const navItems = { 'Hikes': '/hikes' };
 const guideItems = { 'Local Guide Page': '/local-guide-page' };
 
 function MyNavbar(props) {
-    
+
     const { window, activePage, changeActivePage, isloggedIn, loggedUser } = props;
     const navigate = useNavigate();
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -76,14 +76,14 @@ function MyNavbar(props) {
                             {isloggedIn ?
                                 <>
                                     <Box  >
-                                        {loggedUser.name || loggedUser.surname !== '' ? 
-                                        <>
-                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.name } </Typography>
-                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.surname   } </Typography></> :
-                                        <Typography variant="button" color="inherit" component="div"> {   loggedUser.email } </Typography>
+                                        {loggedUser.name || loggedUser.surname !== '' ?
+                                            <>
+                                                <Typography variant="button" color="inherit" component="div"> {loggedUser.name} </Typography>
+                                                <Typography variant="button" color="inherit" component="div"> {loggedUser.surname} </Typography></> :
+                                            <Typography variant="button" color="inherit" component="div"> {loggedUser.email} </Typography>
                                         }
                                     </Box>
-                                    <Button sx={{ m: 0.5}} variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
+                                    <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
 
                                 </> :
                                 <>
