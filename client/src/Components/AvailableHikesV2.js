@@ -513,6 +513,9 @@ export default function AvailableHikesV2(props) {
                                             Total ascent : {value.ascent} m
 
                                             <br /><br />
+                                            Peak altitude : {value.peak_altitude} m
+
+                                            <br /><br />
                                             Geographic area :
                                             {" "}<Chip label={value.city} color="primary" variant="outlined" />
                                             {" "}<Chip label={value.province} color="primary" variant="outlined" />
