@@ -131,6 +131,16 @@ function MyNavbar(props) {
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
+                                {
+                                loggedUser.role == "local_guide" ? Object.entries(guideItems).map(([name, route]) => (
+                                    <ListItem key={name} disablePadding>
+                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${activePage === name ? 'active-link' : ''}`}
+                                            onClick={() => { changeActivePage(name); navigate(route); }}>
+                                            <ListItemText primary={name} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                )) : <></>
+                            }
                             </List>
                         </Box>
                     </Drawer>
