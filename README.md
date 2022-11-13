@@ -370,6 +370,6 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 | email                     | password | role        |
 | ------------------------- | -------- | ----------- |
 | c.basile@hiker.it         | password | hiker       |
-| g.desantis@local_guide.it | password | local guide |
-| m.piccolo@guide_turin.it  | password | local guide |
+| g.desantis@localguide.it  | password | local guide |
+| m.piccolo@guideturin.it   | password | local guide |
 | i.folletti987@google.com  | password | local guide |
