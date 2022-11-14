@@ -106,6 +106,7 @@ function AddHike() {
     }
 
     const changeHandler = (event) => {
+        event.preventDefault();
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
     };
@@ -365,10 +366,6 @@ function AddHike() {
                                 <div>
                                     <Typography><br />Filename: {selectedFile.name}</Typography>
                                     <Typography>Size in bytes: {selectedFile.size}</Typography>
-                                    <Typography>
-                                        Last Modified Date:{' '}
-                                        {selectedFile.lastModifiedDate.toLocaleDateString()}
-                                    </Typography>
                                 </div>
                             ) : (
                                 <Typography><br />Select a file to show details</Typography>
