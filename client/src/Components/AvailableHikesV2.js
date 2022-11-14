@@ -200,7 +200,7 @@ export default function AvailableHikesV2(props) {
             <ThemeProvider theme={theme}>
                 {/* Title */}
                 <Grid item xs={12} marginLeft={2}>
-                    <Typography variant="h4" marginTop={1} gutterBottom>
+                    <Typography variant="h4" marginTop={2} gutterBottom sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <br />Find your next trail
                     </Typography>
                 </Grid>
