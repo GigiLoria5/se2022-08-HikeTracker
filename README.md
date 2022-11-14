@@ -374,3 +374,4 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 | g.desantis@localguide.it  | password | local guide |
 | m.piccolo@guideturin.it   | password | local guide |
 | i.folletti987@google.com  | password | local guide |
+| manager@manager.com       | password | manager     |
