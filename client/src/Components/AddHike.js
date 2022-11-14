@@ -358,7 +358,7 @@ function AddHike() {
                             <Typography variant="h5" sx={thm}>
                                 <br />Upload a GPX file<br /><br />
                             </Typography>
-                            <Button variant="contained" component="label" onChange={changeHandler} >
+                            <Button variant="contained" component="label" onChange={changeHandler} disabled>
                                 Upload
                                 <input hidden accept=".gpx" multiple type="file" />
                             </Button>
@@ -381,7 +381,7 @@ function AddHike() {
                     <Grid xs={0.5}></Grid>
                     <Grid xs={11} sx={thm}>
                         <Grid><br /></Grid>
-                        <Button onClick={handleSubmission} variant="contained" color='primary'>ADD A HIKE</Button>
+                        <Button onClick={handleSubmission} variant="contained" color='primary' disabled>ADD A HIKE</Button>
                         <Grid><br /></Grid>
                         <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                         <Typography>
