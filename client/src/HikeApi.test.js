@@ -6,7 +6,7 @@
  */
 
 
-import API from '../src/API.js';
+import API from './API.js';
 
 const APIURL = 'http://localhost:3001';
 //const fetch = require('node-fetch');
