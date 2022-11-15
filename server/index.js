@@ -20,7 +20,7 @@ app.use(express.json());                                  //Serializes body into
 
 /* Set up and enable cors */
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost'],
     credentials: true,
 };
 app.use(cors(corsOptions));
