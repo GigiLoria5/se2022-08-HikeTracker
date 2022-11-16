@@ -72,13 +72,14 @@ sections:
 - What caused your errors in estimation (if any)?
   - Our main problem was underestimating the time it took to make the GUIs and implement filters, but in general story number 1 proved to be very challenging.
 - What lessons did you learn (both positive and negative) in this sprint?
-  - We realised that planning and estimating must be done more thoroughly, as we tend to underestimate the workload and be too optimistic with the number of stories to be committed. In addition, we understood that we need to have more communication to help synchronise the work.
+  - We realised that planning and estimating must be done more thoroughly, as we tend to underestimate the workload and be too optimistic with the number of stories to be committed. 
+  - We understood that we need to have more communication to help synchronise the work.
 - Which improvement goals set in the previous retrospective were you able to achieve?
   - We definitely succeeded in improving the description of tasks by using checklists and creating more sub-tasks, although it could still be done better (e.g. by better specifying the testing part). In addition, we were both able to improve collaboration on VCS and have better documentation.
 - Which ones you were not able to achieve? Why?
   - We could not improve the estimates for the front-end tasks, in fact they were once again totally wrong. The main reason for this is underestimating the things needed for the interface, not having a clear idea of what each one contains and not following a precise design.
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - **Improve the estimates of the front-end tasks**: this can be achieved by defining a design (in which both the person who will realise the interface and the server side participate) prior to realising the interface, so that we can better establish what is needed, what functionality is required on the server side, how many (estimated) hours will be required, and also avoid making ongoing changes.
+  - **Improve the estimates of the front-end tasks**: this can be achieved by defining a design task (in which both the person who will realise the interface and the server side participate) prior to realising the interface, so that we can better establish what is needed, what functionality is required on the server side, how many (estimated) hours will be required, and also avoid making ongoing changes. 
   - **Improve estimates for the testing part**: obtainable by separating the main testing task.
   - **Having more co-ordination between frontend and backend**: achievable through the creation of 'issues' on GitHub or comments on YouTrack for missing or necessary parts.
 - One thing you are proud of as a Team!!
