@@ -135,7 +135,8 @@ function AddHike() {
                 "location",
                 2,
                 referencePoint.map(r => r.position), //reference points must be translated in an array of numbers. Of course not in this way
-                formData
+                /*formData*/
+                selectedFile
             )
         )
     };
