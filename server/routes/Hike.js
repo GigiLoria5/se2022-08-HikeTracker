@@ -21,10 +21,12 @@ const router = express.Router();
 
 
 router.post('/hikes', async (req, res) => {
+    console.log(req.body);
+    console.log(req.files);
     try {
-        if (!req.isAuthenticated() || req.user.role != "local_guide") {
+        /*if (!req.isAuthenticated() || req.user.role != "local_guide") {
             return res.status(401).json({ error: 'Not logged in' });
-        }
+        }*/
         if (!req.files) {
             throw "no file uploaded"
         } else {
