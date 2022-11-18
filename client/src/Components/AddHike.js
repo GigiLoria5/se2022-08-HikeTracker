@@ -20,6 +20,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
+import { difficultyFromState } from "../Utils/HikesFilter"
 
 
 
@@ -117,7 +118,7 @@ function AddHike() {
         const formData = new FormData();
 
         formData.append('File', selectedFile);
-
+        console.log(selectedFile);
         await API.createHike(
             new Hike(
                 title,
@@ -129,7 +130,7 @@ function AddHike() {
                 totalAscent,
                 length,
                 expectedTime,
-                difficulty,
+                difficultyFromState(difficulty),
                 "location", //start point and end point are not handled in terms of type + id (and needs APis to know the available ones)
                 1,
                 "location",

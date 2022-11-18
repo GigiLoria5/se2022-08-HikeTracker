@@ -167,6 +167,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Add description for hike
   - Permissions allowed: Local guide
   - Request body: Hike description, including gpx file with gpx tag
+  - gpx file size must be less than 10MB
 
   ```
   {
@@ -205,7 +206,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `400 Bad Request` (arguments error),`500 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
