@@ -14,6 +14,7 @@
     "jest": "^27.5.1",
     "leaflet": "^1.9.2",
     "node-fetch": "^3.3.0",
+    "mimetype": "^0.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.1.0",
