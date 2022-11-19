@@ -41,7 +41,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 ## React Client Application Routes
 
 - Route `/` : a simple welcome page that acts as an entry point for all users
-- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of showing everyone various information about them, and for authenticated users also shows the map
+- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
+- Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker.
 - Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
 
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
@@ -217,9 +218,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   }
   ```
 
-- GET /api/countries
+- GET `/api/countries`
 
-  - Description: Return an array containing all the countries
+  - Description: Return an array containing all the countries where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -235,9 +236,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/provinces/:country
+- GET `/api/provinces/:country`
 
-  - Description: Return an array containing all the provinces of a specific country
+  - Description: Return an array containing all the provinces of a specific country where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -253,9 +254,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/cities/:province
+- GET `/api/cities/:province`
 
-  - Description: Return an array containing all the cities of a specific province
+  - Description: Return an array containing all the cities of a specific province where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -271,9 +272,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value
+- GET `/api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value`
 
-  - Description: Return an array containing all the hikes with filters
+  - Description: Return an array containing all the hikes after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
@@ -371,10 +372,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## Users Credentials
 
-| email                     | password | role        |
-| ------------------------- | -------- | ----------- |
-| c.basile@hiker.it         | password | hiker       |
-| g.desantis@localguide.it  | password | local guide |
-| m.piccolo@guideturin.it   | password | local guide |
-| i.folletti987@google.com  | password | local guide |
-| manager@manager.com       | password | manager     |
+| email                    | password | role        |
+| ------------------------ | -------- | ----------- |
+| c.basile@hiker.it        | password | hiker       |
+| g.desantis@localguide.it | password | local guide |
+| m.piccolo@guideturin.it  | password | local guide |
+| i.folletti987@google.com | password | local guide |
+| manager@manager.com      | password | manager     |

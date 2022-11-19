@@ -61,17 +61,17 @@ exports.getHikeByCity = (city) => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: city,
                     province: row.province,
                     country: row.country, description: row.description, ascent: row.ascent,
-                    track_length: row.track_length, expected_time: row.expected_time, difficulty: row.difficulty, start_point_type: row.start_point_type, 
-                    start_point_id: row.start_point_id, 
+                    track_length: row.track_length, expected_time: row.expected_time, difficulty: row.difficulty, start_point_type: row.start_point_type,
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -88,17 +88,17 @@ exports.getHikeByProvince = (province) => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: row.city,
                     province: province,
                     country: row.country, description: row.description, ascent: row.ascent,
-                    track_length: row.track_length, expected_time: row.expected_time, difficulty: row.difficulty, start_point_type: row.start_point_type, 
-                    start_point_id: row.start_point_id, 
+                    track_length: row.track_length, expected_time: row.expected_time, difficulty: row.difficulty, start_point_type: row.start_point_type,
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -115,18 +115,18 @@ exports.getHikeByCountry = (country) => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: row.city,
                     province: row.province,
                     country: country,
                     description: row.description, ascent: row.ascent,
                     track_length: row.track_length, expected_time: row.expected_time, difficulty: row.difficulty, start_point_type: row.start_point_type,
-                    start_point_id: row.start_point_id, 
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -143,22 +143,22 @@ exports.getAllHikes = () => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: row.city,
-                    province: row.province, 
-                    country: row.country, 
-                    description: row.description, 
+                    province: row.province,
+                    country: row.country,
+                    description: row.description,
                     ascent: row.ascent,
-                    track_length: row.track_length, 
-                    expected_time: row.expected_time, 
-                    difficulty: row.difficulty, 
-                    start_point_type: row.start_point_type, 
-                    start_point_id: row.start_point_id, 
+                    track_length: row.track_length,
+                    expected_time: row.expected_time,
+                    difficulty: row.difficulty,
+                    start_point_type: row.start_point_type,
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -175,17 +175,17 @@ exports.getHikeByDifficulty = (difficulty) => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: row.city,
                     province: row.province,
                     country: row.country, description: row.description, ascent: row.ascent,
-                    track_length: row.track_length, expected_time: row.expected_time, difficulty: difficulty, start_point_type: row.start_point_type, 
-                    start_point_id: row.start_point_id, 
+                    track_length: row.track_length, expected_time: row.expected_time, difficulty: difficulty, start_point_type: row.start_point_type,
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -193,9 +193,9 @@ exports.getHikeByDifficulty = (difficulty) => {
     });
 };
 
-exports.getHikeByLength = (min,max) => {
+exports.getHikeByLength = (min, max) => {
     return new Promise((resolve, reject) => {
-        if(min != 15.0){
+        if (min != 15.0) {
             const sql = `SELECT id, title, peak_altitude, province, country, description, ascent, city, track_length, expected_time, difficulty, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike WHERE track_length >= ? AND track_length <= ?`;
             db.all(sql, [min, max], (err, rows) => {
                 if (err)
@@ -203,20 +203,20 @@ exports.getHikeByLength = (min,max) => {
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
                         country: row.country, description: row.description, ascent: row.ascent,
                         track_length: row.track_length,
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
@@ -229,20 +229,20 @@ exports.getHikeByLength = (min,max) => {
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
                         country: row.country, description: row.description, ascent: row.ascent,
                         track_length: row.track_length,
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
@@ -251,32 +251,32 @@ exports.getHikeByLength = (min,max) => {
     });
 };
 
-exports.getHikeByAscent = (min,max) => {
+exports.getHikeByAscent = (min, max) => {
     return new Promise((resolve, reject) => {
-        if(min != 1000){
+        if (min != 1000) {
             const sql = `SELECT id, title, peak_altitude, province, country, description, city, track_length, ascent, expected_time, difficulty, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike WHERE ascent >= ? AND ascent <= ?`;
-            db.all(sql, [min,max], (err, rows) => {
+            db.all(sql, [min, max], (err, rows) => {
                 if (err)
                     reject(err);
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
-                        country: row.country, 
-                        description: row.description, 
+                        country: row.country,
+                        description: row.description,
                         ascent: row.ascent,
-                        track_length: row.track_length, 
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        track_length: row.track_length,
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
@@ -289,22 +289,22 @@ exports.getHikeByAscent = (min,max) => {
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
-                        country: row.country, 
-                        description: row.description, 
+                        country: row.country,
+                        description: row.description,
                         ascent: row.ascent,
-                        track_length: row.track_length, 
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        track_length: row.track_length,
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
@@ -313,37 +313,37 @@ exports.getHikeByAscent = (min,max) => {
     });
 };
 
-exports.getHikeByExpectedTime = (min,max) => {
+exports.getHikeByExpectedTime = (min, max) => {
     return new Promise((resolve, reject) => {
-        if(min != 5.0){
+        if (min != 5.0) {
             const sql = `SELECT id, title, peak_altitude, province, country, description, expected_time, ascent, track_length, city, difficulty, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike WHERE expected_time >= ? AND expected_time <= ?`;
-            db.all(sql, [min,max], (err, rows) => {
+            db.all(sql, [min, max], (err, rows) => {
                 if (err)
                     reject(err);
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
-                        country: row.country, 
-                        description: row.description, 
+                        country: row.country,
+                        description: row.description,
                         ascent: row.ascent,
-                        track_length: row.track_length, 
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        track_length: row.track_length,
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
             });
-        } else{
+        } else {
             const sql = `SELECT id, title, peak_altitude, province, country, description, expected_time, ascent, track_length, city, difficulty, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike WHERE expected_time >= ?`;
             db.all(sql, [min], (err, rows) => {
                 if (err)
@@ -351,22 +351,22 @@ exports.getHikeByExpectedTime = (min,max) => {
                 else {
                     const hikes = rows.map((row => ({
                         id: row.id,
-                        title: row.title, 
+                        title: row.title,
                         peak_altitude: row.peak_altitude,
                         city: row.city,
                         province: row.province,
-                        country: row.country, 
-                        description: row.description, 
+                        country: row.country,
+                        description: row.description,
                         ascent: row.ascent,
-                        track_length: row.track_length, 
-                        expected_time: row.expected_time, 
-                        difficulty: row.difficulty, 
-                        start_point_type: row.start_point_type, 
-                        start_point_id: row.start_point_id, 
+                        track_length: row.track_length,
+                        expected_time: row.expected_time,
+                        difficulty: row.difficulty,
+                        start_point_type: row.start_point_type,
+                        start_point_id: row.start_point_id,
                         end_point_type: row.end_point_type,
                         end_point_id: row.end_point_id,
                         author_id: row.author_id
-                        
+
                     })));
                     resolve(hikes);
                 }
@@ -384,23 +384,23 @@ exports.getAllHikes = () => {
             else {
                 const hikes = rows.map((row => ({
                     id: row.id,
-                    title: row.title, 
+                    title: row.title,
                     peak_altitude: row.peak_altitude,
                     city: row.city,
-                    province: row.province, 
-                    country: row.country, 
-                    description: row.description, 
+                    province: row.province,
+                    country: row.country,
+                    description: row.description,
                     ascent: row.ascent,
-                    track_length: row.track_length, 
-                    expected_time: row.expected_time, 
-                    difficulty: row.difficulty, 
+                    track_length: row.track_length,
+                    expected_time: row.expected_time,
+                    difficulty: row.difficulty,
                     gps_track: row.gps_track,
-                    start_point_type: row.start_point_type, 
-                    start_point_id: row.start_point_id, 
+                    start_point_type: row.start_point_type,
+                    start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
-                    
+
                 })));
                 resolve(hikes);
             }
@@ -422,14 +422,14 @@ exports.addHike = (hike, author_id) => {
             hike.ascent,
             hike.track_length,
             hike.expected_time,
-            hike.difficulty, 
-            hike.gps_track, 
-            hike.start_point_type, 
-            hike.start_point_id, 
-            hike.end_point_type, 
-            hike.end_point_id, 
+            hike.difficulty,
+            hike.gps_track,
+            hike.start_point_type,
+            hike.start_point_id,
+            hike.end_point_type,
+            hike.end_point_id,
             hike.author_id
-        ], function (err, row) { 
+        ], function (err, row) {
             if (err) {
                 reject(err);
                 return;
@@ -446,7 +446,7 @@ exports.addReferencePoint = (hikeID, referencePointType, referencePointId) => {
             hikeID,
             referencePointType,
             referencePointId
-        ], function (err, row) { 
+        ], function (err, row) {
             if (err) {
                 reject(err);
                 return;
@@ -459,7 +459,7 @@ exports.addReferencePoint = (hikeID, referencePointType, referencePointId) => {
 exports.deleteHike = (hikeID) => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM hike WHERE id = ?';
-        db.run(sql, [hikeID], function (err) { 
+        db.run(sql, [hikeID], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -472,7 +472,7 @@ exports.deleteHike = (hikeID) => {
 exports.deleteReferencePoints = (hikeID) => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM reference_point WHERE hike_id = ?';
-        db.run(sql, [hikeID], function (err) { 
+        db.run(sql, [hikeID], function (err) {
             if (err) {
                 reject(err);
                 return;

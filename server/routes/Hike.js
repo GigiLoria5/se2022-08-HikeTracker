@@ -19,7 +19,6 @@ const router = express.Router();
 //////                          POST                           //////
 /////////////////////////////////////////////////////////////////////
 
-
 router.post('/hikes', async (req, res) => {
     try {
         if (!req.isAuthenticated() || req.user.role != "local_guide") {
@@ -177,8 +176,6 @@ router.post('/hikes', async (req, res) => {
         res.status(500).send(err);
     }
 });
-
-
 
 
 /////////////////////////////////////////////////////////////////////

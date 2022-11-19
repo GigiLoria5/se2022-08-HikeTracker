@@ -2,7 +2,7 @@ import { APIURL } from './APIUrl';
 
 /**
  *
- * @param hike is a Hike descripted in ./Utils.js
+ * @param hike is a Hike descripted in ./Util/Hike.js
  */
 const createHike = async (hike) => {
     const formData = new FormData();

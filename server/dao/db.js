@@ -8,6 +8,4 @@ const db = new sqlite.Database('hiker_tracker_db.sqlite', (err) => {
     if (err) throw err;
 });
 
-//db.get("PRAGMA foreign_keys = ON"); // active foreign keys ???
-
 module.exports = db;
