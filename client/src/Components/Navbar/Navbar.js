@@ -19,7 +19,8 @@ import Logo from "./Logo";
 import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
-let navItems = { 'Hikes': '/hikes' };
+const navItemsFixed = { 'Hikes': '/hikes' };
+let navItems = { ...navItemsFixed };
 
 function MyNavbar(props) {
 
@@ -34,8 +35,12 @@ function MyNavbar(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     /* SETUP HIDDEN NAV ITEMS LINKS */
-    if (isloggedIn && loggedUser.role === "local_guide")
-        navItems = { ...navItems, 'Platform Content': '/local-guide-page' };
+    React.useEffect(() => {
+        if (isloggedIn && loggedUser.role === "local_guide")
+            navItems = { ...navItemsFixed, 'Platform Content': '/local-guide-page' };
+        else
+            navItems = { ...navItemsFixed };
+    }, [isloggedIn, loggedUser.role]);
 
     return (
         <>

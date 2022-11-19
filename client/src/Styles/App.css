@@ -43,6 +43,15 @@ svg {
     margin-bottom: auto;
 }
 
+.container-full-page {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* Navbar */
 
 .box-end {
@@ -61,7 +70,7 @@ svg {
     text-decoration: underline 2px !important;
 }
 
-.container-full-size {
+.container-full-size-fixed {
     height: 100% !important;
     width: 100% !important;
     max-width: 100% !important;

@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AvailableHikesV2 from "./Components/AvailableHikesV2";
-import Navbar from "./Components/Navbar";
-import LoginForm from "./Components/Loginform";
-import SignUpForm from "./Components/SignupForm";
+import Navbar from "./Components/Navbar/Navbar";
+import LoginForm from "./Components/Auth/Loginform";
+import SignUpForm from "./Components/Auth/SignupForm";
 import Homepage from "./Components/Homepage"
-import LocalGuidePage from "./Components/LocalGuidePage"
-import AddHike from "./Components/AddHike"
+import LocalGuidePage from "./Components/LocalGuide/LocalGuidePage"
+import AddHike from "./Components/LocalGuide/AddHike"
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
+import HikesContainer from './Components/Hiker/HikesContainer';
 
 function App() {
     /* A little Router trick */
@@ -81,7 +81,7 @@ function Root() {
                 handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
                 {/* Outlets */}
                 <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
-                <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
+                <Route path='/hikes' element={<HikesContainer isloggedIn={loggedIn} loggedUser={loggedUser} />} />
 
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />

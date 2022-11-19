@@ -24,6 +24,10 @@ import API from "../API";
 import { timeFromState, ascentFromState, lengthFromState, difficultyFromState } from "../Utils/HikesFilter";
 import { handleStartPointTypes, handleEndPointTypes, handleRef } from "../Utils/HikesList";
 
+/////////////////////////////////////////////////////////////////////
+//////           THIS COMPONENT WILL BE DELETED                //////
+/////////////////////////////////////////////////////////////////////
+
 export default function AvailableHikesV2(props) {
 
     const [expanded, setExpanded] = React.useState(false);

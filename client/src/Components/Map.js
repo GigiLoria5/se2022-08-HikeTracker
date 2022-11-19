@@ -3,6 +3,11 @@ import { MapContainer, Polyline, TileLayer } from 'react-leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+/////////////////////////////////////////////////////////////////////
+//////           THIS COMPONENT WILL BE DELETED                //////
+/////////////////////////////////////////////////////////////////////
+
+
 /**
  *  TO TRY WITH A GPX PARSED FROM BACKEND
  *  
@@ -43,7 +48,7 @@ export default function Map(props) {
     [40.6495463256113, -73.96000671720954],
   ]
 
-  if(props.gpx.tracks)
+  if (props.gpx.tracks)
     positions = props.gpx.tracks[0].points.map(p => [p.lat, p.lon]);
 
   return (

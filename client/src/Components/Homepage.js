@@ -31,7 +31,7 @@ function Homepage(props) {
     }
 
     return (
-        <Container className="container-full-size">
+        <Container className="container-full-size-fixed">
             <HomepageContent className='w-h-100'>
                 <Container
                     sx={{
