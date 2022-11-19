@@ -229,19 +229,19 @@ router.get('/hikes/filters', async (req, res) => {
     hikeDao.getAllHikes()
         .then(async (hikes) => {
             var result = hikes;
-            if (city != undefined) {
+            if (city) {
                 result = result.filter(h => h.city == city);
             }
-            if (province != undefined) {
+            if (province) {
                 result = result.filter(h => h.province == province);
             }
-            if (country != undefined) {
+            if (country) {
                 result = result.filter(h => h.country == country);
             }
-            if (difficulty != undefined) {
+            if (difficulty) {
                 result = result.filter(h => h.difficulty == difficulty);
             }
-            if (track_length != undefined) {
+            if (track_length) {
                 if (track_length == "0-5") {
                     result = result.filter(h => h.track_length >= 0.0 && h.track_length <= 5.0);
                 } else if (track_length == "5-15") {
@@ -249,10 +249,10 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (track_length == "15-more") {
                     result = result.filter(h => h.track_length > 15.0);
                 } else {
-                    return res.status(400).json({ error: `Parameter error` });
+                    return res.status(400).json({ error: `Parameter error 1` });
                 }
             }
-            if (ascent != undefined) {
+            if (ascent) {
                 if (ascent == "0-300") {
                     result = result.filter(h => h.ascent >= 0 && h.ascent <= 300);
                 } else if (ascent == "300-600") {
@@ -262,10 +262,10 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (ascent == "1000-more") {
                     result = result.filter(h => h.ascent > 1000);
                 } else {
-                    return res.status(400).json({ error: `Parameter error` });
+                    return res.status(400).json({ error: `Parameter error 2` });
                 }
             }
-            if (expected_time != undefined) {
+            if (expected_time) {
                 if (expected_time == "0-1") {
                     result = result.filter(h => h.expected_time >= 0.0 && h.expected_time <= 1.0);
                 } else if (expected_time == "1-3") {
@@ -275,7 +275,7 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (expected_time == "5-more") {
                     result = result.filter(h => h.expected_time > 5.0);
                 } else {
-                    return res.status(400).json({ error: `Parameter error` });
+                    return res.status(400).json({ error: `Parameter error 3` });
                 }
             }
 

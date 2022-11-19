@@ -17,7 +17,7 @@
         "sqlite3": "^5.1.2"
     },
     "scripts": {
-        "start": "node index.js",
+        "start": "nodemon index.js",
         "test": "jest",
         "test_coverage": "jest --coverage",
         "test_integration": "npx mocha --runInBand --require mocha-steps --reporter mochawesome --timeout 30000 --exit"

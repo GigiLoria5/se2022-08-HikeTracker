@@ -10,7 +10,8 @@ import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
-import HikesContainer from './Components/Hiker/HikesContainer';
+import HikesContainer from './Components/Hikes/HikesContainer';
+import HikeDetails from './Components/Hikes/HikeDetails';
 
 function App() {
     /* A little Router trick */
@@ -81,7 +82,8 @@ function Root() {
                 handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
                 {/* Outlets */}
                 <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
-                <Route path='/hikes' element={<HikesContainer isloggedIn={loggedIn} loggedUser={loggedUser} />} />
+                <Route path='/hikes' element={<HikesContainer />} />
+                <Route path='/hikes/:id' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
 
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />

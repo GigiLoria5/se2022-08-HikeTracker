@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Container, Grid, Typography } from '@mui/material';
 import HikesFilterPanel from './HikesFilterPanel';
 import HikesList from './HikesList';
+import API from '../../API';
 
 const HikesContainer = (props) => {
-    const { isloggedIn, loggedUser } = props;
+    const [hikes, setHikes] = useState([]);
+    const [filter, setFilter] = useState({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": null });
+
+    useEffect(() => {
+        API.getHikesWithFilters(filter)
+            .then(hikes => {
+                setHikes(hikes);
+                console.log(hikes);
+            });
+        // eslint-disable-next-line 
+    }, [filter.country, filter.province, filter.city, filter.difficulty, filter.track_length, filter.ascent, filter.ascent]);
 
     return (
         <Container className='container-full-page'>
@@ -21,7 +32,7 @@ const HikesContainer = (props) => {
                 <HikesFilterPanel />
 
                 {/* Hikes List */}
-                <HikesList />
+                <HikesList hikes={hikes} />
             </Grid>
         </Container >
     )

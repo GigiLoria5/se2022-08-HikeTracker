@@ -52,6 +52,17 @@ svg {
     padding: 0 !important;
 }
 
+.flex-font {
+    width: 100%;
+    overflow: scroll;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.flex-font::-webkit-scrollbar {
+    display: none;
+}
+
 /* Navbar */
 
 .box-end {
@@ -126,4 +137,28 @@ svg {
     top: 0;
     bottom: 0;
     z-index: -2;
+}
+
+/* Hikes */
+
+.hike-card-description-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.hike-card-description-wrap p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.no-exceed {
+    display: flex;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.card:hover {
+    box-shadow: -1px 10px 29px 0px rgba(0, 0, 0, 0.8);
 }
