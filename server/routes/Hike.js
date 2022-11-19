@@ -249,7 +249,7 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (track_length == "15-more") {
                     result = result.filter(h => h.track_length > 15.0);
                 } else {
-                    return res.status(400).json({ error: `Parameter error 1` });
+                    return res.status(400).json({ error: `Parameter error` });
                 }
             }
             if (ascent) {
@@ -262,7 +262,7 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (ascent == "1000-more") {
                     result = result.filter(h => h.ascent > 1000);
                 } else {
-                    return res.status(400).json({ error: `Parameter error 2` });
+                    return res.status(400).json({ error: `Parameter error` });
                 }
             }
             if (expected_time) {
@@ -275,7 +275,7 @@ router.get('/hikes/filters', async (req, res) => {
                 } else if (expected_time == "5-more") {
                     result = result.filter(h => h.expected_time > 5.0);
                 } else {
-                    return res.status(400).json({ error: `Parameter error 3` });
+                    return res.status(400).json({ error: `Parameter error` });
                 }
             }
 
