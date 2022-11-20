@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, List, ListItem, Typography } from '@mui/material';
+import { Box, Button, ClickAwayListener, Drawer, Grid, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
@@ -32,8 +32,15 @@ const HikesFilterPanel = (props) => {
         });
     };
 
+    const getCityList = async (province) => {
+        return await API.getCitiesByProvince(province).then(cities => {
+            const cityList = cities.map(c => c.city);
+            return cityList;
+        });
+    };
+
     // Filter Components
-    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} getProvinceList={getProvinceList} />);
+    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList} />);
 
     /* Filter panel for small screen */
     const filterHiddenPanel = (<Box

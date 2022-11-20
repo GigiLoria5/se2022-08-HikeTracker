@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react'
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
 
 function GeographicFilter(props) {
-    const { filter, setFilter, countryList, getProvinceList } = props;
+    const { filter, setFilter, countryList, getProvinceList, getCityList } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
     const [countryActive, setCountryActive] = useState(null);
-    const [provinceList, setProvinceList] = useState(["Loading..."]);
+    const [provinceList, setProvinceList] = useState([]);
     const [provinceActive, setProvinceActive] = useState(null);
+    const [cityList, setCityList] = useState([]);
+    const [cityActive, setCityActive] = useState(null);
 
+    // If there are new countries refresh
     useEffect(() => {
         if (isLoading && countryList && countryList.length > 0)
             setLoading(false);
         // eslint-disable-next-line 
     }, [countryList.length]);
 
+    // Refresh province list when the active country changes
     useEffect(() => {
         const getProvList = async () => {
             const provinceList = await getProvinceList(countryActive);
@@ -28,20 +32,61 @@ function GeographicFilter(props) {
         // eslint-disable-next-line 
     }, [countryActive]);
 
+    // Refresh city/municipality list when the active province changes
+    useEffect(() => {
+        const getCitList = async () => {
+            const cityList = await getCityList(provinceActive);
+            setCityList(cityList);
+            setLoadingCity(false);
+        }
+        if (provinceActive)
+            getCitList();
+        // eslint-disable-next-line 
+    }, [provinceActive]);
+
     const handleChangeCountry = (newCountry) => {
         if (countryActive === newCountry)
             return;
-        setFilter({ ...filter, country: newCountry });
+        let newFilter = { ...filter, country: newCountry };
+        // Update to new country
         setLoadingProvince(true);
         setCountryActive(newCountry);
+
+        // Reset province if active
+        if (provinceActive) {
+            setProvinceList([]);
+            setProvinceActive(null);
+            newFilter.province = null;
+        }
+
+        // Reset City if active
+        if (cityActive) {
+            setCityList([]);
+            setCityActive(null);
+            newFilter.city = null;
+        }
+
+        // Finally update filter
+        setFilter({ ...newFilter });
     };
 
     const handleChangeProvince = (newProvince) => {
         if (provinceActive === newProvince)
             return;
-        setFilter({ ...filter, province: newProvince });
+        let newFilter = { ...filter, province: newProvince };
+        // Update to new province
         setLoadingCity(true);
         setProvinceActive(newProvince);
+
+        // Reset City if active
+        if (cityActive) {
+            setCityList([]);
+            setCityActive(null);
+            newFilter.city = null;
+        }
+
+        // Finally update filter
+        setFilter({ ...newFilter });
     };
 
     return (
@@ -57,6 +102,7 @@ function GeographicFilter(props) {
                 loading={isLoading}
                 loadingText="Loading..."
                 options={countryList}
+                value={countryActive}
                 sx={{ maxWidth: 300 }}
                 renderInput={(params) => <TextField {...params} id="country" label="Country" />}
                 onChange={(_, value) => handleChangeCountry(value)}
@@ -69,9 +115,23 @@ function GeographicFilter(props) {
                 loading={isLoadingProvince}
                 loadingText="Loading..."
                 options={isLoadingProvince ? [{ label: "Loading...", id: 0 }] : provinceList}
+                value={provinceActive}
                 sx={{ maxWidth: 300, marginTop: 2 }}
                 renderInput={(params) => <TextField {...params} id="province" label="Province" />}
                 onChange={(_, value) => handleChangeProvince(value)}
+            />
+            {/* Municipality */}
+            <Autocomplete
+                disablePortal
+                id="combo-box-municipality"
+                disabled={provinceActive ? false : true}
+                loading={isLoadingCity}
+                loadingText="Loading..."
+                options={isLoadingCity ? [{ label: "Loading...", id: 0 }] : cityList}
+                value={cityActive}
+                sx={{ maxWidth: 300, marginTop: 2 }}
+                renderInput={(params) => <TextField {...params} id="municipality" label="Municipality" />}
+                onChange={(_, value) => { setFilter({ ...filter, city: value }); setCityActive(value); }}
             />
         </Box>
     )
