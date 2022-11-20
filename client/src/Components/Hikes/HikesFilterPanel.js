@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, List, ListItem } from '@mui/material';
+import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, List, ListItem, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
@@ -25,15 +25,25 @@ const HikesFilterPanel = (props) => {
         setDeviceFilterPanelOpen(state);
     };
 
+    const getProvinceList = async (country) => {
+        return await API.getProvincesByCountry(country).then(provinces => {
+            const provinceList = provinces.map(p => p.province);
+            return provinceList;
+        });
+    };
+
     // Filter Components
-    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} />);
+    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} getProvinceList={getProvinceList} />);
 
     /* Filter panel for small screen */
     const filterHiddenPanel = (<Box
-        sx={{ width: "auto", display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
+        sx={{ width: '80vw', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
         role="presentation"
         onKeyDown={toggleFilterPanelDrawer(false)}
     >
+        <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+            Filters
+        </Typography>
         {geographicFilterComponent}
     </Box>);
 
@@ -52,7 +62,7 @@ const HikesFilterPanel = (props) => {
             {/* Filter Panel - Small Screen */}
             {deviceFilterPanelOpen &&
                 <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                    <React.Fragment key={"filter-left-panel"}>
+                    <React.Fragment key={"filter-left-panel"} >
                         <ClickAwayListener onClickAway={toggleFilterPanelDrawer(false)}>
                             <Drawer
                                 anchor={"left"}
