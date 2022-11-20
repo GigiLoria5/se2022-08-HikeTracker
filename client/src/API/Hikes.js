@@ -22,22 +22,18 @@ const createHike = async (hike) => {
     let err = new Error();
     if (!response.ok) {
         if (response.status === 500) {
-            console.log(response.statusText);
             err.message = "500 INTERNAL SERVER ERROR";
             throw err;
         }
         else if (response.status === 422) {
-            console.log(response.body);
             err.message = "422 UNPROCESSABLE ENTITY";
             throw err;
         }
         else if (response.status === 401) {
-            console.log(response.body);
             err.message = "422 UNAUTHORIZED";
             throw err;
         }
         else {
-            console.log(response.body);
             err.message = "OTHER ERROR";
             throw err;
         }

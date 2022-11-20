@@ -53,5 +53,5 @@ export default function HikesListCard(props) {
                 </Box>
             </Card>
         </Grid >
-    )
+    );
 }

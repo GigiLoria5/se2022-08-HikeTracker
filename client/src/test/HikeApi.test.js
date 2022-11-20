@@ -16,6 +16,17 @@ describe('frontend test', () => {
     let provinces = [];
     let cities = [];
 
+    const filterNull = {
+        "country": null,
+        "province": null,
+        "city": null,
+        "difficulty": null,
+        "track_length": null,
+        "ascent": null,
+        "expected_time": null
+    };
+
+
     it('T0: get country test', async () => {
         const a = await API.getCountries();
         expect(a).toBeInstanceOf(Array);
@@ -63,7 +74,7 @@ describe('frontend test', () => {
     })
 
     it('T5: get hikes with no filters', async () => {
-        const a = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": null });
+        const a = await API.getHikesWithFilters({ ...filterNull });
         expect(a).toBeInstanceOf(Array);
         for (const h of a) {
             expect(countries.map(a => a.country).includes(h.country)).toBe(true);
@@ -75,13 +86,15 @@ describe('frontend test', () => {
             expect(typeof h.ascent).toBe('number');
             expect(typeof h.track_length).toBe('number');
             expect(typeof h.expected_time).toBe('number');
-            //console.log(h);
         }
     })
 
     it('T6: get hikes with country filter', async () => {
+        let filter = { ...filterNull }
+
         for (const c of countries) {
-            const a = await API.getHikesWithFilters({ "country": c.country, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": null });
+            filter.country = c.country;
+            const a = await API.getHikesWithFilters(filter);
             for (const h of a) {
                 expect(h.country).toBe(c.country);
             }
@@ -89,8 +102,11 @@ describe('frontend test', () => {
     })
 
     it('T7: get hikes with province filter', async () => {
+        let filter = { ...filterNull }
+
         for (const p of provinces) {
-            const a = await API.getHikesWithFilters({ "country": null, "province": p.province, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": null });
+            filter.province = p.province;
+            const a = await API.getHikesWithFilters(filter);
             for (const h of a) {
                 expect(h.province).toBe(p.province);
             }
@@ -98,8 +114,11 @@ describe('frontend test', () => {
     })
 
     it('T8: get hikes with city filter', async () => {
+        let filter = { ...filterNull }
+
         for (const c of cities) {
-            const a = await API.getHikesWithFilters({ "country": c.city, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": null });
+            filter.city = c.city;
+            const a = await API.getHikesWithFilters(filter);
             for (const h of a) {
                 expect(h.city).toBe(c.city);
             }
@@ -108,7 +127,7 @@ describe('frontend test', () => {
 
     it('T9: get hikes with difficulty filter', async () => {
         for (const n of [1, 2, 3]) {
-            const a = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": n, "track_length": null, "ascent": null, "expected_time": null });
+            const a = await API.getHikesWithFilters({ ...filterNull, "difficulty": n });
             for (const h of a) {
                 expect(h.difficulty).toBe(n);
             }
@@ -117,7 +136,7 @@ describe('frontend test', () => {
 
     it('T10: get hikes with track length filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": 0, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "track_length": 0 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -126,7 +145,7 @@ describe('frontend test', () => {
 
     it('T11: get hikes with track length filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": -1, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "track_length": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -135,7 +154,7 @@ describe('frontend test', () => {
 
     it('T12: get hikes with track length filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": 4, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "track_length": 4 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -144,7 +163,7 @@ describe('frontend test', () => {
 
     it('T13: get hikes with difficulty filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": 0, "track_length": null, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "difficulty": 0 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -153,7 +172,7 @@ describe('frontend test', () => {
 
     it('T14: get hikes with difficulty filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": 4, "track_length": null, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "difficulty": 4 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -162,7 +181,7 @@ describe('frontend test', () => {
 
     it('T15: get hikes with difficulty filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": -1, "track_length": null, "ascent": null, "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "difficulty": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -170,25 +189,25 @@ describe('frontend test', () => {
     })
 
     it('T16: get hikes with ascent filter', async () => {
-        const a = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": "0-300", "expected_time": null });
+        const a = await API.getHikesWithFilters({ ...filterNull, "ascent": "0-300" });
         for (const h of a) {
             expect(h.ascent).toBeGreaterThanOrEqual(0);
             expect(h.ascent).toBeLessThanOrEqual(300);
         }
 
-        const b = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": "300-600", "expected_time": null });
+        const b = await API.getHikesWithFilters({ ...filterNull, "ascent": "300-600" });
         for (const h of b) {
             expect(h.ascent).toBeGreaterThanOrEqual(300);
             expect(h.ascent).toBeLessThanOrEqual(600);
         }
 
-        const c = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": "600-1000", "expected_time": null });
+        const c = await API.getHikesWithFilters({ ...filterNull, "ascent": "600-1000" });
         for (const h of c) {
             expect(h.ascent).toBeGreaterThanOrEqual(600);
             expect(h.ascent).toBeLessThanOrEqual(1000);
         }
 
-        const d = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": "1000-more", "expected_time": null });
+        const d = await API.getHikesWithFilters({ ...filterNull, "ascent": "1000-more" });
         for (const h of d) {
             expect(h.ascent).toBeGreaterThanOrEqual(1000);
         }
@@ -196,7 +215,7 @@ describe('frontend test', () => {
 
     it('T17: get hikes with ascent filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": "1-2", "expected_time": null });
+            await API.getHikesWithFilters({ ...filterNull, "ascent": "1-2" });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -205,19 +224,19 @@ describe('frontend test', () => {
 
     it('T18: get hikes with expected time filter', async () => {
 
-        const b = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": "1-3" });
+        const b = await API.getHikesWithFilters({ ...filterNull, "expected_time": "1-3" });
         for (const h of b) {
             expect(h.expected_time).toBeGreaterThanOrEqual(1);
             expect(h.expected_time).toBeLessThanOrEqual(3);
         }
 
-        const c = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": "3-5" });
+        const c = await API.getHikesWithFilters({ ...filterNull, "expected_time": "3-5" });
         for (const h of c) {
             expect(h.expected_time).toBeGreaterThanOrEqual(3);
             expect(h.expected_time).toBeLessThanOrEqual(5);
         }
 
-        const d = await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": "5-more" });
+        const d = await API.getHikesWithFilters({ ...filterNull, "expected_time": "5-more" });
         for (const h of d) {
             expect(h.expected_time).toBeGreaterThanOrEqual(5);
         }
@@ -225,7 +244,7 @@ describe('frontend test', () => {
 
     it('T19: get hikes with expected time filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ "country": null, "province": null, "city": null, "difficulty": null, "track_length": null, "ascent": null, "expected_time": "1-2" });
+            await API.getHikesWithFilters({ ...filterNull, "expected_time": "1-2" });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");

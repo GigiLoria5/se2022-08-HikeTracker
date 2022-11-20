@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Box, Button, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, List, ListItem } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
-
+import GeographicFilter from '../Filters/GeographicFilter';
+import API from '../../API';
 
 const HikesFilterPanel = (props) => {
+    const { filter, setFilter, hikes } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = React.useState(false);
+    const [countryList, setCountryList] = React.useState([]);
+
+    useEffect(() => {
+        API.getCountries().then(countries => {
+            const countryListLabel = countries.map(c => c.country);
+            setCountryList(countryListLabel);
+        });
+    }, [hikes.length]); // dependence required for the countries of any new hikes added
 
     /* To hide/show the filter panel for small screen */
     const toggleFilterPanelDrawer = (state) => (event) => {
@@ -15,71 +25,52 @@ const HikesFilterPanel = (props) => {
         setDeviceFilterPanelOpen(state);
     };
 
+    // Filter Components
+    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} />);
+
     /* Filter panel for small screen */
     const filterHiddenPanel = (<Box
         sx={{ width: "auto", display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
         role="presentation"
-        onClick={toggleFilterPanelDrawer(false)}
         onKeyDown={toggleFilterPanelDrawer(false)}
     >
-        <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? "Inbox" : "Mail"}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List>
-        <Divider />
-        <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? "Inbox" : "Mail"}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List>
+        {geographicFilterComponent}
     </Box>);
 
     return (
-
         <>
-            {/* Panel Full Size */}
+            {/* Filter Panel - Full Size */}
             <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' } }} lg={3} >
-                <p>Filter</p>
+                {geographicFilterComponent}
             </Grid>
 
-            {/* Panel Button - Small Screen */}
+            {/* Panel Button - Only on Small Screen */}
             <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
                 <Button variant="outlined" color="inherit" startIcon={<FilterListIcon />} onClick={toggleFilterPanelDrawer(true)}> Filter </Button>
             </Grid>
 
             {/* Filter Panel - Small Screen */}
-            {deviceFilterPanelOpen && <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                <React.Fragment key={"filter-left-panel"}>
-                    <Drawer
-                        anchor={"left"}
-                        open={deviceFilterPanelOpen}
-                        onClose={toggleFilterPanelDrawer(false)}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                        sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
-                    >
-                        {filterHiddenPanel}
-                    </Drawer>
-                </React.Fragment>
-            </Grid>}
+            {deviceFilterPanelOpen &&
+                <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
+                    <React.Fragment key={"filter-left-panel"}>
+                        <ClickAwayListener onClickAway={toggleFilterPanelDrawer(false)}>
+                            <Drawer
+                                anchor={"left"}
+                                open={deviceFilterPanelOpen}
+                                onClose={toggleFilterPanelDrawer(false)}
+                                ModalProps={{
+                                    keepMounted: true, // Better open performance on mobile.
+                                }}
+                                sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
+                            >
+                                {filterHiddenPanel}
+                            </Drawer>
+                        </ClickAwayListener>
+                    </React.Fragment>
+                </Grid>
+            }
         </>
     )
-}
+};
 
 export default HikesFilterPanel;

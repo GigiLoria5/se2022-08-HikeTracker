@@ -42,7 +42,6 @@ describe('test HikeAPI',()=>{
                 res.body.should.be.a('array');
                 for (const c of res.body){
                     cities.push(c);
-                    //console.log(cities);
                 }
             });
         }

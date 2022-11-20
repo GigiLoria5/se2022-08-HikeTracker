@@ -272,6 +272,73 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
+- GET `/api/hikes/:id`
+
+  - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: Hike object, or an error message in case of failure
+
+  ```
+    {
+      "id": 8,
+      "author": "Giovanni De Santis"
+      "title": "Ring for Monte Calvo",
+      "peak_altitude": 1357,
+      "city": "Carignano",
+      "province": "Torino",
+      "country": "Italy",
+      "description": "It runs between ...",
+      "ascent": 320,
+      "track_length": 6.2,
+      "expected_time": 3.3,
+      "difficulty": 2,
+      "gpx_content": { gpx file code }
+      "start_point_type": "parking_lot",
+      "start_point_id": 3,
+      "end_point_type": "location",
+      "end_point_id": 18,
+      "start": [
+        {
+          "id": 3,
+          "city": "Carignano",
+          "province": "Torino",
+          "country": "Italy",
+          "address": "SP138, 10041"
+        }
+      ],
+      "end": [
+        {
+          "id": 18,
+          "value_type": "gps",
+          "value": "45.462770631936834, 7.693279470138337",
+          "description": "Mountain peak"
+        }
+      ],
+      "reference_points": [
+        [
+          {
+            "id": 17,
+            "value_type": "address",
+            "value": "SP138, 10041",
+            "description": "Chapel of the Visitation of Valinotto",
+            "ref_point_type": "location"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "value_type": "address",
+            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
+            "description": "Palasot Inn (Restaurant)",
+            "ref_point_type": "location"
+          }
+        ]
+      ]
+    }
+  ```
+
 - GET `/api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value`
 
   - Description: Return an array containing all the hikes after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
