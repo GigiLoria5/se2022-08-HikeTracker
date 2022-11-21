@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Autocomplete, Box, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Divider, TextField, Typography } from '@mui/material';
+
+import MapLocator from '../Map/MapLocator';
+import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
 
 function GeographicFilter(props) {
     const { filter, setFilter, countryList, getProvinceList, getCityList } = props;
@@ -12,6 +15,9 @@ function GeographicFilter(props) {
     const [provinceActive, setProvinceActive] = useState(null);
     const [cityList, setCityList] = useState([]);
     const [cityActive, setCityActive] = useState(null);
+
+    const [position, setPosition] = useState(null);
+    const [radius, setRadius] = useState(null);
 
     // If there are new countries refresh
     useEffect(() => {
@@ -89,6 +95,21 @@ function GeographicFilter(props) {
         setFilter({ ...newFilter });
     };
 
+    const handleChangeLng = (newLng) => {
+        const newLngSanitized = floatInputSanitizer(newLng);
+        setPosition({ ...position, lng: newLngSanitized });
+    }
+
+    const handleChangeLat = (newLat) => {
+        const newLatSanitized = floatInputSanitizer(newLat);
+        setPosition({ ...position, lat: newLatSanitized });
+    }
+
+    const handleChangeRadius = (newRadius) => {
+        const newRadiusSanitized = positiveIntegerSanitizer(newRadius);
+        setRadius(newRadiusSanitized);
+    }
+
     return (
         <Box component="div" sx={{ marginTop: { xs: 4, lg: 3 }, padding: 4, paddingTop: 0 }}>
             {/* Title */}
@@ -133,8 +154,19 @@ function GeographicFilter(props) {
                 renderInput={(params) => <TextField {...params} id="municipality" label="Municipality" />}
                 onChange={(_, value) => { setFilter({ ...filter, city: value }); setCityActive(value); }}
             />
+            <Divider sx={{ maxWidth: 300, marginTop: 2 }} />
+            {/* Radius around a point */}
+            <Box component="div" sx={{ maxWidth: "300px", maxHeight: "200px", marginTop: 1.5 }}>
+                <Box component="div" sx={{ display: "flex", marginBottom: 2 }} >
+                    <TextField id="coordinates" label="latitude" variant="outlined" sx={{ paddingRight: 1 }} value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} />
+                    <TextField id="coordinates" label="longitude" variant="outlined" value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} />
+                </Box>
+                <TextField id="outlined-number" label="Radius (km)" type="number" InputLabelProps={{ shrink: true, }} sx={{ maxWidth: 300, marginBottom: 1.5 }} InputProps={{ inputProps: { min: 1 } }} value={radius ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
+                <MapLocator position={position} setPosition={setPosition} />
+            </Box>
         </Box>
     )
+
 }
 
 export default GeographicFilter
