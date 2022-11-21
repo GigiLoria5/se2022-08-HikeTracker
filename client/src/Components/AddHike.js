@@ -6,20 +6,17 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { TextField } from '@mui/material';
+import { RadioGroup, TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
 
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
+
+import Radio from '@mui/material/Radio';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 
 
 
@@ -38,46 +35,23 @@ const MenuProps = {
 
 
 
-const refPoints = [
-    'hut1',
-    'hut2',
-    'hut3',
-    'hut4',
-    'hut5',
-    'hut6',
-    'parking lot 1',
-    'parking lot 2',
-    'parking lot 3',
-];
-
-
-function getStyles(refPoints, referencePoint, theme) {
-
-    return {
-        fontWeight:
-            referencePoint.indexOf(refPoints) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
-
 function AddHike() {
+    
+    const [startPointGPS, setStartPointGPS] = useState("");
+    const [startPointADD, setStartPointADD] = useState("");
+    const [startPointNAME, setStartPointNAME] = useState("");
 
-    const [title, setTitle] = useState("");
-    const [length, setLength] = useState(0.0);
-    const [expectedTime, setExpectedTime] = useState(0.0);
-    const [totalAscent, setTotalAscent] = useState(0);
-    const [country, setCountry] = useState("");
-    const [province, setProvince] = useState("");
-    const [city, setCity] = useState("");
-    const [startPoint, setStartPoint] = useState("");
-    const [endPoint, setEndPoint] = useState("");
-    const [referencePoint, setReferencePoint] = React.useState([]);
-    const [difficulty, setDifficulty] = useState("");
-    const [description, setDescription] = useState("");
+    const [endPointGPS, setEndPointGPS] = useState("");
+    const [endPointADD, setEndPointADD] = useState("");
+    const [endPointNAME, setEndPointNAME] = useState("");
+
 
     const [selectedFile, setSelectedFile] = useState();
     const [isSelected, setIsSelected] = useState(false);
+    const [selectedValue, setSelectedValue] = useState("gps");
+    const [selectedValue2, setSelectedValue2] = useState("gps");
+
+
 
 
     const theme = createTheme({
@@ -94,17 +68,6 @@ function AddHike() {
         },
     });
 
-
-    const changeLength = (l) => {
-        if (l < 0) l = 0;
-        setLength(l);
-    }
-
-    const changeExpectedTime = (t) => {
-        if (t < 0) t = 0;
-        setExpectedTime(t);
-    }
-
     const changeHandler = (event) => {
         event.preventDefault();
         setSelectedFile(event.target.files[0]);
@@ -112,32 +75,7 @@ function AddHike() {
     };
 
     const handleSubmission = async (ev) => {
-        ev.preventDefault();
-
-        const formData = new FormData();
-
-        formData.append('File', selectedFile);
-
-        await API.createHike(
-            new Hike(
-                title,
-                0, //peak altitude is not requested in the form
-                city,
-                province,
-                country,
-                description,
-                totalAscent,
-                length,
-                expectedTime,
-                difficulty,
-                "location", //start point and end point are not handled in terms of type + id (and needs APis to know the available ones)
-                1,
-                "location",
-                2,
-                referencePoint.map(r => r.position), //reference points must be translated in an array of numbers. Of course not in this way
-                formData
-            )
-        )
+        ev.preventDefault();   
     };
 
 
@@ -147,15 +85,6 @@ function AddHike() {
         alignItems: 'center',
     };
 
-    const handleChangeRefPoints = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setReferencePoint(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
 
 
 
@@ -168,197 +97,18 @@ function AddHike() {
                             <br />ADD A HIKE
                         </Typography>
                     </Grid>
-
-
-                    <Grid xs={0} md={3}></Grid>
-
-                    <Grid xs={12} md={6} marginTop={3} sx={thm}>
-                        <Paper elevation={3} sx={{ backgroundColor: theme.palette.secondary.main }} >
-                            <Typography variant="h5" sx={thm}>
-                                <br />Please complete the following information:<br />
-                            </Typography>
-
-                            <Grid item xs={12} sx={thm}>
-                                <TextField
-                                    variant="outlined"
-                                    label="Title/label"
-                                    margin="normal"
-                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                    value={title}
-                                    onChange={ev => setTitle(ev.target.value)}
-
-                                />{" "}
-
-                            </Grid>
-
-                            <TextField
-                                variant="outlined"
-                                label="Length"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">km</InputAdornment>,
-                                }}
-                                value={length}
-                                onChange={ev => changeLength(ev.target.value)}
-
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Expected time"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">hours</InputAdornment>,
-                                }}
-                                value={expectedTime}
-                                onChange={ev => changeExpectedTime(ev.target.value)}
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Total ascent"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                                }}
-                                value={totalAscent}
-                                onChange={ev => setTotalAscent(ev.target.value)}
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Country"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={country}
-                                onChange={ev => setCountry(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Province"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={province}
-                                onChange={ev => setProvince(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="City"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={city}
-                                onChange={ev => setCity(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Start point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={startPoint}
-                                onChange={ev => setStartPoint(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="End point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={endPoint}
-                                onChange={ev => setEndPoint(ev.target.value)}
-
-                            />{" "}
-
-                            <Grid xs={12} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }}>
-                                    <InputLabel>Reference Points</InputLabel>
-                                    <Select
-                                        multiple
-                                        value={referencePoint}
-                                        onChange={handleChangeRefPoints}
-                                        input={<OutlinedInput label="Reference Points" />}
-                                        renderValue={(selected) => (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                {selected.map((value) => (
-                                                    <Chip key={value} label={value} />
-                                                ))}
-                                            </Box>
-                                        )}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {refPoints.map((refPoints) => (
-                                            <MenuItem
-                                                key={refPoints}
-                                                value={refPoints}
-                                                style={getStyles(refPoints, referencePoint, theme)}
-                                            >
-                                                {refPoints}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid xs={12} marginTop={1} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }} >
-                                    <InputLabel>Difficulty</InputLabel>
-                                    <Select
-                                        value={difficulty}
-                                        variant="outlined"
-                                        onChange={e => setDifficulty(e.target.value)}
-                                        label="Difficulty"
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select a difficulty</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
-                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
-                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
-
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <TextField
-                                variant="outlined"
-                                label="Description"
-                                multiline
-                                rows={4}
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={description}
-                                onChange={ev => setDescription(ev.target.value)}
-                            />{" "}
-
-                            <Typography>
-                                <br />
-                            </Typography>
-
-                        </Paper>
-                    </Grid>
-                    <Grid xs={0} md={3}></Grid>
-
-
-                    <Grid xs={0} md={3} ></Grid>
+                    <Grid xs={0} md={3}></Grid>    
                     <Grid xs={12} md={6} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...{ backgroundColor: theme.palette.secondary.main }, ...thm }} >
+                        <Paper elevation={3} sx={{  ...thm }} >
+                            <Grid  marginTop={3}>
+                                <Chip label="1" color="primary" variant="filled"/>{"   "}
+                                <Chip label="2" color="primary" variant="outlined"/>
+                            </Grid>
+                            
                             <Typography variant="h5" sx={thm}>
-                                <br />Upload a GPX file<br /><br />
+                                <br />Please upload a GPX file<br /><br />
                             </Typography>
-                            <Button variant="contained" component="label" onChange={changeHandler} disabled>
+                            <Button variant="contained" component="label" onChange={changeHandler}>
                                 Upload
                                 <input hidden accept=".gpx" multiple type="file" />
                             </Button>
@@ -373,25 +123,85 @@ function AddHike() {
                             <Typography>
                                 <br />
                             </Typography>
+                            <Grid container >
+
+                                <Grid xs={12} md={5.5} >
+                                    <FormControl>
+                                        <RadioGroup defaultValue="gps" >
+                                            <FormControlLabel value="gps" control={<Radio />} label="GPS coordinates" onClick={e => setSelectedValue(e.target.value)}/>
+                                                {selectedValue === "gps" ? (
+                                                    <TextField variant="outlined" color='primary' label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPS} onChange={ev => setStartPointGPS(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPS} onChange={ev => setStartPointGPS(ev.target.value)} disabled/>
+                                                )}
+
+                                            <FormControlLabel value="address" control={<Radio />} label="Address" onClick={e => setSelectedValue(e.target.value)}/>
+                                                {selectedValue === "address" ? (
+                                                    <TextField variant="outlined" color='primary' label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointADD} onChange={ev => setStartPointADD(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointADD} onChange={ev => setStartPointADD(ev.target.value)} disabled/>
+                                                )}
+
+                                            <FormControlLabel value="name" control={<Radio />} label="Name" onClick={e => setSelectedValue(e.target.value)}/>
+                                                {selectedValue === "name" ? (
+                                                    <TextField variant="outlined" color='primary' label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointNAME} onChange={ev => setStartPointNAME(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointNAME} onChange={ev => setStartPointNAME(ev.target.value)} disabled/>
+                                                )}
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                                <Grid md={1}></Grid>
+                                <Grid xs={12} md={5.5} >
+                                    <FormControl>
+                                        <RadioGroup defaultValue="gps" >
+                                            <FormControlLabel value="gps" control={<Radio />} label="GPS coordinates" onClick={e => setSelectedValue2(e.target.value)}/>
+                                                {selectedValue2 === "gps" ? (
+                                                    <TextField variant="outlined" color='primary'  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPS} onChange={ev => setEndPointGPS(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPS} onChange={ev => setEndPointGPS(ev.target.value)} disabled/>
+                                                )}
+
+                                            <FormControlLabel value="address" control={<Radio />} label="Address" onClick={e => setSelectedValue2(e.target.value)}/>
+                                                {selectedValue2 === "address" ? (
+                                                    <TextField variant="outlined"  color='primary' label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointADD} onChange={ev => setEndPointADD(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointADD} onChange={ev => setEndPointADD(ev.target.value)} disabled/>
+                                                )}
+
+                                            <FormControlLabel value="name" control={<Radio />} label="Name" onClick={e => setSelectedValue2(e.target.value)}/>
+                                                {selectedValue2 === "name" ? (
+                                                    <TextField variant="outlined" color='primary' label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointNAME} onChange={ev => setEndPointNAME(ev.target.value)} /> 
+                                                ) : (
+                                                    <TextField variant="outlined"  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointNAME} onChange={ev => setEndPointNAME(ev.target.value)} disabled/>
+                                                )}
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                            </Grid> 
+
+                            <Grid><br/></Grid> 
 
                         </Paper>
                     </Grid>
+
                     <Grid xs={0} md={3}></Grid>
 
                     <Grid xs={0.5}></Grid>
+
                     <Grid xs={11} sx={thm}>
+
                         <Grid><br /></Grid>
-                        <Button onClick={handleSubmission} variant="contained" color='primary' disabled>ADD A HIKE</Button>
-                        <Grid><br /></Grid>
+
+                        <Button component={Link} to={"/local-guide-add-hikes2"} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
+                        <Grid><br/></Grid>
                         <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                        <Typography>
-                            <br /><br />
-                        </Typography>
+                        <Grid><br/><br/></Grid>
                     </Grid>
+
                     <Grid item xs={0.5}></Grid>
 
                 </ThemeProvider>
-
 
             </Grid>
 

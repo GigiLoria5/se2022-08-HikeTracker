@@ -7,6 +7,8 @@ import SignUpForm from "./Components/SignupForm";
 import Homepage from "./Components/Homepage"
 import LocalGuidePage from "./Components/LocalGuidePage"
 import AddHike from "./Components/AddHike"
+import AddHike2 from "./Components/AddHike2"
+
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
@@ -89,8 +91,14 @@ function Root() {
                 <Route path='/local-guide-page' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<LocalGuidePage />} />
                 </Route>
-                <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                {/*<Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
+                </Route>*/}
+                <Route path='/local-guide-add-hikes1' >
+                    <Route path="" element={<AddHike />} />
+                </Route>
+                <Route path='/local-guide-add-hikes2' >
+                    <Route path="" element={<AddHike2 />} />
                 </Route>
             </Route>
 
