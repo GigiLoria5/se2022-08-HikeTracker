@@ -91,14 +91,12 @@ function Root() {
                 <Route path='/local-guide-page' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<LocalGuidePage />} />
                 </Route>
-                {/*<Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
-                    <Route path="" element={<AddHike />} />
-                </Route>*/}
-                <Route path='/local-guide-add-hikes1' >
+                <Route path='/local-guide-add-hikes1' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
                 </Route>
-                <Route path='/local-guide-add-hikes2' >
-                    <Route path="" element={<AddHike2 />} />
+                
+                <Route path='/local-guide-add-hikes2'  element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddHike2 />} />   
                 </Route>
             </Route>
 

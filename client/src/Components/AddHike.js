@@ -63,7 +63,7 @@ function AddHike() {
     const [selectedValue, setSelectedValue] = useState("gps");
     const [selectedValue2, setSelectedValue2] = useState("gps");
 
-    //to delete when api call available
+    //TO DO: delete when api call available
     const start_point_lat = "12.3123123"
     const start_point_lon = "12.3123123"
     const end_point_lat = "12.3123123"
@@ -88,7 +88,7 @@ function AddHike() {
         event.preventDefault();
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
-        //add API.__ when api available
+        //TO DO: add API.__ when api available
         setStartPointGPSlat(start_point_lat)
         setStartPointGPSlon(start_point_lon)
         setEndPointGPSlat(end_point_lat)
@@ -105,8 +105,47 @@ function AddHike() {
         setLocationType2(e.target.value)
     }
 
-    const handleSubmission = async (ev) => {
+    const handleSubmission = async (ev) => { //TO DO: replace comments by right api calls
         ev.preventDefault(); 
+        //post gpx file
+        
+
+        //post location type (start point)
+        //API.post__(locationType)
+
+        //post location type (end point)
+        //API.post__(locationType2)
+
+        //post start point
+        if (locationType === "gps") {
+            //API.postStartPointlat(startPointGPSlat)
+            //API.postStartPointlon(startPointGPSlon)
+
+        } else if (locationType === "name"){
+            //API.postStartPointName(startPointNAME)
+
+        } else if(locationType === "address") {
+            //API.postStartPointName(startPointADD)
+        }
+
+        //post end point
+        if (locationType2 === "gps") {
+            //API.postEndPointlat(endPointGPSlat)
+            //API.postEndPointlon(endPointGPSlon)
+
+        } else if (locationType2 === "name") {
+            //API.postEndPointName(endPointNAME)
+
+        } else if(locationType2 === "address") {
+            //API.postEndPointName(endPointADD)
+        }
+
+        //post start point description
+        //API.post___(startPointDescription)
+
+        //post end point description
+        //API.post___(endPointDescription)
+
         
     };
 

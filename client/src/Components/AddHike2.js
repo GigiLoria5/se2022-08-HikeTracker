@@ -38,7 +38,7 @@ const MenuProps = {
 
 
 
-//TO REPLACE BY MAP
+//TO DO: REPLACE BY MAP
 const refPoints = [
     'hut1',
     'hut2',
@@ -75,7 +75,7 @@ function AddHike2() {
 
     const [selectedFile, setSelectedFile] = useState();
 
-    //When API available, exchange the comments
+    //TO DO: When API available, exchange the comments
     //const length = API.length;
     const length = "15";
 
