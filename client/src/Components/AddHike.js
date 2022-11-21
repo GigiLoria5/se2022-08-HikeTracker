@@ -37,11 +37,15 @@ const MenuProps = {
 
 function AddHike() {
     
-    const [startPointGPS, setStartPointGPS] = useState("");
+    const [startPointGPSlat, setStartPointGPSlat] = useState("");
+    const [startPointGPSlon, setStartPointGPSlon] = useState("");
+
     const [startPointADD, setStartPointADD] = useState("");
     const [startPointNAME, setStartPointNAME] = useState("");
 
-    const [endPointGPS, setEndPointGPS] = useState("");
+    const [endPointGPSlat, setEndPointGPSlat] = useState("");
+    const [endPointGPSlon, setEndPointGPSlon] = useState("");
+
     const [endPointADD, setEndPointADD] = useState("");
     const [endPointNAME, setEndPointNAME] = useState("");
 
@@ -51,7 +55,11 @@ function AddHike() {
     const [selectedValue, setSelectedValue] = useState("gps");
     const [selectedValue2, setSelectedValue2] = useState("gps");
 
-
+    //to delete when api call available
+    const start_point_lat = "12.3123123"
+    const start_point_lon = "12.3123123"
+    const end_point_lat = "12.3123123"
+    const end_point_lon = "12.3123123"
 
 
     const theme = createTheme({
@@ -72,6 +80,12 @@ function AddHike() {
         event.preventDefault();
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
+        //add API.__ when api available
+        setStartPointGPSlat(start_point_lat)
+        setStartPointGPSlon(start_point_lon)
+        setEndPointGPSlat(end_point_lat)
+        setEndPointGPSlon(end_point_lon)
+
     };
 
     const handleSubmission = async (ev) => {
@@ -129,11 +143,10 @@ function AddHike() {
                                     <FormControl>
                                         <RadioGroup defaultValue="gps" >
                                             <FormControlLabel value="gps" control={<Radio />} label="GPS coordinates" onClick={e => setSelectedValue(e.target.value)}/>
-                                                {selectedValue === "gps" ? (
-                                                    <TextField variant="outlined" color='primary' label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPS} onChange={ev => setStartPointGPS(ev.target.value)} /> 
-                                                ) : (
-                                                    <TextField variant="outlined"  label="Start point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPS} onChange={ev => setStartPointGPS(ev.target.value)} disabled/>
-                                                )}
+                                                <TextField variant="outlined" color='primary' label="Start point - lattitude" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
+                                                <TextField variant="outlined" color='primary' label="Start point - longitude"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
+                                            
+                                                
 
                                             <FormControlLabel value="address" control={<Radio />} label="Address" onClick={e => setSelectedValue(e.target.value)}/>
                                                 {selectedValue === "address" ? (
@@ -156,11 +169,8 @@ function AddHike() {
                                     <FormControl>
                                         <RadioGroup defaultValue="gps" >
                                             <FormControlLabel value="gps" control={<Radio />} label="GPS coordinates" onClick={e => setSelectedValue2(e.target.value)}/>
-                                                {selectedValue2 === "gps" ? (
-                                                    <TextField variant="outlined" color='primary'  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPS} onChange={ev => setEndPointGPS(ev.target.value)} /> 
-                                                ) : (
-                                                    <TextField variant="outlined"  label="End point"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPS} onChange={ev => setEndPointGPS(ev.target.value)} disabled/>
-                                                )}
+                                                <TextField variant="outlined" color='primary' label="End point - lattitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat}  disabled/> 
+                                                <TextField variant="outlined" color='primary' label="End point - longitude"  margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
 
                                             <FormControlLabel value="address" control={<Radio />} label="Address" onClick={e => setSelectedValue2(e.target.value)}/>
                                                 {selectedValue2 === "address" ? (

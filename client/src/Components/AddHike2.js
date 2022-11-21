@@ -65,19 +65,22 @@ function getStyles(refPoints, referencePoint, theme) {
 function AddHike2() {
 
     const [title, setTitle] = useState("");
-    const [length, setLength] = useState(0.0);
     const [expectedTime, setExpectedTime] = useState(0.0);
-    const [totalAscent, setTotalAscent] = useState(0);
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
-    const [startPoint, setStartPoint] = useState("");
-    const [endPoint, setEndPoint] = useState("");
     const [referencePoint, setReferencePoint] = React.useState([]);
     const [difficulty, setDifficulty] = useState("");
     const [description, setDescription] = useState("");
 
     const [selectedFile, setSelectedFile] = useState();
+
+    //When API available, exchange the comments
+    //const length = API.length;
+    const length = "15";
+
+    //const totalAscent = API.ascent
+    const totalAscent = "100"
 
 
     const theme = createTheme({
@@ -94,11 +97,6 @@ function AddHike2() {
         },
     });
 
-
-    const changeLength = (l) => {
-        if (l < 0) l = 0;
-        setLength(l);
-    }
 
     const changeExpectedTime = (t) => {
         if (t < 0) t = 0;
@@ -182,9 +180,9 @@ function AddHike2() {
                                 <TextField variant="outlined"  label="Title/label"  margin="normal"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={title} onChange={ev => setTitle(ev.target.value)} />
                             </Grid>
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                <TextField variant="outlined" label="Length"  type="number"  sx={{ width: 'fit-content', maxWidth: '22ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment> }}  value={length} onChange={ev => changeLength(ev.target.value)} />
+                                <TextField variant="outlined" label="Length"  type="number"  sx={{ width: 'fit-content', maxWidth: '22ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment> }}  value={length} disabled />
                                 <TextField  variant="outlined" label="Expected time"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }}  InputProps={{ endAdornment: <InputAdornment position="end">hours</InputAdornment>}}  value={expectedTime}  onChange={ev => changeExpectedTime(ev.target.value)}/>
-                                <TextField variant="outlined" label="Total ascent"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={totalAscent} onChange={ev => setTotalAscent(ev.target.value)}  />
+                                <TextField variant="outlined" label="Total ascent"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={totalAscent} disabled  />
                            
                             </Stack>
                             
