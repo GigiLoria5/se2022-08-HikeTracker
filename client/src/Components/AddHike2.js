@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
@@ -24,6 +20,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
+import Stack from '@mui/material/Stack';
 
 
 
@@ -81,7 +78,6 @@ function AddHike2() {
     const [description, setDescription] = useState("");
 
     const [selectedFile, setSelectedFile] = useState();
-    const [isSelected, setIsSelected] = useState(false);
 
 
     const theme = createTheme({
@@ -109,11 +105,6 @@ function AddHike2() {
         setExpectedTime(t);
     }
 
-    const changeHandler = (event) => {
-        event.preventDefault();
-        setSelectedFile(event.target.files[0]);
-        setIsSelected(true);
-    };
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
@@ -167,85 +158,74 @@ function AddHike2() {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme}>
-                    <Grid xs={12} md={6} marginTop={3} sx={thm}>
-                        <Paper elevation={3} >
+                    <Grid xs={12}>
+                        <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
+                            <br />ADD A HIKE
+                        </Typography>
+                    </Grid>
+                    <Grid xs={0} md={3}></Grid>    
+                    <Grid xs={12} md={6} marginTop={3} >
+                        <Paper elevation={3} sx={{  ...thm }} >
+                            <Grid  marginTop={3}>
+                                <Chip label="1" color="primary" variant="outlined"/>{"   "}
+                                <Chip label="2" color="primary" variant="filled"/>
+                            </Grid>
                             <Typography variant="h5" sx={thm}>
-                                <br />Please complete the following information:<br />
+                                <br />Please describle the hike<br />
                             </Typography>
 
-                            <Grid item xs={12} sx={thm}>
-                                <TextField variant="outlined"  label="Title/label"  margin="normal"  sx={{ width: 'fit-content', maxWidth: '25ch' }} value={title} onChange={ev => setTitle(ev.target.value)} />{" "}
+                            <Typography variant="h6" sx={thm}>
+                                <br />General information<br />
+                            </Typography>
+
+                            <Grid xs={12} sx={thm} marginBottom={1}>
+                                <TextField variant="outlined"  label="Title/label"  margin="normal"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={title} onChange={ev => setTitle(ev.target.value)} />
                             </Grid>
+                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                                <TextField variant="outlined" label="Length"  type="number"  sx={{ width: 'fit-content', maxWidth: '22ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment> }}  value={length} onChange={ev => changeLength(ev.target.value)} />
+                                <TextField  variant="outlined" label="Expected time"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }}  InputProps={{ endAdornment: <InputAdornment position="end">hours</InputAdornment>}}  value={expectedTime}  onChange={ev => changeExpectedTime(ev.target.value)}/>
+                                <TextField variant="outlined" label="Total ascent"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={totalAscent} onChange={ev => setTotalAscent(ev.target.value)}  />
+                           
+                            </Stack>
+                            
 
-                            <TextField variant="outlined" label="Length"  margin="normal"  type="number"  sx={{ width: 'fit-content', maxWidth: '25ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>,  }}  value={length} onChange={ev => changeLength(ev.target.value)} />{" "}
+                            <Grid xs={12} marginTop={2} sx={thm}>
+                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+                                    <InputLabel>Difficulty</InputLabel>
+                                    <Select
+                                        value={difficulty}
+                                        variant="outlined"
+                                        onChange={e => setDifficulty(e.target.value)}
+                                        label="Difficulty"
+                                    >
+                                        <MenuItem value="">
+                                            <em>Select a difficulty</em>
+                                        </MenuItem>
+                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
+                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
+                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
 
-                            <TextField  variant="outlined" label="Expected time" margin="normal" type="number" sx={{ width: 'fit-content', maxWidth: '25ch' }}  InputProps={{ endAdornment: <InputAdornment position="end">hours</InputAdornment>,  }}  value={expectedTime}  onChange={ev => changeExpectedTime(ev.target.value)}/>{" "}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                                    
+                        
+                            <Typography variant="h6" sx={thm} marginBottom={1}>
+                                <br />Geographical area<br />
+                            </Typography>
+                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
 
-                            <TextField
-                                variant="outlined"
-                                label="Total ascent"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                                }}
-                                value={totalAscent}
-                                onChange={ev => setTotalAscent(ev.target.value)}
-                            />{" "}
+                                <TextField variant="outlined" label="Country"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={country} onChange={ev => setCountry(ev.target.value)}  />
+                                <TextField variant="outlined" label="Province"   sx={{ width: 'fit-content', maxWidth: '22ch' }} value={province}  onChange={ev => setProvince(ev.target.value)}  />
+                                <TextField variant="outlined" label="City"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={city}  onChange={ev => setCity(ev.target.value)} />
 
-                            <TextField
-                                variant="outlined"
-                                label="Country"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={country}
-                                onChange={ev => setCountry(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Province"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={province}
-                                onChange={ev => setProvince(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="City"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={city}
-                                onChange={ev => setCity(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Start point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={startPoint}
-                                onChange={ev => setStartPoint(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="End point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={endPoint}
-                                onChange={ev => setEndPoint(ev.target.value)}
-
-                            />{" "}
-
+                            </Stack>
+                            
+                            <Typography variant="h6" sx={thm} marginBottom={1}>
+                                <br />Reference points<br />
+                            </Typography>
                             <Grid xs={12} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }}>
+                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }}>
                                     <InputLabel>Reference Points</InputLabel>
                                     <Select
                                         multiple
@@ -274,36 +254,11 @@ function AddHike2() {
                                 </FormControl>
                             </Grid>
 
-                            <Grid xs={12} marginTop={1} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }} >
-                                    <InputLabel>Difficulty</InputLabel>
-                                    <Select
-                                        value={difficulty}
-                                        variant="outlined"
-                                        onChange={e => setDifficulty(e.target.value)}
-                                        label="Difficulty"
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select a difficulty</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
-                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
-                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
-
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <TextField
-                                variant="outlined"
-                                label="Description"
-                                multiline
-                                rows={4}
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={description}
-                                onChange={ev => setDescription(ev.target.value)}
-                            />{" "}
+                            
+                            <Typography variant="h6" sx={thm}>
+                                <br />Description<br />
+                            </Typography>
+                            <TextField variant="outlined" label="Description"  multiline  rows={4}  margin="normal"  value={description}  onChange={ev => setDescription(ev.target.value)}  />
 
                             <Typography>
                                 <br />
@@ -311,10 +266,19 @@ function AddHike2() {
 
                         </Paper>
                     </Grid>
+
                     <Grid xs={0} md={3}></Grid>
 
 
-                    <Grid xs={0} md={3} ></Grid>
+                    <Grid xs={12} sx={thm}>
+
+                        <Grid><br /></Grid>
+
+                        <Button component={Link} to={"/local-guide-page"} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
+                        <Grid><br/></Grid>
+                        <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
+                        <Grid><br/><br/></Grid>
+                    </Grid>
                 </ThemeProvider>
             </Grid>
         </div>
