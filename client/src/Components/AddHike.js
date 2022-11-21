@@ -6,7 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { RadioGroup, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
 
@@ -14,8 +14,7 @@ import Chip from '@mui/material/Chip';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
 
-import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
+
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -54,12 +53,13 @@ function AddHike() {
     const [endPointADD, setEndPointADD] = useState("");
     const [endPointNAME, setEndPointNAME] = useState("");
 
-    const [locationType, setLocationType] = useState("gps");
-    const [locationType2, setLocationType2] = useState("gps");
+    const [locationType, setLocationType] = useState("gps"); //for start point
+    const [locationType2, setLocationType2] = useState("gps");// for end point
 
 
     const [selectedFile, setSelectedFile] = useState();
     const [isSelected, setIsSelected] = useState(false);
+
     const [selectedValue, setSelectedValue] = useState("gps");
     const [selectedValue2, setSelectedValue2] = useState("gps");
 
@@ -96,12 +96,6 @@ function AddHike() {
 
     };
 
-    const handleSubmission = async (ev) => {
-        ev.preventDefault(); 
-        const formData = new FormData();
-        formData.append('File', selectedFile);  
-    };
-
     const handleChange1 = (e) => {
         setSelectedValue(e.target.value)
         setLocationType(e.target.value)
@@ -110,6 +104,11 @@ function AddHike() {
         setSelectedValue2(e.target.value)
         setLocationType2(e.target.value)
     }
+
+    const handleSubmission = async (ev) => {
+        ev.preventDefault(); 
+        
+    };
 
 
     const thm = {
@@ -137,7 +136,8 @@ function AddHike() {
                                 <Chip label="1" color="primary" variant="filled"/>{"   "}
                                 <Chip label="2" color="primary" variant="outlined"/>
                             </Grid>
-                            
+{/*****************************************************UPLOAD FILE***********************************************/}
+   
                             <Typography variant="h5" sx={thm}>
                                 <br />Please upload a GPX file<br /><br />
                             </Typography>
@@ -152,11 +152,9 @@ function AddHike() {
                             ) : (
                                 <Typography><br />Select a file to show details</Typography>
                             )}
-                            <Typography>
-                                <br />
-                            </Typography>
+                            <Typography> <br/> </Typography>
                             <Grid container >
-
+{/*****************************************************START POINT***********************************************/}
                                 <Grid xs={12} md={5.5} >
                                     <Typography align='center'>START POINT</Typography>
                                     <Grid marginBottom={1}>
@@ -192,6 +190,8 @@ function AddHike() {
                                     
                                 </Grid>
                                 <Grid md={1}></Grid>
+{/*****************************************************END POINT***********************************************/}
+
                                 <Grid xs={12} md={5.5} >
                                     <Typography align='center'>END POINT</Typography>
                                     <Grid marginBottom={1}>
@@ -240,6 +240,7 @@ function AddHike() {
                     <Grid xs={11} sx={thm}>
 
                         <Grid><br /></Grid>
+{/****************************************************SUBMIT OR GO BACK***********************************************/}
 
                         <Button component={Link} to={"/local-guide-add-hikes2"} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
                         <Grid><br/></Grid>

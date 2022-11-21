@@ -38,7 +38,7 @@ const MenuProps = {
 
 
 
-
+//TO REPLACE BY MAP
 const refPoints = [
     'hut1',
     'hut2',
@@ -107,30 +107,6 @@ function AddHike2() {
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
-        const formData = new FormData();
-
-        formData.append('File', selectedFile);
-
-        await API.createHike(
-            new Hike(
-                title,
-                0, //peak altitude is not requested in the form
-                city,
-                province,
-                country,
-                description,
-                totalAscent,
-                length,
-                expectedTime,
-                difficulty,
-                "location", //start point and end point are not handled in terms of type + id (and needs APis to know the available ones)
-                1,
-                "location",
-                2,
-                referencePoint.map(r => r.position), //reference points must be translated in an array of numbers. Of course not in this way
-                formData
-            )
-        )
     };
 
 
@@ -171,23 +147,29 @@ function AddHike2() {
                             <Typography variant="h5" sx={thm}>
                                 <br />Please describle the hike<br />
                             </Typography>
+{/****************************************************GENERAL INFO***********************************************/}
 
                             <Typography variant="h6" sx={thm}>
                                 <br />General information<br />
                             </Typography>
 
                             <Grid xs={12} sx={thm} marginBottom={1}>
+                                {/*TITLE FIELD*/}
                                 <TextField variant="outlined"  label="Title/label"  margin="normal"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={title} onChange={ev => setTitle(ev.target.value)} />
                             </Grid>
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                                {/*LENGTH FIELD*/}
                                 <TextField variant="outlined" label="Length"  type="number"  sx={{ width: 'fit-content', maxWidth: '22ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment> }}  value={length} disabled />
+                                {/*TIME FIELD*/}
                                 <TextField  variant="outlined" label="Expected time"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }}  InputProps={{ endAdornment: <InputAdornment position="end">hours</InputAdornment>}}  value={expectedTime}  onChange={ev => changeExpectedTime(ev.target.value)}/>
+                                {/*ASCENT FIELD*/}
                                 <TextField variant="outlined" label="Total ascent"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={totalAscent} disabled  />
                            
                             </Stack>
                             
 
                             <Grid xs={12} marginTop={2} sx={thm}>
+                                {/*DIFFICULTY FIELD*/}
                                 <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
                                     <InputLabel>Difficulty</InputLabel>
                                     <Select
@@ -207,18 +189,22 @@ function AddHike2() {
                                 </FormControl>
                             </Grid>
                                     
-                        
+{/******************************************GEOGRAPHICAL AREA***********************************************/}
+
                             <Typography variant="h6" sx={thm} marginBottom={1}>
                                 <br />Geographical area<br />
                             </Typography>
                             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
-
+                                {/*COUNTRY FIELD*/}
                                 <TextField variant="outlined" label="Country"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={country} onChange={ev => setCountry(ev.target.value)}  />
+                                {/*PROVINCE FIELD*/}
                                 <TextField variant="outlined" label="Province"   sx={{ width: 'fit-content', maxWidth: '22ch' }} value={province}  onChange={ev => setProvince(ev.target.value)}  />
+                                {/*CITY FIELD*/}
                                 <TextField variant="outlined" label="City"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={city}  onChange={ev => setCity(ev.target.value)} />
 
                             </Stack>
-                            
+{/****************************************************REFERENCE POINTS***********************************************/}
+{/**********************************************TO REPLACE BY CLICKABLE MAP *****************************************/}
                             <Typography variant="h6" sx={thm} marginBottom={1}>
                                 <br />Reference points<br />
                             </Typography>
@@ -252,7 +238,8 @@ function AddHike2() {
                                 </FormControl>
                             </Grid>
 
-                            
+{/****************************************************DESCRIPTION********************************************************/}
+       
                             <Typography variant="h6" sx={thm}>
                                 <br />Description<br />
                             </Typography>
@@ -271,6 +258,7 @@ function AddHike2() {
                     <Grid xs={12} sx={thm}>
 
                         <Grid><br /></Grid>
+{/****************************************************SUBMIT OR GO BACK***********************************************/}
 
                         <Button component={Link} to={"/local-guide-page"} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                         <Grid><br/></Grid>
