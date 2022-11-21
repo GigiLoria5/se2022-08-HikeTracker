@@ -42,7 +42,6 @@ describe('test HikeAPI',()=>{
                 res.body.should.be.a('array');
                 for (const c of res.body){
                     cities.push(c);
-                    //console.log(cities);
                 }
             });
         }
@@ -64,6 +63,7 @@ describe('test HikeAPI',()=>{
     step('T5: GET/api/hikes/filter [no filters]', async function() {
         await agent.get('/api/hikes/filters?')
         .then(function(res) {
+            console.log(res.body);
             res.should.have.status(200);
             res.body.should.be.a('array');
         });

@@ -67,6 +67,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
             .then(function (res) {
+                console.log(res.body);
                 res.should.have.status(201);
             });
     });
@@ -124,7 +125,7 @@ describe('Add hike', () => {
                 ]
             }))
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 
@@ -164,7 +165,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 
@@ -204,7 +205,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 
@@ -244,7 +245,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 
@@ -284,7 +285,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 
@@ -324,7 +325,7 @@ describe('Add hike', () => {
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
             .then(function (res) {
-                res.should.have.status(500);
+                res.should.have.status(400);
             });
     });
 });

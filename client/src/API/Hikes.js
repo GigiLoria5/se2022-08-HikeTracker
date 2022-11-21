@@ -5,13 +5,17 @@ import { APIURL } from './APIUrl';
  * @param hike is a Hike descripted in ./Utils.js
  */
 const createHike = async (hike) => {
+    const formData = new FormData();
+    for (const c in hike){
+        if(c !== "reference_points")
+            formData.append(c, hike[c]);
+        else
+            formData.append(c, JSON.stringify({"points" : hike[c]}))
+    }
     let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
         credentials: 'include',
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        body: JSON.stringify(hike),
+        body: formData,
     });
 
     let err = new Error();

@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Chip from '@mui/material/Chip';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
+import { difficultyFromState } from "../Utils/HikesFilter"
 
 
 import FormControl from '@mui/material/FormControl';
@@ -96,6 +97,7 @@ function AddHike() {
 
     };
 
+
     const handleChange1 = (e) => {
         setSelectedValue(e.target.value)
         setLocationType(e.target.value)
@@ -146,7 +148,6 @@ function AddHike() {
         //post end point description
         //API.post___(endPointDescription)
 
-        
     };
 
 
@@ -283,6 +284,7 @@ function AddHike() {
 
                         <Button component={Link} to={"/local-guide-add-hikes2"} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
                         <Grid><br/></Grid>
+
                         <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                         <Grid><br/><br/></Grid>
                     </Grid>

@@ -1,7 +1,10 @@
 # se2022-08-HikeTracker
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
 [![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
+[![E2E Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/E2E%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -167,6 +170,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Add description for hike
   - Permissions allowed: Local guide
   - Request body: Hike description, including gpx file with gpx tag
+  - gpx file size must be less than 10MB
 
   ```
   {
@@ -205,7 +209,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `400 Bad Request` (arguments error),`500 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
