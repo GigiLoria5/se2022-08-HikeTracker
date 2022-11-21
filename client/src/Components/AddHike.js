@@ -10,18 +10,16 @@ import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
 
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
 import { difficultyFromState } from "../Utils/HikesFilter"
 
+
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 
 
@@ -39,46 +37,38 @@ const MenuProps = {
 
 
 
-const refPoints = [
-    'hut1',
-    'hut2',
-    'hut3',
-    'hut4',
-    'hut5',
-    'hut6',
-    'parking lot 1',
-    'parking lot 2',
-    'parking lot 3',
-];
-
-
-function getStyles(refPoints, referencePoint, theme) {
-
-    return {
-        fontWeight:
-            referencePoint.indexOf(refPoints) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
-
 function AddHike() {
+    const [startPointDescription, setStartPointDescription] = useState("");
+    const [endPointDescription, setEndPointDescription] = useState("");
 
-    const [title, setTitle] = useState("");
-    const [length, setLength] = useState(0.0);
-    const [expectedTime, setExpectedTime] = useState(0.0);
-    const [totalAscent, setTotalAscent] = useState(0);
-    const [country, setCountry] = useState("");
-    const [province, setProvince] = useState("");
-    const [city, setCity] = useState("");
-    const [startPoint, setStartPoint] = useState("");
-    const [endPoint, setEndPoint] = useState("");
-    const [referencePoint, setReferencePoint] = React.useState([]);
-    const [difficulty, setDifficulty] = useState("");
-    const [description, setDescription] = useState("");
+
+    const [startPointGPSlat, setStartPointGPSlat] = useState("");
+    const [startPointGPSlon, setStartPointGPSlon] = useState("");
+
+    const [startPointADD, setStartPointADD] = useState("");
+    const [startPointNAME, setStartPointNAME] = useState("");
+
+    const [endPointGPSlat, setEndPointGPSlat] = useState("");
+    const [endPointGPSlon, setEndPointGPSlon] = useState("");
+
+    const [endPointADD, setEndPointADD] = useState("");
+    const [endPointNAME, setEndPointNAME] = useState("");
+
+    const [locationType, setLocationType] = useState("gps"); //for start point
+    const [locationType2, setLocationType2] = useState("gps");// for end point
+
 
     const [selectedFile, setSelectedFile] = useState();
     const [isSelected, setIsSelected] = useState(false);
+
+    const [selectedValue, setSelectedValue] = useState("gps");
+    const [selectedValue2, setSelectedValue2] = useState("gps");
+
+    //TO DO: delete when api call available
+    const start_point_lat = "12.3123123"
+    const start_point_lon = "12.3123123"
+    const end_point_lat = "12.3123123"
+    const end_point_lon = "12.3123123"
 
 
     const theme = createTheme({
@@ -95,51 +85,69 @@ function AddHike() {
         },
     });
 
-
-    const changeLength = (l) => {
-        if (l < 0) l = 0;
-        setLength(l);
-    }
-
-    const changeExpectedTime = (t) => {
-        if (t < 0) t = 0;
-        setExpectedTime(t);
-    }
-
     const changeHandler = (event) => {
         event.preventDefault();
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
+        //TO DO: add API.__ when api available
+        setStartPointGPSlat(start_point_lat)
+        setStartPointGPSlon(start_point_lon)
+        setEndPointGPSlat(end_point_lat)
+        setEndPointGPSlon(end_point_lon)
+
     };
 
-    const handleSubmission = async (ev) => {
-        ev.preventDefault();
 
-        const formData = new FormData();
+    const handleChange1 = (e) => {
+        setSelectedValue(e.target.value)
+        setLocationType(e.target.value)
+    }
+    const handleChange2 = (e) => {
+        setSelectedValue2(e.target.value)
+        setLocationType2(e.target.value)
+    }
 
-        formData.append('File', selectedFile);
-        console.log(selectedFile);
-        await API.createHike(
-            new Hike(
-                title,
-                0, //peak altitude is not requested in the form
-                city,
-                province,
-                country,
-                description,
-                totalAscent,
-                length,
-                expectedTime,
-                difficultyFromState(difficulty),
-                "location", //start point and end point are not handled in terms of type + id (and needs APis to know the available ones)
-                1,
-                "location",
-                2,
-                referencePoint.map(r => r.position), //reference points must be translated in an array of numbers. Of course not in this way
-                /*formData*/
-                selectedFile
-            )
-        )
+    const handleSubmission = async (ev) => { //TO DO: replace comments by right api calls
+        ev.preventDefault(); 
+        //post gpx file
+        
+
+        //post location type (start point)
+        //API.post__(locationType)
+
+        //post location type (end point)
+        //API.post__(locationType2)
+
+        //post start point
+        if (locationType === "gps") {
+            //API.postStartPointlat(startPointGPSlat)
+            //API.postStartPointlon(startPointGPSlon)
+
+        } else if (locationType === "name"){
+            //API.postStartPointName(startPointNAME)
+
+        } else if(locationType === "address") {
+            //API.postStartPointName(startPointADD)
+        }
+
+        //post end point
+        if (locationType2 === "gps") {
+            //API.postEndPointlat(endPointGPSlat)
+            //API.postEndPointlon(endPointGPSlon)
+
+        } else if (locationType2 === "name") {
+            //API.postEndPointName(endPointNAME)
+
+        } else if(locationType2 === "address") {
+            //API.postEndPointName(endPointADD)
+        }
+
+        //post start point description
+        //API.post___(startPointDescription)
+
+        //post end point description
+        //API.post___(endPointDescription)
+
     };
 
 
@@ -149,15 +157,6 @@ function AddHike() {
         alignItems: 'center',
     };
 
-    const handleChangeRefPoints = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setReferencePoint(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
 
 
 
@@ -170,195 +169,17 @@ function AddHike() {
                             <br />ADD A HIKE
                         </Typography>
                     </Grid>
-
-
-                    <Grid xs={0} md={3}></Grid>
-
-                    <Grid xs={12} md={6} marginTop={3} sx={thm}>
-                        <Paper elevation={3} sx={{ backgroundColor: theme.palette.secondary.main }} >
-                            <Typography variant="h5" sx={thm}>
-                                <br />Please complete the following information:<br />
-                            </Typography>
-
-                            <Grid item xs={12} sx={thm}>
-                                <TextField
-                                    variant="outlined"
-                                    label="Title/label"
-                                    margin="normal"
-                                    sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                    value={title}
-                                    onChange={ev => setTitle(ev.target.value)}
-
-                                />{" "}
-
-                            </Grid>
-
-                            <TextField
-                                variant="outlined"
-                                label="Length"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">km</InputAdornment>,
-                                }}
-                                value={length}
-                                onChange={ev => changeLength(ev.target.value)}
-
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Expected time"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">hours</InputAdornment>,
-                                }}
-                                value={expectedTime}
-                                onChange={ev => changeExpectedTime(ev.target.value)}
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Total ascent"
-                                margin="normal"
-                                type="number"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                                }}
-                                value={totalAscent}
-                                onChange={ev => setTotalAscent(ev.target.value)}
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Country"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={country}
-                                onChange={ev => setCountry(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Province"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={province}
-                                onChange={ev => setProvince(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="City"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={city}
-                                onChange={ev => setCity(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="Start point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={startPoint}
-                                onChange={ev => setStartPoint(ev.target.value)}
-
-                            />{" "}
-
-                            <TextField
-                                variant="outlined"
-                                label="End point"
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={endPoint}
-                                onChange={ev => setEndPoint(ev.target.value)}
-
-                            />{" "}
-
-                            <Grid xs={12} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }}>
-                                    <InputLabel>Reference Points</InputLabel>
-                                    <Select
-                                        multiple
-                                        value={referencePoint}
-                                        onChange={handleChangeRefPoints}
-                                        input={<OutlinedInput label="Reference Points" />}
-                                        renderValue={(selected) => (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                {selected.map((value) => (
-                                                    <Chip key={value} label={value} />
-                                                ))}
-                                            </Box>
-                                        )}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {refPoints.map((refPoints) => (
-                                            <MenuItem
-                                                key={refPoints}
-                                                value={refPoints}
-                                                style={getStyles(refPoints, referencePoint, theme)}
-                                            >
-                                                {refPoints}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid xs={12} marginTop={1} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '25ch' }} >
-                                    <InputLabel>Difficulty</InputLabel>
-                                    <Select
-                                        value={difficulty}
-                                        variant="outlined"
-                                        onChange={e => setDifficulty(e.target.value)}
-                                        label="Difficulty"
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select a difficulty</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
-                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
-                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
-
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <TextField
-                                variant="outlined"
-                                label="Description"
-                                multiline
-                                rows={4}
-                                margin="normal"
-                                sx={{ width: 'fit-content', maxWidth: '25ch' }}
-                                value={description}
-                                onChange={ev => setDescription(ev.target.value)}
-                            />{" "}
-
-                            <Typography>
-                                <br />
-                            </Typography>
-
-                        </Paper>
-                    </Grid>
-                    <Grid xs={0} md={3}></Grid>
-
-
-                    <Grid xs={0} md={3} ></Grid>
+                    <Grid xs={0} md={3}></Grid>    
                     <Grid xs={12} md={6} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...{ backgroundColor: theme.palette.secondary.main }, ...thm }} >
+                        <Paper elevation={3} sx={{  ...thm }} >
+                            <Grid  marginTop={3}>
+                                <Chip label="1" color="primary" variant="filled"/>{"   "}
+                                <Chip label="2" color="primary" variant="outlined"/>
+                            </Grid>
+{/*****************************************************UPLOAD FILE***********************************************/}
+   
                             <Typography variant="h5" sx={thm}>
-                                <br />Upload a GPX file<br /><br />
+                                <br />Please upload a GPX file<br /><br />
                             </Typography>
                             <Button variant="contained" component="label" onChange={changeHandler}>
                                 Upload
@@ -367,33 +188,110 @@ function AddHike() {
                             {isSelected ? (
                                 <div>
                                     <Typography><br />Filename: {selectedFile.name}</Typography>
-                                    <Typography>Size in bytes: {selectedFile.size}</Typography>
                                 </div>
                             ) : (
                                 <Typography><br />Select a file to show details</Typography>
                             )}
-                            <Typography>
-                                <br />
-                            </Typography>
+                            <Typography> <br/> </Typography>
+                            <Grid container >
+{/*****************************************************START POINT***********************************************/}
+                                <Grid xs={12} md={5.5} >
+                                    <Typography align='center'>START POINT</Typography>
+                                    <Grid marginBottom={1}>
+                                        <TextField variant="outlined" margin='normal' color='primary' label="Description" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointDescription} onChange={ev => setStartPointDescription(ev.target.value)}/> 
+                                    </Grid>
+                                    <FormControl>
+                                        <InputLabel id="demo-simple-select-label">Location type</InputLabel>
+                                        <Select value={locationType} label="Location Type" onChange={handleChange1}>
+                                            <MenuItem value={"gps"}>GPS coordinates</MenuItem>
+                                            <MenuItem value={'address'}>Address</MenuItem>
+                                            <MenuItem value={'name'}>Name</MenuItem>
+                                        </Select>
+                                        {selectedValue === "gps" ? (
+                                        <>
+                                            <TextField variant="outlined" color='primary' label="Start point - lattitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
+                                            <TextField variant="outlined" color='primary' label="Start point - longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
+                                        </>
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+                                        {selectedValue === "address" ? (
+                                            <TextField variant="outlined" color='primary' label="Start point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointADD} onChange={ev => setStartPointADD(ev.target.value)} /> 
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+
+                                        {selectedValue === "name" ? (
+                                            <TextField variant="outlined" color='primary' label="Start point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointNAME} onChange={ev => setStartPointNAME(ev.target.value)} /> 
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+                                    </FormControl>
+                                    
+                                </Grid>
+                                <Grid md={1}></Grid>
+{/*****************************************************END POINT***********************************************/}
+
+                                <Grid xs={12} md={5.5} >
+                                    <Typography align='center'>END POINT</Typography>
+                                    <Grid marginBottom={1}>
+                                        <TextField variant="outlined" color='primary' margin='normal' label="Description" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointDescription} onChange={ev => setEndPointDescription(ev.target.value)}/> 
+                                    </Grid>
+
+                                    <FormControl>
+                                        <InputLabel id="demo-simple-select-label">Location type</InputLabel>
+                                        <Select value={locationType2} label="Location Type 2" onChange={handleChange2}>
+                                            <MenuItem value={"gps"}>GPS coordinates</MenuItem>
+                                            <MenuItem value={'address'}>Address</MenuItem>
+                                            <MenuItem value={'name'}>Name</MenuItem>
+                                        </Select>
+                                        {selectedValue2 === "gps" ? (
+                                        <>
+                                            <TextField variant="outlined" color='primary' label="End point - lattitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat}disabled /> 
+                                            <TextField variant="outlined" color='primary' label="End point - longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
+                                        </>
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+                                        {selectedValue2 === "address" ? (
+                                            <TextField variant="outlined" color='primary' label="End point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointADD} onChange={ev => setEndPointADD(ev.target.value)} /> 
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+
+                                        {selectedValue2 === "name" ? (
+                                            <TextField variant="outlined" color='primary' label="End point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointNAME} onChange={ev => setEndPointNAME(ev.target.value)} /> 
+                                        ) : (
+                                            <Grid></Grid>
+                                        )}
+                                    </FormControl>
+                                </Grid>
+                            </Grid> 
+
+                            <Grid><br/></Grid> 
 
                         </Paper>
                     </Grid>
+
                     <Grid xs={0} md={3}></Grid>
 
                     <Grid xs={0.5}></Grid>
+
                     <Grid xs={11} sx={thm}>
+
                         <Grid><br /></Grid>
-                        <Button onClick={handleSubmission} variant="contained" color='primary'>ADD A HIKE</Button>
-                        <Grid><br /></Grid>
+{/****************************************************SUBMIT OR GO BACK***********************************************/}
+
+                        <Button component={Link} to={"/local-guide-add-hikes2"} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
+                        <Grid><br/></Grid>
+
                         <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                        <Typography>
-                            <br /><br />
-                        </Typography>
+                        <Grid><br/><br/></Grid>
                     </Grid>
+
                     <Grid item xs={0.5}></Grid>
 
                 </ThemeProvider>
-
 
             </Grid>
 

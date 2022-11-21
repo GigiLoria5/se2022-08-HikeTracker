@@ -31,7 +31,7 @@ function LocalGuidePage() {
 
                 <Grid item xs={12} marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <ThemeProvider theme={theme}>
-                        <Button component={Link} to={"/local-guide-add-hikes"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
+                        <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
                     </ThemeProvider>
                 </Grid>
 
