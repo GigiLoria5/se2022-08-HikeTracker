@@ -298,6 +298,47 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "start_point_id": 3,
       "end_point_type": "location",
       "end_point_id": 18,
+      "start": [
+        {
+          "id": 3,
+          "city": "Carignano",
+          "province": "Torino",
+          "country": "Italy",
+          "address": "SP138, 10041",
+          "coordinates": "44.88578, 7.626319"
+        }
+      ],
+      "end": [
+        {
+          "id": 18,
+          "value_type": "gps",
+          "value": null,
+          "description": "Mountain peak",
+          "coordinates": "45.462770631936834, 7.693279470138337"
+        }
+      ],
+      "reference_points": [
+        [
+          {
+            "id": 17,
+            "value_type": "address",
+            "value": "SP138, 10041",
+            "description": "Chapel of the Visitation of Valinotto",
+            "coordinates": "44.88578, 7.626319",
+            "ref_point_type": "location"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "value_type": "address",
+            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
+            "description": "Palasot Inn (Restaurant)",
+            "coordinates": "45.45229, 7.7025213",
+            "ref_point_type": "location"
+          }
+        ]
+      ],
       "author": "Martina Piccolo",
       "gpx_content": { gpx file code }
     }

@@ -227,12 +227,21 @@ router.get('/hike/:id',
         if (!req.isAuthenticated() || req.user.role != "hiker") {
             return res.status(400).json({ error: 'Not logged in or wrong role' });
         }
-
+        
         hikeDao.getHikeById(req.params.id)
-            .then((hike) => {
-                var result = hike;
-                result.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx');
-                res.status(200).json(result);
+            .then(async (hike) => {
+                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx');
+                hike[0].start = await utilsHike.getPoint(hike[0].start_point_type, hike[0].start_point_id);
+                hike[0].end = await utilsHike.getPoint(hike[0].end_point_type, hike[0].end_point_id);
+                const references = await referenceDao.getReferenceByHikeId(req.params.id);
+                const reference_points = [];
+                for (const r of references) {
+                    const point = await utilsHike.getPoint(r.ref_point_type, r.ref_point_id);
+                    point[0].ref_point_type = r.ref_point_type;
+                    reference_points.push(point);
+                }
+                hike[0].reference_points = reference_points;
+                res.status(200).json(hike);
             })
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hike` }));
 });
