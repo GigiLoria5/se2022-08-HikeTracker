@@ -50,20 +50,22 @@ export default function AddHut(props) {
         ev.preventDefault();
 
         const hut = new Hut(
+            undefined, //id - assigned by backend
             hutName,
-            type,
-            bedsNumber,
-            country,
-            province,
             city,
+            province,
+            country,
             address,
-            latitude,
-            longitude,
             altitude,
-            website,
-            email,
+            description,
+            bedsNumber,
+            undefined, //opening period - non static information
+            longitude,
+            latitude,
             phoneNumber,
-            description
+            email,
+            website,
+            type
         );
 
         //TODO: call post api...
