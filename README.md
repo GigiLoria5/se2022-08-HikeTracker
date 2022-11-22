@@ -348,9 +348,11 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
-- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates
+- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates, email, website, type, user_id
+  - Possible values for _type_ are: alpine_hut, fixed_bivouac, unmanaged_hut, hiking_hut, other 
   - _altitude_ is in meters
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+  - _user id_ is the id of the hut worker that creates and manages the hut on the platform
 - Table `parking_lot` contains: id(PK), city, province, country, address, coordinates
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `location` contains: id(PK), value_type, value, description, coordinates
@@ -375,10 +377,11 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ## Users Credentials
 
-| email                     | password | role        |
-| ------------------------- | -------- | ----------- |
-| c.basile@hiker.it         | password | hiker       |
-| g.desantis@localguide.it  | password | local guide |
-| m.piccolo@guideturin.it   | password | local guide |
-| i.folletti987@google.com  | password | local guide |
-| manager@manager.com       | password | manager     |
+| email                        | password | role        |
+| ---------------------------- | -------- | ----------- |
+| c.basile@hiker.it            | password | hiker       |
+| g.desantis@localguide.it     | password | local guide |
+| m.piccolo@guideturin.it      | password | local guide |
+| i.folletti987@google.com     | password | local guide |
+| manager@manager.com          | password | manager     |
+| nauouejwvrmthcavxq@tmmwj.com | password | hut_worker  |
