@@ -45,7 +45,7 @@ router.post('/hikes',
     body('city').isLength({min:1}),
     body('province').isLength({min:1}),
     body('country').isLength({min:1}),
-    body('description').isLength({min:10}),
+    body('description').isLength({min:1}),
     check('start point').custom(async(value, {req})=> {
         const start_point = await JSON.parse(req.body.start_point);
         if (isNaN(start_point.latitude) ||
@@ -122,6 +122,11 @@ router.post('/hikes',
             const gpx = req.files.gpx;
             const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
             const author_id = req.user && req.user.id;
+
+            const start_point = await JSON.parse(req.body.start_point);
+            const end_point = await JSON.parse(req.body.end_point);
+            const start_point_id = await locationDao.addLocation(start_point);
+            const end_point_id = await locationDao.addLocation(end_point);
             const hike = new Hike(
                 req.body.title,
                 req.body.peak_altitude,
@@ -134,8 +139,10 @@ router.post('/hikes',
                 req.body.expected_time,
                 req.body.difficulty,
                 name,
-                req.body.start_point,
-                req.body.end_point,
+                start_point.type,
+                start_point_id,
+                end_point.type,
+                end_point_id
             )
             let hike_id;
 

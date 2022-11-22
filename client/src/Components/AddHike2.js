@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
-import { StaticTimePicker } from '@mui/x-date-pickers';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -24,11 +23,9 @@ import { Hike } from "../Utils/Hike"
 import Stack from '@mui/material/Stack';
 import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../Utils/GeoData'
 import SmootherTextField from './SmootherTextField'
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { difficultyFromState } from '../Utils/HikesFilter';
+import Alert from '@mui/material/Alert';
+import { useNavigate } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -68,7 +65,6 @@ function getStyles(refPoints, referencePoint, theme) {
 }
 
 function AddHike2() {
-
     const [title, setTitle] = useState("");
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
@@ -78,7 +74,7 @@ function AddHike2() {
     const [description, setDescription] = useState("");
 
     const location = useLocation();
-
+    const [message, setMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
@@ -147,9 +143,25 @@ function AddHike2() {
 
 
 
-
+    const navigate = useNavigate();
     const handleSubmission = async (ev) => {
         ev.preventDefault();
+        if(!title){
+            setMessage("Hike title missing");
+            return;
+        }
+        if(!difficulty){
+            setMessage("Hike difficulty missing");
+            return;
+        }
+        if(!country || !province || !city){
+            setMessage("Hike geographical info missing");
+            return;
+        }
+        if(!description){
+            setMessage("Hike description missing");
+            return;
+        }
         const hike = new Hike(
             title,
             peak_altitude,
@@ -166,7 +178,7 @@ function AddHike2() {
             [],
             selectedFile
         )
-        API.createHike(hike);
+        API.createHike(hike).then(a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
     };
 
 
@@ -186,12 +198,6 @@ function AddHike2() {
         );
     };
 
-
-    const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
-
-    const handleChange = (newValue) => {
-        setValue(newValue);
-    };
     return (
         <div>
             <Grid container >
@@ -219,7 +225,7 @@ function AddHike2() {
 
                             <Grid xs={12} sx={thm} marginBottom={1}>
                                 {/*TITLE FIELD*/}
-                                <SmootherTextField text={title} setText={setTitle} label="Title"/>
+                                <SmootherTextField text={title} setText={setTitle} label="Title" required={true}/>
                             </Grid>
                             <Grid xs={12} marginTop={2} sx={thm}>
                                 <Stack margin={2} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
@@ -368,8 +374,11 @@ function AddHike2() {
 
                         <Grid><br /></Grid>
 {/****************************************************SUBMIT OR GO BACK***********************************************/}
-
-                        <Button component={Link} to={"/local-guide-page"} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
+                        {message &&
+                            <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
+                            <Grid><br/></Grid>  </> 
+                        }        
+                        <Button onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                         <Grid><br/></Grid>
                         <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
                         <Grid><br/><br/></Grid>

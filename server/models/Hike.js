@@ -10,8 +10,10 @@ class Hike {
         expected_time,
         difficulty, 
         gps_track, 
-        start_point,
-        end_point,
+        start_point_type,
+        start_point_id,
+        end_point_type,
+        end_point_id
     ){
         this.title = title;
         this.peak_altitude = peak_altitude;
@@ -24,8 +26,10 @@ class Hike {
         this.expected_time = expected_time,
         this.difficulty = difficulty, 
         this.gps_track = gps_track, 
-        this.start_point= start_point, 
-        this.end_point = end_point
+        this.start_point_type = start_point_type, 
+        this.start_point_id = start_point_id, 
+        this.end_point_type = end_point_type, 
+        this.end_point_id = end_point_id
     }
 
 };
