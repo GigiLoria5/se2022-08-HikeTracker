@@ -272,7 +272,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET `/api/hikes/:id`
+- GET `/api/hike/:id`
 
   - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
   - Request body: _None_
@@ -283,7 +283,6 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ```
     {
       "id": 8,
-      "author": "Giovanni De Santis"
       "title": "Ring for Monte Calvo",
       "peak_altitude": 1357,
       "city": "Carignano",
@@ -294,52 +293,17 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "track_length": 6.2,
       "expected_time": 3.3,
       "difficulty": 2,
-      "gpx_content": { gpx file code }
+      "gpx_track": "8_monte_calvo", 
       "start_point_type": "parking_lot",
       "start_point_id": 3,
       "end_point_type": "location",
       "end_point_id": 18,
-      "start": [
-        {
-          "id": 3,
-          "city": "Carignano",
-          "province": "Torino",
-          "country": "Italy",
-          "address": "SP138, 10041"
-        }
-      ],
-      "end": [
-        {
-          "id": 18,
-          "value_type": "gps",
-          "value": "45.462770631936834, 7.693279470138337",
-          "description": "Mountain peak"
-        }
-      ],
-      "reference_points": [
-        [
-          {
-            "id": 17,
-            "value_type": "address",
-            "value": "SP138, 10041",
-            "description": "Chapel of the Visitation of Valinotto",
-            "ref_point_type": "location"
-          }
-        ],
-        [
-          {
-            "id": 19,
-            "value_type": "address",
-            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
-            "description": "Palasot Inn (Restaurant)",
-            "ref_point_type": "location"
-          }
-        ]
-      ]
+      "author": "Martina Piccolo",
+      "gpx_content": { gpx file code }
     }
   ```
 
-- GET `/api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value`
+- GET `/api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length_min=value&track_length_max=value&ascent_min=value&ascent_max=value&expected_time_min=value&expected_time_max=value`
 
   - Description: Return an array containing all the hikes after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
   - Request body: _None_
@@ -352,7 +316,6 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     ...,
     {
       "id": 8,
-      "author": "Giovanni De Santis"
       "title": "Ring for Monte Calvo",
       "peak_altitude": 1357,
       "city": "Carignano",
@@ -363,25 +326,29 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "track_length": 6.2,
       "expected_time": 3.3,
       "difficulty": 2,
+      "gps_track": "8_monte_calvo",
       "start_point_type": "parking_lot",
       "start_point_id": 3,
       "end_point_type": "location",
       "end_point_id": 18,
+      "author_id": 3,
       "start": [
         {
           "id": 3,
           "city": "Carignano",
           "province": "Torino",
           "country": "Italy",
-          "address": "SP138, 10041"
+          "address": "SP138, 10041",
+          "coordinates": "44.88578, 7.626319"
         }
       ],
       "end": [
         {
           "id": 18,
           "value_type": "gps",
-          "value": "45.462770631936834, 7.693279470138337",
-          "description": "Mountain peak"
+          "value": null,
+          "description": "Mountain peak",
+          "coordinates": "45.462770631936834, 7.693279470138337"
         }
       ],
       "reference_points": [
@@ -391,6 +358,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
             "value_type": "address",
             "value": "SP138, 10041",
             "description": "Chapel of the Visitation of Valinotto",
+            "coordinates": "44.88578, 7.626319",
             "ref_point_type": "location"
           }
         ],
@@ -400,10 +368,12 @@ Application developed during the Software Engineering II course (Year 2022-23) b
             "value_type": "address",
             "value": "Ca' Palasot, Frazione Campo, 1, 10081",
             "description": "Palasot Inn (Restaurant)",
+            "coordinates": "45.45229, 7.7025213",
             "ref_point_type": "location"
           }
         ]
-      ]
+      ],
+      "author": "Martina Piccolo"
     },
     ...
   ]
