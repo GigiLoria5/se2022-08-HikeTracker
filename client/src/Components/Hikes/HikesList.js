@@ -8,7 +8,7 @@ const HikesList = (props) => {
 
     return (
         <Grid item xs={12} lg={9} marginBottom={2}>
-            <Grid container spacing={2} paddingTop={2} paddingLeft={2} paddingRight={2} height="100%">
+            <Grid container spacing={2} paddingTop={2} paddingLeft={2} paddingRight={2} >
                 {hikes.map((hike) => <HikesListCard key={hike.id} hike={hike} />)}
             </Grid>
         </Grid>

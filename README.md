@@ -24,6 +24,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - React **18.2.0**
 - MUI **5.10.9**
+- Leaflet **1.9.3**
 
 ### Backend
 
@@ -35,6 +36,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ### Testing
 
+- E2E Tests: Jest
 - Integration Tests: Mocha
 - Unit Tests: Jest
 

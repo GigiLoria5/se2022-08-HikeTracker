@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
-import { Autocomplete, Box, Divider, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Divider, IconButton, TextField, Typography } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
 
+const zoomLevel = 13;
+const initialLat = 51.505;
+const initialLng = -0.09;
+
 function GeographicFilter(props) {
-    const { filter, setFilter, countryList, getProvinceList, getCityList } = props;
+    const { filter, setFilter, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
@@ -15,9 +20,6 @@ function GeographicFilter(props) {
     const [provinceActive, setProvinceActive] = useState(null);
     const [cityList, setCityList] = useState([]);
     const [cityActive, setCityActive] = useState(null);
-
-    const [position, setPosition] = useState(null);
-    const [radius, setRadius] = useState(null);
 
     // If there are new countries refresh
     useEffect(() => {
@@ -97,12 +99,12 @@ function GeographicFilter(props) {
 
     const handleChangeLng = (newLng) => {
         const newLngSanitized = floatInputSanitizer(newLng);
-        setPosition({ ...position, lng: newLngSanitized });
+        setPosition({ ...position, lng: isNaN(newLngSanitized) ? "0" : newLngSanitized });
     }
 
     const handleChangeLat = (newLat) => {
         const newLatSanitized = floatInputSanitizer(newLat);
-        setPosition({ ...position, lat: newLatSanitized });
+        setPosition({ ...position, lat: isNaN(newLatSanitized) ? "0" : newLatSanitized });
     }
 
     const handleChangeRadius = (newRadius) => {
@@ -111,7 +113,7 @@ function GeographicFilter(props) {
     }
 
     return (
-        <Box component="div" sx={{ marginTop: { xs: 4, lg: 3 }, padding: 4, paddingTop: 0 }}>
+        <Box component="div" sx={{ marginTop: { xs: 4, lg: 3 }, padding: 4, paddingTop: 0, paddingBottom: 0 }}>
             {/* Title */}
             <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
                 Geographic Area
@@ -156,13 +158,33 @@ function GeographicFilter(props) {
             />
             <Divider sx={{ maxWidth: 300, marginTop: 2 }} />
             {/* Radius around a point */}
-            <Box component="div" sx={{ maxWidth: "300px", maxHeight: "200px", marginTop: 1.5 }}>
+            <Box component="div" sx={{ maxWidth: "300px", marginTop: 2 }}>
                 <Box component="div" sx={{ display: "flex", marginBottom: 2 }} >
-                    <TextField id="coordinates" label="latitude" variant="outlined" sx={{ paddingRight: 1 }} value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} />
-                    <TextField id="coordinates" label="longitude" variant="outlined" value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} />
+                    {/* Latitude */}
+                    <TextField id="coordinates" label="latitude" variant="outlined" sx={{
+                        paddingRight: 1, "& .MuiInputBase-input": {
+                            overflow: "hidden",
+                            textOverflow: "ellipsis"
+                        }
+                    }} value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} />
+                    {/* Longitude */}
+                    <TextField id="coordinates" label="longitude" variant="outlined" sx={{
+                        "& .MuiInputBase-input": {
+                            overflow: "hidden",
+                            textOverflow: "ellipsis"
+                        }
+                    }} value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} />
                 </Box>
-                <TextField id="outlined-number" label="Radius (km)" type="number" InputLabelProps={{ shrink: true, }} sx={{ maxWidth: 300, marginBottom: 1.5 }} InputProps={{ inputProps: { min: 1 } }} value={radius ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
-                <MapLocator position={position} setPosition={setPosition} />
+                <Box component="div" sx={{ display: "flex", marginBottom: 2 }} >
+                    {/* Radius */}
+                    <TextField id="outlined-number" label="Radius (km)" type="number" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 } }} value={radius ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
+                    {/* Reset Radius Button */}
+                    <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
+                        <CancelIcon />
+                    </IconButton>
+                </Box>
+                {/* Map (coordinate picker) */}
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} />
             </Box>
         </Box>
     )

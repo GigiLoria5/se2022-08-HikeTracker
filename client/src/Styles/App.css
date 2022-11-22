@@ -162,3 +162,20 @@ svg {
 .card:hover {
     box-shadow: -1px 10px 29px 0px rgba(0, 0, 0, 0.8);
 }
+
+/* Hikes Filters  */
+.MuiRating-icon {
+    display: block;
+    height: 24px;
+    padding-right: 16px;
+    opacity: 0.55;
+}
+
+.rating-icon-active {
+    opacity: 1;
+}
+
+.rating-icon:hover,
+.MuiRating-iconFilled {
+    opacity: 1;
+}

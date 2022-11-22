@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 
-import { Box, Button, ClickAwayListener, Drawer, Grid, Typography } from '@mui/material';
+import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
+import DifficultyFilter from '../Filters/DifficultyFilter';
 
 const HikesFilterPanel = (props) => {
-    const { filter, setFilter, hikes } = props;
+    const { filter, setFilter, hikes, position, setPosition, radius, setRadius } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = React.useState(false);
     const [countryList, setCountryList] = React.useState([]);
 
@@ -40,25 +41,35 @@ const HikesFilterPanel = (props) => {
     };
 
     // Filter Components
-    const geographicFilterComponent = (<GeographicFilter filter={filter} setFilter={setFilter} countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList} />);
+    const filterComponents = (
+        <>
+            {/* Geographic Area Filter */}
+            <GeographicFilter filter={filter} setFilter={setFilter}
+                countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList}
+                position={position} setPosition={setPosition} radius={radius} setRadius={setRadius}
+            />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Difficulty Filter */}
+            <DifficultyFilter filter={filter} setFilter={setFilter} />
+        </>
+    );
 
     /* Filter panel for small screen */
     const filterHiddenPanel = (<Box
-        sx={{ width: '80vw', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
+        sx={{ width: '100%', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
         role="presentation"
-        onKeyDown={toggleFilterPanelDrawer(false)}
     >
         <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
             Filters
         </Typography>
-        {geographicFilterComponent}
+        {filterComponents}
     </Box>);
 
     return (
         <>
             {/* Filter Panel - Full Size */}
             <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' } }} lg={3} >
-                {geographicFilterComponent}
+                {filterComponents}
             </Grid>
 
             {/* Panel Button - Only on Small Screen */}

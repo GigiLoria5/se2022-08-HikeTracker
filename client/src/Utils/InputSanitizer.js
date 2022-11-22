@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {String} inputToSanitize float input to be sanitized
+ * @returns The input transformed to a float number (still String type). NaN if it was not possible
+ */
 const floatInputSanitizer = (inputToSanitize) => {
     // only decimals or . or -
     const newLngSanitized1 = inputToSanitize.replace(/[^\d.-]/g, '');
@@ -26,11 +31,14 @@ const floatInputSanitizer = (inputToSanitize) => {
     return inputSanitized;
 }
 
+/**
+ * 
+ * @param {String} inputToSanitize integer input to be sanitized
+ * @returns The input transformed to a positive integer number (still String type). NaN if it was not possible
+ */
 const positiveIntegerSanitizer = (inputToSanitize) => {
     // only decimals 
     const inputOnlyDecimal = inputToSanitize.replace(/[^\d]/g, '');
-    console.log(inputOnlyDecimal);
-
     const inputSanitized = parseInt(inputOnlyDecimal).toString();
 
     return inputSanitized;
