@@ -349,12 +349,16 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
-- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
+- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates
   - _altitude_ is in meters
-- Table `parking_lot` contains: id(PK), city, province, country, address
-- Table `location` contains: id(PK), value_type, value, description
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
     > Again, there is no database control on the type. Although value_type may not be needed, I think it is useful to specify what type of value is present and should be expected by the person making the queries or handling the data.
+  - If the value type is gps, the field value will be null and the actual gps coordinates will be inserted inside coordinates field, to avoid data replication
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `hike` contains: id(PK), title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id
   - _peak_altitude_ is in meters
   - _ascent_ is in meters
