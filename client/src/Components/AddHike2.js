@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
 //import Grid from "@mui/material/Grid";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-
+import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
-
+import { StaticTimePicker } from '@mui/x-date-pickers';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -18,12 +18,17 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useLocation } from 'react-router-dom'
 import API from '../API';
 import { Hike } from "../Utils/Hike"
 import Stack from '@mui/material/Stack';
-
-
-
+import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../Utils/GeoData'
+import SmootherTextField from './SmootherTextField'
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { difficultyFromState } from '../Utils/HikesFilter';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,7 +36,7 @@ const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
+            width: 350,
         },
     },
 };
@@ -65,7 +70,6 @@ function getStyles(refPoints, referencePoint, theme) {
 function AddHike2() {
 
     const [title, setTitle] = useState("");
-    const [expectedTime, setExpectedTime] = useState(0.0);
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
@@ -73,15 +77,59 @@ function AddHike2() {
     const [difficulty, setDifficulty] = useState("");
     const [description, setDescription] = useState("");
 
-    const [selectedFile, setSelectedFile] = useState();
+    const location = useLocation();
 
-    //TO DO: When API available, exchange the comments
-    //const length = API.length;
-    const length = "15";
+    const [countries, setCountries] = useState([]);
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
 
-    //const totalAscent = API.ascent
-    const totalAscent = "100"
+    const {ascent, length, start_point, end_point, expectedTime, selectedFile, peak_altitude} = location.state;
 
+
+    const Description = () => {
+        const [localDescription, setLocalDescription] = React.useState(description);
+        return <TextField 
+            required 
+            variant="outlined" 
+            label="Description"  
+            multiline  rows={4} 
+            margin="normal"  
+            value={localDescription}  
+            onBlur={ev => {setDescription(ev.target.value)} }
+            onChange={ev => {setLocalDescription(ev.target.value)}}
+        />
+    }
+
+    const timeToHHMM = (t) => {
+        const hh = Math.floor(t);
+        const mm = (t - Math.floor(t))*60;
+        return hh+":"+mm.toFixed(0);
+    }
+
+    
+    
+
+    useEffect(() => {
+        getCountries().then(cn => {
+            setCountries([...cn]);
+        });
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        if (country !== '') {
+            getProvincesByCountry(country).then(pv => {
+                setProvinces([...pv]);
+            })
+        }
+        if (province !== '') {
+            getCitiesByProvince(country, province).then(c => {
+                setCities([...c]);
+            })
+        }
+        
+        // eslint-disable-next-line
+    }, [country, province]);
 
     const theme = createTheme({
         palette: {
@@ -98,15 +146,27 @@ function AddHike2() {
     });
 
 
-    const changeExpectedTime = (t) => {
-        if (t < 0) t = 0;
-        setExpectedTime(t);
-    }
 
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-
+        const hike = new Hike(
+            title,
+            peak_altitude,
+            city,
+            province,
+            country,
+            description,
+            ascent,
+            length,
+            expectedTime,
+            difficultyFromState(difficulty),
+            start_point,
+            end_point,
+            [],
+            selectedFile
+        )
+        API.createHike(hike);
     };
 
 
@@ -127,7 +187,11 @@ function AddHike2() {
     };
 
 
+    const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 
+    const handleChange = (newValue) => {
+        setValue(newValue);
+    };
     return (
         <div>
             <Grid container >
@@ -155,20 +219,25 @@ function AddHike2() {
 
                             <Grid xs={12} sx={thm} marginBottom={1}>
                                 {/*TITLE FIELD*/}
-                                <TextField variant="outlined"  label="Title/label"  margin="normal"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={title} onChange={ev => setTitle(ev.target.value)} />
+                                <SmootherTextField text={title} setText={setTitle} label="Title"/>
                             </Grid>
-                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                {/*LENGTH FIELD*/}
-                                <TextField variant="outlined" label="Length"  type="number"  sx={{ width: 'fit-content', maxWidth: '22ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment> }}  value={length} disabled />
-                                {/*TIME FIELD*/}
-                                <TextField  variant="outlined" label="Expected time"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }}  InputProps={{ endAdornment: <InputAdornment position="end">hours</InputAdornment>}}  value={expectedTime}  onChange={ev => changeExpectedTime(ev.target.value)}/>
-                                {/*ASCENT FIELD*/}
-                                <TextField variant="outlined" label="Total ascent"  type="number" sx={{ width: 'fit-content', maxWidth: '22ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={totalAscent} disabled  />
-                           
-                            </Stack>
+                            <Grid xs={12} marginTop={2} sx={thm}>
+                                <Stack margin={2} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                                    {/*LENGTH FIELD*/}
+                                    <TextField variant="outlined" label="Length"    sx={{ width: 'fit-content', maxWidth: '28ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
+                                    {/*TIME FIELD*/}
+                                    <TextField variant="outlined" label="Expected time" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                    {/*ASCENT FIELD*/}
+                                    <TextField variant="outlined" label="Total ascent" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />
+                            
+                                </Stack>
+                            </Grid>
+
                             
 
-                            <Grid xs={12} marginTop={2} sx={thm}>
+                            
+
+                            <Grid xs={12} margin={2} sx={thm}>
                                 {/*DIFFICULTY FIELD*/}
                                 <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
                                     <InputLabel>Difficulty</InputLabel>
@@ -177,6 +246,7 @@ function AddHike2() {
                                         variant="outlined"
                                         onChange={e => setDifficulty(e.target.value)}
                                         label="Difficulty"
+                                        required
                                     >
                                         <MenuItem value="">
                                             <em>Select a difficulty</em>
@@ -194,14 +264,52 @@ function AddHike2() {
                             <Typography variant="h6" sx={thm} marginBottom={1}>
                                 <br />Geographical area<br />
                             </Typography>
-                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                            <Stack direction={{ xs: 'column', sm: 'row' }} >
                                 {/*COUNTRY FIELD*/}
-                                <TextField variant="outlined" label="Country"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={country} onChange={ev => setCountry(ev.target.value)}  />
-                                {/*PROVINCE FIELD*/}
-                                <TextField variant="outlined" label="Province"   sx={{ width: 'fit-content', maxWidth: '22ch' }} value={province}  onChange={ev => setProvince(ev.target.value)}  />
-                                {/*CITY FIELD*/}
-                                <TextField variant="outlined" label="City"  sx={{ width: 'fit-content', maxWidth: '22ch' }} value={city}  onChange={ev => setCity(ev.target.value)} />
-
+                                
+                                <Autocomplete
+                                    required
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={countries}
+                                    sx={{ m:1, width: 200 }}
+                                    onChange={e => {
+                                        e.preventDefault();
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        setCountry(name); setProvince(''); setCity('')}}
+                                    //onInputChange={e => {e.preventDefault(); setCountry(e.target.value); setProvince(''); setCity('')}}
+                                    renderInput={(params) => <TextField {...params}  label="Country" />}
+                                />
+                                <Autocomplete
+                                    required
+                                    disabled={!(country)}
+                                    disablePortal
+                                    id="combo-box-demo2"
+                                    options={provinces}
+                                    key={country}
+                                    sx={{ m:1, width: 200 }}
+                                    onChange={e => {
+                                        e.preventDefault(); 
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        setProvince(name); setCity('')}}
+                                    //onInputChange={e => {e.preventDefault(); setProvince(e.target.value); setCity('')}} 
+                                    renderInput={(params) => <TextField {...params}  label="Province/Region" />}
+                                />
+                                <Autocomplete
+                                    required
+                                    disabled={!(country&&province)}
+                                    disablePortal
+                                    id="combo-box-demo3"
+                                    options={cities}
+                                    key={[province, country]}
+                                    sx={{ m:1, width: 200 }}
+                                    onChange={e => {
+                                        e.preventDefault();
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        setCity(name)}} 
+                                    //onInputChange={e => {e.preventDefault(); setCity(e.target.value)}} 
+                                    renderInput={(params) => <TextField {...params} label="City"/>}
+                                />
                             </Stack>
 {/****************************************************REFERENCE POINTS***********************************************/}
 {/**********************************************TO REPLACE BY CLICKABLE MAP *****************************************/}
@@ -243,7 +351,8 @@ function AddHike2() {
                             <Typography variant="h6" sx={thm}>
                                 <br />Description<br />
                             </Typography>
-                            <TextField variant="outlined" label="Description"  multiline  rows={4}  margin="normal"  value={description}  onChange={ev => setDescription(ev.target.value)}  />
+                            < Description description={description} setDescription={setDescription}/>
+                            
 
                             <Typography>
                                 <br />

@@ -14,12 +14,13 @@ import Chip from '@mui/material/Chip';
 import API from '../API';
 import { Hike } from "../Utils/Hike"
 import { difficultyFromState } from "../Utils/HikesFilter"
-
+import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../Utils/GeoData'
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import {parseGPX} from '../Utils/GPX'
 
 
 
@@ -33,8 +34,6 @@ const MenuProps = {
         },
     },
 };
-
-
 
 
 function AddHike() {
@@ -54,16 +53,21 @@ function AddHike() {
     const [endPointADD, setEndPointADD] = useState("");
     const [endPointNAME, setEndPointNAME] = useState("");
 
-    const [locationType, setLocationType] = useState("gps"); //for start point
-    const [locationType2, setLocationType2] = useState("gps");// for end point
+    const [startPointType, setStartPointType] = useState("gps"); //for start point
+    const [endPointType, setEndPointType] = useState("gps");// for end point
 
 
     const [selectedFile, setSelectedFile] = useState();
     const [isSelected, setIsSelected] = useState(false);
 
-    const [selectedValue, setSelectedValue] = useState("gps");
-    const [selectedValue2, setSelectedValue2] = useState("gps");
+    const [startPointValue, setStartPointValue] = useState("gps");
+    const [endPointValue, setEndPointValue] = useState("gps");
 
+    const [ascent, setAscent] = useState(0);
+    const [length, setLength] = useState(0);
+    const [expectedTime, setExpectedTime] = useState(0.0);
+    const [peakAltitude, setPeakAltitude] = useState(0);
+    
     //TO DO: delete when api call available
     const start_point_lat = "12.3123123"
     const start_point_lon = "12.3123123"
@@ -85,60 +89,66 @@ function AddHike() {
         },
     });
 
-    const changeHandler = (event) => {
+    const changeHandler = async (event) => {
         event.preventDefault();
         setSelectedFile(event.target.files[0]);
         setIsSelected(true);
-        //TO DO: add API.__ when api available
-        setStartPointGPSlat(start_point_lat)
-        setStartPointGPSlon(start_point_lon)
-        setEndPointGPSlat(end_point_lat)
-        setEndPointGPSlon(end_point_lon)
+        const gpx = await parseGPX(event.target.files[0]);
 
+        console.log(gpx);
+        //TO DO: add API.__ when api available
+        setStartPointGPSlat(gpx.start_point_lat)
+        setStartPointGPSlon(gpx.start_point_lon)
+        setEndPointGPSlat(gpx.end_point_lat)
+        setEndPointGPSlon(gpx.end_point_lon)
+        setAscent(gpx.ascent);
+        setLength(gpx.length);
+        setExpectedTime(gpx.expectedTime);
+        setPeakAltitude(gpx.peak_altitude)
     };
 
 
     const handleChange1 = (e) => {
-        setSelectedValue(e.target.value)
-        setLocationType(e.target.value)
+        setStartPointValue(e.target.value)
+        setStartPointType(e.target.value)
     }
     const handleChange2 = (e) => {
-        setSelectedValue2(e.target.value)
-        setLocationType2(e.target.value)
+        setEndPointValue(e.target.value)
+        setEndPointType(e.target.value)
     }
 
     const handleSubmission = async (ev) => { //TO DO: replace comments by right api calls
-        ev.preventDefault(); 
+        //ev.preventDefault(); 
         //post gpx file
         
 
         //post location type (start point)
-        //API.post__(locationType)
+        //API.post__(startPointType)
 
         //post location type (end point)
-        //API.post__(locationType2)
+        //API.post__(endPointType)
 
         //post start point
-        if (locationType === "gps") {
+        if (startPointType === "gps") {
             //API.postStartPointlat(startPointGPSlat)
             //API.postStartPointlon(startPointGPSlon)
 
-        } else if (locationType === "name"){
+        } else if (startPointType === "name"){
             //API.postStartPointName(startPointNAME)
 
-        } else if(locationType === "address") {
+        } else if(startPointType === "address") {
             //API.postStartPointName(startPointADD)
         }
 
         //post end point
-        if (locationType2 === "gps") {
+        if (endPointType === "gps") {
             //API.postEndPointlat(endPointGPSlat)
             //API.postEndPointlon(endPointGPSlon)
 
-        } else if (locationType2 === "name") {
+        } else if (endPointType === "name") {
             //API.postEndPointName(endPointNAME)
 
-        } else if(locationType2 === "address") {
+        } else if(endPointType === "address") {
             //API.postEndPointName(endPointADD)
         }
 
@@ -202,26 +212,26 @@ function AddHike() {
                                     </Grid>
                                     <FormControl>
                                         <InputLabel id="demo-simple-select-label">Location type</InputLabel>
-                                        <Select value={locationType} label="Location Type" onChange={handleChange1}>
+                                        <Select value={startPointType} label="Location Type" onChange={handleChange1}>
                                             <MenuItem value={"gps"}>GPS coordinates</MenuItem>
                                             <MenuItem value={'address'}>Address</MenuItem>
                                             <MenuItem value={'name'}>Name</MenuItem>
                                         </Select>
-                                        {selectedValue === "gps" ? (
+                                        {startPointValue === "gps" ? (
                                         <>
-                                            <TextField variant="outlined" color='primary' label="Start point - lattitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
-                                            <TextField variant="outlined" color='primary' label="Start point - longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
+                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
+                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
                                         </>
                                         ) : (
                                             <Grid></Grid>
                                         )}
-                                        {selectedValue === "address" ? (
+                                        {startPointValue === "address" ? (
                                             <TextField variant="outlined" color='primary' label="Start point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointADD} onChange={ev => setStartPointADD(ev.target.value)} /> 
                                         ) : (
                                             <Grid></Grid>
                                         )}
 
-                                        {selectedValue === "name" ? (
+                                        {startPointValue === "name" ? (
                                             <TextField variant="outlined" color='primary' label="Start point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointNAME} onChange={ev => setStartPointNAME(ev.target.value)} /> 
                                         ) : (
                                             <Grid></Grid>
@@ -240,26 +250,26 @@ function AddHike() {
 
                                     <FormControl>
                                         <InputLabel id="demo-simple-select-label">Location type</InputLabel>
-                                        <Select value={locationType2} label="Location Type 2" onChange={handleChange2}>
+                                        <Select value={endPointType} label="Location Type 2" onChange={handleChange2}>
                                             <MenuItem value={"gps"}>GPS coordinates</MenuItem>
                                             <MenuItem value={'address'}>Address</MenuItem>
                                             <MenuItem value={'name'}>Name</MenuItem>
                                         </Select>
-                                        {selectedValue2 === "gps" ? (
+                                        {endPointValue === "gps" ? (
                                         <>
-                                            <TextField variant="outlined" color='primary' label="End point - lattitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat}disabled /> 
-                                            <TextField variant="outlined" color='primary' label="End point - longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
+                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat} disabled /> 
+                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
                                         </>
                                         ) : (
                                             <Grid></Grid>
                                         )}
-                                        {selectedValue2 === "address" ? (
+                                        {endPointValue === "address" ? (
                                             <TextField variant="outlined" color='primary' label="End point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointADD} onChange={ev => setEndPointADD(ev.target.value)} /> 
                                         ) : (
                                             <Grid></Grid>
                                         )}
 
-                                        {selectedValue2 === "name" ? (
+                                        {endPointValue === "name" ? (
                                             <TextField variant="outlined" color='primary' label="End point" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointNAME} onChange={ev => setEndPointNAME(ev.target.value)} /> 
                                         ) : (
                                             <Grid></Grid>
@@ -282,9 +292,28 @@ function AddHike() {
                         <Grid><br /></Grid>
 {/****************************************************SUBMIT OR GO BACK***********************************************/}
 
-                        <Button component={Link} to={"/local-guide-add-hikes2"} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
+                        <Button component={Link} to={"/local-guide-add-hikes2"} 
+                            state={{
+                                ascent:ascent, 
+                                length:length, 
+                                start_point:{
+                                    latitude:startPointGPSlat,
+                                    longitude:startPointGPSlon,
+                                    description:startPointDescription,
+                                    type:startPointType,
+                                    value:startPointValue
+                                    }, 
+                                end_point:{
+                                    latitude:endPointGPSlat,
+                                    longitude:endPointGPSlon,
+                                    description:endPointDescription,
+                                    type:endPointType,
+                                    value:endPointValue
+                                    },
+                                expectedTime:expectedTime,
+                                peak_altitude:peakAltitude,
+                                selectedFile:selectedFile}}  onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
                         <Grid><br/></Grid>
-
                         <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                         <Grid><br/><br/></Grid>
                     </Grid>

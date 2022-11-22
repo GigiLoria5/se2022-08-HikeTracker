@@ -9,10 +9,8 @@ export function Hike(
     track_length,
     expected_time,
     difficulty,
-    start_point_type,
-    start_point_id,
-    end_point_type,
-    end_point_id,
+    start_point,
+    end_point,
     reference_points,
     gpx
 ) {
@@ -26,10 +24,8 @@ export function Hike(
     this.track_length = track_length;
     this.expected_time = expected_time;
     this.difficulty = difficulty;
-    this.start_point_type = start_point_type
-    this.start_point_id = start_point_id;
-    this.end_point_type = end_point_type;
-    this.end_point_id = end_point_id;
+    this.start_point = start_point;
+    this.end_point = end_point;
     this.reference_points = reference_points;
     this.gpx = gpx;
 }
