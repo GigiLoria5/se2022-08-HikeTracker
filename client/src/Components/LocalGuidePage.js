@@ -33,6 +33,10 @@ function LocalGuidePage() {
                     <ThemeProvider theme={theme}>
                         <Button component={Link} to={"/local-guide-add-hikes"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
                     </ThemeProvider>
+                    <Grid><br /></Grid>
+                    <ThemeProvider theme={theme}>
+                        <Button component={Link} to={"/local-guide-add-hut"} variant="contained" size="large" color='primary'>ADD A HUT</Button>
+                    </ThemeProvider>
                 </Grid>
 
 
