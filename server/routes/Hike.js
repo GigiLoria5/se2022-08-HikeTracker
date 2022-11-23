@@ -230,17 +230,19 @@ router.get('/hike/:id',
 
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
-                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx', { encoding: 'utf8' });
-                hike[0].start = await utilsHike.getPoint(hike[0].start_point_type, hike[0].start_point_id);
-                hike[0].end = await utilsHike.getPoint(hike[0].end_point_type, hike[0].end_point_id);
+                hike.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx', { encoding: 'utf8' });
+                hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
+                hike.end = await utilsHike.getPoint(hike.end_point_type, hike.end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(req.params.id);
                 const reference_points = [];
                 for (const r of references) {
                     const point = await utilsHike.getPoint(r.ref_point_type, r.ref_point_id);
-                    point[0].ref_point_type = r.ref_point_type;
+                    point.ref_point_type = r.ref_point_type;
                     reference_points.push(point);
                 }
-                hike[0].reference_points = reference_points;
+                hike.reference_points = reference_points;
+                const author = await userDao.getUserById(hike.author_id)
+                hike.author = author.name + " " + author.surname;
                 res.status(200).json(hike);
             })
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hike` }));
@@ -304,7 +306,7 @@ router.get('/hikes/filters', async (req, res) => {
                 hike.reference_points = [];
                 for (const r of references) {
                     const point = await utilsHike.getPoint(r.ref_point_type, r.ref_point_id);
-                    point[0].ref_point_type = r.ref_point_type;
+                    point.ref_point_type = r.ref_point_type;
                     hike.reference_points.push(point);
                 }
                 const author = await userDao.getUserById(hike.author_id)

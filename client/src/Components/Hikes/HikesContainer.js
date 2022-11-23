@@ -29,7 +29,7 @@ const HikesContainer = () => {
                 const hikesFiltered = (radius === null)
                     ? hikes
                     : hikes.filter(h => {
-                        const coordinates = h.start[0].coordinates.split(', ');
+                        const coordinates = h.start.coordinates.split(', ');
                         const hikeLatitude = coordinates[0];
                         const hikeLongitude = coordinates[1];
                         return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });

@@ -18,7 +18,7 @@ exports.getLocationById = (id) => {
                     description: row.description,
                     coordinates: row.coordinates
                 })));
-                resolve(location);
+                resolve(location[0]);
             }
         });
     });

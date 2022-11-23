@@ -78,7 +78,7 @@ exports.getHikeById = (id) => {
                     end_point_id: row.end_point_id,
                     author_id: row.author_id
                 })));
-                resolve(hike);
+                resolve(hike[0]);
             }
         });
     });       
