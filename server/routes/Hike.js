@@ -230,7 +230,7 @@ router.get('/hike/:id',
         
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
-                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx');
+                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx',{encoding:'utf8'});
                 hike[0].start = await utilsHike.getPoint(hike[0].start_point_type, hike[0].start_point_id);
                 hike[0].end = await utilsHike.getPoint(hike[0].end_point_type, hike[0].end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(req.params.id);
