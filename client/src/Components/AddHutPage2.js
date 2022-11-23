@@ -27,6 +27,7 @@ import PhoneInput from 'react-phone-number-input';
  * description, setDescription
  * handleSubmission
  * setStepOneDone
+ * setMessage
  * 
  */
 export default function AddHutPage2(props) {
@@ -143,7 +144,7 @@ export default function AddHutPage2(props) {
 
                     <Grid><br /></Grid>
 
-                    <Button component={Link} to={"/local-guide-page"} onClick={ev => props.handleSubmission(ev)} variant="contained" color='primary'>ADD HUT</Button>
+                    <Button onClick={ev => props.handleSubmission(ev)} variant="contained" color='primary'>ADD HUT</Button>
                     <Grid><br /></Grid>
                     <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
                     <Grid><br /><br /></Grid>

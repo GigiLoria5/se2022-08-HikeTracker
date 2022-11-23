@@ -94,7 +94,7 @@ function Root() {
                     <Route path="" element={<AddHike />} />
                 </Route>
                 <Route path='/local-guide-add-hut' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
-                    <Route path="" element={<AddHut />} />
+                    <Route path="" element={<AddHut message={message} setMessage={setMessage} />} />
                 </Route>
             </Route>
 

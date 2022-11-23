@@ -20,6 +20,7 @@ import Map from './Map';
  * province, setProvince,
  * city, setCity,
  * setStepOneDone
+ * setMessage
  * 
  */
 export default function AddHutPage1(props) {

@@ -2,9 +2,10 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState } from 'react';
 import Typography from "@mui/material/Typography";
+import { useNavigate } from 'react-router-dom';
 
 import API from '../API';
-import { Hut } from '../Utils/Hut';
+import { Hut, validateHut } from '../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -26,6 +27,13 @@ export default function AddHut(props) {
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        props.setMessage('');
+        // eslint-disable-next-line
+    }, [])
+
     const theme = createTheme({
         palette: {
             primary: {
@@ -46,7 +54,7 @@ export default function AddHut(props) {
         alignItems: 'center',
     };
 
-    const handleSubmission = (ev) => {
+    const handleSubmission = async (ev) => {
         ev.preventDefault();
 
         const hut = new Hut(
@@ -68,7 +76,19 @@ export default function AddHut(props) {
             type
         );
 
-        //TODO: call post api...
+        if(!validateHut(hut)){
+            props.setMessage('Please, complete all the requested fields: you can leave blank only the "Optional informations"');
+            return;
+        }
+
+        const response = undefined;
+        try{
+            response = await API.addHut(hut);
+        }catch(err){
+            props.setMessage(err.message);
+        }
+
+        if(response) navigate("/local-guide-page");
     }
 
     return (
@@ -84,6 +104,11 @@ export default function AddHut(props) {
                 </Grid>
                 <Grid xs={0} md={3}></Grid>
 
+                {/* Error message */}
+                {
+                    props.message && <Alert severity={props.message.type} onClose={() => props.setMessage('')}>{props.message.msg}</Alert>
+                }
+
                     
                 {/* Form in 2 pages */}
                 {
@@ -96,6 +121,7 @@ export default function AddHut(props) {
                             province={province} setProvince={setProvince}
                             city={city} setCity={setCity}
                             setStepOneDone={setStepOneDone}
+                            setMessage={props.setMessage}
                         />
                         :
                         <AddHutPage2
@@ -108,6 +134,7 @@ export default function AddHut(props) {
                             description={description} setDescription={setDescription}
                             handleSubmission={handleSubmission}
                             setStepOneDone={setStepOneDone}
+                            setMessage={props.setMessage}
                         />
                 }
 
