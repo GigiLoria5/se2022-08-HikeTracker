@@ -25,7 +25,7 @@ exports.getHutById = (id) => {
                     opening_period: row.opening_period,
                     coordinates: row.coordinates
                 })));
-                resolve(hut);
+                resolve(hut[0]);
             }
         });
     });

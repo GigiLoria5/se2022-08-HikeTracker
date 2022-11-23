@@ -19,7 +19,7 @@ exports.getParkingLotById = (id) => {
                     address: row.address,
                     coordinates: row.coordinates
                 })));
-                resolve(parking);
+                resolve(parking[0]);
             }
         });
     });
