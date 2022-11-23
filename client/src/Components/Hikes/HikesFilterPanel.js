@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react'
 
-import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, Typography } from '@mui/material';
+import { Box, Button, ClickAwayListener, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
 import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
 import DifficultyFilter from '../Filters/DifficultyFilter';
 import LengthFilter from '../Filters/LengthFilter';
 import AscentFilter from '../Filters/AscentFilter';
 import ExpectedTimeFilter from '../Filters/ExpectedTimeFilter';
+
+const theme = createTheme({
+    palette: {
+        neutral: {
+            main: '#546070',
+        },
+    },
+});
 
 const HikesFilterPanel = (props) => {
     const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius } = props;
@@ -67,15 +76,36 @@ const HikesFilterPanel = (props) => {
     );
 
     /* Filter panel for small screen */
-    const filterHiddenPanel = (<Box
-        sx={{ width: '100%', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
-        role="presentation"
-    >
-        <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
-            Filters
-        </Typography>
-        {filterComponents}
-    </Box>);
+    const filterHiddenPanel = (
+        <Box
+            sx={{ width: '100%', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
+            role="presentation"
+        >
+            <ThemeProvider theme={theme}>
+                <Box component="div" sx={{ display: "flex", marginBottom: 2, marginTop: 2, paddingLeft: 2, paddingRight: 2, flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between" }} >
+                    {/* Reset Button - NOT WORKING */}
+                    <Button color="error" variant="outlined" onClick={() => console.log("Fix me please")}>
+                        Reset
+                    </Button>
+                    {/* Filters Title */}
+                    <Typography variant="h5" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, paddingRight: 2 }}>
+                        Filters
+                    </Typography>
+                    {/* Close Drawer */}
+                    <IconButton color="neutral" aria-label="reset radius" component="label" onClick={toggleFilterPanelDrawer(false)}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
+            </ThemeProvider >
+            {filterComponents}
+            {/* Show Hikes Button */}
+            <Box component="div" sx={{ marginTop: 2, padding: 4, paddingTop: 0, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "column" }}>
+                <Button color="success" variant="contained" onClick={toggleFilterPanelDrawer(false)} >
+                    {`Show ${hikes.length} hikes`}
+                </Button>
+            </Box>
+        </Box >
+    );
 
     return (
         <>
