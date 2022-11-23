@@ -42,7 +42,9 @@ const HikesContainer = () => {
                 }, 300);
             });
         // eslint-disable-next-line 
-    }, [filter.country, filter.province, filter.city, filter.difficulty, filter.track_length, filter.ascent, filter.ascent, position.lat, position.lng, radius]);
+    }, [filter.country, filter.province, filter.city, filter.difficulty,
+    filter.track_length_min, filter.track_length_max, filter.ascent_min, filter.ascent_max, filter.expected_time_min, filter.expected_time_max,
+    position.lat, position.lng, radius]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {

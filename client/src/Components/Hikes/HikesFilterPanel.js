@@ -5,6 +5,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
 import DifficultyFilter from '../Filters/DifficultyFilter';
+import LengthFilter from '../Filters/LengthFilter';
 
 const HikesFilterPanel = (props) => {
     const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius } = props;
@@ -51,6 +52,9 @@ const HikesFilterPanel = (props) => {
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Difficulty Filter */}
             <DifficultyFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Length Filter */}
+            <LengthFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} />
         </>
     );
 

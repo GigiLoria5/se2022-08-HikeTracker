@@ -45,7 +45,7 @@ function DifficultyFilter(props) {
     const [hover, setHover] = React.useState(-1);
 
     return (
-        <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0 }}>
+        <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0, paddingBottom: 0 }}>
             {/* Title */}
             <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
                 Difficulty
