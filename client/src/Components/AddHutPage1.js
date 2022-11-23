@@ -74,7 +74,7 @@ export default function AddHutPage1(props) {
 
                         {/* MAP */}
                         <Grid>
-                            <Map />
+                            <Map latitude={props.latitude} longitude={props.longitude} />
                         </Grid>
 
                         {/* Geographic informations */}
