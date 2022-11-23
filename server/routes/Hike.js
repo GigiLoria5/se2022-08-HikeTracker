@@ -219,18 +219,18 @@ router.get('/cities/:province',
 
 // /api/hike/:id
 // Return all the information of an hikes if the user is an hiker
-/*ADD isLoggedIn*/ 
-router.get('/hike/:id', 
+/*ADD isLoggedIn*/
+router.get('/hike/:id',
     check('id').exists().isInt(),
-    
+
     async (req, res) => {
         if (!req.isAuthenticated() || req.user.role != "hiker") {
             return res.status(400).json({ error: 'Not logged in or wrong role' });
         }
-        
+
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
-                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx',{encoding:'utf8'});
+                hike[0].gpx_content = fs.readFileSync('./gpx_files/' + hike[0].gps_track + '.gpx', { encoding: 'utf8' });
                 hike[0].start = await utilsHike.getPoint(hike[0].start_point_type, hike[0].start_point_id);
                 hike[0].end = await utilsHike.getPoint(hike[0].end_point_type, hike[0].end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(req.params.id);
@@ -244,7 +244,7 @@ router.get('/hike/:id',
                 res.status(200).json(hike);
             })
             .catch(() => res.status(500).json({ error: `Database error while retrieving the hike` }));
-});
+    });
 
 // /api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length_min=value&track_length_max=value&ascent_min=value&ascent_max=value&expected_time_min=value&expected_time_max=value
 router.get('/hikes/filters', async (req, res) => {

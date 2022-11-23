@@ -44,5 +44,4 @@ const positiveIntegerSanitizer = (inputToSanitize) => {
     return inputSanitized;
 }
 
-
 export { floatInputSanitizer, positiveIntegerSanitizer };

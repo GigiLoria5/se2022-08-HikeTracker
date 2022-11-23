@@ -4,6 +4,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HikesFilterPanel from './HikesFilterPanel';
 import HikesList from './HikesList';
 import API from '../../API';
+import { isPointInsideRange } from '../../Utils/GeoUtils';
 
 const initialLat = 51.505;
 const initialLng = -0.09;
@@ -25,8 +26,17 @@ const HikesContainer = () => {
         API.getHikesWithFilters(filter)
             .then(hikes => {
                 // APPLY HERE HIKES AROUND A POINT WITHIN RADIUS FILTER
-                // ... 
-                setHikes(hikes);
+                const hikesFiltered = (radius === null)
+                    ? hikes
+                    : hikes.filter(h => {
+                        const coordinates = h.start[0].coordinates.split(', ');
+                        const hikeLatitude = coordinates[0];
+                        const hikeLongitude = coordinates[1];
+                        return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });
+                    });
+                // Set Hikes After Filtered
+                setHikes(hikesFiltered);
+                // Add some delay to load smoothly
                 setTimeout(() => {
                     setLoadingHikes(false);
                 }, 300);
