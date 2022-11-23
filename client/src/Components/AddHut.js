@@ -1,13 +1,13 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import { useNavigate } from 'react-router-dom';
-
 import API from '../API';
 import { Hut, validateHut } from '../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
+import Alert from '@mui/material/Alert';
 
 
 export default function AddHut(props) {
@@ -98,7 +98,7 @@ export default function AddHut(props) {
                 {/* Title */}
                 <Grid xs={12}>
                     <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
-                        <br />ADD A HIKE
+                        <br />ADD HUT
                     </Typography>
                 </Grid>
                 <Grid xs={0} md={3}></Grid>
@@ -119,6 +119,7 @@ export default function AddHut(props) {
                             country={country} setCountry={setCountry}
                             province={province} setProvince={setProvince}
                             city={city} setCity={setCity}
+                            address={address} setAddress={setAddress}
                             setStepOneDone={setStepOneDone}
                             setMessage={props.setMessage}
                         />
