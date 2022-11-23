@@ -15,7 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Grid from "@mui/material/Grid";
-import Logo from "./Logo";
+import Logo from "../Assets/Logo";
 import { Typography } from "@mui/material";
 
 const drawerWidth = 240;

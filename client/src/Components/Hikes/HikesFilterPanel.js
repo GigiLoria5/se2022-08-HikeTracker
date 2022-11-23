@@ -7,7 +7,7 @@ import API from '../../API';
 import DifficultyFilter from '../Filters/DifficultyFilter';
 
 const HikesFilterPanel = (props) => {
-    const { filter, setFilter, hikes, position, setPosition, radius, setRadius } = props;
+    const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = React.useState(false);
     const [countryList, setCountryList] = React.useState([]);
 
@@ -44,13 +44,13 @@ const HikesFilterPanel = (props) => {
     const filterComponents = (
         <>
             {/* Geographic Area Filter */}
-            <GeographicFilter filter={filter} setFilter={setFilter}
+            <GeographicFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes}
                 countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList}
                 position={position} setPosition={setPosition} radius={radius} setRadius={setRadius}
             />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Difficulty Filter */}
-            <DifficultyFilter filter={filter} setFilter={setFilter} />
+            <DifficultyFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} />
         </>
     );
 

@@ -7,7 +7,6 @@ import Rating from '@mui/material/Rating';
 import DifficultyIcon1 from '../../Assets/Difficulty/DifficultyIcon1';
 import DifficultyIcon2 from '../../Assets/Difficulty/DifficultyIcon2';
 import DifficultyIcon3 from '../../Assets/Difficulty/DifficultyIcon3';
-import HikingIcon from '@mui/icons-material/Hiking';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconHover .MuiSvgIcon-root': {
@@ -41,7 +40,7 @@ IconContainer.propTypes = {
 };
 
 function DifficultyFilter(props) {
-    const { filter, setFilter } = props;
+    const { filter, setFilter, setLoadingHikes } = props;
     const [value, setValue] = React.useState(-1);
     const [hover, setHover] = React.useState(-1);
 
@@ -61,6 +60,7 @@ function DifficultyFilter(props) {
                     value={value}
                     onChange={(_, newValue) => {
                         setValue(newValue);
+                        setLoadingHikes(true);
                         setFilter({ ...filter, "difficulty": newValue });
                     }}
                     onChangeActive={(_, newHover) => {

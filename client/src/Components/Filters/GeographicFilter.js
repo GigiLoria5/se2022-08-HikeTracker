@@ -6,12 +6,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
 
-const zoomLevel = 13;
+const zoomLevel = 15;
 const initialLat = 51.505;
 const initialLng = -0.09;
 
 function GeographicFilter(props) {
-    const { filter, setFilter, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius } = props;
+    const { filter, setFilter, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
@@ -57,6 +57,7 @@ function GeographicFilter(props) {
             return;
         let newFilter = { ...filter, country: newCountry };
         // Update to new country
+        setLoadingHikes(true);
         setLoadingProvince(true);
         setCountryActive(newCountry);
 
@@ -83,6 +84,7 @@ function GeographicFilter(props) {
             return;
         let newFilter = { ...filter, province: newProvince };
         // Update to new province
+        setLoadingHikes(true);
         setLoadingCity(true);
         setProvinceActive(newProvince);
 
@@ -99,16 +101,19 @@ function GeographicFilter(props) {
 
     const handleChangeLng = (newLng) => {
         const newLngSanitized = floatInputSanitizer(newLng);
+        setLoadingHikes(true);
         setPosition({ ...position, lng: isNaN(newLngSanitized) ? "0" : newLngSanitized });
     }
 
     const handleChangeLat = (newLat) => {
         const newLatSanitized = floatInputSanitizer(newLat);
+        setLoadingHikes(true);
         setPosition({ ...position, lat: isNaN(newLatSanitized) ? "0" : newLatSanitized });
     }
 
     const handleChangeRadius = (newRadius) => {
         const newRadiusSanitized = positiveIntegerSanitizer(newRadius);
+        setLoadingHikes(true);
         setRadius(newRadiusSanitized);
     }
 
@@ -154,7 +159,7 @@ function GeographicFilter(props) {
                 value={cityActive}
                 sx={{ maxWidth: 300, marginTop: 2 }}
                 renderInput={(params) => <TextField {...params} id="municipality" label="Municipality" />}
-                onChange={(_, value) => { setFilter({ ...filter, city: value }); setCityActive(value); }}
+                onChange={(_, value) => { setLoadingHikes(true); setFilter({ ...filter, city: value }); setCityActive(value); }}
             />
             <Divider sx={{ maxWidth: 300, marginTop: 2 }} />
             {/* Radius around a point */}

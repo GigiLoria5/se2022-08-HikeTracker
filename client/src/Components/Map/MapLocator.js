@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-import { Circle, LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
-import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
+import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
-//import "leaflet/dist/leaflet.css";
+import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 
 function LocationMarker(props) {
     const { position, setPosition, radius } = props;
@@ -38,6 +37,12 @@ function LocationMarker(props) {
     )
 }
 
+/**
+ * 
+ * @param {Object} props.position an object with "lat" and "lng" properties
+ * @param {Object} props.height the height of the map which should be defined as a string: 'value px' 
+ * @param {Object} props.width the width of the map which should be defined as a string: 'value px' 
+ */
 function MapLocator(props) {
     const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel } = props;
 
@@ -45,9 +50,10 @@ function MapLocator(props) {
         <MapContainer
             center={[initialLat, initialLng]}
             zoom={zoomLevel}
-            scrollWheelZoom={false}
-            style={{ height: height, width: width }}
+            scrollWheelZoom={true}
+            style={{ height: height, maxWidth: width }}
         >
+            {/* Map Controls */}
             <LayersControl>
                 <LayersControl.BaseLayer checked name="Map View">
                     <TileLayer
@@ -63,6 +69,7 @@ function MapLocator(props) {
                     />
                 </LayersControl.BaseLayer>
             </LayersControl>
+            {/* Map Elements */}
             <LocationMarker position={position} setPosition={setPosition} radius={radius} />
         </MapContainer>
     )
