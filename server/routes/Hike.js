@@ -219,18 +219,16 @@ router.get('/cities/:province',
 
 // /api/hike/:id
 // Return all the information of an hikes if the user is an hiker
-/*ADD isLoggedIn*/
 router.get('/hike/:id',
     check('id').exists().isInt(),
 
     async (req, res) => {
-        if (!req.isAuthenticated() || req.user.role != "hiker") {
-            return res.status(400).json({ error: 'Not logged in or wrong role' });
-        }
 
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
-                hike.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx', { encoding: 'utf8' });
+                if (req.isAuthenticated() && req.user.role == "hiker") {
+                    hike.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx', { encoding: 'utf8' });
+                }
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
                 hike.end = await utilsHike.getPoint(hike.end_point_type, hike.end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(req.params.id);
