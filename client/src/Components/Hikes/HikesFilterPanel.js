@@ -6,6 +6,7 @@ import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
 import DifficultyFilter from '../Filters/DifficultyFilter';
 import LengthFilter from '../Filters/LengthFilter';
+import AscentFilter from '../Filters/AscentFiler';
 
 const HikesFilterPanel = (props) => {
     const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius } = props;
@@ -55,6 +56,9 @@ const HikesFilterPanel = (props) => {
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Length Filter */}
             <LengthFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Ascent Filter */}
+            <AscentFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} />
         </>
     );
 
