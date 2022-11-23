@@ -1,44 +1,44 @@
 import { Box, Slider, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 
-function AscentFilter(props) {
+function ExpectedTimeFilter(props) {
     const { filter, setFilter, hikes, setLoadingHikes } = props;
-    const [maxAscent, setMaxAscent] = React.useState(null); // default value
-    const [value, setValue] = React.useState([0, maxAscent]);
+    const [maxExpectedTime, setMaxExpectedTime] = React.useState(null); // default value
+    const [value, setValue] = React.useState([0, maxExpectedTime]);
 
     let marks = [
         {
             value: 0,
-            label: '0 m',
+            label: '0 h',
         },
         {
-            value: maxAscent,
-            label: `${maxAscent} m`,
+            value: maxExpectedTime,
+            label: `${maxExpectedTime} h`,
         },
     ];
 
     // This is needed for the setup of the max value
     useEffect(() => {
-        if (hikes.length > 0 && maxAscent === null) {
-            const newMaxAscent = Math.max(...hikes.map(h => parseInt(h.ascent)));
-            setValue([0, newMaxAscent]);
-            setMaxAscent(newMaxAscent);
+        if (hikes.length > 0 && maxExpectedTime === null) {
+            const newMaxExpectedTime = Math.max(...hikes.map(h => parseFloat(h.expected_time)));
+            setValue([0, newMaxExpectedTime]);
+            setMaxExpectedTime(newMaxExpectedTime);
         }
         // eslint-disable-next-line 
     }, [hikes.length]);
 
-    // This is needed in case of a new maxium ascent (hike added during the navigation)
+    // This is needed in case of a new maxium expected_time (hike added during the navigation)
     useEffect(() => {
         if (hikes.length > 0) {
-            const newMaxAscent = Math.max(...hikes.map(h => parseInt(h.ascent)));
-            if (newMaxAscent > maxAscent)
-                setMaxAscent(newMaxAscent);
+            const newMaxExpectedTime = Math.max(...hikes.map(h => parseFloat(h.expected_time)));
+            if (newMaxExpectedTime > maxExpectedTime)
+                setMaxExpectedTime(newMaxExpectedTime);
         }
         // eslint-disable-next-line 
     }, [hikes.length]);
 
     const valueLabelFormat = (value) => {
-        return `${value} km`;
+        return `${value} h`;
     }
 
     const handleChange = (_, newValue) => {
@@ -48,22 +48,22 @@ function AscentFilter(props) {
     const handleChangeCommitted = (_, newValue) => {
         setValue(newValue);
         setLoadingHikes(true);
-        setFilter({ ...filter, "ascent_min": newValue[0], "ascent_max": newValue[1] });
+        setFilter({ ...filter, "expected_time_min": newValue[0], "expected_time_max": newValue[1] });
     };
 
     return (
         <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0, paddingBottom: 0 }}>
             {/* Title */}
             <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
-                Total Ascent
+                Expected Time
             </Typography>
-            {/* Ascent Slider */}
+            {/* ExpectedTime Slider */}
             <Box sx={{ maxWidth: 300, paddingLeft: 1, paddingRight: 1 }}>
-                {maxAscent !== null ? <Slider
+                {maxExpectedTime !== null ? <Slider
                     value={value}
                     min={0}
-                    step={1}
-                    max={maxAscent}
+                    step={0.1}
+                    max={maxExpectedTime}
                     marks={marks}
                     getAriaValueText={valueLabelFormat}
                     onChange={handleChange}
@@ -75,4 +75,4 @@ function AscentFilter(props) {
     )
 }
 
-export default AscentFilter
+export default ExpectedTimeFilter
