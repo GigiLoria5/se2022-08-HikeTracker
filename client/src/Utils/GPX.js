@@ -1,6 +1,6 @@
 const gpxParser = require('gpxparser');
 
-export function GPXData(
+function GPXData(
     length,
     start_point_lat,
     start_point_lon,
@@ -36,6 +36,6 @@ const parseGPX = async (gpxFile) => {
         gpx.tracks[0].elevation.pos,
         gpx.tracks[0].elevation.max,
         expectedTime);
-}
+};
 
-export {parseGPX};
+module.exports = {parseGPX};
