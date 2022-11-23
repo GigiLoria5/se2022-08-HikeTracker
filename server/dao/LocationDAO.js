@@ -16,6 +16,7 @@ exports.getLocationById = (id) => {
                     value_type: row.value_type,
                     value: row.value,
                     description: row.description,
+                    coordinates: row.coordinates
                 })));
                 resolve(location);
             }

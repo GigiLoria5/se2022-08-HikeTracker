@@ -17,13 +17,10 @@ describe('frontend test', () => {
     let cities = [];
 
     const filterNull = {
-        "country": null,
-        "province": null,
-        "city": null,
-        "difficulty": null,
-        "track_length": null,
-        "ascent": null,
-        "expected_time": null
+        "country": null, "province": null, "city": null, "difficulty": null,
+        "track_length_min": null, "track_length_max": null,
+        "ascent_min": null, "ascent_max": null,
+        "expected_time_min": null, "expected_time_max": null
     };
 
 
@@ -136,7 +133,7 @@ describe('frontend test', () => {
 
     it('T10: get hikes with track length filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ ...filterNull, "track_length": 0 });
+            await API.getHikesWithFilters({ ...filterNull, "track_length_min": 0, "track_length_max": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
@@ -145,23 +142,14 @@ describe('frontend test', () => {
 
     it('T11: get hikes with track length filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ ...filterNull, "track_length": -1 });
+            await API.getHikesWithFilters({ ...filterNull, "track_length_min": -1, "track_length_max": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
         }
     })
 
-    it('T12: get hikes with track length filter [BAD]', async () => {
-        try {
-            await API.getHikesWithFilters({ ...filterNull, "track_length": 4 });
-        }
-        catch (err) {
-            expect(err.error).toBe("Parameter error");
-        }
-    })
-
-    it('T13: get hikes with difficulty filter [BAD]', async () => {
+    it('T12: get hikes with difficulty filter [BAD]', async () => {
         try {
             await API.getHikesWithFilters({ ...filterNull, "difficulty": 0 });
         }
@@ -170,7 +158,7 @@ describe('frontend test', () => {
         }
     })
 
-    it('T14: get hikes with difficulty filter [BAD]', async () => {
+    it('T13: get hikes with difficulty filter [BAD]', async () => {
         try {
             await API.getHikesWithFilters({ ...filterNull, "difficulty": 4 });
         }
@@ -179,7 +167,7 @@ describe('frontend test', () => {
         }
     })
 
-    it('T15: get hikes with difficulty filter [BAD]', async () => {
+    it('T14: get hikes with difficulty filter [BAD]', async () => {
         try {
             await API.getHikesWithFilters({ ...filterNull, "difficulty": -1 });
         }
@@ -188,63 +176,63 @@ describe('frontend test', () => {
         }
     })
 
-    it('T16: get hikes with ascent filter', async () => {
-        const a = await API.getHikesWithFilters({ ...filterNull, "ascent": "0-300" });
+    it('T15: get hikes with ascent filter', async () => {
+        const a = await API.getHikesWithFilters({ ...filterNull, "ascent_min": 0, "ascent_max": 300 });
         for (const h of a) {
             expect(h.ascent).toBeGreaterThanOrEqual(0);
             expect(h.ascent).toBeLessThanOrEqual(300);
         }
 
-        const b = await API.getHikesWithFilters({ ...filterNull, "ascent": "300-600" });
+        const b = await API.getHikesWithFilters({ ...filterNull, "ascent_min": 300, "ascent_max": 600 });
         for (const h of b) {
             expect(h.ascent).toBeGreaterThanOrEqual(300);
             expect(h.ascent).toBeLessThanOrEqual(600);
         }
 
-        const c = await API.getHikesWithFilters({ ...filterNull, "ascent": "600-1000" });
+        const c = await API.getHikesWithFilters({ ...filterNull, "ascent_min": 600, "ascent_max": 1000 });
         for (const h of c) {
             expect(h.ascent).toBeGreaterThanOrEqual(600);
             expect(h.ascent).toBeLessThanOrEqual(1000);
         }
 
-        const d = await API.getHikesWithFilters({ ...filterNull, "ascent": "1000-more" });
+        const d = await API.getHikesWithFilters({ ...filterNull, "ascent_min": 1000, "ascent_max": Number.MAX_VALUE });
         for (const h of d) {
             expect(h.ascent).toBeGreaterThanOrEqual(1000);
         }
     })
 
-    it('T17: get hikes with ascent filter [BAD]', async () => {
+    it('T16: get hikes with ascent filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ ...filterNull, "ascent": "1-2" });
+            await API.getHikesWithFilters({ ...filterNull, "ascent_min": -1.0, "ascent_max": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
         }
     })
 
-    it('T18: get hikes with expected time filter', async () => {
+    it('T17: get hikes with expected time filter', async () => {
 
-        const b = await API.getHikesWithFilters({ ...filterNull, "expected_time": "1-3" });
+        const b = await API.getHikesWithFilters({ ...filterNull, "expected_time_min": 1, "expected_time_max": 3 });
         for (const h of b) {
             expect(h.expected_time).toBeGreaterThanOrEqual(1);
             expect(h.expected_time).toBeLessThanOrEqual(3);
         }
 
-        const c = await API.getHikesWithFilters({ ...filterNull, "expected_time": "3-5" });
+        const c = await API.getHikesWithFilters({ ...filterNull, "expected_time_min": 3, "expected_time_max": 5 });
         for (const h of c) {
             expect(h.expected_time).toBeGreaterThanOrEqual(3);
             expect(h.expected_time).toBeLessThanOrEqual(5);
         }
 
-        const d = await API.getHikesWithFilters({ ...filterNull, "expected_time": "5-more" });
+        const d = await API.getHikesWithFilters({ ...filterNull, "expected_time_min": 5, "expected_time_max": Number.MAX_VALUE });
         for (const h of d) {
             expect(h.expected_time).toBeGreaterThanOrEqual(5);
         }
     })
 
-    it('T19: get hikes with expected time filter [BAD]', async () => {
+    it('T18: get hikes with expected time filter [BAD]', async () => {
         try {
-            await API.getHikesWithFilters({ ...filterNull, "expected_time": "1-2" });
+            await API.getHikesWithFilters({ ...filterNull, "expected_time_min": -1, "expected_time_max": -1 });
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
