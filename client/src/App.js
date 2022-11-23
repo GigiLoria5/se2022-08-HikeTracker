@@ -83,7 +83,7 @@ function Root() {
                 {/* Outlets */}
                 <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
                 <Route path='/hikes' element={<HikesContainer />} />
-                <Route path='/hikes/:id' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
+                <Route path='/hikes/:hikeId' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
 
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />

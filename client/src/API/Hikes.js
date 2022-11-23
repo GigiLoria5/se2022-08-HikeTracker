@@ -122,4 +122,30 @@ async function getHikesWithFilters(filter) {
     }
 }
 
-export { createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters };
+/**
+ * 
+ * @param {Number} hikeId identifier of an hike
+ * @returns Hike object
+ */
+function getHikeById(hikeId) {
+    return new Promise((resolve, reject) => {
+        fetch(new URL(`/api/hike/${hikeId}`, APIURL), {
+            method: "GET",
+            credentials: "include"
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    const hike = await response.json();
+                    resolve(hike);
+                } else {
+                    // errors
+                    response.json()
+                        .then((message) => { reject(message); }) // error(s) message in the response body
+                        .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+                }
+            })
+            .catch(() => { reject({ error: "Cannot communicate with the server." }) });
+    });
+}
+
+export { createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters, getHikeById };

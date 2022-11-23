@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { Circle, LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 
@@ -31,9 +31,12 @@ function LocationMarker(props) {
     }, [position.lat, position.lng]);
 
     return position === null ? null : (
-        <Marker position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
-            <Popup>You are here</Popup>
-        </Marker >
+        <>
+            <Marker position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
+                <Popup>You are here</Popup>
+            </Marker >
+            <Circle center={position} pathOptions={{ fillColor: 'blue' }} radius={radius * 1000} />
+        </>
     )
 }
 
