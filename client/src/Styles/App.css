@@ -63,7 +63,7 @@ svg {
     display: none;
 }
 
-svg {
+.leaflet-container svg {
     height: auto;
     width: auto
 }

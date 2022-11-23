@@ -28,6 +28,7 @@ function MapViewer(props) {
         gpx.parse(gpxFileContent);
         const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
         setPositions(positions);
+        // eslint-disable-next-line
     }, []);
 
     return (

@@ -31,8 +31,10 @@ function HikeDetails(props) {
                 {/* Hikes List */}
                 <Grid item xs={12} >
                     <Box component="div" sx={{ marginTop: 2, padding: 4, paddingTop: 0 }}>
-                        <MapViewer gpxFileContent={hike.gpx_content} height={'600px'} width={'800px'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} />
-                    </Box>
+                        {!isloggedIn
+                            ? <h1>Log in to see the map</h1>
+                            : < MapViewer gpxFileContent={hike.gpx_content} height={'600px'} width={'800px'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} />
+                        }</Box>
                 </Grid>
             </Grid>
                 : false}
