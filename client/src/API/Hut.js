@@ -5,7 +5,7 @@ import { APIURL } from './APIUrl';
  * @param hut is a Hut descripted in ./Utils/Hut.js
  */
 async function addHut(hut) {
-    const url = APIURL + '/api/hut';
+    const url = APIURL + '/api/huts';
     try {
         const response = await fetch(url, {
             method: 'POST',

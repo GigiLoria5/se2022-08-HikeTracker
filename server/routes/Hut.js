@@ -14,7 +14,7 @@ const router = express.Router();
 /////////////////////////////////////////////////////////////////////
 
 // POST /api/hut
-router.post('/hut', [
+router.post('/huts', [
     body('name').isString(),
     body('type').isString().isIn(['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other']),
     body('beds_number').isNumeric().isDecimal(),
@@ -42,7 +42,7 @@ router.post('/hut', [
 
             // Checks if the user is autorized to create a new hut
             const user = await UserDAO.getUserById(req.user.id);
-            if (user !== undefined && user.role === "hut_worker") {
+            if (user !== undefined && user.role === "local_guide") {
 
                 // Create a new hut object given the fields received from the client
                 const hut = new Hut(0, req.body.name, req.body.city, req.body.province, req.body.country, req.body.address, req.body.altitude, req.body.description, req.body.beds_number, "", (req.body.latitude + ", " + req.body.longitude), req.body.phone_number, req.body.email, req.body.website, req.body.type)

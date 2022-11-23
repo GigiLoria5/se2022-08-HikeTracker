@@ -340,6 +340,48 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     ...
   ]
   ```
+### Huts
+
+- POST `/api/huts`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add description for hut
+  - Permissions allowed: Local guide
+  - Request body: Hut description
+
+  ```
+  {
+    "name": "Hut test",
+    "city": "Turin",
+    "province": "TO",
+    "country": "Italy",
+    "address": "Hut route 66",
+    "altitude": 1950 ,
+    "description": "Amazing hut in the middle of the mountains",
+    "beds_number": 10,
+    "latitude": 15.7,
+    "longitude": 45.4,
+    "phone_number" : "+393331171111",
+    "email" : "hut@hut.it",
+    "website" : "www.hut.com",
+    "type" : "alpine_hut"
+
+  }
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Fields validation failed` or `422 An hut having the same location parameters already exists` (Wrong body content)
+    - `404 User not found` (specified user not found)
+    - `500 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
 
 ## Database Tables
 
@@ -352,7 +394,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Possible values for _type_ are: alpine_hut, fixed_bivouac, unmanaged_hut, hiking_hut, other 
   - _altitude_ is in meters
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
-  - _user id_ is the id of the hut worker that creates and manages the hut on the platform
+  - _user id_ is the id of the local guide that creates and manages the hut on the platform
 - Table `parking_lot` contains: id(PK), city, province, country, address, coordinates
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `location` contains: id(PK), value_type, value, description, coordinates
