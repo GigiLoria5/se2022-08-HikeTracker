@@ -81,14 +81,13 @@ export default function AddHut(props) {
             return;
         }
 
-        const response = undefined;
-        try{
-            response = await API.addHut(hut);
-        }catch(err){
-            props.setMessage(err.message);
+        const response = await API.addHut(hut);
+        
+        if(response === true){ 
+            navigate("/local-guide-page");
+        }else{
+            props.setMessage(response);
         }
-
-        if(response) navigate("/local-guide-page");
     }
 
     return (
