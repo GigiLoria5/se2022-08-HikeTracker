@@ -37,21 +37,32 @@ const checkPoint = async (type, id) => {
 
 router.post('/hikes', 
     body('title').isLength({min:1}),
-    body('peak_altitude').isNumeric().isInt({ min: 0}),
-    body('ascent').isNumeric().isInt({ min: 0}),
+    body('peak_altitude').isNumeric().isFloat({ min: 0.0}),
+    body('ascent').isNumeric().isFloat({ min: 0}),
     body('track_length').isNumeric().isFloat({ min: 0.0}),
     body('expected_time').isNumeric().isFloat({ min: 0.0}),
     body('difficulty').isNumeric().isInt({ min: 1, max:3}),
     body('city').isLength({min:1}),
     body('province').isLength({min:1}),
     body('country').isLength({min:1}),
-    body('description').isLength({min:10}),
-    body('start_point_id').isNumeric().isInt({ min: 0}),
-    body('start_point_type').isIn(["location", "hut", "parking_lot"]),
-    body('end_point_id').isNumeric().isInt({ min: 0}),
-    body('end_point_type').isIn(["location", "hut", "parking_lot"]),
+    body('description').isLength({min:1}),
+    check('start point').custom(async(value, {req})=> {
+        const start_point = await JSON.parse(req.body.start_point);
+        if (isNaN(start_point.latitude) ||
+            isNaN(start_point.longitude) ||
+            (start_point.description.length == 0)) throw "Invalid start point"
+        return true;
+    }),
+    check('end point').custom(async(value, {req})=> {
+        const end_point = await JSON.parse(req.body.end_point);
+        if (isNaN(end_point.latitude) ||
+            isNaN(end_point.longitude) ||
+            (end_point.description.length == 0)) throw "Invalid start point"
+        return true;
+    }),
 
-    check('country province city').custom(async (value, {req}) => {
+
+    /*check('country province city').custom(async (value, {req}) => {
         const provinces = await hikeDao.getProvincesByCountry(req.body.country);
         if (!provinces.map(a=>a.province).includes(req.body.province)) throw "Invalid place";
         const cities = await hikeDao.getCitiesByProvince(req.body.province);
@@ -60,6 +71,7 @@ router.post('/hikes',
     }),
 
     check('start point').custom(async(value, {req})=> {
+        const start_point = req.body.start_point;
         const res = await (checkPoint(req.body.start_point_type, req.body.start_point_id));
         if (res) throw "Invalid start point"
         return true;
@@ -69,16 +81,16 @@ router.post('/hikes',
         const res = await (checkPoint(req.body.end_point_type, req.body.end_point_id));
         if (res) throw "Invalid end point"
         return true;
-    }),
+    }),*/
 
-    check('reference points').custom(async(value, {req})=> {
+    /*check('reference points').custom(async(value, {req})=> {
         for (const refp of JSON.parse(req.body.reference_points).points){
             if (!["location", "hut", "parking_lot"].includes(refp.type)) throw "Invalid end point";
             const res = await (checkPoint(refp.type, refp.id));
             if (res) throw "Invalid end point";
         }
         return true;
-    }),
+    }),*/
 
     check('gpx file').custom(async (value, { req }) => {
         if (!req.files) throw "no file uploaded";
@@ -110,6 +122,11 @@ router.post('/hikes',
             const gpx = req.files.gpx;
             const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
             const author_id = req.user && req.user.id;
+
+            const start_point = await JSON.parse(req.body.start_point);
+            const end_point = await JSON.parse(req.body.end_point);
+            const start_point_id = await locationDao.addLocation(start_point);
+            const end_point_id = await locationDao.addLocation(end_point);
             const hike = new Hike(
                 req.body.title,
                 req.body.peak_altitude,
@@ -122,10 +139,10 @@ router.post('/hikes',
                 req.body.expected_time,
                 req.body.difficulty,
                 name,
-                req.body.start_point_type,
-                req.body.start_point_id,
-                req.body.end_point_type,
-                req.body.end_point_id
+                start_point.type,
+                start_point_id,
+                end_point.type,
+                end_point_id
             )
             let hike_id;
 
@@ -134,7 +151,8 @@ router.post('/hikes',
             hike_id = id;
 
             for (const p of JSON.parse(req.body.reference_points).points) {
-                hikeDao.addReferencePoint(id, p.type, p.id).catch(err => {
+                const ref_point_id = await locationDao.addLocation(p);
+                hikeDao.addReferencePoint(id, p.type, ref_point_id).catch(err => {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
                         hikeDao.deleteReferencePoints(id);

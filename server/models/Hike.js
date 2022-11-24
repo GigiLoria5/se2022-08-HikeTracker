@@ -10,9 +10,9 @@ class Hike {
         expected_time,
         difficulty, 
         gps_track, 
-        start_point_type, 
-        start_point_id, 
-        end_point_type, 
+        start_point_type,
+        start_point_id,
+        end_point_type,
         end_point_id
     ){
         this.title = title;

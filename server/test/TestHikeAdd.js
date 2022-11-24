@@ -45,10 +45,8 @@ describe('Add hike', () => {
             .field("track_length", 6.2)
             .field("expected_time", 3.3)
             .field("difficulty", 2)
-            .field("start_point_type", "parking_lot")
-            .field("start_point_id", 3)
-            .field("end_point_type", "location")
-            .field("end_point_id", 18)
+            .field("start_point", "{\"latitude\":44.574263943359256,\"longitude\":6.982647031545639,\"description\":\"G2\",\"type\":\"gps\",\"value\":\"gps\"}")
+            .field("end_point", "{\"latitude\":44.57425086759031,\"longitude\":6.982689192518592,\"description\":\"G1\",\"type\":\"gps\",\"value\":\"gps\"}")
             .field("reference_points", JSON.stringify({
                 "points": [
                     {

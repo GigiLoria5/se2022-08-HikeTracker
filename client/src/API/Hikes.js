@@ -7,10 +7,13 @@ import { APIURL } from './APIUrl';
 const createHike = async (hike) => {
     const formData = new FormData();
     for (const c in hike){
-        if(c !== "reference_points")
-            formData.append(c, hike[c]);
-        else
+        if (c=="reference_points")
             formData.append(c, JSON.stringify({"points" : hike[c]}))
+        else if (c=="start_point" || c=="end_point")
+            formData.append(c, JSON.stringify(hike[c]))
+        else
+            formData.append(c, hike[c]);
+        
     }
     let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
