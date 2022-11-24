@@ -215,7 +215,7 @@ function AddHike() {
                                         <Grid xs={12} sx={thm}>
                                             <Typography align='center' margin={2}>START POINT</Typography>
                                             
-                                            <FormControl>
+                                            <FormControl sx={{ width: '28ch' }}>
                                                 <InputLabel id="demo-simple-select-label">Location type</InputLabel>
                                                 <Select value={startPointType} label="Location Type" onChange={handleChange1}>
                                                     <MenuItem value={"gps"}>GPS coordinates</MenuItem>
@@ -224,26 +224,26 @@ function AddHike() {
                                                 </Select>
                                                 {startPointType === "gps" ? (
                                                 <>
-                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
-                                                    <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
+                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '28ch' }} value={startPointGPSlat}disabled /> 
+                                                    <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: '28ch' }}  value={startPointGPSlon} disabled/> 
                                                 </>
                                                 ) : (
                                                     <Grid></Grid>
                                                 )}
                                                 {startPointType === "address" ? (
-                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "address"}/>                                           
+                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "address"} />                                           
                                                 ) : (
                                                     <Grid></Grid>
                                                 )}
 
                                                 {startPointType === "name" ? (
-                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "name"}/>
+                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "name"} />
                                                 ) : (
                                                     <Grid></Grid>
                                                 )}
                                             </FormControl>
                                             <Grid margin={1}>
-                                                <SmootherTextField label="Description" setText={setStartPointDescription} required={true}/>
+                                                <SmootherTextField label="Description" setText={setStartPointDescription} required={true} />
                                             </Grid>
                                             
                                         </Grid>
@@ -252,7 +252,7 @@ function AddHike() {
                                         <Grid xs={12} sx={thm}>
                                             <Typography align='center' margin={2}>END POINT</Typography>
                                             
-                                            <FormControl>
+                                            <FormControl sx={{ width: '28ch' }}>
                                                 <InputLabel id="demo-simple-select-label">Location type</InputLabel>
                                                 <Select value={endPointType} label="Location Type 2" onChange={handleChange2}>
                                                     <MenuItem value={"gps"}>GPS coordinates</MenuItem>
@@ -261,8 +261,8 @@ function AddHike() {
                                                 </Select>
                                                 {endPointType === "gps" ? (
                                                 <>
-                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat} disabled /> 
-                                                    <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
+                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '28ch' }}  value={endPointGPSlat} disabled /> 
+                                                    <TextField variant="outlined" color='primary' label="Longitude"  sx={{ width: '28ch' }} value={endPointGPSlon} disabled/> 
                                                 </>
                                                 ) : (
                                                     <Grid></Grid>
