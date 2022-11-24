@@ -13,7 +13,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import Chip from '@mui/material/Chip';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useLocation } from 'react-router-dom'
 import API from '../../API';
@@ -27,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -286,10 +286,16 @@ function AddHike2() {
                     <Grid xs={0} md={2}></Grid>    
                     <Grid xs={12} md={8} marginTop={3} >
                         <Paper elevation={3} sx={{  ...thm }} >
-                            <Grid  marginTop={3}>
-                                <Chip label="1" color="primary" variant="outlined"/>{"   "}
-                                <Chip label="2" color="primary" variant="filled"/>
-                            </Grid>
+                        <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
+                            [
+                                <Typography key="3" color="inherit">
+                                Upload a GPX file
+                                </Typography>,
+                                <Typography key="3" color="primary">
+                                Hike Details
+                                </Typography>,
+                            ];
+                        </Breadcrumbs>
                             <Typography variant="h5" sx={thm}>
                                 <br />Please describle the hike<br />
                             </Typography>
@@ -297,12 +303,13 @@ function AddHike2() {
                             
 {/****************************************************GENERAL INFO***********************************************/}
 
-                            <Typography variant="h6" sx={thm}>
-                                <br />General information<br />
+                            <Typography variant="h6" sx={thm} margin={1}>
+                                General information
                             </Typography>
 
-                            <Grid xs={12} sx={thm} marginBottom={1}>
+                            <Grid xs={12} sx={thm} >
                                 {/*TITLE FIELD*/}
+
                                 <SmootherTextField maxWidth='30ch' text={title} setText={setTitle} label="Title" required={true}/>
                                 {/*LENGTH FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Length"    sx={{ width: '30ch', maxWidth: '30ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
@@ -347,9 +354,11 @@ function AddHike2() {
                             
                             
 
-                            <Grid xs={12} margin={2} sx={thm}>
+                            <Grid xs={12} margin={1} sx={thm} marginBottom={2}>
                                 {/*DIFFICULTY FIELD*/}
+
                                 {/*<FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+
                                     
                                     <InputLabel>Difficulty</InputLabel>
                                     <Select
@@ -358,6 +367,7 @@ function AddHike2() {
                                         onChange={e => setDifficulty(e.target.value)}
                                         label="Difficulty"
                                         required
+                                        
                                     >
                                         <MenuItem value="">
                                             <em>Select a difficulty</em>
@@ -373,9 +383,9 @@ function AddHike2() {
 {/******************************************GEOGRAPHICAL AREA***********************************************/}
 
                             <Typography variant="h6" sx={thm} margin={1}>
-                                <br />Geographical area<br />
+                               Geographical area
                             </Typography>
-                            <Stack direction={{ xs: 'column', sm: 'row' }} margin={1} >
+                            <Stack direction={{ xs: 'column', sm: 'column' }} margin={1} marginBottom={2}>
                                 {/*COUNTRY FIELD*/}
                                 
                                 <Autocomplete
@@ -383,7 +393,7 @@ function AddHike2() {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={countries}
-                                    sx={{ m:1, width: 200 }}
+                                    sx={{ m:1, width: '28ch' }}
                                     onChange={e => {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
@@ -398,7 +408,7 @@ function AddHike2() {
                                     id="combo-box-demo2"
                                     options={provinces}
                                     key={country}
-                                    sx={{ m:1, width: 200 }}
+                                    sx={{ m:1, width: '28ch' }}
                                     onChange={e => {
                                         e.preventDefault(); 
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
@@ -413,7 +423,7 @@ function AddHike2() {
                                     id="combo-box-demo3"
                                     options={cities}
                                     key={[province, country]}
-                                    sx={{ m:1, width: 200 }}
+                                    sx={{ m:1, width: '28ch' }}
                                     onChange={e => {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
@@ -423,10 +433,10 @@ function AddHike2() {
                                 />
                             </Stack>
                             
-                            <Divider style={{width:'90%'}} />
+                            <Divider style={{width:'90%'}}  />
                             
                             <Typography variant="h6" sx={thm} margin={1}>
-                                <br />Reference points<br />
+                                Reference points
                             </Typography>
                             <Typography sx={thm} marginBottom={1}>
                                 Click on the map to add reference points<br />
@@ -461,7 +471,7 @@ function AddHike2() {
 {/****************************************************DESCRIPTION********************************************************/}
                             <Divider style={{width:'90%'}} />
                             <Typography variant="h6" sx={thm} margin={1}>
-                                <br />Description<br />
+                                Description
                             </Typography>
                             < Description description={description} setDescription={setDescription}/>
                             
@@ -469,6 +479,7 @@ function AddHike2() {
                             <Typography>
                                 <br />
                             </Typography>
+
                             {message &&
                             <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
                             <Grid><br/></Grid>  </> 
@@ -477,17 +488,15 @@ function AddHike2() {
                         <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                         <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
                         </Stack>
+
                         </Paper>
                     </Grid>
 
-                    <Grid xs={0} md={3}></Grid>
 
                                             
                     <Grid xs={12} sx={thm}>
 
                         <Grid><br /></Grid>
-{/****************************************************SUBMIT OR GO BACK***********************************************/}
-                        <Grid><br/><br/></Grid>
                     </Grid>
                 </ThemeProvider>
                 
