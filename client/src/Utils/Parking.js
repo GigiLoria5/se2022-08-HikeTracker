@@ -39,7 +39,6 @@ class Parking{
     if(parking.latitude === "") return false;
     //address: not empty string
     if(parking.address === "") return false;
-
     return true;
 }
 
