@@ -312,15 +312,15 @@ function AddHike2() {
                             </Grid>
                             <Grid xs={12} sx={thm}>
                                     {/*LENGTH FIELD*/}
-                                    <TextField variant="outlined" label="Length"  margin='normal'  sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
+                                    <TextField variant="outlined" label="Length"  margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled helperText="Computed automatically."/>
                             </Grid>
                             <Grid xs={12} sx={thm}> 
                                     {/*TIME FIELD*/}
-                                    <TextField variant="outlined" label="Expected time" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                    <TextField variant="outlined" label="Expected time" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  helperText="Computed automatically."/>                      
                                     </Grid>
                             <Grid xs={12} sx={thm}>
                                     {/*ASCENT FIELD*/}
-                                    <TextField variant="outlined" label="Total ascent" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />
+                                    <TextField variant="outlined" label="Total ascent" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  helperText="Computed automatically."/>
                             
                             </Grid>
                             
