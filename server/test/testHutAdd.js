@@ -482,3 +482,44 @@ describe('test Add hut good', () => {
     });    
 
 });
+
+describe('test Add hut wrong_delete', () => {
+
+    let authenticatedUser = request.agent(server);
+
+    step('T1: DELETE/api/huts [not authenticated]', async function () {
+        await agent
+            .delete('/api/huts')
+            .send({
+                "hutId": 1,
+              })
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
+
+    step('T2 login [GOOD]', (done) => {
+        authenticatedUser
+            .post('/api/sessions')
+            .send({
+                "username": "g.desantis@localguide.it",
+                "password": "password"
+            })
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    step('T1: DELETE/api/huts [field invalid]', async function () {
+        await authenticatedUser
+            .delete('/api/huts')
+            .send({
+                "hutId": "hello",
+              })
+            .then(function (res) {
+                res.should.have.status(422);
+            });
+    });    
+
+});

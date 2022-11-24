@@ -78,7 +78,7 @@ router.post('/huts', [
 
 router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
     try{
-        if(req.isAuthenticated){
+        if(req.isAuthenticated()){
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
