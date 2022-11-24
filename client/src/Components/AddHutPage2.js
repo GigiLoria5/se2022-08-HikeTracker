@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
@@ -55,6 +56,7 @@ export default function AddHutPage2(props) {
     });
 
     const thm = {
+        marginBottom: 2,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -72,15 +74,15 @@ export default function AddHutPage2(props) {
     };
 
     return (
-        <Grid container>
             <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
 
                 {/* Form */}
                 <Paper elevation={3} sx={{ ...thm }} >
                     <Box component="form" onSubmit={handleSubmit}>
 
                         <Grid container marginTop={3} justifyContent="center">
-                            <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                            <Stack direction={{ xs: 'row', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
                                 <Chip label="1" color="primary" variant="outlined" />{"   "}
                                 <Chip label="2" color="primary" variant="filled" />
                             </Stack>
@@ -183,8 +185,8 @@ export default function AddHutPage2(props) {
                     </Box>
                 </Paper>
 
+                </Container>
 
             </ThemeProvider >
-        </Grid >
     );
 }

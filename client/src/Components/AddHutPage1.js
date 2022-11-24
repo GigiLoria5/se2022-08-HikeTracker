@@ -8,6 +8,8 @@ import Chip from '@mui/material/Chip';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+
 
 import Map from './Map';
 
@@ -42,6 +44,7 @@ export default function AddHutPage1(props) {
     });
 
     const thm = {
+        marginBottom: 2,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -59,23 +62,23 @@ export default function AddHutPage1(props) {
     };
 
     return (
-        <Grid container marginBottom={3}>
             <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="m">
 
                 {/* Form */}
                 <Paper elevation={3} sx={{ ...thm }} >
-                    <Box component="form" onSubmit={handleSubmit}>
+                    <Box component="form" onSubmit={handleSubmit} >
                         <Grid container marginTop={3} justifyContent="center">
-                            <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                            <Stack direction={{ xs: 'row', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
                                 <Chip label="1" color="primary" variant="filled" />{"   "}
                                 <Chip label="2" color="primary" variant="outlined" />
                             </Stack>
                         </Grid>
 
                         {/* MAP */}
-                        <Grid>
+                        <Box>
                             <Map latitude={props.latitude} longitude={props.longitude} />
-                        </Grid>
+                        </Box>
 
                         {/* Geographic informations */}
                         <Typography variant="h6" sx={thm}>
@@ -127,8 +130,8 @@ export default function AddHutPage1(props) {
                     </Box>
                 </Paper>
 
+                </Container>
 
             </ThemeProvider>
-        </Grid>
     );
 }

@@ -7,7 +7,6 @@ import API from '../API';
 import { Hut, validateHut } from '../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
-import Alert from '@mui/material/Alert';
 
 
 export default function AddHut(props) {
@@ -94,9 +93,8 @@ export default function AddHut(props) {
         }
 
         const response = await API.addHut(hut).catch(e => {
-            console.log(e);
-            console.log(e.toString());
-            props.setMessage({ msg: e.toString().replace("{","").replace("}","").replaceAll('"',"") , type: 'error'});
+            var obj = JSON.parse(e);
+            props.setMessage({ msg: `${obj.error}!`, type: 'error' });
         })
 
         if (response === true) {
