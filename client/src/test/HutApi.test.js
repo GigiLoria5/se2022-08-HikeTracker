@@ -13,20 +13,26 @@ describe('frontend test: hut creation', () => {
     
     let h0 = new Hut(
         undefined, "Hut 0", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
-        "Description of the hut", 12, undefined, 12.3456, 65.4321,
-        "3456789012", "hut1@hut.it", "www.hut1.com", "hiking_hut"
+        "Description of the hut", 12, undefined, "12.3456", "65.4321",
+        "3456789012", "hut0@hut.it", "www.hut1.com", "hiking_hut"
     );
 
     let h1 = new Hut(
         undefined, "Hut 1", "Aosta", "AO", "Italy", "Via dei matti, 0", "42",
-        "Era una casa molto carina", 0, undefined, 65.4321, 12.3456, 
+        "Era una casa molto carina", 0, undefined, "65.4321", "12.3456", 
         "", "", "", "unmanaged_hut"
     );
 
     let h2 = new Hut(
         undefined, "Hut 2", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
+        "Description of the hut", 12, undefined, "12.3432", "65.4321",
+        "3456789012", "hut2@hut.it", "www.hut1.com", ""
+    );
+
+    let h3 = new Hut(
+        undefined, "Hut 3", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
         "Description of the hut", 12, undefined, 12.3456, 65.4321,
-        "3456789012", "hut1@hut.it", "www.hut1.com", ""
+        "3456789012", "hut3@hut.it", "www.hut1.com", "hiking_hut"
     );
 
     it('T0: correct body', async () => {
@@ -41,6 +47,12 @@ describe('frontend test: hut creation', () => {
 
     it('T2: missing mandatory field', async () => {
         const res = await API.addHut(h2);
+        expect(typeof res).toBe('string');  
+        console.log(res)
+    })
+
+    it('T3: wrong-type field', async () => {
+        const res = await API.addHut(h3);
         expect(typeof res).toBe('string');  
         console.log(res)
     })

@@ -24,9 +24,9 @@ router.post('/huts', [
     body('latitude').isNumeric(),
     body('longitude').isNumeric(),
     body('altitude').isDecimal(),
-    body('website').isURL(),
-    body('email').isEmail(),
-    body('phone_number').notEmpty().isMobilePhone(),
+    body('website').optional({ checkFalsy: true }).isURL(),
+    body('email').optional({ checkFalsy: true }).isEmail(),
+    body('phone_number').optional({ checkFalsy: true }).notEmpty().isMobilePhone(),
     body('description').isString(),
 ], async (req, res) => {
 
