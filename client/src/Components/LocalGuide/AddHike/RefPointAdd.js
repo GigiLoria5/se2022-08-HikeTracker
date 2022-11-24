@@ -37,12 +37,13 @@ function RefPointAdd(props){
             refpoints={refPoints}
             />
         </Grid>
-        {(addingRefPoint || editingRefPoint)? <FormControl sx={{ m:3, width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+        {(addingRefPoint || editingRefPoint)? <FormControl sx={{ m:3, width: 'fit-content', minWidth: '30ch', maxWidth: '30ch' }} >
             
             <InputLabel>Location type</InputLabel>
             <Select
                 value={refPointType}
                 variant="outlined"
+                sx={{ width: '30ch', maxWidth: '30ch' }}
                 onChange={e => {
                     setRefPointType(e.target.value);
                     if(e.target.value=="gps"){
@@ -59,24 +60,24 @@ function RefPointAdd(props){
                 <MenuItem value={"name"}>Name</MenuItem>
 
             </Select>
-            <SmootherTextField label="Description" text={refPointDescription} setText={setRefPointDescription} required={true}/>
+            <SmootherTextField maxWidth='30ch' label="Description" text={refPointDescription} setText={setRefPointDescription} required={true}/>
             {refPointType === "gps" ? (
             <>
-                <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={refPointLat}disabled /> 
-                <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={refPointLon} disabled/> 
+                <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '30ch', maxWidth: '30ch' }}  value={refPointLat}disabled /> 
+                <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: '30ch', maxWidth: '30ch' }}  value={refPointLon} disabled/> 
 
             </>
             ) : (
                 <Grid></Grid>
             )}
             {refPointType === "address" ? (
-                <SmootherTextField label="Point address" text={refPointValue} setText={setRefPointValue} required={refPointType === "address"}/>                                           
+                <SmootherTextField maxWidth='30ch' label="Point address" text={refPointValue} setText={setRefPointValue} required={refPointType === "address"}/>                                           
             ) : (
                 <Grid></Grid>
             )}
 
             {refPointType === "name" ? (
-                <SmootherTextField label="Point name" text={refPointValue} setText={setRefPointValue} required={refPointType === "name"}/>
+                <SmootherTextField maxWidth='30ch' label="Point name" text={refPointValue} setText={setRefPointValue} required={refPointType === "name"}/>
             ) : (
                 <Grid></Grid>
             )}

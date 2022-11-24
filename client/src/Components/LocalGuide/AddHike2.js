@@ -86,7 +86,7 @@ function AddHike2() {
             label="Description"  
             multiline  rows={4} 
             margin="normal"  
-            sx={{ width: {xs: '28ch', sm: '45ch' } }}
+            sx={{ width: "40ch", maxWidth:"40ch"}}
             value={localDescription}  
             onBlur={ev => {setDescription(ev.target.value)} }
             onChange={ev => {setLocalDescription(ev.target.value)}}
@@ -299,6 +299,7 @@ function AddHike2() {
                             <Typography variant="h5" sx={thm}>
                                 <br />Please describle the hike<br />
                             </Typography>
+                            <Divider style={{width:'100%'}} />
                             
 {/****************************************************GENERAL INFO***********************************************/}
 
@@ -308,21 +309,46 @@ function AddHike2() {
 
                             <Grid xs={12} sx={thm} >
                                 {/*TITLE FIELD*/}
-                                <SmootherTextField text={title} setText={setTitle} label="Title" required={true} sx={{ width: '28ch' }}/>
-                            </Grid>
-                            <Grid xs={12} sx={thm}>
-                                    {/*LENGTH FIELD*/}
-                                    <TextField variant="outlined" label="Length"  margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled helperText="Computed automatically."/>
-                            </Grid>
-                            <Grid xs={12} sx={thm}> 
-                                    {/*TIME FIELD*/}
-                                    <TextField variant="outlined" label="Expected time" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  helperText="Computed automatically."/>                      
-                                    </Grid>
-                            <Grid xs={12} sx={thm}>
-                                    {/*ASCENT FIELD*/}
-                                    <TextField variant="outlined" label="Total ascent" margin='normal' sx={{ width: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  helperText="Computed automatically."/>
+
+                                <SmootherTextField maxWidth='30ch' text={title} setText={setTitle} label="Title" required={true}/>
+                                {/*LENGTH FIELD*/}
+                                <TextField margin="normal" variant="outlined" label="Length"    sx={{ width: '30ch', maxWidth: '30ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
+                                {/*TIME FIELD*/}
+                                <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                {/*ASCENT FIELD*/}
+                                <TextField margin="normal" variant="outlined" label="Total ascent" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />                             
                             
+                                {/*DIFFICULTY FIELD*/}
+                                <FormControl margin="normal" sx={{ width: 'fit-content', minWidth: '30ch', maxWidth: '30ch' }} >
+                                    
+                                    <InputLabel>Difficulty</InputLabel>
+                                    <Select
+                                        value={difficulty}
+                                        variant="outlined"
+                                        onChange={e => setDifficulty(e.target.value)}
+                                        label="Difficulty"
+                                        required
+                                    >
+                                        <MenuItem value="">
+                                            <em>Select a difficulty</em>
+                                        </MenuItem>
+                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
+                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
+                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
+
+                                    </Select>
+                                </FormControl>
                             </Grid>
+                            {/*<Grid xs={12} marginTop={2} sx={thm}>
+                                <Stack margin={2} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                                    <TextField variant="outlined" label="Length"    sx={{ width: 'fit-content', maxWidth: '28ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
+                                    
+                                    <TextField variant="outlined" label="Expected time" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                    
+                                    <TextField variant="outlined" label="Total ascent" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />
+                            
+                                </Stack>
+                            </Grid>*/}
                             
                             
                             
@@ -330,7 +356,9 @@ function AddHike2() {
 
                             <Grid xs={12} margin={1} sx={thm} marginBottom={2}>
                                 {/*DIFFICULTY FIELD*/}
-                                <FormControl sx={{ width: '28ch' }} >
+
+                                {/*<FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+
                                     
                                     <InputLabel>Difficulty</InputLabel>
                                     <Select
@@ -349,7 +377,7 @@ function AddHike2() {
                                         <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
 
                                     </Select>
-                                </FormControl>
+                                </FormControl>*/}
                             </Grid>
                             <Divider style={{width:'90%'}} />
 {/******************************************GEOGRAPHICAL AREA***********************************************/}
@@ -451,15 +479,15 @@ function AddHike2() {
                             <Typography>
                                 <br />
                             </Typography>
-{/****************************************************SUBMIT OR GO BACK***********************************************/}
+
                             {message &&
-                                <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
-                                <Grid><br/></Grid>  </> 
-                            }        
-                            <Button onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
-                            <Grid><br/></Grid>
-                            <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
-                            <Grid><br/><br/></Grid>
+                            <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
+                            <Grid><br/></Grid>  </> 
+                        }        
+                        <Stack direction="row" justifyContent="center" alignItems="center">
+                        <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
+                        <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
+                        </Stack>
 
                         </Paper>
                     </Grid>
@@ -469,7 +497,6 @@ function AddHike2() {
                     <Grid xs={12} sx={thm}>
 
                         <Grid><br /></Grid>
-
                     </Grid>
                 </ThemeProvider>
                 

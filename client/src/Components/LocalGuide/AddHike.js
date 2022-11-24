@@ -20,7 +20,7 @@ import {parseGPX} from '../../Utils/GPX'
 import SmootherTextField from '../SmootherTextField';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Divider from '@mui/material/Divider';
-
+import { Stack } from '@mui/system';
 
 
 
@@ -294,16 +294,17 @@ function AddHike() {
 
                             <Grid><br/></Grid> 
                             {/****************************************************SUBMIT OR GO BACK***********************************************/}
+
                             {message &&
                                 <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
                                 <Grid><br/></Grid>  </> 
                             }        
-                            
-                            <Button onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
-                            <Grid><br/></Grid>
-                            <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                            <Grid><br/><br/></Grid>
 
+                            <Stack direction="row" justifyContent="center" alignItems="center">
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                            </Stack>
+                            <Grid><br/><br/></Grid>
                         </Paper>
                     </Grid>
                     <Grid xs={11} sx={thm}>
