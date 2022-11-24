@@ -9,10 +9,6 @@ import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useLocation } from 'react-router-dom'
 import API from '../../API';
@@ -26,29 +22,9 @@ import { useNavigate } from "react-router-dom";
 import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
+import DifficultySelector from './AddHike/DifficultySelector';
+import { timeToHHMM } from '../../Utils/TimeFormat';
 
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 350,
-        },
-    },
-};
-
-
-function getStyles(refPoints, referencePoint, theme) {
-
-    return {
-        fontWeight:
-            referencePoint.indexOf(refPoints) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
 
 function AddHike2() {
     const [title, setTitle] = useState("");
@@ -86,23 +62,17 @@ function AddHike2() {
             label="Description"  
             multiline  rows={4} 
             margin="normal"  
-            sx={{ width: "40ch", maxWidth:"40ch"}}
+            sx={{ width: "75%", maxWidth:"40ch"}}
             value={localDescription}  
             onBlur={ev => {setDescription(ev.target.value)} }
             onChange={ev => {setLocalDescription(ev.target.value)}}
         />
     }
-
-    const timeToHHMM = (t) => {
-        const hh = Math.floor(t);
-        const mm = (t - Math.floor(t))*60;
-        return hh+":"+mm.toFixed(0);
-    }
-
     
     
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         getCountries().then(cn => {
             setCountries([...cn]);
         });
@@ -160,6 +130,12 @@ function AddHike2() {
         
     }
 
+    const deleteRefPointCoord = (lat, lon) =>{
+        const points = referencePoint.filter(a=> (a.latitude != lat && a.longitude != lon));
+        setReferencePoint([...points]);
+        setRefPoints([...points])
+    }
+
     const addReferencePoint = () => {
         if(!refPointValue){
             setRefPointMessage("Missing required fields");
@@ -203,7 +179,7 @@ function AddHike2() {
         }
         if(!addingRefPoint && !editingRefPoint){
             const point = referencePoint.filter(a=> (a.latitude == lat && a.longitude == lon))[0];
-            const points = referencePoint.filter(a=> (a.latitude != lat && a.lon != refPointLon));
+            const points = referencePoint.filter(a=> (a.latitude != lat && a.longitude != lon));
             setReferencePoint([...points]);
             setRefPointLat(point.latitude);
             setRefPointLon(point.longitude);
@@ -251,7 +227,7 @@ function AddHike2() {
             referencePoint,
             selectedFile
         )
-        API.createHike(hike).then(a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
+        API.createHike(hike).then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
     };
 
 
@@ -261,23 +237,12 @@ function AddHike2() {
         alignItems: 'center',
     };
 
-    const handleChangeRefPoints = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setReferencePoint(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-
     
     return (
         <div>
-            
             <Grid container >
                 
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={theme} >
                     <Grid xs={12}>
                         <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
                             <br />ADD A HIKE
@@ -285,7 +250,7 @@ function AddHike2() {
                     </Grid>
                     <Grid xs={0} md={2}></Grid>    
                     <Grid xs={12} md={8} marginTop={3} >
-                        <Paper elevation={3} sx={{  ...thm }} >
+                        <Paper elevation={3} sx={{  ...thm, mb:4}} >
                         <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                             [
                                 <Typography key="3" color="inherit">
@@ -307,78 +272,24 @@ function AddHike2() {
                                 General information
                             </Typography>
 
-                            <Grid xs={12} sx={thm} >
+                            {/*GENERAL INFO*/}
+                            <Grid xs={12} sx={{...thm, mb:2}} >
                                 {/*TITLE FIELD*/}
-
                                 <SmootherTextField maxWidth='30ch' text={title} setText={setTitle} label="Title" required={true}/>
+
                                 {/*LENGTH FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Length"    sx={{ width: '30ch', maxWidth: '30ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
+                                
                                 {/*TIME FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                
                                 {/*ASCENT FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Total ascent" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />                             
-                            
+                                
                                 {/*DIFFICULTY FIELD*/}
-                                <FormControl margin="normal" sx={{ width: 'fit-content', minWidth: '30ch', maxWidth: '30ch' }} >
-                                    
-                                    <InputLabel>Difficulty</InputLabel>
-                                    <Select
-                                        value={difficulty}
-                                        variant="outlined"
-                                        onChange={e => setDifficulty(e.target.value)}
-                                        label="Difficulty"
-                                        required
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select a difficulty</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
-                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
-                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
-
-                                    </Select>
-                                </FormControl>
+                                <DifficultySelector difficulty={difficulty} setDifficulty={setDifficulty}/>
                             </Grid>
-                            {/*<Grid xs={12} marginTop={2} sx={thm}>
-                                <Stack margin={2} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                    <TextField variant="outlined" label="Length"    sx={{ width: 'fit-content', maxWidth: '28ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
-                                    
-                                    <TextField variant="outlined" label="Expected time" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
-                                    
-                                    <TextField variant="outlined" label="Total ascent" sx={{ width: 'fit-content', maxWidth: '28ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />
-                            
-                                </Stack>
-                            </Grid>*/}
-                            
-                            
-                            
-                            
 
-                            <Grid xs={12} margin={1} sx={thm} marginBottom={2}>
-                                {/*DIFFICULTY FIELD*/}
-
-                                {/*<FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
-
-                                    
-                                    <InputLabel>Difficulty</InputLabel>
-                                    <Select
-                                        value={difficulty}
-                                        variant="outlined"
-                                        onChange={e => setDifficulty(e.target.value)}
-                                        label="Difficulty"
-                                        required
-                                        
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select a difficulty</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Tourist"}>Tourist</MenuItem>
-                                        <MenuItem value={"Hiker"}>Hiker</MenuItem>
-                                        <MenuItem value={"Professionnal Hiker"}>Professionnal Hiker</MenuItem>
-
-                                    </Select>
-                                </FormControl>*/}
-                            </Grid>
                             <Divider style={{width:'90%'}} />
 {/******************************************GEOGRAPHICAL AREA***********************************************/}
 
@@ -398,7 +309,6 @@ function AddHike2() {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setCountry(name); setProvince(''); setCity('')}}
-                                    //onInputChange={e => {e.preventDefault(); setCountry(e.target.value); setProvince(''); setCity('')}}
                                     renderInput={(params) => <TextField {...params}  label="Country" />}
                                 />
                                 <Autocomplete
@@ -413,7 +323,6 @@ function AddHike2() {
                                         e.preventDefault(); 
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setProvince(name); setCity('')}}
-                                    //onInputChange={e => {e.preventDefault(); setProvince(e.target.value); setCity('')}} 
                                     renderInput={(params) => <TextField {...params}  label="Province/Region" />}
                                 />
                                 <Autocomplete
@@ -428,7 +337,6 @@ function AddHike2() {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setCity(name)}} 
-                                    //onInputChange={e => {e.preventDefault(); setCity(e.target.value)}} 
                                     renderInput={(params) => <TextField {...params} label="City"/>}
                                 />
                             </Stack>
@@ -465,7 +373,7 @@ function AddHike2() {
                                     addReferencePoint={addReferencePoint}
                                     deleteReferencePoint={deleteReferencePoint}
                                     />
-                                <RefPointTable points={referencePoint}/>
+                                <RefPointTable points={referencePoint} deletePoint={deleteRefPointCoord} canDelete={!addingRefPoint && !editingRefPoint}/>
                             </Grid>
 
 {/****************************************************DESCRIPTION********************************************************/}
@@ -476,27 +384,15 @@ function AddHike2() {
                             < Description description={description} setDescription={setDescription}/>
                             
 
-                            <Typography>
-                                <br />
-                            </Typography>
+                            {message && <Alert sx={{m:1}} severity="error" onClose={() => setMessage('')}>{message}</Alert>}   
 
-                            {message &&
-                            <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
-                            <Grid><br/></Grid>  </> 
-                        }        
+{/****************************************************SUBMIT BUTTONS********************************************************/}     
                         <Stack direction="row" justifyContent="center" alignItems="center">
-                        <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
-                        <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
                         </Stack>
 
                         </Paper>
-                    </Grid>
-
-
-                                            
-                    <Grid xs={12} sx={thm}>
-
-                        <Grid><br /></Grid>
                     </Grid>
                 </ThemeProvider>
                 

@@ -23,6 +23,7 @@
     "country-state-city": "^3.1.2",
     "dayjs": "^1.11.6",
     "esm": "^3.2.25",
+    "file-type": "^18.0.0",
     "gpxparser": "^3.0.8",
     "jest": "^27.5.1",
     "leaflet": "^1.9.3",

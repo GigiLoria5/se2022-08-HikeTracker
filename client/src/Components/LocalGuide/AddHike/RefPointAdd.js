@@ -23,11 +23,11 @@ function RefPointAdd(props){
         addReferencePoint,
         deleteReferencePoint} = props;
     return  <>
-        <Grid item style={{width: "300px"}} alignItems="center" margin={2}>
+        <Grid item style={{width: "80%"}} alignItems="center" alignSelf="center" margin={2}>
         <RefPointMapLocator
             position={{lat:start_point.latitude, lng:start_point.longitude}}
-            height={'200px'}
-            width={'300px'}
+            height={'300px'}
+            width={'100%'}
             initialLat={start_point.latitude}
             initialLng={start_point.longitude}
             zoomLevel={15}

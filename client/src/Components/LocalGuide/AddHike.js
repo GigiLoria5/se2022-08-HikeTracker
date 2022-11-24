@@ -6,21 +6,15 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { TextField } from '@mui/material';
 import { Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import {parseGPX} from '../../Utils/GPX'
-import SmootherTextField from '../SmootherTextField';
+import {checkValidGPX, parseGPX} from '../../Utils/GPX'
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
+import PointsInput from './AddHike/PointsInput';
 
 
 
@@ -80,19 +74,26 @@ function AddHike() {
 
     const changeHandler = async (event) => {
         event.preventDefault();
-        setSelectedFile(event.target.files[0]);
-        setIsSelected(true);
-        const gpx = await parseGPX(event.target.files[0]);
-
-        console.log(gpx);
-        setStartPointGPSlat(gpx.start_point_lat)
-        setStartPointGPSlon(gpx.start_point_lon)
-        setEndPointGPSlat(gpx.end_point_lat)
-        setEndPointGPSlon(gpx.end_point_lon)
-        setAscent(gpx.ascent);
-        setLength(gpx.length);
-        setExpectedTime(gpx.expectedTime);
-        setPeakAltitude(gpx.peak_altitude)
+        if(checkValidGPX(await event.target.files[0].text())){
+            setSelectedFile(event.target.files[0]);
+            setIsSelected(true);
+            const gpx = await parseGPX(event.target.files[0]);
+            setStartPointGPSlat(gpx.start_point_lat)
+            setStartPointGPSlon(gpx.start_point_lon)
+            setEndPointGPSlat(gpx.end_point_lat)
+            setEndPointGPSlon(gpx.end_point_lon)
+            setAscent(gpx.ascent);
+            setLength(gpx.length);
+            setExpectedTime(gpx.expectedTime);
+            setPeakAltitude(gpx.peak_altitude)
+            setMessage("")
+        }
+        else{
+            setSelectedFile(null);
+            setIsSelected(false);
+            setMessage("Invalid GPX file")
+        }
+        
     };
 
 
@@ -188,20 +189,17 @@ function AddHike() {
                         <Paper elevation={3} sx={{  ...thm }} >
                         <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                             [
-                                <Typography key="3" color="primary">
-                                Upload a GPX file
-                                </Typography>,
-                                <Typography key="3" color="inherit">
-                                Hike Details
-                                </Typography>,
+                                <Typography key="3" color="primary"> Upload a GPX file </Typography>,
+                                <Typography key="3" color="inherit"> Hike Details </Typography>,
                             ];
                         </Breadcrumbs>
 {/*****************************************************UPLOAD FILE***********************************************/}
    
-                            <Typography variant="h5" sx={thm}>
+                            <Typography variant="h5" sx={thm} margin="normal">
                                 <br />Please upload a GPX file<br /><br />
                             </Typography>
-                            <Button variant="contained" component="label" onChange={changeHandler}>
+                            <Divider style={{width:'100%'}} />
+                            <Button sx={{mt:3}} variant="contained" component="label" onChange={changeHandler}>
                                 Upload
                                 <input hidden accept=".gpx" multiple type="file" />
                             </Button>
@@ -214,95 +212,41 @@ function AddHike() {
 
                                         <Grid xs={12} sx={thm}>
                                             <Typography align='center' margin={2}>START POINT</Typography>
-                                            
-                                            <FormControl sx={{ width: '28ch' }}>
-                                                <InputLabel id="demo-simple-select-label">Location type</InputLabel>
-                                                <Select value={startPointType} label="Location Type" onChange={handleChange1}>
-                                                    <MenuItem value={"gps"}>GPS coordinates</MenuItem>
-                                                    <MenuItem value={'address'}>Address</MenuItem>
-                                                    <MenuItem value={'name'}>Name</MenuItem>
-                                                </Select>
-                                                {startPointType === "gps" ? (
-                                                <>
-                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '28ch' }} value={startPointGPSlat}disabled /> 
-                                                    <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: '28ch' }}  value={startPointGPSlon} disabled/> 
-                                                </>
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-                                                {startPointType === "address" ? (
-                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "address"} />                                           
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-
-                                                {startPointType === "name" ? (
-                                                    <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "name"} />
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-                                            </FormControl>
-                                            <Grid margin={1}>
-                                                <SmootherTextField label="Description" setText={setStartPointDescription} required={true} />
-                                            </Grid>
-                                            
+                                            <PointsInput 
+                                                pointType={startPointType}
+                                                pointValue={startPointValue}
+                                                pointGPSlat={startPointGPSlat}
+                                                pointGPSlon={startPointGPSlon} 
+                                                handleChange={handleChange1}
+                                                setPointValue={setStartPointValue}
+                                                setPointDescription={setStartPointDescription}/>
                                         </Grid>
         {/*****************************************************END POINT***********************************************/}
 
                                         <Grid xs={12} sx={thm}>
                                             <Typography align='center' margin={2}>END POINT</Typography>
-                                            
-                                            <FormControl sx={{ width: '28ch' }}>
-                                                <InputLabel id="demo-simple-select-label">Location type</InputLabel>
-                                                <Select value={endPointType} label="Location Type 2" onChange={handleChange2}>
-                                                    <MenuItem value={"gps"}>GPS coordinates</MenuItem>
-                                                    <MenuItem value={'address'}>Address</MenuItem>
-                                                    <MenuItem value={'name'}>Name</MenuItem>
-                                                </Select>
-                                                {endPointType === "gps" ? (
-                                                <>
-                                                    <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '28ch' }}  value={endPointGPSlat} disabled /> 
-                                                    <TextField variant="outlined" color='primary' label="Longitude"  sx={{ width: '28ch' }} value={endPointGPSlon} disabled/> 
-                                                </>
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-                                                {endPointType === "address" ? (
-                                                    <SmootherTextField label="End point" setText={setEndPointValue} required={endPointType === "address"}/>
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-
-                                                {endPointType === "name" ? (
-                                                    <SmootherTextField label="End point" setText={setEndPointValue} required={endPointType === "name"}/>
-                                                ) : (
-                                                    <Grid></Grid>
-                                                )}
-                                            </FormControl>
-
-                                            <Grid margin={1}>
-                                                <SmootherTextField label="Description" setText={setEndPointDescription} required={true}/>
-                                            </Grid>
-
+                                            <PointsInput 
+                                                pointType={endPointType}
+                                                pointValue={endPointValue}
+                                                pointGPSlat={endPointGPSlat}
+                                                pointGPSlon={endPointGPSlon} 
+                                                handleChange={handleChange2}
+                                                setPointValue={setEndPointValue}
+                                                setPointDescription={setEndPointDescription}/>
                                         </Grid>
                                     </Grid> 
                                 </div>
                             ) : (
-                                <Typography><br />Select a file to show details</Typography>
+                                <Typography sx={{mb:2, mt:1}}>Select a file to show details</Typography>
                             )}
-                            <Typography> <br/> </Typography>
-
-                            <Grid><br/></Grid> 
+                            
                             {/****************************************************SUBMIT OR GO BACK***********************************************/}
 
-                            {message &&
-                                <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
-                                <Grid><br/></Grid>  </> 
-                            }        
+                            {message && <Alert sx={{mb:1}} severity="error" onClose={() => setMessage('')}>{message}</Alert>}        
 
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
-                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                                <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary' disabled={!isSelected}>CONTINUE</Button>
+                                <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                             </Stack>
                             <Grid><br/><br/></Grid>
                         </Paper>

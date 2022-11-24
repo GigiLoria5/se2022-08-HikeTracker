@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { LayersControl, MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { LayersControl, MapContainer, Marker, Polyline, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
-import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 import markerIconRed from  '../../Assets/Map/marker-icon-red.png';
+import markerIconBlue from  '../../Assets/Map/marker-icon-blue.png';
 import 'leaflet/dist/leaflet.css';
 function RefPointMarker(props) {
-    const { position, setPosition, radius} = props;
-    /*const map = useMapEvents({
-        click(e) {
-            props.editRefPoint(e.latlng.lat, e.latlng.lon);
-        },
-    });*/
+    const { position} = props;
 
     return position === null ? null : (
         <Marker eventHandlers={{
@@ -23,7 +18,7 @@ function RefPointMarker(props) {
     )
 }
 function AddPoint(props) {
-    const map = useMapEvents({
+    useMapEvents({
         click(e) {
             props.addPoint(e.latlng.lat, e.latlng.lng)
         }
@@ -41,13 +36,13 @@ function AddPoint(props) {
  */
 function RefPointMapLocator(props) {
     
-    const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel, points, refpoints, addRefPoints, editRefPoint} = props;
+    const {  height, width, initialLat, initialLng, zoomLevel, points, refpoints, addRefPoints, editRefPoint} = props;
     return (
         <MapContainer
             center={[initialLat, initialLng]}
             zoom={zoomLevel}
             scrollWheelZoom={true}
-            style={{ height: height, maxWidth: width }}
+            style={{ height: height, width: width }}
         >
             
 
@@ -74,6 +69,8 @@ function RefPointMapLocator(props) {
             <AddPoint addPoint={addRefPoints}/>
             {/* Map Elements */}
             {/*<LocationMarker position={position} setPosition={setPosition} radius={radius}/>*/}
+            <Marker position={[initialLat, initialLng]} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [20, 31], iconAnchor: [10, 31] })} >
+        </Marker >
             {refpoints ? 
             refpoints.map(a=>{
             return <RefPointMarker key={a.latitude+"."+a.longitude} latitude={a.latitude} longitude={a.longitude} editRefPoint={editRefPoint}/> })

@@ -46,4 +46,14 @@ const getPoints = async (gpxFile) => {
     return positions;
 }
 
-module.exports = {parseGPX, getPoints};
+const checkValidGPX = (gpxFileText) => {
+    const text = gpxFileText;
+    const domParser = new DOMParser();
+    const dom = domParser.parseFromString(text, 'text/xml');
+    if(dom.documentElement.nodeName === "parsererror"){
+        return false;
+    }
+    return true;
+}
+
+module.exports = {parseGPX, getPoints, checkValidGPX};

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function RefPointTable(props) {
     const {points} = props;
@@ -17,9 +16,10 @@ export default function RefPointTable(props) {
         renderCell: (params) => {
           return (
             <Button
-              onClick={(e) => console.log(params.row)}
+              onClick={(e) => props.deletePoint(params.row.latitude, params.row.longitude)}
               variant="contained"
               color='error'
+              disabled={!props.canDelete}
             >
               Delete
             </Button>
@@ -29,7 +29,7 @@ export default function RefPointTable(props) {
     const rows = points.map(a => {return {
         id:(a.longitude+""+a.latitude),
         description: a.description,
-        value:(a.type=="gps"? "": a.value),
+        value:(a.type==="gps"? "": a.value),
         longitude:a.longitude,
         latitude:a.latitude,}})
   return <>
