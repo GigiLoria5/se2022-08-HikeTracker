@@ -5,9 +5,9 @@ import Navbar from "./Components/Navbar";
 import LoginForm from "./Components/Loginform";
 import SignUpForm from "./Components/SignupForm";
 import Homepage from "./Components/Homepage"
-import LocalGuidePage from "./Components/LocalGuidePage"
-import AddHike from "./Components/AddHike"
-import AddHike2 from "./Components/AddHike2"
+import LocalGuidePage from "./Components/LocalGuide/LocalGuidePage"
+import AddHike from "./Components/LocalGuide/AddHike"
+import AddHike2 from "./Components/LocalGuide/AddHike2"
 
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
