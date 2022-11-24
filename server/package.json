@@ -20,7 +20,7 @@
         "start": "node index.js",
         "test": "jest",
         "test_coverage": "jest --coverage",
-        "test_integration": "npx mocha --runInBand --require mocha-steps --reporter mochawesome --timeout 30000 --exit"
+        "test_integration": "nyc mocha --runInBand --require mocha-steps --reporter mochawesome --timeout 30000 --exit"
     },
     "devDependencies": {
         "chai": "^4.3.6",
