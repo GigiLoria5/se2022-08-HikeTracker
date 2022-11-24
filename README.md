@@ -341,6 +341,57 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
+### Parking lot
+
+- POST `/api/parking`
+
+  - Description: Add a new parking lot
+  - Permissions allowed: Local guide
+  - Request body: Parking lot description
+
+  ```
+  {
+    "city": "Torino",
+    "province": "Torino",
+    "country": "Italy",
+    "latitude": 15.7,
+    "longitude": 45.4,
+    "address": "Address Test"
+  }
+  ```
+
+  - Response: `200 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Fields validation failed` or `A parking lot having the same location parameters already exists` (Wrong body content)
+    - `404 User not found` (specified user not found)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/parking/:id`
+
+  - Description: Delete a parking lot by an id
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token

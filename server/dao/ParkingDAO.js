@@ -23,3 +23,44 @@ exports.getParkingLotById = (id) => {
         });
     });
 };
+
+exports.checkExisting = (parking) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM parking_lot WHERE (coordinates = ? OR (city = ? AND province = ? AND country = ? AND address = ?))';
+        db.get(sql, [parking.coordinates, parking.city, parking.province, parking.address], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row === undefined) {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+};
+
+exports.addParking = (parking) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO parking_lot(city, province, country, address, coordinates) VALUES(?, ?, ?, ?, ?)';
+        db.get(sql, [parking.city, parking.province, parking.country, parking.address, parking.coordinates], function (err, row) {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve(true);
+        });
+    });
+};
+
+exports.deleteParking = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM parking_lot WHERE id = ?';
+        db.run(sql, [id], function (err) {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+};
