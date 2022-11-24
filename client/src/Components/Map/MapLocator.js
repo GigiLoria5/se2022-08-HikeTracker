@@ -35,7 +35,7 @@ function LocationMarker(props) {
             <Marker position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
                 <Popup>You are here</Popup>
             </Marker >
-            <Circle center={position} pathOptions={{ fillColor: 'blue' }} radius={radius * 1000} />
+            {radius === null ? null : <Circle center={position} pathOptions={{ fillColor: 'blue' }} radius={radius * 1000} />}
         </>
     )
 }
