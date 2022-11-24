@@ -83,14 +83,14 @@ router.post('/hikes',
         return true;
     }),*/
 
-    check('reference points').custom(async(value, {req})=> {
+    /*check('reference points').custom(async(value, {req})=> {
         for (const refp of JSON.parse(req.body.reference_points).points){
             if (!["location", "hut", "parking_lot"].includes(refp.type)) throw "Invalid end point";
             const res = await (checkPoint(refp.type, refp.id));
             if (res) throw "Invalid end point";
         }
         return true;
-    }),
+    }),*/
 
     check('gpx file').custom(async (value, { req }) => {
         if (!req.files) throw "no file uploaded";
@@ -151,7 +151,8 @@ router.post('/hikes',
             hike_id = id;
 
             for (const p of JSON.parse(req.body.reference_points).points) {
-                hikeDao.addReferencePoint(id, p.type, p.id).catch(err => {
+                const ref_point_id = await locationDao.addLocation(p);
+                hikeDao.addReferencePoint(id, p.type, ref_point_id).catch(err => {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
                         hikeDao.deleteReferencePoints(id);

@@ -26,6 +26,9 @@ import SmootherTextField from './SmootherTextField'
 import { difficultyFromState } from '../Utils/HikesFilter';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
+import RefPointMapLocator from './Map/RefPointMapLocator';
+
+import { getPoints } from '../Utils/GPX';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -70,15 +73,25 @@ function AddHike2() {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [referencePoint, setReferencePoint] = React.useState([]);
+    const [refPoints, setRefPoints] = React.useState([]);
     const [difficulty, setDifficulty] = useState("");
     const [description, setDescription] = useState("");
 
     const location = useLocation();
     const [message, setMessage] = useState("");
+    const [refPointMessage, setRefPointMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
+    const [refPointType, setRefPointType] = useState("gps");
+    const [refPointValue, setRefPointValue] = useState("gps");
+    const [refPointDescription, setRefPointDescription] = useState("");
+    const [refPointLat, setRefPointLat] = useState(0);
+    const [refPointLon, setRefPointLon] = useState(0);
+    const [addingRefPoint, setAddingRefPoint] = useState(false);
+    const [editingRefPoint, setEditingRefPoint] = useState(false);
 
+    const [points, setPoints] = useState([]);
     const {ascent, length, start_point, end_point, expectedTime, selectedFile, peak_altitude} = location.state;
 
 
@@ -108,6 +121,10 @@ function AddHike2() {
     useEffect(() => {
         getCountries().then(cn => {
             setCountries([...cn]);
+        });
+
+        getPoints(selectedFile).then(a => {
+            setPoints([...a]);
         });
         // eslint-disable-next-line
     }, []);
@@ -144,7 +161,75 @@ function AddHike2() {
 
 
     const navigate = useNavigate();
+
+    const addRefPoints = (lat, long) => {
+        if(!addingRefPoint && !editingRefPoint){
+            setAddingRefPoint(true);
+            setRefPoints([...refPoints, {latitude:lat, longitude:long, description:"test"}])
+            setRefPointLat(lat);
+            setRefPointLon(long);
+            setRefPointType("gps");
+            setRefPointValue("gps");
+            setRefPointDescription("");
+        }
+        
+    }
+
+    const addReferencePoint = () => {
+        if(!refPointValue){
+            setRefPointMessage("Missing required fields");
+            return;
+        }
+        if(!refPointDescription){
+            setRefPointMessage("Missing description");
+            return;
+        }
+        const refPoint = {
+            latitude:refPointLat,
+            longitude:refPointLon,
+            type:refPointType,
+            value:refPointValue,
+            description:refPointDescription
+        };
+        const oldPoints = referencePoint;
+        setReferencePoint([...referencePoint, refPoint]);
+        setRefPoints([...oldPoints, refPoint]);
+        setAddingRefPoint(false);
+        setEditingRefPoint(false);
+    }
+
+    const deleteReferencePoint = () => {
+        setRefPoints([...referencePoint]);
+        setAddingRefPoint(false);
+        setEditingRefPoint(false);
+    }
+    
+
+    const editRefPoint = (lat, lon) => {
+        if(!refPointValue){
+            setRefPointMessage("Missing required fields");
+            return;
+        }
+        if(!refPointDescription){
+            setRefPointMessage("Missing description");
+            return;
+        }
+        if(!addingRefPoint && !editingRefPoint){
+            const point = referencePoint.filter(a=> (a.latitude == lat && a.longitude == lon))[0];
+            const points = referencePoint.filter(a=> (a.latitude != lat && a.lon != refPointLon));
+            setReferencePoint([...points]);
+            setRefPointLat(point.latitude);
+            setRefPointLon(point.longitude);
+            setRefPointDescription(point.description);
+            setRefPointValue(point.value);
+            setRefPointType(point.type);
+            setEditingRefPoint(true);
+        }
+        
+    }
+
     const handleSubmission = async (ev) => {
+        console.log(referencePoint);
         ev.preventDefault();
         if(!title){
             setMessage("Hike title missing");
@@ -175,7 +260,7 @@ function AddHike2() {
             difficultyFromState(difficulty),
             start_point,
             end_point,
-            [],
+            referencePoint,
             selectedFile
         )
         API.createHike(hike).then(a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
@@ -198,17 +283,19 @@ function AddHike2() {
         );
     };
 
+    
     return (
         <div>
             <Grid container >
+                
                 <ThemeProvider theme={theme}>
                     <Grid xs={12}>
                         <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
                             <br />ADD A HIKE
                         </Typography>
                     </Grid>
-                    <Grid xs={0} md={3}></Grid>    
-                    <Grid xs={12} md={6} marginTop={3} >
+                    <Grid xs={0} md={2}></Grid>    
+                    <Grid xs={12} md={9} marginTop={3} >
                         <Paper elevation={3} sx={{  ...thm }} >
                             <Grid  marginTop={3}>
                                 <Chip label="1" color="primary" variant="outlined"/>{"   "}
@@ -217,6 +304,7 @@ function AddHike2() {
                             <Typography variant="h5" sx={thm}>
                                 <br />Please describle the hike<br />
                             </Typography>
+                            
 {/****************************************************GENERAL INFO***********************************************/}
 
                             <Typography variant="h6" sx={thm}>
@@ -238,7 +326,7 @@ function AddHike2() {
                             
                                 </Stack>
                             </Grid>
-
+                            
                             
 
                             
@@ -246,6 +334,7 @@ function AddHike2() {
                             <Grid xs={12} margin={2} sx={thm}>
                                 {/*DIFFICULTY FIELD*/}
                                 <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+                                    
                                     <InputLabel>Difficulty</InputLabel>
                                     <Select
                                         value={difficulty}
@@ -319,37 +408,89 @@ function AddHike2() {
                             </Stack>
 {/****************************************************REFERENCE POINTS***********************************************/}
 {/**********************************************TO REPLACE BY CLICKABLE MAP *****************************************/}
+                            
+                            
                             <Typography variant="h6" sx={thm} marginBottom={1}>
                                 <br />Reference points<br />
                             </Typography>
+                            <Typography sx={thm} marginBottom={1}>
+                                Click on the map to add reference points<br />
+                            </Typography>
+
+
                             <Grid xs={12} sx={thm}>
-                                <FormControl sx={{ width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }}>
-                                    <InputLabel>Reference Points</InputLabel>
+                                <Grid item style={{width: "300px"}} alignItems="center">
+                                <RefPointMapLocator 
+                                    position={{lat:start_point.latitude, lng:start_point.longitude}}
+                                    height={'200px'}
+                                    width={'300px'}
+                                    initialLat={start_point.latitude}
+                                    initialLng={start_point.longitude}
+                                    zoomLevel={15}
+                                    points={points}
+                                    addRefPoints={addRefPoints}
+                                    editRefPoint={editRefPoint}
+                                    refpoints={refPoints}
+                                    />
+                                </Grid>
+                                {(addingRefPoint || editingRefPoint)? <FormControl sx={{ m:3, width: 'fit-content', minWidth: '21ch', maxWidth: '22ch' }} >
+                                    
+                                    <InputLabel>Location type</InputLabel>
                                     <Select
-                                        multiple
-                                        value={referencePoint}
-                                        onChange={handleChangeRefPoints}
-                                        input={<OutlinedInput label="Reference Points" />}
-                                        renderValue={(selected) => (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                {selected.map((value) => (
-                                                    <Chip key={value} label={value} />
-                                                ))}
-                                            </Box>
-                                        )}
-                                        MenuProps={MenuProps}
+                                        value={refPointType}
+                                        variant="outlined"
+                                        onChange={e => {
+                                            setRefPointType(e.target.value);
+                                            if(e.target.value=="gps"){
+                                                setRefPointValue("gps");
+                                            }
+                                            else{
+                                                setRefPointValue("");
+                                            }}}
+                                        label="Location type"
+                                        required
                                     >
-                                        {refPoints.map((refPoints) => (
-                                            <MenuItem
-                                                key={refPoints}
-                                                value={refPoints}
-                                                style={getStyles(refPoints, referencePoint, theme)}
-                                            >
-                                                {refPoints}
-                                            </MenuItem>
-                                        ))}
+                                        <MenuItem value={"gps"}>GPS coordinates</MenuItem>
+                                        <MenuItem value={"address"}>Address</MenuItem>
+                                        <MenuItem value={"name"}>Name</MenuItem>
+
                                     </Select>
-                                </FormControl>
+                                    <SmootherTextField label="Description" text={refPointDescription} setText={setRefPointDescription} required={true}/>
+                                    {refPointType === "gps" ? (
+                                    <>
+                                        <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={refPointLat}disabled /> 
+                                        <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={refPointLon} disabled/> 
+                 
+                                    </>
+                                    ) : (
+                                        <Grid></Grid>
+                                    )}
+                                    {refPointType === "address" ? (
+                                        <SmootherTextField label="Point address" text={refPointValue} setText={setRefPointValue} required={refPointType === "address"}/>                                           
+                                    ) : (
+                                        <Grid></Grid>
+                                    )}
+
+                                    {refPointType === "name" ? (
+                                        <SmootherTextField label="Point name" text={refPointValue} setText={setRefPointValue} required={refPointType === "name"}/>
+                                    ) : (
+                                        <Grid></Grid>
+                                    )}
+                                    {refPointMessage &&
+                                        <><Alert sx={{mt:1, mx:-5}} severity="error" onClose={() => setRefPointMessage('')}>{refPointMessage}</Alert>
+                                        <Grid><br/></Grid>  </> 
+                                    }
+                                    <Stack direction="row" justifyContent="center" alignItems="center">
+                                        <Button sx={{ m:1, minWidth: '80px'}} onClick={addReferencePoint} variant="contained" color='primary'>{addingRefPoint? "ADD":"UPDATE"}</Button>
+                                        <Button sx={{ m:1, minWidth: '80px'}} onClick={deleteReferencePoint} variant="contained" color='error'>{addingRefPoint? "CANCEL":"DELETE"}</Button>
+                                    </Stack>
+                                    
+                                    
+                                    
+                                </FormControl> : <></>
+                                
+                                }
+                                
                             </Grid>
 
 {/****************************************************DESCRIPTION********************************************************/}
@@ -369,7 +510,7 @@ function AddHike2() {
 
                     <Grid xs={0} md={3}></Grid>
 
-
+                                            
                     <Grid xs={12} sx={thm}>
 
                         <Grid><br /></Grid>
@@ -384,7 +525,10 @@ function AddHike2() {
                         <Grid><br/><br/></Grid>
                     </Grid>
                 </ThemeProvider>
+                
             </Grid>
+            
+            
         </div>
     );
 }

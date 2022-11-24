@@ -38,4 +38,12 @@ const parseGPX = async (gpxFile) => {
         expectedTime);
 };
 
-module.exports = {parseGPX};
+const getPoints = async (gpxFile) => {
+    const text = await gpxFile.text();
+    const gpx = new gpxParser();
+    gpx.parse(text);
+    const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
+    return positions;
+}
+
+module.exports = {parseGPX, getPoints};
