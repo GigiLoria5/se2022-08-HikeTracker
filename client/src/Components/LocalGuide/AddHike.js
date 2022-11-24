@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {parseGPX} from '../../Utils/GPX'
 import SmootherTextField from '../SmootherTextField';
+import { Stack } from '@mui/system';
 
 
 
@@ -205,12 +206,13 @@ function AddHike() {
                                 <Typography><br />Select a file to show details</Typography>
                             )}
                             <Typography> <br/> </Typography>
+                            {isSelected?
                             <Grid container >
 {/*****************************************************START POINT***********************************************/}
                                 <Grid xs={12} md={5.5} >
                                     <Typography align='center'>START POINT</Typography>
                                     <Grid marginBottom={1}>
-                                        <SmootherTextField label="Description" setText={setStartPointDescription} required={true}/>
+                                        <SmootherTextField label="Description" maxWidth='22ch' setText={setStartPointDescription} required={true}/>
                                     </Grid>
                                     <FormControl>
                                         <InputLabel id="demo-simple-select-label">Location type</InputLabel>
@@ -221,20 +223,20 @@ function AddHike() {
                                         </Select>
                                         {startPointType === "gps" ? (
                                         <>
-                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
-                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
+                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '22ch', maxWidth: '22ch' }}  value={startPointGPSlat}disabled /> 
+                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: '22ch', maxWidth: '22ch' }}  value={startPointGPSlon} disabled/> 
                                         </>
                                         ) : (
                                             <Grid></Grid>
                                         )}
                                         {startPointType === "address" ? (
-                                            <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "address"}/>                                           
+                                            <SmootherTextField maxWidth='22ch' label="Start point" setText={setStartPointValue} required={startPointType === "address"}/>                                           
                                         ) : (
                                             <Grid></Grid>
                                         )}
 
                                         {startPointType === "name" ? (
-                                            <SmootherTextField label="Start point" setText={setStartPointValue} required={startPointType === "name"}/>
+                                            <SmootherTextField maxWidth='22ch' label="Start point" setText={setStartPointValue} required={startPointType === "name"}/>
                                         ) : (
                                             <Grid></Grid>
                                         )}
@@ -247,7 +249,7 @@ function AddHike() {
                                 <Grid xs={12} md={5.5} >
                                     <Typography align='center'>END POINT</Typography>
                                     <Grid marginBottom={1}>
-                                        <SmootherTextField label="Description" setText={setEndPointDescription} required={true}/>
+                                        <SmootherTextField maxWidth='22ch' label="Description" setText={setEndPointDescription} required={true}/>
                                     </Grid>
 
                                     <FormControl>
@@ -259,29 +261,37 @@ function AddHike() {
                                         </Select>
                                         {endPointType === "gps" ? (
                                         <>
-                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlat} disabled /> 
-                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: 'fit-content', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
+                                            <TextField variant="outlined" color='primary' label="Latitude" margin="normal" sx={{ width: '22ch', maxWidth: '22ch' }}  value={endPointGPSlat} disabled /> 
+                                            <TextField variant="outlined" color='primary' label="Longitude"   sx={{ width: '22ch', maxWidth: '22ch' }}  value={endPointGPSlon} disabled/> 
                                         </>
                                         ) : (
                                             <Grid></Grid>
                                         )}
                                         {endPointType === "address" ? (
-                                            <SmootherTextField label="End point" setText={setEndPointValue} required={endPointType === "address"}/>
+                                            <SmootherTextField maxWidth='22ch' label="End point" setText={setEndPointValue} required={endPointType === "address"}/>
                                         ) : (
                                             <Grid></Grid>
                                         )}
 
                                         {endPointType === "name" ? (
-                                            <SmootherTextField label="End point" setText={setEndPointValue} required={endPointType === "name"}/>
+                                            <SmootherTextField maxWidth='22ch' label="End point" setText={setEndPointValue} required={endPointType === "name"}/>
                                         ) : (
                                             <Grid></Grid>
                                         )}
                                     </FormControl>
                                 </Grid>
-                            </Grid> 
+                            </Grid> :<></>}
 
                             <Grid><br/></Grid> 
-
+                            {message &&
+                                <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
+                                <Grid><br/></Grid>  </> 
+                            }        
+                            <Stack direction="row" justifyContent="center" alignItems="center">
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
+                            <Button sx={{ m:1, mb:2, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                            </Stack>
+                            <Grid><br/><br/></Grid>
                         </Paper>
                     </Grid>
 
@@ -293,15 +303,7 @@ function AddHike() {
 
                         <Grid><br /></Grid>
 {/****************************************************SUBMIT OR GO BACK***********************************************/}
-                        {message &&
-                            <><Alert  severity="error" onClose={() => setMessage('')}>{message}</Alert>
-                            <Grid><br/></Grid>  </> 
-                        }        
                         
-                        <Button onClick={handleSubmission} variant="contained" color='primary' >CONTINUE</Button>
-                        <Grid><br/></Grid>
-                        <Button component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                        <Grid><br/><br/></Grid>
                     </Grid>
 
                     <Grid item xs={0.5}></Grid>

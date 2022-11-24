@@ -7,7 +7,7 @@ const SmootherTextField = (props) => {
             variant="outlined" 
             label={props.label} 
             margin="normal" 
-            sx={{ width: 'fit-content', maxWidth:'22ch'}}
+            sx={{ width: props.maxWidth, maxWidth:props.maxWitdh}}
             value={localText}
             onBlur={ev=> {props.setText(ev.target.value)}}
             onChange={ev => {setLocalText(ev.target.value)} }
