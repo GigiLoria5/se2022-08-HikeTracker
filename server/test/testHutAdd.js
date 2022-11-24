@@ -32,7 +32,7 @@ describe('test Add hut wrong role', () => {
 
     step('T2: POST/api/huts [WRONG USER ROLE]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -61,7 +61,7 @@ describe('test Add hut other errors', () => {
 
     step('T1: POST/api/huts [USER NOT AUTHENTICATED]', async function () {
         await agent
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -98,7 +98,7 @@ describe('test Add hut other errors', () => {
 
     step('T3: POST/api/huts [name NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": 123,
                 "city": "Turin",
@@ -122,7 +122,7 @@ describe('test Add hut other errors', () => {
 
     step('T4: POST/api/huts [city NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": 123,
@@ -146,7 +146,7 @@ describe('test Add hut other errors', () => {
 
     step('T5: POST/api/huts [province NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -170,7 +170,7 @@ describe('test Add hut other errors', () => {
 
     step('T6: POST/api/huts [country NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -194,7 +194,7 @@ describe('test Add hut other errors', () => {
 
     step('T7: POST/api/huts [altitude NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -217,7 +217,7 @@ describe('test Add hut other errors', () => {
     });
     step('T8: POST/api/huts [description NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -240,7 +240,7 @@ describe('test Add hut other errors', () => {
     });
     step('T9: POST/api/huts [beds_number NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -263,7 +263,7 @@ describe('test Add hut other errors', () => {
     });
     step('T10: POST/api/huts [latitude NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -286,7 +286,7 @@ describe('test Add hut other errors', () => {
     });
     step('T11: POST/api/huts [longitude NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -310,7 +310,7 @@ describe('test Add hut other errors', () => {
 
     step('T12: POST/api/huts [phone_number NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -334,7 +334,7 @@ describe('test Add hut other errors', () => {
 
     step('T13: POST/api/huts [email NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -358,7 +358,7 @@ describe('test Add hut other errors', () => {
 
     step('T14: POST/api/huts [website NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -382,7 +382,7 @@ describe('test Add hut other errors', () => {
 
     step('T15: POST/api/huts [type NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
@@ -406,7 +406,7 @@ describe('test Add hut other errors', () => {
 
     step('T16: POST/api/huts [HUT ALREADY EXISTS]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Angrogna",
@@ -448,7 +448,7 @@ describe('test Add hut good', () => {
 
     step('T2: POST/api/huts [GOOD]', async function () {
         await authenticatedUser
-            .post('/api/hikes')
+            .post('/api/huts')
             .send({
                 "name": "Hut test",
                 "city": "Turin",
