@@ -322,7 +322,7 @@ describe('test Add hut other errors', () => {
                 "beds_number": 10,
                 "latitude": 15.7,
                 "longitude": 45.4,
-                "phone_number" : "",
+                "phone_number" : "333a",
                 "email" : "hut@hut.it",
                 "website" : "www.hut.com",
                 "type" : "alpine_hut"
@@ -464,6 +464,17 @@ describe('test Add hut good', () => {
                 "email" : "hut@hut.it",
                 "website" : "www.hut.com",
                 "type" : "alpine_hut"
+              })
+            .then(function (res) {
+                res.should.have.status(200);
+            });
+    });
+
+    step('T3: DELETE/api/huts [GOOD]', async function () {
+        await authenticatedUser
+            .delete('/api/huts')
+            .send({
+                "hutId": 5,
               })
             .then(function (res) {
                 res.should.have.status(200);

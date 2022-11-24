@@ -7,6 +7,7 @@ const Hut = require('../models/Hut');
 const { body, validationResult } = require('express-validator'); // validation middleware
 const HutDAO = require('../dao/HutDAO');
 const UserDAO = require('../dao/UserDAO');
+const { route } = require('./User');
 const router = express.Router();
 
 /////////////////////////////////////////////////////////////////////
@@ -52,7 +53,7 @@ router.post('/huts', [
                 if (exists === false) {
                     // Hut is created and added
                     await HutDAO.addHut(req.user.id, hut);
-                    return res.status(201).end();
+                    return res.status(200).end();
 
                 } else {
                     return res.status(422).json({ error: "An hut having the same location parameters already exists" });
@@ -70,6 +71,29 @@ router.post('/huts', [
 
 
     } catch (err) {
+        console.log(err);
+        return res.status(503).json({ error: err });
+    }
+});
+
+router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
+    try{
+        if(req.isAuthenticated){
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: "Fields validation failed!" });
+            }
+            
+            await HutDAO.deleteHut(req.body.hutId,req.user.id)
+            .then(() =>  res.status(200).end())
+            .catch(() => res.status(500).json({ error: `Database error` }));
+
+            
+        }else{
+            return res.status(401).json({ error: 'Not authorized' });
+        }
+    }catch(err){
         console.log(err);
         return res.status(503).json({ error: err });
     }
