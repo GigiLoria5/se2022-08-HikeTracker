@@ -3,7 +3,6 @@
  * @jest-environment node
  */
 
-
 import API from '../API.js';
 import { Hut } from '../Utils/Hut';
 
@@ -35,6 +34,10 @@ describe('frontend test: hut creation', () => {
         "3456789012", "hut3@hut.it", "www.hut1.com", "hiking_hut"
     );
 
+    it('setup', async () => {
+        const user = await API.logIn({email:"g.desantis@localguide.it", password:"password"});
+    })
+      
     it('T0: correct body', async () => {
         const res = await API.addHut(h0);
         expect(res).toBe(true);

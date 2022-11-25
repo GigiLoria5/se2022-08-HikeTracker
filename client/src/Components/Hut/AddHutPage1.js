@@ -10,8 +10,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import MapLocator from '../Map/MapLocator';
+import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../../Utils/GeoData'
 
 /**
  * 
@@ -31,10 +33,36 @@ export default function AddHutPage1(props) {
 
     const [position, setPosition] = useState({ lat: 45.06968, lng: 7.70493 }); // set default position
 
+    const [countries, setCountries] = useState([]);
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
+
     useEffect(() => {
         props.setLatitude(position.lat);
         props.setLongitude(position.lng);
     }, [position]);
+
+    useEffect(() => {
+        getCountries().then(cn => {
+            setCountries([...cn]);
+        });
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        if (props.country !== '') {
+            getProvincesByCountry(props.country).then(pv => {
+                setProvinces([...pv]);
+            })
+        }
+        if (props.province !== '') {
+            getCitiesByProvince(props.country, props.province).then(c => {
+                setCities([...c]);
+            })
+        }
+        
+        // eslint-disable-next-line
+    }, [country, province]);
 
     const theme = createTheme({
         palette: {
@@ -115,13 +143,56 @@ export default function AddHutPage1(props) {
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
 
                             {/*COUNTRY FIELD*/}
-                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} />
+{/*                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} /> */}
 
                             {/*PROVINCE FIELD*/}
-                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />
+{/*                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />  */}
 
                             {/*CITY FIELD*/}
-                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />
+{/*                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />  */}
+
+                            {/*COUNTRY FIELD*/}
+                                
+                            <Autocomplete
+                                    required
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={countries}
+                                    sx={{ m:1, width: '28ch' }}
+                                    onChange={e => {
+                                        e.preventDefault();
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        props.setCountry(name); props.setProvince(''); props.setCity('')}}
+                                    renderInput={(params) => <TextField required {...params}  label="Country" />}
+                                />
+                                <Autocomplete
+                                    required
+                                    disabled={!(props.country)}
+                                    disablePortal
+                                    id="combo-box-demo2"
+                                    options={provinces}
+                                    key={props.country}
+                                    sx={{ m:1, width: '28ch' }}
+                                    onChange={e => {
+                                        e.preventDefault(); 
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        props.setProvince(name); props.setCity('')}}
+                                    renderInput={(params) => <TextField required {...params}  label="Province/Region" />}
+                                />
+                                <Autocomplete
+                                    required
+                                    disabled={!(props.country&&props.province)}
+                                    disablePortal
+                                    id="combo-box-demo3"
+                                    options={cities}
+                                    key={[props.province, props.country]}
+                                    sx={{ m:1, width: '28ch' }}
+                                    onChange={e => {
+                                        e.preventDefault();
+                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                        props.setCity(name)}} 
+                                    renderInput={(params) => <TextField required {...params} label="City"/>}
+                                />
 
                         </Stack>
 
