@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import MapLocator from '../Map/MapLocator';
-import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../../Utils/GeoData'
+import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData'
 
 /**
  * 
@@ -60,9 +60,9 @@ export default function AddHutPage1(props) {
                 setCities([...c]);
             })
         }
-        
+
         // eslint-disable-next-line
-    }, [country, province]);
+    }, [props.country, props.province]);
 
     const theme = createTheme({
         palette: {
@@ -120,14 +120,14 @@ export default function AddHutPage1(props) {
                             <br />GPS coordinates<br />
                         </Typography>
 
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} alignItems={'center'}>
 
                             {/*LATITUDE FIELD*/}
                             <TextField variant="outlined" required label="Latitude" type="number" sx={{ width: 'fit-content' }} value={props.latitude}
                                 onChange={ev => { props.setLatitude(ev.target.value); setPosition({ lat: ev.target.value, lng: position.lng }) }} />
 
                             {/*LONGITUDE FIELD*/}
-                            <TextField variant="outlined" required label="Longitude" type="number" sx={{ width: 'fit-content' }} value={props.longitude} 
+                            <TextField variant="outlined" required label="Longitude" type="number" sx={{ width: 'fit-content' }} value={props.longitude}
                                 onChange={ev => { props.setLongitude(ev.target.value); setPosition({ lat: position.lat, lng: ev.target.value }) }} />
 
                             {/*ALTITUDE FIELD*/}
@@ -140,66 +140,70 @@ export default function AddHutPage1(props) {
                             <br />Geographic information<br />
                         </Typography>
 
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                        <Stack direction={{ xs: 'column', sm: 'column' }} spacing={{ xs: 1, sm: 2, md: 4 }} alignItems={'center'}>
 
                             {/*COUNTRY FIELD*/}
-{/*                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} /> */}
+                            {/*                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} /> */}
 
                             {/*PROVINCE FIELD*/}
-{/*                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />  */}
+                            {/*                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />  */}
 
                             {/*CITY FIELD*/}
-{/*                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />  */}
+                            {/*                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />  */}
 
                             {/*COUNTRY FIELD*/}
-                                
+
                             <Autocomplete
-                                    required
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={countries}
-                                    sx={{ m:1, width: '28ch' }}
-                                    onChange={e => {
-                                        e.preventDefault();
-                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
-                                        props.setCountry(name); props.setProvince(''); props.setCity('')}}
-                                    renderInput={(params) => <TextField required {...params}  label="Country" />}
-                                />
-                                <Autocomplete
-                                    required
-                                    disabled={!(props.country)}
-                                    disablePortal
-                                    id="combo-box-demo2"
-                                    options={provinces}
-                                    key={props.country}
-                                    sx={{ m:1, width: '28ch' }}
-                                    onChange={e => {
-                                        e.preventDefault(); 
-                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
-                                        props.setProvince(name); props.setCity('')}}
-                                    renderInput={(params) => <TextField required {...params}  label="Province/Region" />}
-                                />
-                                <Autocomplete
-                                    required
-                                    disabled={!(props.country&&props.province)}
-                                    disablePortal
-                                    id="combo-box-demo3"
-                                    options={cities}
-                                    key={[props.province, props.country]}
-                                    sx={{ m:1, width: '28ch' }}
-                                    onChange={e => {
-                                        e.preventDefault();
-                                        const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
-                                        props.setCity(name)}} 
-                                    renderInput={(params) => <TextField required {...params} label="City"/>}
-                                />
+                                required
+                                disablePortal
+                                id="combo-box-demo"
+                                options={countries}
+                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                onChange={e => {
+                                    e.preventDefault();
+                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    props.setCountry(name); props.setProvince(''); props.setCity('')
+                                }}
+                                renderInput={(params) => <TextField required {...params} label="Country" />}
+                            />
+                            <Autocomplete
+                                required
+                                disabled={!(props.country)}
+                                disablePortal
+                                id="combo-box-demo2"
+                                options={provinces}
+                                key={props.country}
+                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                onChange={e => {
+                                    e.preventDefault();
+                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    props.setProvince(name); props.setCity('')
+                                }}
+                                renderInput={(params) => <TextField required {...params} label="Province/Region" />}
+                            />
+                            <Autocomplete
+                                required
+                                disabled={!(props.country && props.province)}
+                                disablePortal
+                                id="combo-box-demo3"
+                                options={cities}
+                                key={[props.province, props.country]}
+                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                onChange={e => {
+                                    e.preventDefault();
+                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    props.setCity(name)
+                                }}
+                                renderInput={(params) => <TextField required {...params} label="City" />}
+                            />
+                            {/*ADDRESS FIELD*/}
+                            <Box display="flex" justifyContent="center" alignItems="center" marginTop={3} marginBottom={3}>
+                                <TextField variant="outlined" required label="Address" sx={{ width: 'fit-content', minWidth: '28ch' }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
+                            </Box>
 
                         </Stack>
 
-                        {/*ADDRESS FIELD*/}
-                        <Box display="flex" justifyContent="center" alignItems="center" marginTop={3} marginBottom={3}>
-                            <TextField variant="outlined" required label="Address" sx={{ width: 'fit-content' }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
-                        </Box>
+
 
                         <Grid container marginTop={3} justifyContent="center">
                             <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
