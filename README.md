@@ -402,7 +402,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 - Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates
   - _altitude_ is in meters
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
-- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates, user_id
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
