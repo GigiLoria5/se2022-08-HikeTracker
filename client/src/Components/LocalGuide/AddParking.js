@@ -14,6 +14,9 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer } from '../../Utils/InputSanitizer';
+import {addParking} from '../../API/Parking'
+import { Parking } from '../../Utils/Parking';
+import { useNavigate } from "react-router-dom";
 
 
 const zoomLevel = 15;
@@ -79,13 +82,16 @@ function AddParking() {
         },
     });
 
+    const navigate = useNavigate();
+
+
     const handleSubmission = async (ev) => {
         ev.preventDefault();
         if(!country || !province || !city || !address){
             setMessage("Parking lot geographical info missing");
             return;
         }
-        
+        addParking(<Parking city={city} province={province} country={country} longitude={position.lng} latitude={position.lat} address={address}/>).then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
         
     };
 
@@ -187,7 +193,7 @@ function AddParking() {
                                                 setCity(name)}} 
                                             renderInput={(params) => <TextField {...params} label="City"/>}
                                         />
-                                        <TextField variant="outlined" color='primary' label="Address" sx={{ width: '28ch', m:1, mb:1 }}  value={address}  /> 
+                                        <TextField variant="outlined" color='primary' label="Address" sx={{ width: '28ch', m:1, mb:1 }}  value={address} onChange={(e) => setAddress(e.target.value)}  /> 
 
                                     </Stack>
                                 </Grid>
