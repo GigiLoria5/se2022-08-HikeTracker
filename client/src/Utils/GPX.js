@@ -26,7 +26,10 @@ const parseGPX = async (gpxFile) => {
     gpx.parse(text);
     const t1 = gpx.tracks[0].points[gpx.tracks[0].points.length-1].time;
     const t2 = gpx.tracks[0].points[0].time;
-    const expectedTime = (t1.getTime()-t2.getTime())/3600000;
+    let expectedTime = 0;
+    if(t1 != null && t2 != null){
+        expectedTime = (t1.getTime()-t2.getTime())/3600000;
+    }
     return new GPXData(
         gpx.tracks[0].distance.total/1000,
         gpx.tracks[0].points[0].lat,

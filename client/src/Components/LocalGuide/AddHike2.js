@@ -49,9 +49,12 @@ function AddHike2() {
     const [refPointLon, setRefPointLon] = useState(0);
     const [addingRefPoint, setAddingRefPoint] = useState(false);
     const [editingRefPoint, setEditingRefPoint] = useState(false);
+    const [expectedTime, setExpectedTime] = useState(0);
+    const [hh, setHH] = useState(0);
+    const [mm, setMM] = useState(0);
 
     const [points, setPoints] = useState([]);
-    const {ascent, length, start_point, end_point, expectedTime, selectedFile, peak_altitude} = location.state;
+    const {ascent, length, start_point, end_point, computedExpectedTime, selectedFile, peak_altitude} = location.state;
 
 
     const Description = () => {
@@ -82,6 +85,12 @@ function AddHike2() {
         });
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        const time = Number(hh)+(Number(mm)/60)
+        setExpectedTime(time)
+        console.log(time);
+    }, [hh, mm]);
 
     useEffect(() => {
         if (country !== '') {
@@ -281,7 +290,31 @@ function AddHike2() {
                                 <TextField margin="normal" variant="outlined" label="Length"    sx={{ width: '30ch', maxWidth: '30ch' }}InputProps={{ endAdornment: <InputAdornment position="end">km</InputAdornment>}}  value={length.toFixed(2)} disabled />
                                 
                                 {/*TIME FIELD*/}
-                                <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                {computedExpectedTime > 0 ?
+                                    <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                    :
+                                    <Stack direction="row" justifyContent="center" alignItems="center">
+                                        <TextField 
+                                            value={hh}
+                                            onChange={(e) => {
+                                            const regex = /^[0-9\b]+$/;
+                                            if (regex.test(e.target.value)) {
+                                                if (e.target.value < 0) setHH(0);
+                                                else setHH(e.target.value);
+                                            }
+                                        }} margin="normal" type="number" InputProps={{  endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step:1, type:"number" }}} sx={{width: '12ch', maxWidth: '13ch', m:1}}/>
+                                        <TextField 
+                                            value={mm}
+                                            onChange={(e) => {
+                                            const regex = /^[0-9\b]+$/;
+                                            if (regex.test(e.target.value)) {
+                                                if(e.target.value > 59) setMM(59);
+                                                else if (e.target.value < 0) setMM(0);
+                                                else setMM(e.target.value);
+                                            }
+                                        }}margin="normal" type="number" InputProps={{  endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step:1, type:"number" }}} sx={{width: '13ch', maxWidth: '13ch', m:1 }}step="1" />
+                                    </Stack>
+                                }
                                 
                                 {/*ASCENT FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Total ascent" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment>}} value={ascent.toFixed(2)} disabled  />                             
@@ -309,7 +342,7 @@ function AddHike2() {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setCountry(name); setProvince(''); setCity('')}}
-                                    renderInput={(params) => <TextField {...params}  label="Country" />}
+                                    renderInput={(params) => <TextField required {...params}  label="Country" />}
                                 />
                                 <Autocomplete
                                     required
@@ -323,7 +356,7 @@ function AddHike2() {
                                         e.preventDefault(); 
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setProvince(name); setCity('')}}
-                                    renderInput={(params) => <TextField {...params}  label="Province/Region" />}
+                                    renderInput={(params) => <TextField required {...params}  label="Province/Region" />}
                                 />
                                 <Autocomplete
                                     required
@@ -337,7 +370,7 @@ function AddHike2() {
                                         e.preventDefault();
                                         const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
                                         setCity(name)}} 
-                                    renderInput={(params) => <TextField {...params} label="City"/>}
+                                    renderInput={(params) => <TextField required {...params} label="City"/>}
                                 />
                             </Stack>
                             

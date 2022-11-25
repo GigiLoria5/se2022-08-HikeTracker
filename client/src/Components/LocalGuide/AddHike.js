@@ -153,7 +153,7 @@ function AddHike() {
                     type:endPointType,
                     value:endPointValue
                     },
-                expectedTime:expectedTime,
+                computedExpectedTime:expectedTime,
                 peak_altitude:peakAltitude,
                 selectedFile:selectedFile
             }
