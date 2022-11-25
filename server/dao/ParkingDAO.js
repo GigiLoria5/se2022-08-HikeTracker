@@ -84,3 +84,16 @@ exports.deleteParking = (id, user_id) => {
         });
     });
 };
+
+exports.deleteParkingByAddress = (address, user_id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM parking_lot WHERE address = ? AND user_id = ?';
+        db.run(sql, [address, user_id], function (err) {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+};

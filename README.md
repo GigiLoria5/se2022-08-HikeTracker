@@ -392,6 +392,26 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "error": "message text"
   }
   ```
+
+- DELETE `/api/parking/address/:address`
+
+  - Description: Delete a parking lot by an address
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```  
+  
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token

@@ -73,7 +73,7 @@ router.post('/parking', [
 /////////////////////////////////////////////////////////////////////
 
 // Delete a parking lot by an id
-// DELETE /api/parking
+// DELETE /api/parking/:id
 router.delete('/parking/:id',[
     check('id').exists().isInt(),
 ], async (req, res) => {
@@ -87,6 +87,32 @@ router.delete('/parking/:id',[
             }
 
             await ParkingDAO.deleteParking(req.params.id, req.user.id)
+                .then(() =>  res.status(200).end())
+                .catch(() => res.status(500).json({ error: `Database error` }));
+
+        } else{
+            return res.status(401).json({ error: 'Not authorized' });
+        }
+    } catch(err) {
+        return res.status(503).json({ error: err });
+    }
+});
+
+// Delete a parking lot by an address
+// DELETE /api/parking/address/:address
+router.delete('/parking/address/:address',[
+    check('address').exists().isString(),
+], async (req, res) => {
+
+    try{
+        if(req.isAuthenticated()){
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: "Params validation failed!" });
+            }
+
+            await ParkingDAO.deleteParkingByAddress(req.params.address, req.user.id)
                 .then(() =>  res.status(200).end())
                 .catch(() => res.status(500).json({ error: `Database error` }));
 
