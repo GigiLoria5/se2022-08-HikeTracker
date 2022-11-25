@@ -10,7 +10,7 @@ const APIURL = 'http://localhost:3001';
 
 describe('frontend test: hut creation', () => {
     
-    const p0 = new Parking(undefined, "Turin", "Turin", "Italy", "12.3456", "12.3456", "Corso Vittorio Emanuele II");
+    const p0 = new Parking(undefined, "Turin", "Turin", "Italy", "0", "12.3456", "Corso Vittorio Emanuele II");
     const p1 = new Parking(undefined, "Turin", "Turin", "Italy", "12.0000", "65.4321", ""); //missing address
     const p2 = new Parking(undefined, "", "Turin", "Italy", "65.4321", "65.4321", "Corso Castelfidardo"); //missing city
     const p3 = new Parking(undefined, "", "", "Italy", "65.4567", "45.4321", "Corso Duca degli Abruzzi"); //missing city and province
@@ -27,7 +27,7 @@ describe('frontend test: hut creation', () => {
 
     it('T1: missing address', async () => {
         try{
-            const res = await API.addParking(p1);;
+            const res = await API.addParking(p1);
         }
         catch (err){
             expect(err);
@@ -37,7 +37,7 @@ describe('frontend test: hut creation', () => {
 
     it('T2: missing city', async () => {
         try{
-            const res = await API.addParking(p2);;
+            const res = await API.addParking(p2);
         }
         catch (err){
             expect(err);
@@ -47,7 +47,7 @@ describe('frontend test: hut creation', () => {
 
     it('T3: missing city and province', async () => {
         try{
-            const res = await API.addParking(p3);;
+            const res = await API.addParking(p3);
         }
         catch (err){
             expect(err);
@@ -57,12 +57,21 @@ describe('frontend test: hut creation', () => {
 
     it('T4: missing city, province and country', async () => {
         try{
-            const res = await API.addParking(p4);;
+            const res = await API.addParking(p4);
         }
         catch (err){
             expect(err);
             console.log(err);
         }  
+    })
+
+    it('delete stuff created', async () => {
+        try{
+            await API.deleteParking(p0.address);
+        }
+        catch (err){
+            console.log(err);
+        } 
     })
 
 });
