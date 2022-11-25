@@ -12,8 +12,6 @@ import Stack from '@mui/material/Stack';
 import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../../Utils/GeoData'
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-
-import { useNavigate } from "react-router-dom";
 import MapLocator from '../Map/MapLocator';
 
 const zoomLevel = 15;
@@ -31,8 +29,10 @@ function AddParking() {
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
-    const [gPSlat, setgPSlat] = useState("");
-    const [gPSlon, setgPSlon] = useState(""); 
+    const [gPSlat, setgPSlat] = useState(initialLat);
+    const [gPSlon, setgPSlon] = useState(initialLng); 
+    const [address, setAddress] = useState(""); 
+
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -40,9 +40,6 @@ function AddParking() {
             setCountries([...cn]);
         });
 
-        /*getPoints(selectedFile).then(a => {
-            setPoints([...a]);
-        });*/
         // eslint-disable-next-line
     }, []);
 
@@ -75,10 +72,6 @@ function AddParking() {
         },
     });
 
-
-
-    const navigate = useNavigate();
-
     const handleSubmission = async (ev) => {
         ev.preventDefault();
         if(!country || !province || !city){
@@ -86,6 +79,12 @@ function AddParking() {
             return;
         }
         
+    };
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        setgPSlat(position.lat)
+        setgPSlon(position.lng)
     };
 
 
@@ -102,7 +101,7 @@ function AddParking() {
                 
                 <ThemeProvider theme={theme} >
                     <Grid xs={12}>
-                        <Typography variant="h4" margin={1} gutterBottom sx={thm}>
+                        <Typography variant="h4" margin={2} marginTop={4} gutterBottom sx={thm}>
                             ADD A PARKING LOT
                         </Typography>
                     </Grid>
@@ -113,25 +112,25 @@ function AddParking() {
                             <Grid container>
 
                                 <Grid xs={12} md={6} sx={thm}>
-                                    <Typography variant="h5" sx={thm} margin={2} align='center'>
+                                    <Typography variant="h5" sx={thm} margin={1} marginTop={4} align='center'>
                                         Click on the map to add a parking lot
                                     </Typography>
 
                                     {/*MAP*/}
-                                    <Box component="div" width={'100%'}>
-                                        <Box component="div" sx={{ maxWidth: "300px", marginTop: 2 }}>
-                                            <MapLocator position={position} setPosition={setPosition} radius={null} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} />
+                                    <Box component="div" width={'100%'} align='center'>
+                                        <Box component="div" sx={{ maxWidth: "40ch", marginTop: 2 }}>
+                                            <MapLocator position={position} setPosition={setPosition} radius={null} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel}/>
                                         </Box>
                                     </Box>
                                     
-                                    <Stack direction='row' justifyContent="center" alignItems="center">
+                                    <Stack direction='row' justifyContent="center" alignItems="center" marginTop={2}>
                                         <TextField variant="outlined" color='primary' label="Latitude" sx={{ width: '13ch', m:1, mb:1 }}  value={gPSlat} disabled /> 
                                         <TextField variant="outlined" color='primary' label="Longitude" sx={{ width: '13ch', m:1, mb:1 }} value={gPSlon} disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
 
-                                    <Stack direction='column' sx={{ mb:2, m:1 }}>
+                                    <Stack direction='column' sx={{ mb:2, m:1 }}  align='center'>
                                         {/*COUNTRY FIELD*/}
                                         <Autocomplete
                                             required
@@ -175,6 +174,8 @@ function AddParking() {
                                                 setCity(name)}} 
                                             renderInput={(params) => <TextField {...params} label="City"/>}
                                         />
+                                        <TextField variant="outlined" color='primary' label="Address" sx={{ width: '28ch', m:1, mb:1 }}  value={address}  /> 
+
                                     </Stack>
                                 </Grid>
                             </Grid>
