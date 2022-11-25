@@ -31,7 +31,15 @@ function AddParking() {
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]); 
     const [address, setAddress] = useState(""); 
+    const [width, setWidth] = React.useState(window.innerWidth);
 
+    const updateWidth = () => {
+        setWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        window.addEventListener("resize",updateWidth);
+    });
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -115,7 +123,7 @@ function AddParking() {
                             <Grid container>
 
                                 <Grid xs={12} md={6} sx={thm}>
-                                    <Typography variant="h5" sx={thm} margin={1} marginTop={4} align='center'>
+                                    <Typography variant="h6" sx={thm} margin={1} marginTop={4} align='center'>
                                         Click on the map to add a parking lot
                                     </Typography>
 
@@ -132,6 +140,7 @@ function AddParking() {
                                     </Stack>
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
+                                    {width < 900 ? <Grid></Grid> : <Grid marginTop={13}></Grid>}
 
                                     <Stack direction='column' sx={{ mb:2, m:1 }}  align='center'>
                                         {/*COUNTRY FIELD*/}
@@ -155,7 +164,7 @@ function AddParking() {
                                             id="combo-box-demo2"
                                             options={provinces}
                                             key={country}
-                                            sx={{ m:1, width: '28ch' }}
+                                            sx={{ m:1.25, width: '28ch' }}
                                             onChange={e => {
                                                 e.preventDefault(); 
                                                 const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
@@ -170,7 +179,7 @@ function AddParking() {
                                             id="combo-box-demo3"
                                             options={cities}
                                             key={[province, country]}
-                                            sx={{ m:1, width: '28ch' }}
+                                            sx={{ m:1.25, width: '28ch' }}
                                             onChange={e => {
                                                 e.preventDefault();
                                                 const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
@@ -188,8 +197,8 @@ function AddParking() {
 
 {/****************************************************SUBMIT BUTTONS********************************************************/}     
                         <Stack direction="row" justifyContent="center" alignItems="center">
-                            <Button sx={{ m:1, mb:2, mt:2, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                            <Button sx={{ m:1, mb:2, mt:2, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
+                            <Button sx={{ m:1, mb:4, mt:4, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                            <Button sx={{ m:1, mb:4, mt:4, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
                         </Stack>
 
                         </Paper>
