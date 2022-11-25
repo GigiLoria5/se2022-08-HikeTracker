@@ -110,6 +110,9 @@ const getPoints = async (gpxFile) => {
     const text = await gpxFile.text();
     const gpx = new gpxParser();
     gpx.parse(text);
+    if(gpx.tracks.length == 0){
+        return gpx.waypoints.map(p => [p.lat, p.lon]);
+    }
     const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
     return positions;
 }
