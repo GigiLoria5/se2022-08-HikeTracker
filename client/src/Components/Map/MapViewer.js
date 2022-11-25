@@ -7,7 +7,6 @@ import { Icon } from 'leaflet';
 
 function LocationMarker(props) {
     const { startPoint, endPoint, refPoints } = props;
-    console.log(startPoint);
 
     return (
         <>

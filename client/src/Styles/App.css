@@ -184,3 +184,8 @@ svg {
 .MuiRating-iconFilled {
     opacity: 1;
 }
+
+/* Hike Details */
+.div-subtitle svg {
+    width: auto;
+}

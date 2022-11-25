@@ -4,9 +4,7 @@ import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
-import DifficultyIcon1 from '../../Assets/Difficulty/DifficultyIcon1';
-import DifficultyIcon2 from '../../Assets/Difficulty/DifficultyIcon2';
-import DifficultyIcon3 from '../../Assets/Difficulty/DifficultyIcon3';
+import { customDifficultyIcons } from '../../Utils/CustomDifficultyIcons';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconHover .MuiSvgIcon-root': {
@@ -14,20 +12,7 @@ const StyledRating = styled(Rating)(({ theme }) => ({
     },
 }));
 
-const customIcons = {
-    1: {
-        icon: <DifficultyIcon1 />,
-        label: 'Tourist',
-    },
-    2: {
-        icon: <DifficultyIcon2 />,
-        label: 'Hiker',
-    },
-    3: {
-        icon: <DifficultyIcon3 />,
-        label: 'Professional',
-    },
-};
+const customIcons = customDifficultyIcons;
 
 function IconContainer(props) {
     const { value, ...other } = props;
