@@ -24,6 +24,26 @@ exports.getParkingLotById = (id) => {
     });
 };
 
+exports.getAllParkingLots = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM parking_lot`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const parking = rows.map((row => ({
+                    id: row.id,
+                    city: row.city,
+                    province: row.province,
+                    country: row.country,
+                    address: row.address,
+                })));
+                resolve(parking);
+            }
+        });
+    });
+};
+
 exports.checkExisting = (parking) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM parking_lot WHERE (coordinates = ? OR (city = ? AND province = ? AND country = ? AND address = ?))';
