@@ -42,7 +42,29 @@ svg {
     margin-top: auto;
     margin-bottom: auto;
 }
+.container-full-page {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
+.flex-font {
+    width: 100%;
+    overflow: scroll;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.flex-font::-webkit-scrollbar {
+    display: none;
+}
+.leaflet-container svg {
+    height: auto;
+    width: auto
+}
 /* Navbar */
 
 .box-end {

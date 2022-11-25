@@ -11,6 +11,7 @@ import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
+import AddParking from "./Components/LocalGuide/AddParking"
 
 function App() {
     /* A little Router trick */
@@ -91,6 +92,9 @@ function Root() {
                 </Route>
                 <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
+                </Route>
+                <Route path='/local-guide-add-parking'  element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddParking />} />   
                 </Route>
             </Route>
 
