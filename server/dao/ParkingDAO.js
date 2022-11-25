@@ -39,10 +39,10 @@ exports.checkExisting = (parking) => {
     });
 };
 
-exports.addParking = (parking) => {
+exports.addParking = (parking, user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO parking_lot(city, province, country, address, coordinates) VALUES(?, ?, ?, ?, ?)';
-        db.get(sql, [parking.city, parking.province, parking.country, parking.address, parking.coordinates], function (err, row) {
+        const sql = 'INSERT INTO parking_lot(city, province, country, address, coordinates, user_id) VALUES(?, ?, ?, ?, ?, ?)';
+        db.get(sql, [parking.city, parking.province, parking.country, parking.address, parking.coordinates, user_id], function (err, row) {
             if(err) {
                 reject(err);
                 return;
@@ -52,10 +52,10 @@ exports.addParking = (parking) => {
     });
 };
 
-exports.deleteParking = (id) => {
+exports.deleteParking = (id, user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM parking_lot WHERE id = ?';
-        db.run(sql, [id], function (err) {
+        const sql = 'DELETE FROM parking_lot WHERE id = ? AND user_id = ?';
+        db.run(sql, [id, user_id], function (err) {
             if(err) {
                 reject(err);
                 return;

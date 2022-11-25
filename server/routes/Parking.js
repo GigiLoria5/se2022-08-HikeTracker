@@ -45,7 +45,7 @@ router.post('/parking', [
                 const exists = await ParkingDAO.checkExisting(parking);
                 if (exists === false) {
                     // Parking lot is created and added
-                    await ParkingDAO.addParking(parking);
+                    await ParkingDAO.addParking(parking, req.user.id);
                     return res.status(200).end();
 
                 } else {
@@ -86,7 +86,7 @@ router.delete('/parking/:id',[
                 return res.status(422).json({ error: "Params validation failed!" });
             }
 
-            await ParkingDAO.deleteParking(req.params.id)
+            await ParkingDAO.deleteParking(req.params.id, req.user.id)
                 .then(() =>  res.status(200).end())
                 .catch(() => res.status(500).json({ error: `Database error` }));
 
