@@ -344,7 +344,6 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - POST `/api/huts`
 
-  - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hut
   - Permissions allowed: Local guide
   - Request body: Hut description
@@ -375,6 +374,58 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     - `422 Fields validation failed` or `422 An hut having the same location parameters already exists` (Wrong body content)
     - `404 User not found` (specified user not found)
     - `500 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/huts`
+
+  - Description: Delete an hut by its id
+  - Permissions allowed: Local guide
+  - Request body: Hut id
+
+  ```
+  {
+      "hutId": 5,
+  }
+  ``` 
+  
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```  
+
+- DELETE `/api/huts/name`
+
+  - Description: Delete an hut by its name
+  - Permissions allowed: Local guide
+  - Request body: Hut name
+
+  ```
+  {
+      "hutName": "Hut name"
+  }
+  ``` 
+  
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```

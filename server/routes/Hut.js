@@ -76,6 +76,10 @@ router.post('/huts', [
     }
 });
 
+/////////////////////////////////////////////////////////////////////
+//////                        DELETE                           //////
+/////////////////////////////////////////////////////////////////////
+
 router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
     try{
         if(req.isAuthenticated()){
