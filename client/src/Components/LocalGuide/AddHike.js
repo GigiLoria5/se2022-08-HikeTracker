@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import UiLink from '@mui/material/Link'
 
 import Alert from '@mui/material/Alert';
 import {checkValidGPX, parseGPX} from '../../Utils/GPX'
@@ -68,6 +69,9 @@ function AddHike() {
             },
             third: {
                 main: "#ffffff"
+            },
+            fourth: {
+                main: "#701f1f"
             }
         },
     });
@@ -198,6 +202,14 @@ function AddHike() {
                             <Typography variant="h5" sx={thm} margin="normal">
                                 <br />Please upload a GPX file<br /><br />
                             </Typography>
+                            <Stack direction="row">
+                                <Typography sx={{ fontSize: 14 }} href="https://www.gpxgenerator.com" color="error">
+                                    Don't have one? You can create it on 
+                                    <UiLink sx={{ml:.5}}underline="always" color="error" target="_blank" rel="noopener" rel="noreferrer" href="https://www.gpxgenerator.com">
+                                    gpxparser
+                                    </UiLink>
+                                </Typography>
+                            </Stack>
                             <Divider style={{width:'100%'}} />
                             <Button sx={{mt:3}} variant="contained" component="label" onChange={changeHandler}>
                                 Upload

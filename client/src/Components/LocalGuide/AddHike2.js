@@ -73,7 +73,6 @@ function AddHike2() {
     }
     
     
-
     useEffect(() => {
         window.scrollTo(0, 0)
         getCountries().then(cn => {
