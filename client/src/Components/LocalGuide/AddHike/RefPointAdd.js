@@ -46,7 +46,7 @@ function RefPointAdd(props){
                 sx={{ width: '30ch', maxWidth: '30ch' }}
                 onChange={e => {
                     setRefPointType(e.target.value);
-                    if(e.target.value=="gps"){
+                    if(e.target.value==="gps"){
                         setRefPointValue("gps");
                     }
                     else{

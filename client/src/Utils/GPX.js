@@ -45,7 +45,7 @@ const parseGPX = async (gpxFile) => {
     const gpx = new gpxParser();
     gpx.parse(text);
     console.log(gpx);
-    if(gpx.tracks.length == 0){
+    if(gpx.tracks.length === 0){
         return parseGPXnoPoints(gpx.waypoints);
     }
     const t1 = gpx.tracks[0].points[gpx.tracks[0].points.length-1].time;
@@ -110,7 +110,7 @@ const getPoints = async (gpxFile) => {
     const text = await gpxFile.text();
     const gpx = new gpxParser();
     gpx.parse(text);
-    if(gpx.tracks.length == 0){
+    if(gpx.tracks.length === 0){
         return gpx.waypoints.map(p => [p.lat, p.lon]);
     }
     const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
