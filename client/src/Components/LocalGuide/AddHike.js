@@ -205,7 +205,7 @@ function AddHike() {
                             <Stack direction="row">
                                 <Typography sx={{ fontSize: 14 }} href="https://www.gpxgenerator.com" color="error">
                                     Don't have one? You can create it on 
-                                    <UiLink sx={{ml:.5}}underline="always" color="error" target="_blank" rel="noopener" rel="noreferrer" href="https://www.gpxgenerator.com">
+                                    <UiLink sx={{ml:.5}}underline="always" color="error" target="_blank" rel="noopener" href="https://www.gpxgenerator.com">
                                     gpxparser
                                     </UiLink>
                                 </Typography>

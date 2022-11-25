@@ -228,7 +228,7 @@ function AddHike2() {
             description,
             ascent,
             length,
-            expectedTime,
+            computedExpectedTime > 0 ? computedExpectedTime:expectedTime,
             difficultyFromState(difficulty),
             start_point,
             end_point,
@@ -290,7 +290,7 @@ function AddHike2() {
                                 
                                 {/*TIME FIELD*/}
                                 {computedExpectedTime > 0 ?
-                                    <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(expectedTime)} disabled  />                      
+                                    <TextField margin="normal" variant="outlined" label="Expected time" sx={{width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>}} value={timeToHHMM(computedExpectedTime)} disabled  />                      
                                     :
                                     <Stack direction="row" justifyContent="center" alignItems="center">
                                         <TextField 
