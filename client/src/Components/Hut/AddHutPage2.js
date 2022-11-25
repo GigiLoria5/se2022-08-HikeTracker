@@ -94,13 +94,13 @@ export default function AddHutPage2(props) {
                         </Typography>
 
                         <Grid container justifyContent="center">
-                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                            <Stack direction={{ xs: 'column', sm: 'column' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
 
                                 {/*NAME FIELD*/}
                                 <TextField variant="outlined" required label="Name" sx={{ width: 'fit-content' }} value={props.hutName} onChange={ev => props.setHutName(ev.target.value)} />
 
                                 {/*TYPE FIELD*/}
-                                <FormControl required sx={{ width: 'fit-content', minWidth: '22ch' }} >
+                                <FormControl required sx={{ width: 'fit-content', minWidth: '25ch' }} >
                                     <InputLabel>Type</InputLabel>
                                     <Select
                                         value={props.type}

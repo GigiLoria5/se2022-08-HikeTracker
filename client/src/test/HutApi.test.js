@@ -46,14 +46,22 @@ describe('frontend test: hut creation', () => {
     })
 
     it('T2: missing mandatory field', async () => {
-        const res = await API.addHut(h2);
-        expect(typeof res).toBe('string');  
-        console.log(res)
+        try{
+            await API.addHut(h2);
+        }
+        catch (err){
+            expect(err);
+            console.log(err);
+        }  
     })
 
     it('T3: wrong-type field', async () => {
-        const res = await API.addHut(h3);
-        expect(typeof res).toBe('string');  
-        console.log(res)
+        try{
+            await API.addHut(h3);
+        }
+        catch (err){
+            expect(err);
+            console.log(err);
+        } 
     })
 });

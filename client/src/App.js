@@ -7,7 +7,7 @@ import SignUpForm from "./Components/SignupForm";
 import Homepage from "./Components/Homepage"
 import LocalGuidePage from "./Components/LocalGuidePage"
 import AddHike from "./Components/AddHike"
-import AddHut from './Components/AddHut';
+import AddHut from './Components/Hut/AddHut';
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';

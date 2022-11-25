@@ -3,8 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import { useNavigate } from 'react-router-dom';
-import API from '../API';
-import { Hut, validateHut } from '../Utils/Hut';
+import API from '../../API';
+import { Hut, validateHut } from '../../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -79,8 +79,8 @@ export default function AddHut(props) {
             description,
             bedsNumber,
             undefined, //opening period - non static information
-            longitude,
-            latitude,
+            longitude.toString(),
+            latitude.toString(),
             phoneNumber,
             email,
             website,

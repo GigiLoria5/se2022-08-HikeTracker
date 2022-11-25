@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Paper from "@mui/material/Paper";
@@ -10,8 +11,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
-
-import Map from './Map';
+import MapLocator from '../Map/MapLocator';
 
 /**
  * 
@@ -28,6 +28,13 @@ import Map from './Map';
  * 
  */
 export default function AddHutPage1(props) {
+
+    const [position, setPosition] = useState({ lat: 45.06968, lng: 7.70493 }); // set default position
+
+    useEffect(() => {
+        props.setLatitude(position.lat);
+        props.setLongitude(position.lng);
+    }, [position]);
 
     const theme = createTheme({
         palette: {
@@ -62,7 +69,7 @@ export default function AddHutPage1(props) {
     };
 
     return (
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="m">
 
                 {/* Form */}
@@ -77,7 +84,7 @@ export default function AddHutPage1(props) {
 
                         {/* MAP */}
                         <Box>
-                            <Map latitude={props.latitude} longitude={props.longitude} />
+                            <MapLocator position={position} setPosition={setPosition} radius={0} height={'50vh'} width={'100'} initialLat={props.latitude} initialLng={props.longitude} zoomLevel={11} />
                         </Box>
 
                         {/* Geographic informations */}
@@ -88,13 +95,15 @@ export default function AddHutPage1(props) {
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
 
                             {/*LATITUDE FIELD*/}
-                            <TextField variant="outlined" required label="Latitude" type="number" sx={{ width: 'fit-content'}} value={props.latitude} onChange={ev => props.setLatitude(ev.target.value)} />
+                            <TextField variant="outlined" required label="Latitude" type="number" sx={{ width: 'fit-content' }} value={props.latitude}
+                                onChange={ev => { props.setLatitude(ev.target.value); setPosition({ lat: ev.target.value, lng: position.lng }) }} />
 
                             {/*LONGITUDE FIELD*/}
-                            <TextField variant="outlined" required label="Longitude" type="number" sx={{ width: 'fit-content'}} value={props.longitude} onChange={ev => props.setLongitude(ev.target.value)} />
+                            <TextField variant="outlined" required label="Longitude" type="number" sx={{ width: 'fit-content' }} value={props.longitude} 
+                                onChange={ev => { props.setLongitude(ev.target.value); setPosition({ lat: position.lat, lng: ev.target.value }) }} />
 
                             {/*ALTITUDE FIELD*/}
-                            <TextField variant="outlined" required label="Altitude" type="number" sx={{ width: 'fit-content'}} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => props.setAltitude(ev.target.value)} />
+                            <TextField variant="outlined" required label="Altitude" type="number" sx={{ width: 'fit-content' }} InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => props.setAltitude(ev.target.value)} />
 
                         </Stack>
 
@@ -106,19 +115,19 @@ export default function AddHutPage1(props) {
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
 
                             {/*COUNTRY FIELD*/}
-                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content'}} value={props.country} onChange={ev => props.setCountry(ev.target.value)} />
+                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} />
 
                             {/*PROVINCE FIELD*/}
-                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content'}} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />
+                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />
 
                             {/*CITY FIELD*/}
-                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content'}} value={props.city} onChange={ev => props.setCity(ev.target.value)} />
+                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />
 
                         </Stack>
 
                         {/*ADDRESS FIELD*/}
                         <Box display="flex" justifyContent="center" alignItems="center" marginTop={3} marginBottom={3}>
-                            <TextField variant="outlined" required label="Address" sx={{ width: 'fit-content'}} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
+                            <TextField variant="outlined" required label="Address" sx={{ width: 'fit-content' }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
                         </Box>
 
                         <Grid container marginTop={3} justifyContent="center">
@@ -130,8 +139,8 @@ export default function AddHutPage1(props) {
                     </Box>
                 </Paper>
 
-                </Container>
+            </Container>
 
-            </ThemeProvider>
+        </ThemeProvider>
     );
 }
