@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -40,9 +40,19 @@ IconContainer.propTypes = {
 };
 
 function DifficultyFilter(props) {
-    const { filter, setFilter, setLoadingHikes } = props;
+    const { filter, setFilter, setLoadingHikes, resetDifficulty, setResetDifficulty } = props;
     const [value, setValue] = React.useState(-1);
     const [hover, setHover] = React.useState(-1);
+
+    // RESET
+    useEffect(() => {
+        if (resetDifficulty) {
+            setValue(-1);
+            setHover(-1);
+            setResetDifficulty(false);
+        }
+        // eslint-disable-next-line 
+    }, [resetDifficulty]);
 
     return (
         <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0, paddingBottom: 0 }}>

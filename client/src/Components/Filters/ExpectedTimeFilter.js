@@ -2,7 +2,7 @@ import { Box, Slider, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 
 function ExpectedTimeFilter(props) {
-    const { filter, setFilter, hikes, setLoadingHikes } = props;
+    const { filter, setFilter, hikes, setLoadingHikes, resetExpectedTime, setResetExpectedTime } = props;
     const [maxExpectedTime, setMaxExpectedTime] = React.useState(null); // default value
     const [value, setValue] = React.useState([0, maxExpectedTime]);
 
@@ -36,6 +36,15 @@ function ExpectedTimeFilter(props) {
         }
         // eslint-disable-next-line 
     }, [hikes.length]);
+
+    // RESET
+    useEffect(() => {
+        if (resetExpectedTime) {
+            setValue([0, maxExpectedTime]);
+            setResetExpectedTime(false);
+        }
+        // eslint-disable-next-line 
+    }, [resetExpectedTime]);
 
     const valueLabelFormat = (value) => {
         return `${value} h`;

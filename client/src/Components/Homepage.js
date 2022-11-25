@@ -22,7 +22,6 @@ function Homepage(props) {
     const { children } = props;
     const navigate = useNavigate();
 
-    const actionPageName = 'Hikes';
     const actionPageRoute = '/hikes';
     const clickHandle = event => {
         event.preventDefault();

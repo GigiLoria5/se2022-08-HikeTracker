@@ -2,7 +2,7 @@ import { Box, Slider, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 
 function LengthFilter(props) {
-    const { filter, setFilter, hikes, setLoadingHikes } = props;
+    const { filter, setFilter, hikes, setLoadingHikes, resetLength, setResetLength } = props;
     const [maxLength, setMaxLength] = React.useState(null); // default value
     const [value, setValue] = React.useState([0, maxLength]);
 
@@ -36,6 +36,15 @@ function LengthFilter(props) {
         }
         // eslint-disable-next-line 
     }, [hikes.length]);
+
+    // RESET
+    useEffect(() => {
+        if (resetLength) {
+            setValue([0, maxLength]);
+            setResetLength(false);
+        }
+        // eslint-disable-next-line 
+    }, [resetLength]);
 
     const valueLabelFormat = (value) => {
         return `${value} km`;

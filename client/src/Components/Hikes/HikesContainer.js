@@ -5,6 +5,7 @@ import HikesFilterPanel from './HikesFilterPanel';
 import HikesList from './HikesList';
 import API from '../../API';
 import { isPointInsideRange } from '../../Utils/GeoUtils';
+import { emptyFilter } from '../../Utils/EmptyFilter';
 
 const initialLat = 51.505;
 const initialLng = -0.09;
@@ -12,12 +13,7 @@ const initialLng = -0.09;
 const HikesContainer = () => {
     const [showTopBtn, setShowTopBtn] = useState(false);
     const [hikes, setHikes] = useState([]);
-    const [filter, setFilter] = useState({
-        "country": null, "province": null, "city": null, "difficulty": null,
-        "track_length_min": null, "track_length_max": null,
-        "ascent_min": null, "ascent_max": null,
-        "expected_time_min": null, "expected_time_max": null
-    });
+    const [filter, setFilter] = useState(emptyFilter);
     const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
     const [radius, setRadius] = useState(null);
     const [loadingHikes, setLoadingHikes] = useState(true);

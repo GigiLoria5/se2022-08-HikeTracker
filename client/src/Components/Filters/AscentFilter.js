@@ -2,7 +2,7 @@ import { Box, Slider, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 
 function AscentFilter(props) {
-    const { filter, setFilter, hikes, setLoadingHikes } = props;
+    const { filter, setFilter, hikes, setLoadingHikes, resetAscent, setResetAscent } = props;
     const [maxAscent, setMaxAscent] = React.useState(null); // default value
     const [value, setValue] = React.useState([0, maxAscent]);
 
@@ -36,6 +36,15 @@ function AscentFilter(props) {
         }
         // eslint-disable-next-line 
     }, [hikes.length]);
+
+    // RESET
+    useEffect(() => {
+        if (resetAscent) {
+            setValue([0, maxAscent]);
+            setResetAscent(false);
+        }
+        // eslint-disable-next-line 
+    }, [resetAscent]);
 
     const valueLabelFormat = (value) => {
         return `${value} m`;

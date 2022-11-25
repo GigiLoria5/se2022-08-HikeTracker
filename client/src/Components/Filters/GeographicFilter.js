@@ -11,7 +11,7 @@ const initialLat = 51.505;
 const initialLng = -0.09;
 
 function GeographicFilter(props) {
-    const { filter, setFilter, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius } = props;
+    const { filter, setFilter, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
@@ -51,6 +51,18 @@ function GeographicFilter(props) {
             getCitList();
         // eslint-disable-next-line 
     }, [provinceActive]);
+
+    // RESET
+    useEffect(() => {
+        if (resetGeographic) {
+            setCountryActive(null);
+            setProvinceActive(null);
+            setCityActive(null);
+            setRadius(null);
+            setResetGeographic(false);
+        }
+        // eslint-disable-next-line 
+    }, [resetGeographic]);
 
     const handleChangeCountry = (newCountry) => {
         if (countryActive === newCountry)
