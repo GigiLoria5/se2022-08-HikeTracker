@@ -28,4 +28,28 @@ async function addHut(hut) {
     }
 }
 
-export {addHut}
+async function deleteHut(hutName) {
+    const url = APIURL + '/api/huts/name';
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({"hutName": hutName}),
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            /* Application error (404, 500, 503 ...) */
+            const errDetails = await response.text();
+            throw errDetails;
+        }
+    } catch (err) {
+        /* Network error */
+        throw err;
+    }
+}
+
+export {addHut,deleteHut}

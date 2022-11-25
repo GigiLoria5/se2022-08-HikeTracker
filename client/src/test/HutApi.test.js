@@ -35,7 +35,7 @@ describe('frontend test: hut creation', () => {
     );
 
     it('setup', async () => {
-        const user = await API.logIn({email:"g.desantis@localguide.it", password:"password"});
+        const user = await API.logIn({username:"g.desantis@localguide.it", password:"password"});
     })
       
     it('T0: correct body', async () => {
@@ -64,6 +64,22 @@ describe('frontend test: hut creation', () => {
         }
         catch (err){
             expect(err);
+            console.log(err);
+        } 
+    })
+
+    it('T4: delete huts', async() =>{
+        try {
+            await API.deleteHut("Hut 0");
+        } catch (err){
+            console.log(err);
+        } 
+    })
+
+    it('T5: delete huts', async() =>{
+        try {
+            await API.deleteHut("Hut 1");
+        } catch (err){
             console.log(err);
         } 
     })

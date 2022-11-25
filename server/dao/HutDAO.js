@@ -87,3 +87,16 @@ exports.deleteHut = (id, userid) =>{
         });
     })
 }
+
+exports.deleteHutByName = (name, userid) =>{
+    return new Promise((resolve, reject)=>{
+        const sql = 'DELETE FROM hut WHERE name=? AND user_id=?';
+        db.run(sql, [name,userid], function (err) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    })
+}

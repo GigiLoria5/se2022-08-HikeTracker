@@ -99,4 +99,27 @@ router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
     }
 });
 
+router.delete('/huts/name',[body('hutName').exists().isString()], async(req,res)=>{
+    try{
+        if(req.isAuthenticated()){
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: "Fields validation failed!" });
+            }
+            
+            await HutDAO.deleteHutByName(req.body.hutName,req.user.id)
+            .then(() =>  res.status(200).end())
+            .catch(() => res.status(500).json({ error: `Database error` }));
+
+            
+        }else{
+            return res.status(401).json({ error: 'Not authorized' });
+        }
+    }catch(err){
+        console.log(err);
+        return res.status(503).json({ error: err });
+    }
+});
+
 module.exports = router;
