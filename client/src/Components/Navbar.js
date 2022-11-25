@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
@@ -24,9 +24,10 @@ let navItems = { ...navItemsFixed };
 
 function MyNavbar(props) {
 
-    const { window, activePage, changeActivePage, isloggedIn, loggedUser } = props;
-    const navigate = useNavigate();
+    const { window, isloggedIn, loggedUser } = props;
+    const location = useLocation();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -67,8 +68,8 @@ function MyNavbar(props) {
                         {/* Nav Links */}
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             {Object.entries(navItems).map(([name, route]) => (
-                                <Button className={`${activePage === name ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
-                                    onClick={() => { changeActivePage(name); navigate(route); }}>
+                                <Button className={`${location.pathname === route ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
+                                    onClick={() => { navigate(route); }}>
                                     {name}
                                 </Button>
                             ))}
@@ -88,11 +89,11 @@ function MyNavbar(props) {
                                         </Grid>
                                     </Grid>
                                     <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" className="btn-color-active"
-                                        onClick={() => { props.handleLogout(); changeActivePage(null); navigate('/') }} >Logout</Button>
+                                        onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
                                 </> :
                                 <>
-                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
-                                    <Button variant="outlined" color="inherit" className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/register'); }}>Register</Button>
+                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { navigate('/login'); }}>Login</Button>
+                                    <Button variant="outlined" color="inherit" className="btn-color-active" onClick={() => { navigate('/register'); }}>Register</Button>
                                 </>
                             }
                         </Box>
@@ -129,8 +130,8 @@ function MyNavbar(props) {
                             <List>
                                 {Object.entries(navItems).map(([name, route]) => (
                                     <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${activePage === name ? 'active-link' : ''}`}
-                                            onClick={() => { changeActivePage(name); navigate(route); }}>
+                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${location.pathname === route ? 'active-link' : ''}`}
+                                            onClick={() => { navigate(route); }}>
                                             <ListItemText primary={name} />
                                         </ListItemButton>
                                     </ListItem>

@@ -30,6 +30,13 @@ const HikesFilterPanel = (props) => {
         });
     }, [hikes.length]); // dependence required for the countries of any new hikes added
 
+    useEffect(() => {
+        window.addEventListener("resize", () => {
+            if (window.outerWidth > 1200)   // 1200 is the "lg" breakpoint
+                setDeviceFilterPanelOpen(false); // this is needed to fix a bug in which if you widen the screen while the drawer is open, the page remains locked
+        });
+    }, []);
+
     /* To hide/show the filter panel for small screen */
     const toggleFilterPanelDrawer = (state) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {

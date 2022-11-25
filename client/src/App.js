@@ -26,11 +26,6 @@ function Root() {
     const [loggedIn, setLoggedIn] = useState(false);        /* Boolean user login status (true,false) */
     const [loggedUser, setLoggedUser] = useState(false);    /* Contains logged user info */
     const [message, setMessage] = useState('');             /* Contains Welcome messages for login */
-    const [activePage, setActivePage] = useState(null);
-
-    const changeActivePage = (activePageName) => {
-        setActivePage(activePageName);
-    };
 
     /* Reload session after refresh */
     useEffect(() => {
@@ -78,10 +73,9 @@ function Root() {
 
     return (
         <Routes>
-            <Route path='/' element={<Navbar activePage={activePage} changeActivePage={changeActivePage}
-                handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
+            <Route path='/' element={<Navbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
                 {/* Outlets */}
-                <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
+                <Route path='' element={<Homepage />} />
                 <Route path='/hikes' element={<HikesContainer />} />
                 <Route path='/hikes/:hikeId' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
 
