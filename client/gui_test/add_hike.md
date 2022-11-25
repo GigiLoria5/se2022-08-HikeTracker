@@ -18,7 +18,7 @@
    1) Skip points description test, then add and proceed
    2) Skip hike title, then add it and press add hike
    3) Skip hike difficulty, then add it and press add hike
-   4) [!] Skip geographical area (**missing compuslory * signaling**)
+   4) Skip geographical area (**missing compuslory * signaling**)
       1) Provide only country, then add hike
       2) Provide region, then add hike
       3) Provide city, then add hike
@@ -45,19 +45,25 @@
 
 *Using file rocciamelone.gpx*
 
-5) [!] Upload correct gpx file **2 times with the same values** 
-   1) The file is uploaded correctly, missing checks on duplicates*
 
 *Using file 4.gpx*
 
-6) [!] Upload **another correct gpx file** 
-   1) *PROBLEM -> Cannot read any field, it seems empty but it's not !*
+5) Upload **another correct gpx file** 
+   1) Describe hike with correct fields
+   2) Add reference point, GPC coordinates , correct description
+   3) Delete reference point 
+   4) Add a reference point, GPS type
+   5) Add a reference point, Address type
+   6) Add a reference point, Name type
+   7) Final description 
+   8) Go back 
+   9) Redo ahain all the fields and press add hike -> OK
 
 **MOBILE TESTS**
 
 *Using file rocciamelone.gpx*
 
-7) Upload correct gpx file **submitting all fields**
+6) Upload correct gpx file **submitting all fields**
    1) Describe hike with correct fields
    2) Add reference point, GPC coordinates , correct description
    3) Delete reference point 
@@ -70,11 +76,11 @@
 
 *Using file rocciamelone.gpx*
 
-8) Upload correct gpx file **missing all required fields**
+7) Upload correct gpx file **missing all required fields**
    1) Skip points description test, then add and proceed
    2) Skip hike title, then add it and press add hike
    3) Skip hike difficulty, then add it and press add hike
-   4) [!] Skip geographical area (**missing compuslory * signaling**)
+   4) Skip geographical area (**missing compuslory * signaling**)
       1) Provide only country, then add hike
       2) Provide region, then add hike
       3) Provide city, then add hike
@@ -84,7 +90,7 @@
 
 *Using file rocciamelone.gpx*
 
-9) Upload correct gpx file but **changing start point and end point type**
+8) Upload correct gpx file but **changing start point and end point type**
    1) Set start point ad Address
    2) Set end point as Point 
    3) Provide all required fields
@@ -92,7 +98,7 @@
 
 *Using file rocciamelone.gpx*
 
-10) Upload correct gpx file but **changing start point and end point type and adding reference points in the same location and of the same type** 
+9) Upload correct gpx file but **changing start point and end point type and adding reference points in the same location and of the same type** 
     1) Set starting point A as Address
     2) Set end point B as Name
     3) Set reference point A as Address
@@ -102,5 +108,13 @@
 
 *Using file 4.gpx*
 
-11) [!] **Upload another correct gpx file** 
-    1)  PROBLEM -> Cannot read any field !*
+10) **Upload another correct gpx file** 
+    1)  Describe hike with correct fields
+    2)  Add reference point, GPC coordinates , correct description
+    3)  Delete reference point 
+    4)  Add a reference point, GPS type
+    5)  Add a reference point, Address type
+    6)  Add a reference point, Name type
+    7)  Final description 
+    8)  Go back 
+    9)  Redo ahain all the fields and press add hike -> OK
