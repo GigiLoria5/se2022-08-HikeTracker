@@ -63,9 +63,14 @@ function AscentFilter(props) {
     return (
         <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0, paddingBottom: 0 }}>
             {/* Title */}
-            <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
-                Total Ascent
-            </Typography>
+            <Box component="div" sx={{ display: "inline" }}>
+                <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
+                    Total Ascent
+                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 1, display: "inline" }}>
+                        {`${value[0]} - ${value[1]} m`}
+                    </Typography>
+                </Typography>
+            </Box>
             {/* Ascent Slider */}
             <Box sx={{ maxWidth: 300, paddingLeft: 1, paddingRight: 1 }}>
                 {maxAscent !== null ? <Slider

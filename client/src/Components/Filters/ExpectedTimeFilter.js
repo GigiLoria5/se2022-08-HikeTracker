@@ -63,9 +63,14 @@ function ExpectedTimeFilter(props) {
     return (
         <Box component="div" sx={{ marginTop: 1, padding: 4, paddingTop: 0, paddingBottom: 1 }}>
             {/* Title */}
-            <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
-                Expected Time
-            </Typography>
+            <Box component="div" sx={{ display: "inline" }}>
+                <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, marginBottom: 1 }} margin={0}>
+                    Expected Time
+                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 1, display: "inline" }}>
+                        {`${value[0]} - ${value[1]} h`}
+                    </Typography>
+                </Typography>
+            </Box>
             {/* ExpectedTime Slider */}
             <Box sx={{ maxWidth: 300, paddingLeft: 1, paddingRight: 1 }}>
                 {maxExpectedTime !== null ? <Slider

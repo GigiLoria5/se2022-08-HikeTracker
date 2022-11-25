@@ -3,9 +3,10 @@ import React, { useEffect } from 'react'
 import { Circle, LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
+import markerIconRed from '../../Assets/Map/marker-icon-red.png';
 
 function LocationMarker(props) {
-    const { position, setPosition, radius } = props;
+    const { position, setPosition, radius, waypoints } = props;
     const map = useMapEvents({
         click(e) {
             setPosition(e.latlng);
@@ -32,10 +33,20 @@ function LocationMarker(props) {
 
     return position === null ? null : (
         <>
-            <Marker position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
+            <Marker key={"you-are-here"} position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
                 <Popup>You are here</Popup>
             </Marker >
             {radius === null ? null : <Circle center={position} pathOptions={{ fillColor: 'blue' }} radius={radius * 1000} />}
+            {!waypoints
+                ? null
+                : waypoints.map((h, index) => {
+                    return (
+                        <Marker key={index} position={{ lat: parseFloat(h.lat), lng: parseFloat(h.lng) }} icon={new Icon({ iconUrl: markerIconRed, iconSize: [25, 41], iconAnchor: [12, 41] })} >
+                            <Popup>{h.label}</Popup>
+                        </Marker >
+                    )
+                })
+            }
         </>
     )
 }
@@ -45,9 +56,10 @@ function LocationMarker(props) {
  * @param {Object} props.position an object with "lat" and "lng" properties
  * @param {Object} props.height the height of the map which should be defined as a string: 'value px' 
  * @param {Object} props.width the width of the map which should be defined as a string: 'value px' 
+ * @param {[String]} props.waypoints an array of objects with label, lat and lng properties
  */
 function MapLocator(props) {
-    const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel } = props;
+    const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel, waypoints } = props;
 
     return (
         <MapContainer
@@ -73,7 +85,7 @@ function MapLocator(props) {
                 </LayersControl.BaseLayer>
             </LayersControl>
             {/* Map Elements */}
-            <LocationMarker position={position} setPosition={setPosition} radius={radius} />
+            <LocationMarker position={position} setPosition={setPosition} radius={radius} waypoints={waypoints} />
         </MapContainer>
     )
 }

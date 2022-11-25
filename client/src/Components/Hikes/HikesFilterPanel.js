@@ -79,7 +79,7 @@ const HikesFilterPanel = (props) => {
     const filterComponents = (
         <>
             {/* Geographic Area Filter */}
-            <GeographicFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes}
+            <GeographicFilter filter={filter} setFilter={setFilter} hikes={hikes} setLoadingHikes={setLoadingHikes}
                 resetGeographic={resetGeographic} setResetGeographic={setResetGeographic}
                 countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList}
                 position={position} setPosition={setPosition} radius={radius} setRadius={setRadius}

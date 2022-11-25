@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
-import { Autocomplete, Box, Divider, IconButton, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Divider, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
 
 const zoomLevel = 15;
-const initialLat = 51.505;
-const initialLng = -0.09;
+const initialLat = 45.07084254710618;
+const initialLng = 7.685585541811552;
 
 function GeographicFilter(props) {
-    const { filter, setFilter, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
+    const { filter, setFilter, hikes, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
@@ -194,14 +194,14 @@ function GeographicFilter(props) {
                 </Box>
                 <Box component="div" sx={{ display: "flex", marginBottom: 2 }} >
                     {/* Radius */}
-                    <TextField id="outlined-number" label="Radius (km)" type="number" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 } }} value={radius ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
+                    <TextField id="outlined-number" label="Radius" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 }, endAdornment: <InputAdornment position="end">km</InputAdornment> }} value={radius !== null ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
                     {/* Reset Radius Button */}
                     <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
                         <CancelIcon />
                     </IconButton>
                 </Box>
                 {/* Map (coordinate picker) */}
-                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} />
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: h.start.coordinates.split(", ")[0], lng: h.start.coordinates.split(", ")[1] } })} />
             </Box>
         </Box>
     )
