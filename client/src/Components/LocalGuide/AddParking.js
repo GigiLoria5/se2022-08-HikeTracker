@@ -13,13 +13,14 @@ import {getCountries, getProvincesByCountry, getCitiesByProvince} from '../../Ut
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MapLocator from '../Map/MapLocator';
+import { floatInputSanitizer } from '../../Utils/InputSanitizer';
+
 
 const zoomLevel = 15;
 const initialLat = 51.505;
 const initialLng = -0.09;
 
 function AddParking() {
-
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
@@ -28,9 +29,7 @@ function AddParking() {
     const [message, setMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
-    const [cities, setCities] = useState([]);
-    const [gPSlat, setgPSlat] = useState(initialLat);
-    const [gPSlon, setgPSlon] = useState(initialLng); 
+    const [cities, setCities] = useState([]); 
     const [address, setAddress] = useState(""); 
 
 
@@ -81,11 +80,15 @@ function AddParking() {
         
     };
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        setgPSlat(position.lat)
-        setgPSlon(position.lng)
-    };
+    const handleChangeLng = (newLng) => {
+        const newLngSanitized = floatInputSanitizer(newLng);
+        setPosition({ ...position, lng: isNaN(newLngSanitized) ? "0" : newLngSanitized });
+    }
+
+    const handleChangeLat = (newLat) => {
+        const newLatSanitized = floatInputSanitizer(newLat);
+        setPosition({ ...position, lat: isNaN(newLatSanitized) ? "0" : newLatSanitized });
+    }
 
 
     const thm = {
@@ -124,8 +127,8 @@ function AddParking() {
                                     </Box>
                                     
                                     <Stack direction='row' justifyContent="center" alignItems="center" marginTop={2}>
-                                        <TextField variant="outlined" color='primary' label="Latitude" sx={{ width: '13ch', m:1, mb:1 }}  value={gPSlat} disabled /> 
-                                        <TextField variant="outlined" color='primary' label="Longitude" sx={{ width: '13ch', m:1, mb:1 }} value={gPSlon} disabled/>
+                                        <TextField variant="outlined" color='primary' label="Latitude" sx={{ width: '13ch', m:1, mb:1 }}  value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} disabled /> 
+                                        <TextField variant="outlined" color='primary' label="Longitude" sx={{ width: '13ch', m:1, mb:1 }} value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
