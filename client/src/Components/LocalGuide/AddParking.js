@@ -81,10 +81,11 @@ function AddParking() {
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-        if(!country || !province || !city){
+        if(!country || !province || !city || !address){
             setMessage("Parking lot geographical info missing");
             return;
         }
+        
         
     };
 
