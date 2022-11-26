@@ -69,6 +69,16 @@ svg {
     width: auto
 }
 
+.link {
+    color: var(--main) !important;
+}
+
+.link:hover {
+    color: var(--active) !important;
+    text-decoration: underline !important;
+    text-decoration-color: var(--active) !important;
+}
+
 /* Navbar */
 
 .box-end {

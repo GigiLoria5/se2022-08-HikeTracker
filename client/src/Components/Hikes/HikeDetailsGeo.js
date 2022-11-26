@@ -4,6 +4,7 @@ import MapViewer from '../Map/MapViewer';
 import HikeDetailsGeoPoint from './HikeDetailsGeoPoint';
 import CloseIcon from '@mui/icons-material/Close';
 import { getColorByDifficulty } from '../../Utils/DifficultyMapping';
+import { Link } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -23,11 +24,15 @@ function HikeDetailsGeo(props) {
             <Box component="div" sx={{ width: "100%", height: "40%", marginTop: 2 }}>
                 {isloggedIn && usersRoleMapPermission.includes(loggedUser.role)
                     ? < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} trailColor={getColorByDifficulty(hike.difficulty)} />
-                    : <h1>Log in as Hiker or Local Guide to see the map</h1>
+                    : <Box component="div" sx={{ backgroundColor: "black", height: "100%", opacity: 0.9, display: "flex", textAlign: "center", alignItems: "center" }}>
+                        <Typography gutterBottom variant="h5" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, color: 'white' }}>
+                            Only a Hiker or a Local Guide can view the map.<br /><Link to="/login" className={"link"}>Sign In</ Link> or <Link to="/register" className={"link"}>Register</ Link> for free
+                        </Typography>
+                    </Box>
                 }
             </Box>
             {/* Start Point */}
-            <Box component="div" sx={{ marginTop: { xs: 2, lg: 3 } }}>
+            <Box component="div" sx={{ marginTop: 2 }}>
                 {/* Section Title */}
                 <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' } }} margin={0}>
                     Start Point
