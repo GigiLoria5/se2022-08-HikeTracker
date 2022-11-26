@@ -40,7 +40,7 @@ function HikeDetails(props) {
                 < Grid item xs={12} >
                     {hike === null && error === ""
                         ? <CircularProgress color="success" />
-                        : < Typography variant="h5" marginLeft={1} marginRight={1} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }}>
+                        : < Typography variant="h5" className={"hide-scrollbar"} marginLeft={1} marginRight={1} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }}>
                             {hike === null ? error : `${hike.title} | ${hike.peak_altitude} m asl`}
                         </Typography>
                     }
@@ -55,7 +55,7 @@ function HikeDetails(props) {
                                 {customIcons[hike.difficulty].icon}
                                 <Box sx={{ ml: 2 }}>{customIcons[hike.difficulty].label}</Box>
                             </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }} paddingRight={1} className="div-subtitle">
+                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }} paddingRight={1} className="div-subtitle hide-scrollbar">
                                 <Typography gutterBottom variant="body1" color="text.primary" display={"inline"} margin={0}>
                                     {`${hike.city}, ${hike.province}, ${hike.country}`}
                                 </Typography>

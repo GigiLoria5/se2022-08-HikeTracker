@@ -223,10 +223,11 @@ router.get('/hike/:id',
     check('id').exists().isInt(),
 
     async (req, res) => {
+        const usersRoleGpxPermission = ['hiker', 'local_guide'];
 
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
-                if (req.isAuthenticated() && req.user.role == "hiker") {
+                if (req.isAuthenticated() && usersRoleGpxPermission.includes(req.user.role)) {
                     hike.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx', { encoding: 'utf8' });
                 }
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
