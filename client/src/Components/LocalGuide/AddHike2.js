@@ -355,7 +355,7 @@ function AddHike2() {
                                         const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                         setProvince(name); setCity('')
                                     }}
-                                    renderInput={(params) => <TextField required {...params} label="Province/Region" />}
+                                    renderInput={(params) => <TextField required {...params} label="Province" />}
                                 />
                                 <Autocomplete
                                     required
