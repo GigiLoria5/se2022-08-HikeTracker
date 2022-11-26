@@ -5,6 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
+import { splitCoordinates } from '../../Utils/GeoUtils';
 
 const zoomLevel = 15;
 const initialLat = 45.07084254710618;
@@ -201,7 +202,7 @@ function GeographicFilter(props) {
                     </IconButton>
                 </Box>
                 {/* Map (coordinate picker) */}
-                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: h.start.coordinates.split(", ")[0], lng: h.start.coordinates.split(", ")[1] } })} />
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })} />
             </Box>
         </Box>
     )

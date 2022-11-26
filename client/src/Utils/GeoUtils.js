@@ -28,10 +28,20 @@ const isPointInsideRange = (rangePoint, rangeRadius, pointToCheck) => {
 
 /**
  * 
+ * @param {String} coordinates "lat, lng" or "lat,lng" 
+ * @returns [lat, lng]
+ */
+const splitCoordinates = (coordinates) => {
+    const coordinatesNoSpaces = coordinates.replace(" ", ""); // Remove any possible space
+    return coordinatesNoSpaces.split(",");
+}
+
+/**
+ * 
  * @param {Array} a array containing latitude and longitude as numbers
  * @param {Array} b array containing latitude and longitude as numbers
  * @returns array containing latitude and longitude as numbers which represents the midpoint between a and b
  */
 const getMidPoint = ([x1, y1], [x2, y2]) => [(x1 + x2) / 2, (y1 + y2) / 2];
 
-export { isPointInsideRange, getMidPoint }; 
+export { isPointInsideRange, splitCoordinates, getMidPoint };  

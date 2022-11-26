@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, Typography } from '@mui/material';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import React from 'react'
+import { Box, ClickAwayListener, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
 import MapViewer from '../Map/MapViewer';
 import HikeDetailsGeoPoint from './HikeDetailsGeoPoint';
+import CloseIcon from '@mui/icons-material/Close';
 import { getColorByDifficulty } from '../../Utils/DifficultyMapping';
 
+const theme = createTheme({
+    palette: {
+        neutral: {
+            main: '#546070',
+        },
+    },
+});
+
 function HikeDetailsGeo(props) {
-    const { hike, isloggedIn, loggedUser } = props;
-    const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
+    const { hike, isloggedIn, loggedUser, deviceFilterPanelOpen, toggleFilterPanelDrawer } = props;
     const usersRoleMapPermission = ['hiker', 'local_guide'];
-    console.log(hike);
-
-    useEffect(() => {
-        window.addEventListener("resize", () => {
-            if (window.outerWidth > 1200)   // 1200 is the "lg" breakpoint
-                setDeviceFilterPanelOpen(false); // this is needed to fix a bug in which if you widen the screen while the drawer is open, the page remains locked
-        });
-    }, []);
-
-    /* To hide/show the filter panel for small screen */
-    const toggleFilterPanelDrawer = (state) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-        setDeviceFilterPanelOpen(state);
-    };
 
     const geoDetailsComponents = (
         <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 }, height: "100vh" }}>
@@ -80,6 +71,18 @@ function HikeDetailsGeo(props) {
             sx={{ width: '100%', display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' } }}
             role="presentation"
         >
+            <ThemeProvider theme={theme}>
+                <Box component="div" sx={{ display: "flex", marginBottom: 2, marginTop: 2, paddingLeft: 2, paddingRight: 2, flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between" }} >
+                    {/* Map Title */}
+                    <Typography variant="h5" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, marginLeft: "auto", marginRight: "auto", paddingLeft: "24px" }}>
+                        Map
+                    </Typography>
+                    {/* Close Drawer */}
+                    <IconButton color="neutral" aria-label="reset map" component="label" onClick={toggleFilterPanelDrawer(false)}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
+            </ThemeProvider>
             {geoDetailsComponents}
         </Box >
     );
@@ -87,13 +90,8 @@ function HikeDetailsGeo(props) {
     return (
         <>
             {/* Hike Geo Details Panel - Full Size */}
-            <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' }, border: "1px solid red" }} lg={3} >
+            <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' }, border: "1px solid #BBBBBB" }} lg={3} >
                 {geoDetailsComponents}
-            </Grid>
-
-            {/* Panel Button - Only on Small Screen */}
-            <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                <Button variant="outlined" color="inherit" startIcon={<LocationOnIcon />} onClick={toggleFilterPanelDrawer(true)}> Map </Button>
             </Grid>
 
             {/* Filter Panel - Small Screen */}

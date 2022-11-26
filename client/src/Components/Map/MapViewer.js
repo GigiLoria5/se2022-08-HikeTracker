@@ -6,11 +6,10 @@ import markerStart from '../../Assets/Map/start-flag.png';
 import markerFinish from '../../Assets/Map/finish-flag.png';
 import markerLocation from '../../Assets/Map/location-marker.png';
 import { Icon } from 'leaflet';
-import { getMidPoint } from '../../Utils/GeoUtils';
+import { getMidPoint, splitCoordinates } from '../../Utils/GeoUtils';
 
 function LocationMarker(props) {
     const { startPoint, endPoint, refPoints } = props;
-    console.log(startPoint.coordinates.split(', '));
 
     return (
         <>
@@ -38,7 +37,7 @@ function LocationMarker(props) {
                     {!refPoints
                         ? null
                         : refPoints.map((point, index) => {
-                            const pCoordinates = point.coordinates.split(", ");
+                            const pCoordinates = splitCoordinates(point.coordinates);
                             return (
                                 <Marker key={index} position={{ lat: parseFloat(pCoordinates[0]), lng: parseFloat(pCoordinates[1]) }} icon={new Icon({ iconUrl: markerLocation, iconSize: [15, 41], iconAnchor: [12, 41] })} >
                                     <Tooltip direction="bottom" offset={[-3, 0]} opacity={1}>
