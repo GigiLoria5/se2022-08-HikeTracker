@@ -54,6 +54,41 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - password: compulsory, minimum lenght is 8 maximum is 64.
     At the bottom of this form there is a submit button and a link to go back to login route.
 
+- Route `/local-guide-page`: the page contains the actions a local guide can do
+  - Adding an hike to the list of hikes
+
+- Route `/local-guide-add-hikes1`: the page contains a form that allows the local guide to add a GPX file, specifying start and end point types and related information
+  - upload gpx file
+  - start point type: can be "gps", "address", "name"
+    - start point name: if name is selected
+    - start point address: if address is selected
+  - start point description
+  - end point type: can be "gps", "address", "name"
+    - end point name: if name is selected
+    - end point address: if address is selected
+  - start point description
+
+
+- Route `/local-guide-add-hikes2`: the page contains a form that allows the local guide to add information about the hike, by inserting
+  - title
+  - length (automatically extracted from gpx file)
+  - expected time
+    - if possible computed from gpx
+    - otherwise to be inserted manually as hours and minutes
+  - total ascent (automatically extracted from gpx file)
+  - difficulty: can be "Tourist", "Hiker", "Professional Hiker"
+  - geographical area
+    - country
+    - province
+    - city
+  - reference points: points can be added/edited clicking on the map, for each point:
+    - type: can be "gps", "address", "name"
+      - name: if name is selected
+      - address: if address is selected
+    - description
+  - description
+  At the bottom of this form there is a submit button and a button to get back to the previous page.
+
 ## API Format
 
 ### User Login and Logout
@@ -184,26 +219,25 @@ Application developed during the Software Engineering II course (Year 2022-23) b
         "track_length": 6.2,
         "expected_time": 3.3,
         "difficulty": 2,
-        "start_point_type": "parking_lot",
-        "start_point_id": 3,
-        "end_point_type": "location",
-        "end_point_id": 18
-        "reference_points": {
-          "points": [
-            {
-              "type":"hut",
-              "id":1
-            },
-            {
-              "type":"hut",
-              "id":2
-            },
-            {
-              "type":"location",
-              "id":12
-            }
+        "start_point": {
+          "latitude":44.57425086759031,
+          "longitude":6.982689192518592,
+          "description":"Start point",
+          "type":"gps",
+          "value":"gps"
+        },
+        "end_point": {
+          "latitude":44.574263943359256,
+          "longitude":6.982647031545639,
+          "description":"End point",
+          "type":"name",
+          "value":"End point name"
+        },
+        "reference_points":{
+          "points":[
+            {"latitude":44.59376471183216,"longitude":6.970151980345208,"type":"gps","value":"gps","description":"Colle Reisassetto"},{"latitude":44.605312234235114,"longitude":6.97978383606973,"type":"gps","value":"gps","description":"Punta di Fiutrusa"}
           ]
-        }
+        },
         "gpx" : ...
   }
   ```
