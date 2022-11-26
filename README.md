@@ -279,7 +279,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Error responses: `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
   - Response body: Hike object, or an error message in case of failure
 
   ```

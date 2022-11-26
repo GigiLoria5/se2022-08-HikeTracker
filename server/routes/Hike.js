@@ -225,6 +225,11 @@ router.get('/hike/:id',
     async (req, res) => {
         const usersRoleGpxPermission = ['hiker', 'local_guide'];
 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ error: "Fields validation failed" });
+        }
+
         hikeDao.getHikeById(req.params.id)
             .then(async (hike) => {
                 if (req.isAuthenticated() && usersRoleGpxPermission.includes(req.user.role)) {

@@ -26,7 +26,7 @@ describe('test HikeAPIById',()=>{
     step('T2: GET/api/hike/:id [ID NOT VALID]', async function() {
         await agent.get('/api/hike/8.5')
                     .then(function(res) {
-                        res.should.have.status(500);
+                        res.should.have.status(422);
                     });
     });
 
