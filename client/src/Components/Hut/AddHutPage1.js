@@ -40,6 +40,7 @@ export default function AddHutPage1(props) {
     useEffect(() => {
         props.setLatitude(position.lat);
         props.setLongitude(position.lng);
+        // eslint-disable-next-line
     }, [position]);
 
     useEffect(() => {
@@ -161,7 +162,7 @@ export default function AddHutPage1(props) {
                                 sx={{ width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
-                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                     props.setCountry(name); props.setProvince(''); props.setCity('')
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="Country" />}
@@ -176,7 +177,7 @@ export default function AddHutPage1(props) {
                                 sx={{ width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
-                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                     props.setProvince(name); props.setCity('')
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="Province/Region" />}
@@ -191,7 +192,7 @@ export default function AddHutPage1(props) {
                                 sx={{ width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
-                                    const name = e._reactName == "onKeyDown" ? e.target.value : e.target.textContent;
+                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                     props.setCity(name)
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="City" />}

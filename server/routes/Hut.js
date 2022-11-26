@@ -18,7 +18,7 @@ const router = express.Router();
 router.post('/huts', [
     body('name').isString(),
     body('type').isString().isIn(['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other']),
-    body('beds_number').isNumeric().isDecimal(),
+    body('beds_number').isNumeric().isInt({ min: 0}),
     body('country').isString(),
     body('province').isString(),
     body('city').isString(),

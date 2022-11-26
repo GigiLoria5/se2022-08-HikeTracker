@@ -121,7 +121,7 @@ export default function AddHutPage2(props) {
                                 </FormControl>
 
                                 {/*BEDS NUMBER FIELD*/}
-                                <TextField variant="outlined" label="Beds number" type="number" sx={{ width: 'fit-content' }} value={props.bedsNumber} onChange={ev => props.setBedsNumber(ev.target.value)} />
+                                <TextField variant="outlined" label="Beds number" type="number" InputProps={{ inputProps: { min: 0 }}} sx={{ width: 'fit-content' }} value={props.bedsNumber} onChange={ev => props.setBedsNumber(ev.target.value)} />
 
                             </Stack>
                         </Grid>

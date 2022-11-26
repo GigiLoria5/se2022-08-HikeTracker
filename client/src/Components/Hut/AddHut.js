@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
@@ -27,13 +27,14 @@ export default function AddHut(props) {
     const [stepOneDone, setStepOneDone] = useState(false);
     const [stepTwoDone, setStepTwoDone] = useState(false);
 
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
         // eslint-disable-next-line
     }, [])
 
+    /*
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -44,7 +45,7 @@ export default function AddHut(props) {
             },
         },
     };
-
+    */
     const theme = createTheme({
         palette: {
             primary: {
