@@ -5,13 +5,13 @@ function HikeDetailsGeneral(props) {
     const { hike } = props;
 
     return (
-        <Grid item xs={12} lg={9} marginBottom={2} sx={{ backgroundColor: "red" }}>
+        <Grid item xs={12} lg={7} border={"1px solid blue"} marginLeft={"8vw"} sx={{ marginRight: { xs: "8vw", lg: 0 } }}>
             <Box component="div" display="flex" className="flex-font" marginBottom={1}>
                 <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>
-                    Test Test
+                    Left
                 </Typography>
                 <Typography gutterBottom variant="body2" color="text.secondary" margin={0} marginLeft={"auto"}>
-                    Pippo Pippo
+                    Right
                 </Typography>
             </Box>
         </Grid>

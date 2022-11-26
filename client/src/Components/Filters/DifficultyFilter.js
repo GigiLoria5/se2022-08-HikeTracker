@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
-import { customDifficultyIcons } from '../../Utils/CustomDifficultyIcons';
+import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconHover .MuiSvgIcon-root': {

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, ClickAwayListener, Drawer, Grid } from '@mui/material';
+import { Box, Button, ClickAwayListener, Divider, Drawer, Grid, Typography } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MapViewer from '../Map/MapViewer';
+import HikeDetailsGeoPoint from './HikeDetailsGeoPoint';
+import { getColorByDifficulty } from '../../Utils/DifficultyMapping';
 
 function HikeDetailsGeo(props) {
     const { hike, isloggedIn, loggedUser } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
+    const usersRoleMapPermission = ['hiker', 'local_guide'];
+    console.log(hike);
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -23,19 +27,50 @@ function HikeDetailsGeo(props) {
     };
 
     const geoDetailsComponents = (
-        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 }, height: "40vh" }}>
+        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 }, height: "100vh" }}>
             {/* Map */}
-            <Box component="div" sx={{ width: "100%", height: "100%", marginTop: 2 }}>
-                {!isloggedIn
-                    ? <h1>Log in to see the map</h1>
-                    : < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} />
+            <Box component="div" sx={{ width: "100%", height: "40%", marginTop: 2 }}>
+                {isloggedIn && usersRoleMapPermission.includes(loggedUser.role)
+                    ? < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} trailColor={getColorByDifficulty(hike.difficulty)} />
+                    : <h1>Log in as Hiker or Local Guide to see the map</h1>
                 }
             </Box>
             {/* Start Point */}
+            <Box component="div" sx={{ marginTop: { xs: 2, lg: 3 } }}>
+                {/* Section Title */}
+                <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' } }} margin={0}>
+                    Start Point
+                </Typography>
+                {/* Point Description */}
+                <HikeDetailsGeoPoint pointType={hike.start_point_type} point={hike.start} />
+            </Box>
+            <Divider sx={{ marginTop: 2, marginBottom: 1 }} />
 
             {/* End Point */}
+            <Box component="div" >
+                {/* Section Title */}
+                <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' } }} margin={0}>
+                    End Point
+                </Typography>
+                {/* Point Description */}
+                <HikeDetailsGeoPoint pointType={hike.end_point_type} point={hike.end} />
+            </Box>
+            <Divider sx={{ marginTop: 2, marginBottom: 1 }} />
 
             {/* Reference Points */}
+            <Box component="div" >
+                {/* Section Title */}
+                <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' } }} margin={0}>
+                    Reference Points
+                </Typography>
+                {/* Point Description */}
+                {hike.reference_points.length === 0
+                    ? <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>
+                        No reference points are available for this hike
+                    </Typography>
+                    : hike.reference_points.map(rp => { return <HikeDetailsGeoPoint key={`rp-${rp.id}`} pointType={rp.ref_point_type} point={rp} /> })
+                }
+            </Box>
         </Box>
     );
 

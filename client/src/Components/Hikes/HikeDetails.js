@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import API from '../../API';
-import { customDifficultyIcons } from '../../Utils/CustomDifficultyIcons';
+import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';

@@ -10,6 +10,7 @@ import { getMidPoint } from '../../Utils/GeoUtils';
 
 function LocationMarker(props) {
     const { startPoint, endPoint, refPoints } = props;
+    console.log(startPoint.coordinates.split(', '));
 
     return (
         <>
@@ -38,7 +39,6 @@ function LocationMarker(props) {
                         ? null
                         : refPoints.map((point, index) => {
                             const pCoordinates = point.coordinates.split(", ");
-
                             return (
                                 <Marker key={index} position={{ lat: parseFloat(pCoordinates[0]), lng: parseFloat(pCoordinates[1]) }} icon={new Icon({ iconUrl: markerLocation, iconSize: [15, 41], iconAnchor: [12, 41] })} >
                                     <Tooltip direction="bottom" offset={[-3, 0]} opacity={1}>
@@ -55,7 +55,7 @@ function LocationMarker(props) {
 }
 
 function MapViewer(props) {
-    const { gpxFileContent, height, width, startPoint, endPoint, refPoints } = props;
+    const { gpxFileContent, height, width, startPoint, endPoint, refPoints, trailColor } = props;
     const [positions, setPositions] = useState(null);
     const [center, setCenter] = useState(null);
 
@@ -105,7 +105,7 @@ function MapViewer(props) {
                 </LayersControl >
                 {/* Trail */}
                 < Polyline
-                    pathOptions={{ fillColor: 'red', color: 'red' }}
+                    pathOptions={{ fillColor: 'red', color: trailColor }}
                     positions={positions}
                 />
             </MapContainer >
