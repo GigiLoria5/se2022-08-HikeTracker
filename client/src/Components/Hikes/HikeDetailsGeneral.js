@@ -1,12 +1,13 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import React from 'react'
+import { decimalHoursToTime } from '../../Utils/TimeUtils';
 
 function HikeDetailsGeneral(props) {
     const { hike } = props;
 
     return (
         <Grid item xs={12} lg={7} border={"1px solid #BBBBBB"} sx={{ marginRight: { xs: "8vw", lg: 0 }, marginLeft: { xs: "6vw", lg: "12vw" }, marginTop: { xs: "3vh", lg: 0 }, padding: 4, paddingBottom: 0 }}>
-            <Box component="div" display="flex" sx={{ whiteSpace: "nowrap", overflow: "scroll" }} marginBottom={1}>
+            <Box component="div" className={"hide-scrollbar"} display="flex" sx={{ whiteSpace: "nowrap", overflow: "scroll" }} marginBottom={1}>
                 {/* Length */}
                 <Box component="div" marginRight={"5vw"}>
                     <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>
@@ -31,7 +32,7 @@ function HikeDetailsGeneral(props) {
                         Expected Time
                     </Typography>
                     <Typography gutterBottom variant="h6" color="text.primary" sx={{ fontWeight: 550 }} margin={0}>
-                        {`${hike.expected_time} h`}
+                        {`${decimalHoursToTime(hike.expected_time)} h`}
                     </Typography>
                 </Box>
             </Box>
