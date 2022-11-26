@@ -91,7 +91,7 @@ function AddParking() {
             setMessage("Parking lot geographical info missing");
             return;
         }
-        addParking(<Parking city={city} province={province} country={country} longitude={position.lng} latitude={position.lat} address={address}/>).then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating hike");});
+        addParking(<Parking city={city} province={province} country={country} longitude={position.lng} latitude={position.lat} address={address}/>).then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating parking");});
         
     };
 
