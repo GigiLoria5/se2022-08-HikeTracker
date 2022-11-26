@@ -6,7 +6,8 @@ import markerStart from '../../Assets/Map/start-flag.png';
 import markerFinish from '../../Assets/Map/finish-flag.png';
 import markerLocation from '../../Assets/Map/location-marker.png';
 import { Icon } from 'leaflet';
-import { getMidPoint, splitCoordinates } from '../../Utils/GeoUtils';
+import { findFarthestPoint, getMidPoint, splitCoordinates } from '../../Utils/GeoUtils';
+import { getPointShortDescription } from '../../Utils/Point';
 
 function LocationMarker(props) {
     const { startPoint, endPoint, refPoints } = props;
@@ -41,7 +42,7 @@ function LocationMarker(props) {
                             return (
                                 <Marker key={index} position={{ lat: parseFloat(pCoordinates[0]), lng: parseFloat(pCoordinates[1]) }} icon={new Icon({ iconUrl: markerLocation, iconSize: [15, 41], iconAnchor: [12, 41] })} >
                                     <Tooltip direction="bottom" offset={[-3, 0]} opacity={1}>
-                                        {`Reference Point with id ${index}`}
+                                        {getPointShortDescription(point.ref_point_type, point)}
                                     </Tooltip>
                                 </Marker >
                             );
@@ -66,8 +67,8 @@ function MapViewer(props) {
         const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
         // Find center
         const startPointGPXCoordinates = positions[0].map(c => c);
-        const endPointGPXCoordinates = positions[positions.length - 1].map(c => c);
-        const midPointPosition = getMidPoint(startPointGPXCoordinates, endPointGPXCoordinates);
+        const farthestPointCoordinates = findFarthestPoint(startPointGPXCoordinates, positions);
+        const midPointPosition = getMidPoint(startPointGPXCoordinates, farthestPointCoordinates);
         // Set states
         setCenter(midPointPosition);
         setPositions(positions);

@@ -66,11 +66,11 @@ exports.getHikeById = (id) => {
                     city: row.city,
                     province: row.province,
                     country: row.country,
-                    description: row.description, 
+                    description: row.description,
                     ascent: row.ascent,
-                    track_length: row.track_length, 
-                    expected_time: row.expected_time, 
-                    difficulty: row.difficulty, 
+                    track_length: row.track_length,
+                    expected_time: row.expected_time,
+                    difficulty: row.difficulty,
                     gps_track: row.gps_track,
                     start_point_type: row.start_point_type,
                     start_point_id: row.start_point_id,
@@ -81,12 +81,12 @@ exports.getHikeById = (id) => {
                 resolve(hike[0]);
             }
         });
-    });       
+    });
 }
 
 exports.getAllHikes = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike`;
+        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike ORDER BY id DESC`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);

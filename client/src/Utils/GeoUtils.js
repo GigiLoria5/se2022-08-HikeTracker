@@ -38,10 +38,33 @@ const splitCoordinates = (coordinates) => {
 
 /**
  * 
+ * @param {Array} referencePointCoordinates an array containing latitude and longitute of a point (ex. [4.1231231, 2.2131312])
+ * @param {Array[Array]} trailCoordinates an array containing arrays of latitute and longitute of points (ex. [[4.1231321, 0.231312], [1.22222, 3.112]])
+ * @returns the coordinates inside an array of the farthest point from the referencePoint specified  
+ */
+const findFarthestPoint = (referencePointCoordinates, trailCoordinates) => {
+    let farthestPoint = null;
+    let farthestPointDistance = -1;
+
+    for (let i = 0; i < trailCoordinates.length; i++) {
+        const actualPoint = trailCoordinates[i];
+        const distance = getDistance(referencePointCoordinates, actualPoint);
+        console.log(distance);
+        if (distance > farthestPointDistance) {
+            farthestPoint = actualPoint;
+            farthestPointDistance = distance;
+        }
+    }
+
+    return farthestPoint;
+}
+
+/**
+ * 
  * @param {Array} a array containing latitude and longitude as numbers
  * @param {Array} b array containing latitude and longitude as numbers
  * @returns array containing latitude and longitude as numbers which represents the midpoint between a and b
  */
 const getMidPoint = ([x1, y1], [x2, y2]) => [(x1 + x2) / 2, (y1 + y2) / 2];
 
-export { isPointInsideRange, splitCoordinates, getMidPoint };  
+export { isPointInsideRange, splitCoordinates, findFarthestPoint, getMidPoint };  
