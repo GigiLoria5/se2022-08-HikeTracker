@@ -86,9 +86,9 @@ describe('GeoUtils Test', () =>{
         
     })
 
-    it('T6: check Italy regions', async() => {
-        const italyRegions = await getProvincesByCountry("Italy");
-        expect(italyRegions.length).toBe(20);
+    it('T6: check Italy provinces', async() => {
+        const italyProvinces = await getProvincesByCountry("Italy");
+        expect(italyProvinces.length).toBe(107);
         
     })
 })
