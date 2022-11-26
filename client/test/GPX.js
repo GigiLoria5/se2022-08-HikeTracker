@@ -47,7 +47,7 @@ describe('GPX test', () =>{
             }
             e_old = e;
         }
-        expect(gpx.ascent).to.equal(el);
+        expect(gpx.ascent).to.equal(Math.floor(el));
     })
     it('T2: length is correct', async () => {
         const gpx = await parseGPX(dummyGPX);
@@ -59,7 +59,7 @@ describe('GPX test', () =>{
             if(a>b) return a;
             else return b;
         })
-        expect(gpx.peak_altitude).to.equal(peak_altitude);
+        expect(gpx.peak_altitude).to.equal(Math.floor(peak_altitude));
     })
     it('T4: start_point is correct', async () => {
         const gpx = await parseGPX(dummyGPX);
@@ -75,6 +75,6 @@ describe('GPX test', () =>{
         const gpx = await parseGPX(dummyGPX);
         const t1 = Date.parse("2022-02-20T07:36:55Z");
         const t2 = Date.parse("2022-02-20T12:53:32Z");
-        expect(gpx.expectedTime).to.equal((t2-t1)/3600000);
+        expect(gpx.expectedTime).to.equal(parseFloat(((t2-t1)/3600000).toFixed(2)));
     })
 })

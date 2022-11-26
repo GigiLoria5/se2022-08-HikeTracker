@@ -54,14 +54,15 @@ const parseGPX = async (gpxFile) => {
         expectedTime = (t1.getTime()-t2.getTime())/3600000;
     }
     return new GPXData(
-        gpx.tracks[0].distance.total/1000,
+        parseFloat((gpx.tracks[0].distance.total/1000).toFixed(1)),
         gpx.tracks[0].points[0].lat,
         gpx.tracks[0].points[0].lon,
         gpx.tracks[0].points[gpx.tracks[0].points.length-1].lat,
         gpx.tracks[0].points[gpx.tracks[0].points.length-1].lon,
-        gpx.tracks[0].elevation.pos,
-        gpx.tracks[0].elevation.max,
-        expectedTime);
+        Math.floor(gpx.tracks[0].elevation.pos),
+        Math.floor(gpx.tracks[0].elevation.max),
+        parseFloat((expectedTime.toFixed(2)))
+    );
 };
 
 const parseGPXnoPoints = (points) => {
@@ -94,14 +95,15 @@ const parseGPXnoPoints = (points) => {
     } 
 
     return new GPXData(
-        dist,
+        parseFloat(dist.toFixed(1)),
         points[0].lat,
         points[0].lon,
         points[points.length-1].lat,
         points[points.length-1].lon,
-        el,
-        eleMax,
-        expectedTime);
+        Math.floor(el),
+        Math.floor(eleMax),
+        parseFloat((expectedTime.toFixed(2)))
+    );
 }
 
 const getPoints = async (gpxFile) => {
