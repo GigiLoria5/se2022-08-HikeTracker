@@ -20,12 +20,15 @@ a {
     text-decoration: none;
 }
 
-/*svg {
+svg {
     width: 100%;
     height: 100%;
-}*/
+}
 
-svg {height: auto; width: auto}
+.leaflet-container svg {
+    height: auto;
+    width: auto
+}
 
 .margin-right-32 {
     margin-right: 32px;
