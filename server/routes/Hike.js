@@ -108,9 +108,9 @@ router.post('/hikes',
                 req.body.expected_time,
                 req.body.difficulty,
                 name,
-                start_point.type,
+                "location",
                 start_point_id,
-                end_point.type,
+                "location",
                 end_point_id
             )
             let hike_id;
@@ -121,7 +121,7 @@ router.post('/hikes',
 
             for (const p of JSON.parse(req.body.reference_points).points) {
                 const ref_point_id = await locationDao.addLocation(p);
-                hikeDao.addReferencePoint(id, p.type, ref_point_id).catch(err => {
+                hikeDao.addReferencePoint(id, "location", ref_point_id).catch(err => {
                     added = false;
                     hikeDao.deleteHike(id).then(_a => {
                         hikeDao.deleteReferencePoints(id);
