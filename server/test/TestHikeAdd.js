@@ -326,4 +326,594 @@ describe('Add hike', () => {
                 res.should.have.status(400);
             });
     });
+
+    step('T8: POST/api/hikes [MISSING COUNTRY]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T9: POST/api/hikes [MISSING PROVINCE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T10: POST/api/hikes [MISSING CITY]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T11: POST/api/hikes [MISSING PEAK ALTITUDE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T12: POST/api/hikes [MISSING TITLE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T13: POST/api/hikes [MISSING DESCRIPTION]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T14: POST/api/hikes [MISSING ASCENT]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T15: POST/api/hikes [MISSING LENGTH]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T16: POST/api/hikes [MISSING EXPECTED TIME]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T17: POST/api/hikes [MISSING DIFFICULTY]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T18: POST/api/hikes [WRONG PEAK ALTITUDE TYPE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", "1357")
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T19: POST/api/hikes [WRONG ASCENT TYPE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", "320")
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T20: POST/api/hikes [WRONG TRACK LENGTH TYPE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", "6.2")
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T21: POST/api/hikes [WRONG EXPECTED TIME TYPE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", "3.3")
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T22: POST/api/hikes [WRONG DIFFICULTY TYPE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", "2")
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileWrong.txt')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
 });
