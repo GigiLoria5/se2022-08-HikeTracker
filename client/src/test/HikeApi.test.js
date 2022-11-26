@@ -15,6 +15,7 @@ describe('frontend test', () => {
     let countries;
     let provinces = [];
     let cities = [];
+    let hike_id = 1;
 
     const filterNull = {
         "country": null, "province": null, "city": null, "difficulty": null,
@@ -236,6 +237,29 @@ describe('frontend test', () => {
         }
         catch (err) {
             expect(err.error).toBe("Parameter error");
+        }
+    })
+
+    it('T19: get hikes by its id [GOOD]', async () => {
+        const a = await API.getHikeById(hike_id);
+        expect(a.id).toBe(hike_id);
+    })
+
+    it('T19: get hikes by its id but there is not id [BAD]', async () => {
+        try {
+            await API.getHikeById();
+        }
+        catch (err) {
+            expect(err.error).toBe("Fields validation failed");
+        }
+    })
+
+    it('T20: get hikes by its id but there is a wrong id [BAD]', async () => {
+        try {
+            await API.getHikeById(8.5);
+        }
+        catch (err) {
+            expect(err.error).toBe("Fields validation failed");
         }
     })
 })
