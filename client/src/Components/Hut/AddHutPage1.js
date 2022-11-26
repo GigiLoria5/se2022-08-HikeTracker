@@ -141,25 +141,14 @@ export default function AddHutPage1(props) {
                             <br />Geographic information<br />
                         </Typography>
 
-                        <Stack direction={{ xs: 'column', sm: 'column' }} spacing={{ xs: 1, sm: 2, md: 4 }} alignItems={'center'}>
-
-                            {/*COUNTRY FIELD*/}
-                            {/*                            <TextField variant="outlined" required label="Country" sx={{ width: 'fit-content' }} value={props.country} onChange={ev => props.setCountry(ev.target.value)} /> */}
-
-                            {/*PROVINCE FIELD*/}
-                            {/*                            <TextField variant="outlined" required label="Province" sx={{ width: 'fit-content' }} value={props.province} onChange={ev => props.setProvince(ev.target.value)} />  */}
-
-                            {/*CITY FIELD*/}
-                            {/*                            <TextField variant="outlined" required label="City" sx={{ width: 'fit-content' }} value={props.city} onChange={ev => props.setCity(ev.target.value)} />  */}
-
-                            {/*COUNTRY FIELD*/}
+                        <Stack direction={{ xs: 'column', sm: 'column' }} margin={1} alignItems={'center'}>
 
                             <Autocomplete
                                 required
                                 disablePortal
                                 id="combo-box-demo"
                                 options={countries}
-                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                sx={{ m: 1, width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
                                     const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
@@ -174,7 +163,7 @@ export default function AddHutPage1(props) {
                                 id="combo-box-demo2"
                                 options={provinces}
                                 key={props.country}
-                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                sx={{ m: 1, width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
                                     const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
@@ -189,7 +178,7 @@ export default function AddHutPage1(props) {
                                 id="combo-box-demo3"
                                 options={cities}
                                 key={[props.province, props.country]}
-                                sx={{ width: 'fit-content', minWidth: '28ch' }}
+                                sx={{ m: 1, width: 'fit-content', minWidth: '28ch' }}
                                 onChange={e => {
                                     e.preventDefault();
                                     const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
