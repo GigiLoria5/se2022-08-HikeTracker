@@ -36,16 +36,16 @@ const checkPoint = async (type, id) => {
 }
 
 router.post('/hikes', 
-    body('title').isLength({min:1}),
-    body('peak_altitude').isNumeric().isFloat({ min: 0.0}),
-    body('ascent').isNumeric().isFloat({ min: 0}),
-    body('track_length').isNumeric().isFloat({ min: 0.0}),
-    body('expected_time').isNumeric().isFloat({ min: 0.0}),
-    body('difficulty').isNumeric().isInt({ min: 1, max:3}),
-    body('city').isLength({min:1}),
-    body('province').isLength({min:1}),
-    body('country').isLength({min:1}),
-    body('description').isLength({min:1}),
+    body('title').exists().isString().isLength({min:1}),
+    body('peak_altitude').exists().isNumeric().isFloat({ min: 0.0}),
+    body('ascent').exists().isNumeric().isFloat({ min: 0}),
+    body('track_length').exists().isNumeric().isFloat({ min: 0.0}),
+    body('expected_time').exists().isNumeric().isFloat({ min: 0.0}),
+    body('difficulty').exists().isNumeric().isInt({ min: 1, max:3}),
+    body('city').exists().isString().isLength({min:1}),
+    body('province').exists().isString().isLength({min:1}),
+    body('country').exists().isString().isLength({min:1}),
+    body('description').exists().isString().isLength({min:1}),
     check('start point').custom(async(value, {req})=> {
         const start_point = await JSON.parse(req.body.start_point);
         if (isNaN(start_point.latitude) ||
@@ -60,37 +60,6 @@ router.post('/hikes',
             (end_point.description.length == 0)) throw "Invalid start point"
         return true;
     }),
-
-
-    /*check('country province city').custom(async (value, {req}) => {
-        const provinces = await hikeDao.getProvincesByCountry(req.body.country);
-        if (!provinces.map(a=>a.province).includes(req.body.province)) throw "Invalid place";
-        const cities = await hikeDao.getCitiesByProvince(req.body.province);
-        if (!cities.map(a=>a.city).includes(req.body.city)) throw "Invalid place";
-        return true;
-    }),
-
-    check('start point').custom(async(value, {req})=> {
-        const start_point = req.body.start_point;
-        const res = await (checkPoint(req.body.start_point_type, req.body.start_point_id));
-        if (res) throw "Invalid start point"
-        return true;
-    }),
-
-    check('end point').custom(async(value, {req})=> {
-        const res = await (checkPoint(req.body.end_point_type, req.body.end_point_id));
-        if (res) throw "Invalid end point"
-        return true;
-    }),*/
-
-    /*check('reference points').custom(async(value, {req})=> {
-        for (const refp of JSON.parse(req.body.reference_points).points){
-            if (!["location", "hut", "parking_lot"].includes(refp.type)) throw "Invalid end point";
-            const res = await (checkPoint(refp.type, refp.id));
-            if (res) throw "Invalid end point";
-        }
-        return true;
-    }),*/
 
     check('gpx file').custom(async (value, { req }) => {
         if (!req.files) throw "no file uploaded";
