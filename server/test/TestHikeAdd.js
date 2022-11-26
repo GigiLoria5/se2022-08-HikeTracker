@@ -73,10 +73,8 @@ describe('Add hike', () => {
 
     step('T1.5: Delete the previous hike', async function () {
         const hikes = await hikeDao.getAllHikes();
-        for (h of hikes) {
-            last_hike_id = h.id;
-            last_gps_track = h.gps_track;
-        }
+        last_hike_id = hikes[0].id;
+        last_gps_track = hikes[0].gps_track;
 
         fs.unlink('gpx_files/' + last_gps_track + '.gpx', function (err, results) {
             if (err) console.log('File Doesnt exists');
