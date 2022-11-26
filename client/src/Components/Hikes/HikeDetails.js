@@ -56,7 +56,7 @@ function HikeDetails(props) {
                 < Grid item xs={12} >
                     {hike === null && error === ""
                         ? <CircularProgress color="success" />
-                        : < Typography variant="h5" className={"hide-scrollbar"} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }}>
+                        : < Typography variant="h5" className={"hide-scrollbar"} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, paddingLeft: 2, paddingRight: 2, textAlign: "center" }}>
                             {hike === null ? error : `${hike.title} | ${hike.peak_altitude} m asl`}
                         </Typography>
                     }
@@ -66,12 +66,12 @@ function HikeDetails(props) {
                 {< Grid item xs={12} >
                     {hike === null
                         ? null
-                        : <Box component="div" sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }} marginBottom={1}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", marginRight: { xs: '125px', lg: '150px' }, paddingLeft: 1 }} className="div-subtitle">
+                        : <Box component="div" sx={{ display: { xs: "block", sm: "flex" }, flexDirection: "row", justifyContent: "center" }} marginBottom={1}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", marginLeft: { xs: "auto", sm: 0 }, marginRight: { xs: 'auto', sm: 0, lg: '150px' }, paddingLeft: 1 }} className="div-subtitle">
                                 {customIcons[hike.difficulty].icon}
                                 <Box sx={{ ml: 2 }}>{customIcons[hike.difficulty].label}</Box>
                             </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", whiteSpace: "nowrap", overflow: "scroll", textOverflow: "ellipsis" }} paddingRight={1} className="div-subtitle hide-scrollbar">
+                            <Box sx={{ display: 'flex', alignItems: 'center', height: "25px", width: "fit-content", marginLeft: { xs: "auto", sm: 0 }, marginRight: { xs: "auto", sm: 0 } }} paddingRight={1} className="div-subtitle hide-scrollbar">
                                 <Typography gutterBottom variant="body1" color="text.primary" display={"inline"} margin={0}>
                                     {`${hike.city}, ${hike.province}, ${hike.country}`}
                                 </Typography>

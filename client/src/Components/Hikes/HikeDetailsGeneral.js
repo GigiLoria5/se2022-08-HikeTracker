@@ -7,7 +7,7 @@ function HikeDetailsGeneral(props) {
 
     return (
         <Grid item xs={12} lg={7} border={"1px solid #BBBBBB"} sx={{ marginRight: { xs: "8vw", lg: 0 }, marginLeft: { xs: "6vw", lg: "12vw" }, marginTop: { xs: "3vh", lg: 0 }, padding: 4, paddingBottom: 0 }}>
-            <Box component="div" className={"hide-scrollbar"} display="flex" sx={{ whiteSpace: "nowrap", overflow: "scroll" }} marginBottom={1}>
+            <Box component="div" className={"hide-scrollbar"} display="flex" marginBottom={1}>
                 {/* Length */}
                 <Box component="div" marginRight={"5vw"}>
                     <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>

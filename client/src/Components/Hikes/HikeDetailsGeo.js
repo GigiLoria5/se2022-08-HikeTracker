@@ -19,9 +19,9 @@ function HikeDetailsGeo(props) {
     const usersRoleMapPermission = ['hiker', 'local_guide'];
 
     const geoDetailsComponents = (
-        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 }, height: "100vh" }}>
+        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 } }}>
             {/* Map */}
-            <Box component="div" sx={{ width: "100%", height: "40%", marginTop: 2 }}>
+            <Box component="div" sx={{ width: "100%", height: "40vh", marginTop: 2 }}>
                 {isloggedIn && usersRoleMapPermission.includes(loggedUser.role)
                     ? < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} trailColor={getColorByDifficulty(hike.difficulty)} />
                     : <Box component="div" sx={{ backgroundColor: "black", height: "100%", opacity: 0.9, display: "flex", textAlign: "center", alignItems: "center" }}>

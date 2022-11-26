@@ -55,8 +55,15 @@ svg {
 .flex-font {
     width: 100%;
     overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .flex-font::-webkit-scrollbar,
