@@ -189,3 +189,13 @@ svg {
 .div-subtitle svg {
     width: auto;
 }
+
+.back-outlined-btn {
+    color: var(--main) !important;
+    border: 1px solid var(--main) !important;
+}
+
+.back-outlined-btn:hover {
+    color: white !important;
+    background-color: var(--active) !important;
+}

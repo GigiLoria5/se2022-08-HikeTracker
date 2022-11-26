@@ -44,7 +44,7 @@ function LocationMarker(props) {
                         <Marker key={index} position={{ lat: parseFloat(h.lat), lng: parseFloat(h.lng) }} icon={new Icon({ iconUrl: markerIconRed, iconSize: [25, 41], iconAnchor: [12, 41] })} >
                             <Popup>{h.label}</Popup>
                         </Marker >
-                    )
+                    );
                 })
             }
         </>

@@ -1,8 +1,9 @@
-import { Box, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import API from '../../API';
 import { customDifficultyIcons } from '../../Utils/CustomDifficultyIcons';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
 
@@ -11,7 +12,13 @@ function HikeDetails(props) {
     const { hikeId } = useParams();
     const [hike, setHike] = useState(null);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
     const customIcons = customDifficultyIcons;
+
+    const clickHandle = event => {
+        event.preventDefault();
+        navigate("/hikes");
+    }
 
     useEffect(() => {
         // fetch /api/hike/:id
@@ -39,16 +46,6 @@ function HikeDetails(props) {
                     }
                 </Grid>
 
-                {/* Error Message Body */}
-                {< Grid item xs={12} >
-                    {error === ""
-                        ? null
-                        : < Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>
-                            Return to our <Link to="/" >homepage</ Link>
-                        </Typography>
-                    }
-                </Grid>}
-
                 {/* Difficulty+Geographic Area */}
                 {< Grid item xs={12} >
                     {hike === null
@@ -72,6 +69,15 @@ function HikeDetails(props) {
 
                 {/* Geographic Information */}
                 {hike === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} />}
+
+                {/* Go Back Button */}
+                < Grid item xs={12} >
+                    <Box component="div" sx={{ marginTop: 2, marginBottom: 2, padding: 4, paddingTop: 0, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "column" }}>
+                        <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} >
+                            Return Hikes List
+                        </Button>
+                    </Box>
+                </Grid>
             </Grid>
         </Container >
     )

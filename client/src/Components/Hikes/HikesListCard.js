@@ -30,7 +30,7 @@ export default function HikesListCard(props) {
                         </Box>
                         {/* Title & Peak Altitude */}
                         <Box component="div" className="flex-font" marginBottom={0.2}>
-                            <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '2.90vw', sm: '2.25vw', md: '2vw', lg: '1vw' }, }} margin={0}>
+                            <Typography gutterBottom variant="h6" sx={{ fontWeight: 550, fontSize: { xs: '3.90vw', sm: '2.25vw', md: '2vw', lg: '1vw' }, }} margin={0}>
                                 {title} | {peak_altitude} m asl
                             </Typography>
                         </Box>

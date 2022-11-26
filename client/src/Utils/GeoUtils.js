@@ -26,4 +26,12 @@ const isPointInsideRange = (rangePoint, rangeRadius, pointToCheck) => {
     return distanceBetweenPoints > rangeRadius ? false : true;
 }
 
-export { isPointInsideRange }; 
+/**
+ * 
+ * @param {Array} a coordinates
+ * @param {Array} b coordiantes
+ * @returns 
+ */
+const getMidPoint = ([x1, y1], [x2, y2]) => [(x1 + x2) / 2, (y1 + y2) / 2];
+
+export { isPointInsideRange, getMidPoint }; 

@@ -23,13 +23,19 @@ function HikeDetailsGeo(props) {
     };
 
     const geoDetailsComponents = (
-        <Box component="div" sx={{ marginTop: { xs: 2, lg: 3 }, padding: 4, paddingTop: 0, paddingBottom: 0 }}>
-            <Box component="div" sx={{ width: "50vw", marginTop: 2 }}>
+        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 }, height: "40vh" }}>
+            {/* Map */}
+            <Box component="div" sx={{ width: "100%", height: "100%", marginTop: 2 }}>
                 {!isloggedIn
                     ? <h1>Log in to see the map</h1>
-                    : < MapViewer gpxFileContent={hike.gpx_content} height={'50vh'} width={'50vw'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} />
+                    : < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} />
                 }
             </Box>
+            {/* Start Point */}
+
+            {/* End Point */}
+
+            {/* Reference Points */}
         </Box>
     );
 
@@ -46,7 +52,7 @@ function HikeDetailsGeo(props) {
     return (
         <>
             {/* Hike Geo Details Panel - Full Size */}
-            <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' }, backgroundColor: "blue" }} lg={3} >
+            <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' }, border: "1px solid red" }} lg={3} >
                 {geoDetailsComponents}
             </Grid>
 
