@@ -35,7 +35,7 @@ exports.getHutById = (id) => {
 exports.addHut = (userid, hut) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        db.get(sql, [
+        db.run(sql, [
             hut.name,
             hut.city,
             hut.province,
@@ -64,7 +64,7 @@ exports.addHut = (userid, hut) => {
 exports.checkExisting = (hut) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM hut WHERE (coordinates = ? OR (city=? AND province=? AND country=? AND address=?))';
-        db.run(sql, [hut.coordinates, hut.city, hut.province, hut.country, hut.address], (err, row) => {
+        db.get(sql, [hut.coordinates, hut.city, hut.province, hut.country, hut.address], (err, row) => {
             if (err) { reject(err); }
             else if (row === undefined) {
                 resolve(false);
