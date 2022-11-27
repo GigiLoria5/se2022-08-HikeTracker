@@ -82,6 +82,14 @@ function AddHike() {
             setEndPointGPSlon(prevEndPoint.longitude);
             setEndPointType(prevEndPoint.type);
             setEndPointValue(prevEndPoint.value);
+            parseGPX(prevFile).then(
+                gpx => {
+                    setAscent(gpx.ascent);
+                    setLength(gpx.length);
+                    setExpectedTime(gpx.expectedTime);
+                    setPeakAltitude(gpx.peak_altitude)
+                }
+            );
         }
         // eslint-disable-next-line
     }, [newHike]);
@@ -102,6 +110,7 @@ function AddHike() {
             }
         },
     });
+
 
     /* Function called on Upload press */
     const changeHandler = async (event) => {
@@ -258,6 +267,7 @@ function AddHike() {
                                                 pointValue={startPointValue}
                                                 pointGPSlat={startPointGPSlat}
                                                 pointGPSlon={startPointGPSlon}
+                                                description={startPointDescription}
                                                 handleChange={handleChange1}
                                                 setPointValue={setStartPointValue}
                                                 setPointDescription={setStartPointDescription} />
@@ -271,6 +281,7 @@ function AddHike() {
                                                 pointValue={endPointValue}
                                                 pointGPSlat={endPointGPSlat}
                                                 pointGPSlon={endPointGPSlon}
+                                                description={endPointDescription}
                                                 handleChange={handleChange2}
                                                 setPointValue={setEndPointValue}
                                                 setPointDescription={setEndPointDescription} />

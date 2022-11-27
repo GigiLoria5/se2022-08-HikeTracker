@@ -2,7 +2,7 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui
 import SmootherTextField from "../../SmootherTextField";
 
 const PointsInput = (props) => {
-    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription } = props;
+    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription, description } = props;
     return (
         <FormControl sx={{ width: '30ch' }}>
             <InputLabel id="demo-simple-select-label">Location type</InputLabel>
@@ -31,7 +31,7 @@ const PointsInput = (props) => {
                 <Grid></Grid>
             )}
 
-            <SmootherTextField maxWidth='30ch' label="Description" text="" setText={setPointDescription} required={true} />
+            <SmootherTextField maxWidth='30ch' label="Description" text={description} setText={setPointDescription} required={true} />
 
         </FormControl>
     )
