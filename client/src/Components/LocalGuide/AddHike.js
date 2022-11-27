@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
 //import Grid from "@mui/material/Grid";
@@ -7,7 +7,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import UiLink from '@mui/material/Link'
 
 import Alert from '@mui/material/Alert';
@@ -34,6 +34,7 @@ const MenuProps = {
 
 
 function AddHike() {
+    
     const [startPointDescription, setStartPointDescription] = useState("");
     const [endPointDescription, setEndPointDescription] = useState("");
 
@@ -61,6 +62,28 @@ function AddHike() {
 
     const navigate = useNavigate();
 
+    const location = useLocation();
+    
+    const { newHike, prevFile, prevStartPoint, prevEndPoint } = location.state;
+
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+        if(newHike == false){
+            setSelectedFile(prevFile);
+            setIsSelected(true);
+            setStartPointDescription(prevStartPoint.description);
+            setStartPointGPSlat(prevStartPoint.latitude);
+            setStartPointGPSlon(prevStartPoint.longitude);
+            setStartPointType(prevStartPoint.type);
+            setStartPointValue(prevStartPoint.value);
+            setEndPointDescription(prevEndPoint.description)
+            setEndPointGPSlat(prevEndPoint.latitude);
+            setEndPointGPSlon(prevEndPoint.longitude);
+            setEndPointType(prevEndPoint.type);
+            setEndPointValue(prevEndPoint.value);
+        }
+    }, [newHike]);
 
     const theme = createTheme({
         palette: {
