@@ -126,7 +126,7 @@ function AddHike2() {
     const addRefPoints = (lat, long) => {
         if (!addingRefPoint && !editingRefPoint) {
             setAddingRefPoint(true);
-            setRefPoints([...refPoints, { latitude: lat, longitude: long, description: "test" }])
+            setRefPoints([{ latitude: lat, longitude: long, description: "test" }, ...refPoints])
             setRefPointLat(lat);
             setRefPointLon(long);
             setRefPointType("gps");
@@ -160,8 +160,8 @@ function AddHike2() {
             description: refPointDescription
         };
         const oldPoints = referencePoint;
-        setReferencePoint([...referencePoint, refPoint]);
-        setRefPoints([...oldPoints, refPoint]);
+        setReferencePoint([refPoint, ...referencePoint]);
+        setRefPoints([refPoint, ...oldPoints]);
         setAddingRefPoint(false);
         setEditingRefPoint(false);
         setRefPointMessage("");
