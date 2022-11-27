@@ -8,6 +8,7 @@ import markerLocation from '../../Assets/Map/location-marker.png';
 import { Icon } from 'leaflet';
 import { findFarthestPoint, getMidPoint, splitCoordinates } from '../../Utils/GeoUtils';
 import { getPointShortDescription } from '../../Utils/Point';
+import { getPoints } from '../../Utils/GPX';
 
 function LocationMarker(props) {
     const { startPoint, endPoint, refPoints } = props;
@@ -61,18 +62,19 @@ function MapViewer(props) {
 
     useEffect(() => {
         // Parse GPX file
-        const gpxParser = require('gpxparser');
-        const gpx = new gpxParser();
-        gpx.parse(gpxFileContent);
-        const positions = gpx.tracks[0].points.map(p => [p.lat, p.lon]);
-        // Find center
-        const startPointGPXCoordinates = positions[0].map(c => c);
-        const farthestPointCoordinates = findFarthestPoint(startPointGPXCoordinates, positions);
-        const midPointPosition = getMidPoint(startPointGPXCoordinates, farthestPointCoordinates);
-        // Set states
-        setCenter(midPointPosition);
-        setPositions(positions);
-        // eslint-disable-next-line
+        getPoints({text: () => gpxFileContent}).then(
+            positions => {
+                // Find center
+                const startPointGPXCoordinates = positions[0].map(c => c);
+                const farthestPointCoordinates = findFarthestPoint(startPointGPXCoordinates, positions);
+                const midPointPosition = getMidPoint(startPointGPXCoordinates, farthestPointCoordinates);
+                // Set states
+                setCenter(midPointPosition);
+                setPositions(positions);
+                // eslint-disable-next-line
+            }
+        )
+        
     }, []);
 
     return (
