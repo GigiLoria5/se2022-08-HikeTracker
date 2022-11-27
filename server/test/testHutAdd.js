@@ -557,15 +557,16 @@ describe('test Add hut wrong_delete', () => {
             });
     }); 
     
-    step('T4: DELETE/api/huts/name [Hut not existing]', async function () {
+    step('T4: DELETE/api/huts/name [Fields validation failed]', async function () {
         await authenticatedUser
             .delete('/api/huts/name')
             .send({
-                "hutName": "hello",
+                "hutName": 11,
               })
             .then(function (res) {
                 res.should.have.status(422);
             });
     });
+
 
 });
