@@ -24,8 +24,9 @@ exports.getHutById = (id) => {
                     description: row.description,
                     beds_number: row.beds_number,
                     opening_period: row.opening_period,
+                    coordinates: row.coordinates
                 })));
-                resolve(hut);
+                resolve(hut[0]);
             }
         });
     });

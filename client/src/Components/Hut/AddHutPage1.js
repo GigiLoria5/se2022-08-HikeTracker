@@ -80,7 +80,7 @@ export default function AddHutPage1(props) {
     });
 
     const thm = {
-        marginBottom: 2,
+        marginBottom: 3,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -197,7 +197,7 @@ export default function AddHutPage1(props) {
 
                         <Grid container marginTop={3} justifyContent="center">
                             <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                <Button variant="contained" color='secondary' onClick={() => props.reset()}>RESET</Button>
+                                <Button color="error" variant="outlined" onClick={() => props.reset()}>RESET</Button>
                                 <Button type="submit" variant="contained" color='primary'>CONTINUE</Button>
                             </Stack>
                         </Grid>

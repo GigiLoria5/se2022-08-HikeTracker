@@ -43,6 +43,49 @@ svg {
     margin-bottom: auto;
 }
 
+.container-full-page {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.flex-font {
+    width: 100%;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.flex-font::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.leaflet-container svg {
+    height: auto;
+    width: auto
+}
+
+.link {
+    color: var(--main) !important;
+}
+
+.link:hover {
+    color: var(--active) !important;
+    text-decoration: underline !important;
+    text-decoration-color: var(--active) !important;
+}
+
 /* Navbar */
 
 .box-end {
@@ -61,7 +104,7 @@ svg {
     text-decoration: underline 2px !important;
 }
 
-.container-full-size {
+.container-full-size-fixed {
     height: 100% !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -77,6 +120,11 @@ svg {
     background-color: var(--main);
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.navbar-container svg {
+    width: 100%;
+    height: 100%;
 }
 
 .btn-color-active:hover {
@@ -117,4 +165,55 @@ svg {
     top: 0;
     bottom: 0;
     z-index: -2;
+}
+
+/* Hikes */
+
+.hike-card-description-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.hike-card-description-wrap p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.no-exceed {
+    display: flex;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.card:hover {
+    box-shadow: -1px 10px 29px 0px rgba(0, 0, 0, 0.8);
+}
+
+/* Hikes Filters  */
+.MuiRating-icon {
+    display: block;
+    height: 24px;
+    padding-right: 16px;
+    opacity: 0.55;
+}
+
+.MuiRating-iconFilled {
+    opacity: 1;
+}
+
+/* Hike Details */
+.div-subtitle svg {
+    width: auto;
+}
+
+.back-outlined-btn {
+    color: var(--main) !important;
+    border: 1px solid var(--main) !important;
+}
+
+.back-outlined-btn:hover {
+    color: white !important;
+    background-color: var(--active) !important;
 }

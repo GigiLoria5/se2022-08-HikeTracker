@@ -17,8 +17,9 @@ exports.getParkingLotById = (id) => {
                     province: row.province,
                     country: row.country,
                     address: row.address,
+                    coordinates: row.coordinates
                 })));
-                resolve(parking);
+                resolve(parking[0]);
             }
         });
     });

@@ -24,14 +24,14 @@ function LocalGuidePage() {
         <div>
             <Grid container>
                 <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography variant="h4" marginTop={1} gutterBottom>
-                        <br />Set up Platform Content
+                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+                        Set up Platform Content
                     </Typography>
                 </Grid>
 
                 <Grid item xs={12} marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <ThemeProvider theme={theme}>
-                        <Button component={Link} to={"/local-guide-add-hikes"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
+                        <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" size="large" color='primary'>ADD HIKE</Button>
                     </ThemeProvider>
                     <Grid><br /></Grid>
                     <ThemeProvider theme={theme}>

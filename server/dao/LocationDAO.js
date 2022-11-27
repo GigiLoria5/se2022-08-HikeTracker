@@ -16,9 +16,24 @@ exports.getLocationById = (id) => {
                     value_type: row.value_type,
                     value: row.value,
                     description: row.description,
+                    coordinates: row.coordinates
                 })));
-                resolve(location);
+                resolve(location[0]);
             }
+        });
+    });
+};
+
+exports.addLocation = (location) => {
+    const coordinates = location.latitude+", "+location.longitude;
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO location (value_type, value, description, coordinates) VALUES (?,?,?,?) RETURNING id`;
+        db.get(sql, [location.type, location.value, location.description, coordinates], function (err, row) { 
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(row.id);
         });
     });
 };
