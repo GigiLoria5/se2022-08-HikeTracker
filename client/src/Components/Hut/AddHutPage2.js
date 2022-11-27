@@ -173,7 +173,7 @@ export default function AddHutPage2(props) {
                         </Grid>
                         <Box display="flex" justifyContent="center" alignItems="center">
                             {/* <TextField variant="outlined" label="Description" required multiline rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} /> */}
-                            <TextField variant="outlined" required multiline maxWidth='30ch' label="Description" rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
+                            <TextField variant="outlined" required multiline maxWidth='30ch' label="Description" rows={4} margin="normal" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
                         </Box>
 
                         <Grid xs={12}>
