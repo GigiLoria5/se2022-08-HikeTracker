@@ -120,7 +120,7 @@ exports.getAllHikes = () => {
 exports.addHike = (hike, author_id) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO hike(title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        db.get(sql, [
+        db.run(sql, [
             hike.title,
             hike.peak_altitude,
             hike.city,
@@ -137,7 +137,7 @@ exports.addHike = (hike, author_id) => {
             hike.end_point_type,
             hike.end_point_id,
             author_id
-        ], function (err, _) {
+        ], function(err) {
             if (err) {
                 reject(err);
                 return;

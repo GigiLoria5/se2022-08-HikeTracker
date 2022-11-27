@@ -28,7 +28,7 @@ exports.addLocation = (location) => {
     const coordinates = location.latitude + ", " + location.longitude;
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO location (value_type, value, description, coordinates) VALUES (?,?,?,?)`;
-        db.get(sql, [location.type, location.value, location.description, coordinates], function (err, _) {
+        db.run(sql, [location.type, location.value, location.description, coordinates],  function(err) {
             if (err) {
                 reject(err);
                 return;
