@@ -2,37 +2,40 @@ import { APIURL } from './APIUrl';
 
 /**
  *
- * @param hike is a Hike descripted in ./Utils.js
+ * @param hike is a Hike descripted in ./Util/Hike.js
  */
 const createHike = async (hike) => {
+    const formData = new FormData();
+    for (const c in hike) {
+        if (c === "reference_points")
+            formData.append(c, JSON.stringify({ "points": hike[c] }))
+        else if (c === "start_point" || c === "end_point")
+            formData.append(c, JSON.stringify(hike[c]))
+        else
+            formData.append(c, hike[c]);
+
+    }
     let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
         credentials: 'include',
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-        body: JSON.stringify(hike),
+        body: formData,
     });
 
     let err = new Error();
     if (!response.ok) {
         if (response.status === 500) {
-            console.log(response.statusText);
             err.message = "500 INTERNAL SERVER ERROR";
             throw err;
         }
         else if (response.status === 422) {
-            console.log(response.body);
             err.message = "422 UNPROCESSABLE ENTITY";
             throw err;
         }
         else if (response.status === 401) {
-            console.log(response.body);
             err.message = "422 UNAUTHORIZED";
             throw err;
         }
         else {
-            console.log(response.body);
             err.message = "OTHER ERROR";
             throw err;
         }
@@ -78,23 +81,20 @@ async function getCitiesByProvince(province) {
 
 // get
 // Return hikes by the filters
-async function getHikesWithFilters(city, province, country, difficulty, track_length, ascent, expected_time) {
-    var data = {};
-    if (city !== null && city !== '')
-        data.city = city;
-    if (province !== null && province !== '')
-        data.province = province;
-    if (country !== null && country !== '')
-        data.country = country;
-    if (difficulty !== null && difficulty !== '')
-        data.difficulty = difficulty;
-    if (track_length !== null && track_length !== '')
-        data.track_length = track_length;
-    if (ascent !== null && ascent !== '')
-        data.ascent = ascent;
-    if (expected_time !== null && expected_time !== '')
-        data.expected_time = expected_time;
-    const searchParams = new URLSearchParams(data);
+/**
+ * 
+ * @param {Object} filter an object with the following fields: city, province, country, difficulty, track_length, ascent, expected_time (null if not filtered by that field)
+ * @returns Array of objects
+ */
+async function getHikesWithFilters(filter) {
+    // Remove "null" field from the filter because the server does not want them specified
+    Object.keys(filter).forEach(key => {
+        if (filter[key] === null) {
+            delete filter[key];
+        }
+    });
+
+    const searchParams = new URLSearchParams(filter);
     const response = await fetch(new URL('/api/hikes/filters?' + searchParams, APIURL), { credentials: 'include' });
     const hikesJson = await response.json();
     if (response.ok) {
@@ -124,4 +124,30 @@ async function getHikesWithFilters(city, province, country, difficulty, track_le
     }
 }
 
-export { createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters };
+/**
+ * 
+ * @param {Number} hikeId identifier of an hike
+ * @returns Hike object
+ */
+function getHikeById(hikeId) {
+    return new Promise((resolve, reject) => {
+        fetch(new URL(`/api/hike/${hikeId}`, APIURL), {
+            method: "GET",
+            credentials: "include"
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    const hike = await response.json();
+                    resolve(hike);
+                } else {
+                    // errors
+                    response.json()
+                        .then((message) => { reject(message); }) // error(s) message in the response body
+                        .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+                }
+            })
+            .catch(() => { reject({ error: "Cannot communicate with the server." }) });
+    });
+}
+
+export { createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters, getHikeById };

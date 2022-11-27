@@ -1,7 +1,10 @@
 # se2022-08-HikeTracker
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
 [![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
+[![Frontend tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Frontend%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -21,6 +24,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - React **18.2.0**
 - MUI **5.10.9**
+- Leaflet **1.9.3**
 
 ### Backend
 
@@ -32,13 +36,15 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 ### Testing
 
+- E2E Tests: Jest
 - Integration Tests: Mocha
 - Unit Tests: Jest
 
 ## React Client Application Routes
 
 - Route `/` : a simple welcome page that acts as an entry point for all users
-- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of showing everyone various information about them, and for authenticated users also shows the map
+- Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
+- Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
 - Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
 
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
@@ -50,6 +56,46 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - email address: compulsory, the value inserted is checked using html email validator
   - password: compulsory, minimum lenght is 8 maximum is 64.
     At the bottom of this form there is a submit button and a link to go back to login route.
+
+- Route `/local-guide-page`: the page contains the actions a local guide can do
+
+  - Adding a hike
+  - Adding a hut
+
+- Route `/local-guide-add-hikes1`: the page contains a form that allows the local guide to add a GPX file, specifying start and end point types and related information
+
+  - upload gpx file
+  - start point type: can be "gps", "address", "name"
+    - start point name: if name is selected
+    - start point address: if address is selected
+  - start point description
+  - end point type: can be "gps", "address", "name"
+    - end point name: if name is selected
+    - end point address: if address is selected
+  - start point description
+
+- Route `/local-guide-add-hikes2`: the page contains a form that allows the local guide to add information about the hike, by inserting
+
+  - title
+  - length (automatically extracted from gpx file)
+  - expected time
+    - if possible computed from gpx
+    - otherwise to be inserted manually as hours and minutes
+  - total ascent (automatically extracted from gpx file)
+  - difficulty: can be "Tourist", "Hiker", "Professional Hiker"
+  - geographical area
+    - country
+    - province
+    - city
+  - reference points: points can be added/edited clicking on the map, for each point:
+    - type: can be "gps", "address", "name"
+      - name: if name is selected
+      - address: if address is selected
+    - description
+  - description
+    At the bottom of this form there is a submit button and a button to get back to the previous page.
+
+- Route `/local-guide-add-hut`: the page contains a form that allows the local guide to add information about a hut
 
 ## API Format
 
@@ -167,6 +213,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Add description for hike
   - Permissions allowed: Local guide
   - Request body: Hike description, including gpx file with gpx tag
+  - gpx file size must be less than 10MB
 
   ```
   {
@@ -180,32 +227,31 @@ Application developed during the Software Engineering II course (Year 2022-23) b
         "track_length": 6.2,
         "expected_time": 3.3,
         "difficulty": 2,
-        "start_point_type": "parking_lot",
-        "start_point_id": 3,
-        "end_point_type": "location",
-        "end_point_id": 18
-        "reference_points": {
-          "points": [
-            {
-              "type":"hut",
-              "id":1
-            },
-            {
-              "type":"hut",
-              "id":2
-            },
-            {
-              "type":"location",
-              "id":12
-            }
+        "start_point": {
+          "latitude":44.57425086759031,
+          "longitude":6.982689192518592,
+          "description":"Start point",
+          "type":"gps",
+          "value":"gps"
+        },
+        "end_point": {
+          "latitude":44.574263943359256,
+          "longitude":6.982647031545639,
+          "description":"End point",
+          "type":"name",
+          "value":"End point name"
+        },
+        "reference_points":{
+          "points":[
+            {"latitude":44.59376471183216,"longitude":6.970151980345208,"type":"gps","value":"gps","description":"Colle Reisassetto"},{"latitude":44.605312234235114,"longitude":6.97978383606973,"type":"gps","value":"gps","description":"Punta di Fiutrusa"}
           ]
-        }
+        },
         "gpx" : ...
   }
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `400 Bad Request` (arguments error),`500 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
@@ -214,9 +260,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   }
   ```
 
-- GET /api/countries
+- GET `/api/countries`
 
-  - Description: Return an array containing all the countries
+  - Description: Return an array containing all the countries where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -232,9 +278,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/provinces/:country
+- GET `/api/provinces/:country`
 
-  - Description: Return an array containing all the provinces of a specific country
+  - Description: Return an array containing all the provinces of a specific country where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -250,9 +296,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/cities/:province
+- GET `/api/cities/:province`
 
-  - Description: Return an array containing all the cities of a specific province
+  - Description: Return an array containing all the cities of a specific province where hikes are available
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -268,20 +314,17 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
-- GET /api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length=value&ascent=value&expected_time=value
+- GET `/api/hike/:id`
 
-  - Description: Return an array containing all the hikes with filters
+  - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
+  - Error responses: `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: Hike object, or an error message in case of failure
 
   ```
-  [
-    ...,
     {
       "id": 8,
-      "author": "Giovanni De Santis"
       "title": "Ring for Monte Calvo",
       "peak_altitude": 1357,
       "city": "Carignano",
@@ -292,50 +335,284 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "track_length": 6.2,
       "expected_time": 3.3,
       "difficulty": 2,
+      "gpx_track": "8_monte_calvo",
       "start_point_type": "parking_lot",
       "start_point_id": 3,
       "end_point_type": "location",
       "end_point_id": 18,
-      "start": [
+      "start":
         {
           "id": 3,
           "city": "Carignano",
           "province": "Torino",
           "country": "Italy",
-          "address": "SP138, 10041"
-        }
-      ],
-      "end": [
+          "address": "SP138, 10041",
+          "coordinates": "44.88578, 7.626319"
+        },
+      "end":
         {
           "id": 18,
           "value_type": "gps",
-          "value": "45.462770631936834, 7.693279470138337",
-          "description": "Mountain peak"
-        }
-      ],
+          "value": null,
+          "description": "Mountain peak",
+          "coordinates": "45.462770631936834, 7.693279470138337"
+        },
       "reference_points": [
-        [
           {
             "id": 17,
             "value_type": "address",
             "value": "SP138, 10041",
             "description": "Chapel of the Visitation of Valinotto",
+            "coordinates": "44.88578, 7.626319",
             "ref_point_type": "location"
-          }
-        ],
-        [
+          },
           {
             "id": 19,
             "value_type": "address",
             "value": "Ca' Palasot, Frazione Campo, 1, 10081",
             "description": "Palasot Inn (Restaurant)",
+            "coordinates": "45.45229, 7.7025213",
             "ref_point_type": "location"
           }
-        ]
-      ]
+      ],
+      "author": "Martina Piccolo",
+      "gpx_content": { gpx file code }
+    }
+  ```
+
+- GET `/api/hikes/filters?city=value&province=value&country=value&difficulty=value&track_length_min=value&track_length_max=value&ascent_min=value&ascent_max=value&expected_time_min=value&expected_time_max=value`
+
+  - Description: Return an array containing all the hikes after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": 8,
+      "title": "Ring for Monte Calvo",
+      "peak_altitude": 1357,
+      "city": "Carignano",
+      "province": "Torino",
+      "country": "Italy",
+      "description": "It runs between ...",
+      "ascent": 320,
+      "track_length": 6.2,
+      "expected_time": 3.3,
+      "difficulty": 2,
+      "gps_track": "8_monte_calvo",
+      "start_point_type": "parking_lot",
+      "start_point_id": 3,
+      "end_point_type": "location",
+      "end_point_id": 18,
+      "author_id": 3,
+      "start":
+        {
+          "id": 3,
+          "city": "Carignano",
+          "province": "Torino",
+          "country": "Italy",
+          "address": "SP138, 10041",
+          "coordinates": "44.88578, 7.626319"
+        },
+      "end":
+        {
+          "id": 18,
+          "value_type": "gps",
+          "value": null,
+          "description": "Mountain peak",
+          "coordinates": "45.462770631936834, 7.693279470138337"
+        },
+      "reference_points": [
+          {
+            "id": 17,
+            "value_type": "address",
+            "value": "SP138, 10041",
+            "description": "Chapel of the Visitation of Valinotto",
+            "coordinates": "44.88578, 7.626319",
+            "ref_point_type": "location"
+          },
+          {
+            "id": 19,
+            "value_type": "address",
+            "value": "Ca' Palasot, Frazione Campo, 1, 10081",
+            "description": "Palasot Inn (Restaurant)",
+            "coordinates": "45.45229, 7.7025213",
+            "ref_point_type": "location"
+          }
+      ],
+      "author": "Martina Piccolo"
     },
     ...
   ]
+  ```
+
+### Parking lot
+
+- POST `/api/parking`
+
+  - Description: Add a new parking lot
+  - Permissions allowed: Local guide
+  - Request body: Parking lot description
+
+  ```
+  {
+    "city": "Torino",
+    "province": "Torino",
+    "country": "Italy",
+    "latitude": 15.7,
+    "longitude": 45.4,
+    "address": "Address Test"
+  }
+  ```
+
+  - Response: `200 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Fields validation failed` or `A parking lot having the same location parameters already exists` (Wrong body content)
+    - `404 User not found` (specified user not found)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/parking/:id`
+
+  - Description: Delete a parking lot by an id
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/parking/address/:address`
+
+  - Description: Delete a parking lot by an address
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```  
+  
+### Huts
+
+- POST `/api/huts`
+
+  - Description: Add description for hut
+  - Permissions allowed: Local guide
+  - Request body: Hut description
+
+  ```
+  {
+    "name": "Hut test",
+    "city": "Turin",
+    "province": "TO",
+    "country": "Italy",
+    "address": "Hut route 66",
+    "altitude": 1950 ,
+    "description": "Amazing hut in the middle of the mountains",
+    "beds_number": 10,
+    "latitude": 15.7,
+    "longitude": 45.4,
+    "phone_number" : "+393331171111",
+    "email" : "hut@hut.it",
+    "website" : "www.hut.com",
+    "type" : "alpine_hut"
+
+  }
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses:
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Fields validation failed` or `422 An hut having the same location parameters already exists` (Wrong body content)
+    - `404 User not found` (specified user not found)
+    - `500 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/huts`
+
+  - Description: Delete an hut by its id
+  - Permissions allowed: Local guide
+  - Request body: Hut id
+
+  ```
+  {
+      "hutId": 5,
+  }
+  ```
+
+  - Response: `200 OK` (Deleted)
+  - Error responses:
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/huts/name`
+
+  - Description: Delete an hut by its name
+  - Permissions allowed: Local guide
+  - Request body: Hut name
+
+  ```
+  {
+      "hutName": "Hut name"
+  }
+  ```
+
+  - Response: `200 OK` (Deleted)
+  - Error responses:
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
   ```
 
 ## Database Tables
@@ -344,13 +621,17 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
-    > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
-- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
+- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates, email, website, type, user_id
+  - Possible values for _type_ are: alpine_hut, fixed_bivouac, unmanaged_hut, hiking_hut, other
   - _altitude_ is in meters
-- Table `parking_lot` contains: id(PK), city, province, country, address
-- Table `location` contains: id(PK), value_type, value, description
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+  - _user id_ is the id of the local guide that creates and manages the hut on the platform
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates, user_id
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
-    > Again, there is no database control on the type. Although value_type may not be needed, I think it is useful to specify what type of value is present and should be expected by the person making the queries or handling the data.
+  - If the value type is gps, the field value will be null and the actual gps coordinates will be inserted inside coordinates field, to avoid data replication
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `hike` contains: id(PK), title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id
   - _peak_altitude_ is in meters
   - _ascent_ is in meters
@@ -361,17 +642,15 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - _start_point_type_ and _end_point_type_ possible values are: hut, location, parking_lot
   - _start_point_id_ and _end_point_id_ do not have any FK contraints. Checks must be done within the backend
   - _author_id_ is the local guide identifier who have added the hike description
-    > In order to avoid having to create associated tables or anything else, I preferred to specify the type here as well, so that I would still have the possibility of making queries in the right place.
 - Table `reference_point` contains: hike_id, ref_point_type, ref_point_id (the PK is the combination of each of them)
   - _ref_point_type_ can be: parking_lot, location, hut
-    > As in the previous cases, no check on external key constraints is performed. Here again, I preferred to insert a type column to help queries and avoid having to do a thousand joins with other associative tables.
 
 ## Users Credentials
 
-| email                     | password | role        |
-| ------------------------- | -------- | ----------- |
-| c.basile@hiker.it         | password | hiker       |
-| g.desantis@localguide.it  | password | local guide |
-| m.piccolo@guideturin.it   | password | local guide |
-| i.folletti987@google.com  | password | local guide |
-| manager@manager.com       | password | manager     |
+| email                    | password | role        |
+| ------------------------ | -------- | ----------- |
+| c.basile@hiker.it        | password | hiker       |
+| g.desantis@localguide.it | password | local guide |
+| m.piccolo@guideturin.it  | password | local guide |
+| i.folletti987@google.com | password | local guide |
+| manager@manager.com      | password | manager     |

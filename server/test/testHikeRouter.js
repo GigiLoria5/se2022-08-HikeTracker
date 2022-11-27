@@ -42,7 +42,6 @@ describe('test HikeAPI',()=>{
                 res.body.should.be.a('array');
                 for (const c of res.body){
                     cities.push(c);
-                    //console.log(cities);
                 }
             });
         }
@@ -53,9 +52,12 @@ describe('test HikeAPI',()=>{
                         "&province=" + null + 
                         "&country=" + null + 
                         "&difficulty=" + null +
-                        "&track_length=" + null +
-                        "&ascent=" + null +
-                        "&expected_time=" + null)
+                        "&track_length_min=" + null +
+                        "&track_length_max=" + null +
+                        "&ascent_min=" + null +
+                        "&ascent_max=" + null +
+                        "&expected_time_min=" + null + 
+                        "&expected_time_max=" + null)
         .then(function(res) {
             res.should.have.status(400);
         });
@@ -109,57 +111,57 @@ describe('test HikeAPI',()=>{
     });
 
     step('T9: GET/api/hikes/filter [track_length]', async function() {
-        await agent.get('/api/hikes/filters?track_length=' + "5-15")
+        await agent.get('/api/hikes/filters?track_length_min=' + 0.1 + "&track_length_max=" + 8.1)
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
             for(const b of res.body){
-                expect(b.track_length).to.be.below(16);
-                expect(b.track_length).to.be.above(4);
+                expect(b.track_length).to.be.below(8.0);
+                expect(b.track_length).to.be.above(0.0);
             }
         });
     });
 
     step('T9: GET/api/hikes/filter [BAD track_length]', async function() {
-        await agent.get('/api/hikes/filters?track_length=' + "27")
+        await agent.get('/api/hikes/filters?track_length_min=' + -34 + "&track_length_max=" + -20)
         .then(function(res) {
             res.should.have.status(400);
         });
     });
 
     step('T10: GET/api/hikes/filter [ascent]', async function() {
-        await agent.get('/api/hikes/filters?ascent=' + "600-1000")
+        await agent.get('/api/hikes/filters?ascent_min='+ 300 +'&ascent_max=' + 1000)
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
             for(const b of res.body){
                 expect(b.ascent).to.be.below(1001);
-                expect(b.ascent).to.be.above(599);
+                expect(b.ascent).to.be.above(299);
             }
         });
     });
 
     step('T11: GET/api/hikes/filter [BAD ascent]', async function() {
-        await agent.get('/api/hikes/filters?ascent=' + "620-1000")
+        await agent.get('/api/hikes/filters?ascent_min='+ -3000 +'&ascent_max=' + -1000)
         .then(function(res) {
             res.should.have.status(400);
         });
     });
 
     step('T10: GET/api/hikes/filter [expected time]', async function() {
-        await agent.get('/api/hikes/filters?expected_time=' + "1-3")
+        await agent.get('/api/hikes/filters?expected_time_min=' + 2.0 + '&expected_time_max=' + 5.0)
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
             for(const b of res.body){
-                expect(b.expected_time).to.be.below(4);
-                expect(b.expected_time).to.be.above(0);
+                expect(b.expected_time).to.be.below(5.1);
+                expect(b.expected_time).to.be.above(1.9);
             }
         });
     });
 
     step('T11: GET/api/hikes/filter [BAD expected time]', async function() {
-        await agent.get('/api/hikes/filters?expected_time=' + "24")
+        await agent.get('/api/hikes/filters?expected_time_min=' + -4.0 + '&expected_time_max=' + -2.0)
         .then(function(res) {
             res.should.have.status(400);
         });
