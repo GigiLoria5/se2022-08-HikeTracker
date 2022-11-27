@@ -34,7 +34,7 @@ const MenuProps = {
 
 
 function AddHike() {
-    
+
     const [startPointDescription, setStartPointDescription] = useState("");
     const [endPointDescription, setEndPointDescription] = useState("");
 
@@ -63,13 +63,13 @@ function AddHike() {
     const navigate = useNavigate();
 
     const location = useLocation();
-    
+
     const { newHike, prevFile, prevStartPoint, prevEndPoint } = location.state;
 
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        if(newHike == false){
+        if (newHike === false) {
             setSelectedFile(prevFile);
             setIsSelected(true);
             setStartPointDescription(prevStartPoint.description);
@@ -83,6 +83,7 @@ function AddHike() {
             setEndPointType(prevEndPoint.type);
             setEndPointValue(prevEndPoint.value);
         }
+        // eslint-disable-next-line
     }, [newHike]);
 
     const theme = createTheme({

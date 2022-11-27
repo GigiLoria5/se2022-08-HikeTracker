@@ -134,14 +134,15 @@ function AddHike2() {
             setRefPointDescription("");
             setRefPointMessage("");
         }
-        else{
-            
-            setRefPoints([{ 
-                latitude: lat, 
-                longitude: long, 
+        else {
+
+            setRefPoints([{
+                latitude: lat,
+                longitude: long,
                 description: refPointDescription,
                 type: refPointType,
-                value: refPointValue }, ...refPoints.slice(1)])
+                value: refPointValue
+            }, ...refPoints.slice(1)])
             setRefPointLat(lat);
             setRefPointLon(long);
         }
@@ -351,9 +352,9 @@ function AddHike2() {
                                     id="combo-box-demo"
                                     options={countries}
                                     sx={{ m: 1, width: '28ch' }}
-                                    oonChange={(e, value) => {
+                                    onChange={(e, value) => {
                                         e.preventDefault();
-                                        setCountry(value); setProvince(''); setCity('')
+                                        setCountry(value); setProvince(''); setCity('');
                                     }}
                                     renderInput={(params) => <TextField required {...params} label="Country" />}
                                 />
@@ -367,7 +368,7 @@ function AddHike2() {
                                     sx={{ m: 1, width: '28ch' }}
                                     onChange={(e, value) => {
                                         e.preventDefault();
-                                        setProvince(value); setCity('')
+                                        setProvince(value); setCity('');
                                     }}
                                     renderInput={(params) => <TextField required {...params} label="Province" />}
                                 />
@@ -433,7 +434,7 @@ function AddHike2() {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-add-hikes1"} state={{newHike:false, prevFile:selectedFile, prevStartPoint:start_point, prevEndPoint:end_point}} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-add-hikes1"} state={{ newHike: false, prevFile: selectedFile, prevStartPoint: start_point, prevEndPoint: end_point }} variant="contained" color='secondary'>GO BACK</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 

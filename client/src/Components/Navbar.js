@@ -55,18 +55,18 @@ function MyNavbar(props) {
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { sm: 'none' } }}
+                            sx={{ mr: 2, display: { md: 'none' } }}
                         >
                             <MenuIcon />
                         </IconButton>
                         {/* Logo */}
-                        <Container sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1, ml: 1 }} maxWidth="xs" className="navbar-container">
+                        <Container sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, ml: 1 }} maxWidth="xs" className="navbar-container">
                             <Link href="/">
                                 <Logo />
                             </Link>
                         </Container>
                         {/* Nav Links */}
-                        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                             {
                                 Object.entries(navItems).map(([name, route]) => (
                                     <Button className={`${String(location.pathname) === String(route) ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
@@ -76,7 +76,7 @@ function MyNavbar(props) {
                                 ))}
                         </Box>
                         {/* User Account Actions */}
-                        <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
+                        <Box sx={{ display: { xs: 'flex', md: 'flex' } }} className="box-end margin-right-32">
                             {isloggedIn ?
                                 <>
                                     <Grid container className="vertical-align-center" >
@@ -113,7 +113,7 @@ function MyNavbar(props) {
                             keepMounted: true, // Better open performance on mobile.
                         }}
                         sx={{
-                            display: { xs: 'block', sm: 'none' },
+                            display: { xs: 'block', md: 'none' },
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                         }}
                     >
