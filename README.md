@@ -44,7 +44,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 
 - Route `/` : a simple welcome page that acts as an entry point for all users
 - Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
-- Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker.
+- Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
 - Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
 
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
@@ -58,9 +58,12 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     At the bottom of this form there is a submit button and a link to go back to login route.
 
 - Route `/local-guide-page`: the page contains the actions a local guide can do
-  - Adding an hike to the list of hikes
+
+  - Adding a hike
+  - Adding a hut
 
 - Route `/local-guide-add-hikes1`: the page contains a form that allows the local guide to add a GPX file, specifying start and end point types and related information
+
   - upload gpx file
   - start point type: can be "gps", "address", "name"
     - start point name: if name is selected
@@ -71,8 +74,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     - end point address: if address is selected
   - start point description
 
-
 - Route `/local-guide-add-hikes2`: the page contains a form that allows the local guide to add information about the hike, by inserting
+
   - title
   - length (automatically extracted from gpx file)
   - expected time
@@ -90,7 +93,9 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       - address: if address is selected
     - description
   - description
-  At the bottom of this form there is a submit button and a button to get back to the previous page.
+    At the bottom of this form there is a submit button and a button to get back to the previous page.
+
+- Route `/local-guide-add-hut`: the page contains a form that allows the local guide to add information about a hut
 
 ## API Format
 
@@ -330,7 +335,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
       "track_length": 6.2,
       "expected_time": 3.3,
       "difficulty": 2,
-      "gpx_track": "8_monte_calvo", 
+      "gpx_track": "8_monte_calvo",
       "start_point_type": "parking_lot",
       "start_point_id": 3,
       "end_point_type": "location",
@@ -444,6 +449,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
     ...
   ]
   ```
+
 ### Huts
 
 - POST `/api/huts`
@@ -473,7 +479,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Fields validation failed` or `422 An hut having the same location parameters already exists` (Wrong body content)
     - `404 User not found` (specified user not found)
@@ -496,10 +502,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "hutId": 5,
   }
-  ``` 
-  
+  ```
+
   - Response: `200 OK` (Deleted)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Params validation failed`(Wrong params)
     - `500 Database error` (Database error)
@@ -510,7 +516,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "error": "message text"
   }
-  ```  
+  ```
 
 - DELETE `/api/huts/name`
 
@@ -522,10 +528,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "hutName": "Hut name"
   }
-  ``` 
-  
+  ```
+
   - Response: `200 OK` (Deleted)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Params validation failed`(Wrong params)
     - `500 Database error` (Database error)
@@ -544,9 +550,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
-    > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
 - Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates, email, website, type, user_id
-  - Possible values for _type_ are: alpine_hut, fixed_bivouac, unmanaged_hut, hiking_hut, other 
+  - Possible values for _type_ are: alpine_hut, fixed_bivouac, unmanaged_hut, hiking_hut, other
   - _altitude_ is in meters
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
   - _user id_ is the id of the local guide that creates and manages the hut on the platform

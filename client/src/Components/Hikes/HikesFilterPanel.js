@@ -107,7 +107,7 @@ const HikesFilterPanel = (props) => {
         >
             <ThemeProvider theme={theme}>
                 <Box component="div" sx={{ display: "flex", marginBottom: 2, marginTop: 2, paddingLeft: 2, paddingRight: 2, flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between" }} >
-                    {/* Reset Button - NOT WORKING */}
+                    {/* Reset Button */}
                     <Button color="error" variant="outlined" onClick={() => handleResetFilters()}>
                         Reset
                     </Button>
@@ -137,9 +137,9 @@ const HikesFilterPanel = (props) => {
             <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' } }} lg={3} >
                 {filterComponents}
                 <Divider sx={{ maxWidth: 300, marginTop: 1, marginLeft: 4 }} />
-                {/* Reset Button - NOT WORKING */}
+                {/* Reset Button */}
                 <Box component="div" sx={{ display: "flex", marginBottom: 2, marginTop: 2, paddingLeft: 2, paddingRight: 2, flexDirection: "row", flexWrap: "nowrap", justifyContent: "center" }} >
-                    {/* Reset Button - NOT WORKING */}
+                    {/* Reset Button */}
                     <Button color="error" variant="outlined" onClick={() => handleResetFilters()}>
                         Reset Filters
                     </Button>
