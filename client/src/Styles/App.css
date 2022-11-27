@@ -25,6 +25,11 @@ svg {
     height: 100%;
 }
 
+.leaflet-container svg {
+    height: auto;
+    width: auto
+}
+
 .margin-right-32 {
     margin-right: 32px;
 }

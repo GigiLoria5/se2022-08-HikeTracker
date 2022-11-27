@@ -428,7 +428,7 @@ exports.addHike = (hike, author_id) => {
             hike.start_point_id, 
             hike.end_point_type, 
             hike.end_point_id, 
-            hike.author_id
+            author_id
         ], function (err, row) { 
             if (err) {
                 reject(err);
