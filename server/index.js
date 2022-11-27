@@ -76,6 +76,7 @@ app.use(passport.authenticate('session'));
 ///////////////*declare routes*//////////////////
 const userRoute = require('./routes/User.js');
 const hikeRoute = require('./routes/Hike.js');
+const hutRoute = require('./routes/Hut.js');
 const parkingRoute = require('./routes/Parking.js');
 app.use(fileupload());
 
@@ -129,6 +130,7 @@ app.delete('/api/sessions/current', (req, res) => {
 ///////////////*apply routes*//////////////////
 app.use('/api', hikeRoute);
 app.use('/api', userRoute);
+app.use('/api', hutRoute);
 app.use('/api', parkingRoute);
 
 

@@ -58,7 +58,6 @@ export default function SignUp(props) {
             event.stopPropagation();
         } else {
             if (confirmPassword !== password) {
-                console.log("pippo");
                 event.stopPropagation();
                 props.setMessage({ msg: `The password confirmation does not match`, type: 'error' });
                 return;

@@ -4913,83 +4913,431 @@
       "country_name": "Israel"
     },
     {
-      "name": "Abruzzo",
+      "name": "Agrigento",
       "country_name": "Italy"
     },
     {
-      "name": "Aosta Valley",
+      "name": "Alessandria",
       "country_name": "Italy"
     },
     {
-      "name": "Apulia",
+      "name": "Ancona",
       "country_name": "Italy"
     },
     {
-      "name": "Basilicata",
+      "name": "Aosta",
       "country_name": "Italy"
     },
     {
-      "name": "Calabria",
+      "name": "Arezzo",
       "country_name": "Italy"
     },
     {
-      "name": "Campania",
+      "name": "Ascoli Piceno",
       "country_name": "Italy"
     },
     {
-      "name": "Emilia-Romagna",
+      "name": "Asti",
       "country_name": "Italy"
     },
     {
-      "name": "Friuli–Venezia Giulia",
+      "name": "Avellino",
       "country_name": "Italy"
     },
     {
-      "name": "Lazio",
+      "name": "Bari",
       "country_name": "Italy"
     },
     {
-      "name": "Liguria",
+      "name": "Barletta-Andria-Trani",
       "country_name": "Italy"
     },
     {
-      "name": "Lombardy",
+      "name": "Belluno",
       "country_name": "Italy"
     },
     {
-      "name": "Marche",
+      "name": "Benevento",
       "country_name": "Italy"
     },
     {
-      "name": "Molise",
+      "name": "Bergamo",
       "country_name": "Italy"
     },
     {
-      "name": "Piedmont",
+      "name": "Biella",
       "country_name": "Italy"
     },
     {
-      "name": "Sardinia",
+      "name": "Bologna",
       "country_name": "Italy"
     },
     {
-      "name": "Sicily",
+      "name": "Bolzano/Bozen",
       "country_name": "Italy"
     },
     {
-      "name": "Trentino-South Tyrol",
+      "name": "Brescia",
       "country_name": "Italy"
     },
     {
-      "name": "Tuscany",
+      "name": "Brindisi",
       "country_name": "Italy"
     },
     {
-      "name": "Umbria",
+      "name": "Cagliari",
       "country_name": "Italy"
     },
     {
-      "name": "Veneto",
+      "name": "Caltanissetta",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Campobasso",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Sud Sardegna",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Caserta",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Catania",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Catanzaro",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Chieti",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Como",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Cosenza",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Cremona",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Crotone",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Cuneo",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Enna",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Fermo",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Ferrara",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Florence",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Foggia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Forlì-Cesena",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Frosinone",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Genova",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Gorizia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Grosseto",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Imperia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Isernia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "L'Aquila",
+      "country_name": "Italy"
+    },
+    {
+      "name": "La Spezia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Latina",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Lecce",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Lecco",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Livorno",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Lodi",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Lucca",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Macerata",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Mantova",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Massa-Carrara",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Matera",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Messina",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Milan",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Modena",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Monza e della Brianza",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Naples",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Novara",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Nuoro",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Oristano",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Padova",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Palermo",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Parma",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pavia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Perugia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pesaro e Urbino",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pescara",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Piacenza",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pisa",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pistoia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Pordenone",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Potenza",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Prato",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Ragusa",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Ravenna",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Reggio Calabria",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Reggio nell'Emilia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Rieti",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Rimini",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Rome",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Rovigo",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Salerno",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Sassari",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Savona",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Siena",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Siracusa",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Sondrio",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Taranto",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Teramo",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Terni",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Turin",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Trapani",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Trento",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Treviso",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Trieste",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Udine",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Varese",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Venice",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Verbano-Cusio-Ossola",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Vercelli",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Verona",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Vibo Valentia",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Vicenza",
+      "country_name": "Italy"
+    },
+    {
+      "name": "Viterbo",
       "country_name": "Italy"
     },
     {

@@ -3,7 +3,7 @@
  * @param {String} inputToSanitize float input to be sanitized
  * @returns The input transformed to a float number (still String type). NaN if it was not possible
  */
- const floatInputSanitizer = (inputToSanitize) => {
+const floatInputSanitizer = (inputToSanitize) => {
     // only decimals or . or -
     const newLngSanitized1 = inputToSanitize.replace(/[^\d.-]/g, '');
     // there could be only one .

@@ -8,12 +8,12 @@ const getCountries = async () => {
 }
 
 const getProvincesByCountry = async (country) => {
- return States.filter(a=>a.country_name===country).map(a=>a.name);
+  return States.filter(a => a.country_name === country).map(a => a.name);
 }
 
 const getCitiesByProvince = async (country, province) => {
-  return Cities.filter(a=>(a.country_name===country && a.state_name===province)).map(a=>a.name);
+  return Cities.filter(a => (a.country_name === country && a.state_name === province)).map(a => a.name);
 }
 
 
-export {getCountries, getProvincesByCountry, getCitiesByProvince};
+export { getCountries, getProvincesByCountry, getCitiesByProvince };

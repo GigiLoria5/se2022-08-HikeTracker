@@ -24,20 +24,22 @@ function LocalGuidePage() {
         <div>
             <Grid container>
                 <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography variant="h4" margin={1} marginTop={3} gutterBottom>
+                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
                         Set up Platform Content
                     </Typography>
                 </Grid>
 
                 <Grid item xs={12} marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <ThemeProvider theme={theme}>
-                        <Grid margin={1}>
-                            <Button component={Link} to={"/local-guide-add-hikes"} variant="contained" size="large" color='primary'>ADD A HIKE</Button>
-                        </Grid>
-                        <Grid margin={1}>
+                    <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" size="large" color='primary'>ADD HIKE</Button>
+                    </ThemeProvider>
+                    <Grid><br /></Grid>
+                    <ThemeProvider theme={theme}>
+                        <Button component={Link} to={"/local-guide-add-hut"} variant="contained" size="large" color='primary'>ADD HUT</Button>
+                    </ThemeProvider>
+                    <Grid><br /></Grid>
+                    <ThemeProvider theme={theme}>
                             <Button component={Link} to={"/local-guide-add-parking"} variant="contained" size="large" color='primary'>ADD A PARKING LOT</Button>
-                        </Grid>
-
                     </ThemeProvider>
                 </Grid>
 

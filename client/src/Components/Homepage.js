@@ -19,19 +19,17 @@ const HomepageContent = styled('section')(({ theme }) => ({
 }));
 
 function Homepage(props) {
-    const { children, changeActivePage } = props;
+    const { children } = props;
     const navigate = useNavigate();
 
-    const actionPageName = 'Hikes';
     const actionPageRoute = '/hikes';
     const clickHandle = event => {
         event.preventDefault();
-        changeActivePage(actionPageName);
         navigate(actionPageRoute);
     }
 
     return (
-        <Container className="container-full-size">
+        <Container className="container-full-size-fixed">
             <HomepageContent className='w-h-100'>
                 <Container
                     sx={{

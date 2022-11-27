@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
@@ -15,17 +15,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Grid from "@mui/material/Grid";
-import Logo from "./Logo";
+import Logo from "../Assets/Logo";
 import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
-let navItems = { 'Hikes': '/hikes' };
+const navItemsFixed = { 'Hikes': '/hikes' };
 
 function MyNavbar(props) {
 
-    const { window, activePage, changeActivePage, isloggedIn, loggedUser } = props;
-    const navigate = useNavigate();
+    const { window, isloggedIn, loggedUser } = props;
+    const location = useLocation();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [navItems, setNavItems] = React.useState(navItemsFixed);
+    const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -34,8 +36,12 @@ function MyNavbar(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     /* SETUP HIDDEN NAV ITEMS LINKS */
-    if (isloggedIn && loggedUser.role === "local_guide")
-        navItems = { ...navItems, 'Platform Content': '/local-guide-page' };
+    React.useEffect(() => {
+        if (isloggedIn && loggedUser.role === "local_guide")
+            setNavItems({ ...navItemsFixed, 'Platform Content': '/local-guide-page' });
+        else
+            setNavItems({ ...navItemsFixed });
+    }, [isloggedIn, loggedUser.role]);
 
     return (
         <>
@@ -61,12 +67,13 @@ function MyNavbar(props) {
                         </Container>
                         {/* Nav Links */}
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                            {Object.entries(navItems).map(([name, route]) => (
-                                <Button className={`${activePage === name ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
-                                    onClick={() => { changeActivePage(name); navigate(route); }}>
-                                    {name}
-                                </Button>
-                            ))}
+                            {
+                                Object.entries(navItems).map(([name, route]) => (
+                                    <Button className={`${String(location.pathname) === String(route) ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
+                                        onClick={() => { navigate(route); }}>
+                                        {name}
+                                    </Button>
+                                ))}
                         </Box>
                         {/* User Account Actions */}
                         <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
@@ -83,11 +90,11 @@ function MyNavbar(props) {
                                         </Grid>
                                     </Grid>
                                     <Button sx={{ m: 0.5 }} variant="outlined" color="inherit" className="btn-color-active"
-                                        onClick={() => { props.handleLogout(); changeActivePage(null); navigate('/') }} >Logout</Button>
+                                        onClick={() => { props.handleLogout(); navigate('/') }} >Logout</Button>
                                 </> :
                                 <>
-                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/login'); }}>Login</Button>
-                                    <Button variant="outlined" color="inherit" className="btn-color-active" onClick={() => { changeActivePage(null); navigate('/register'); }}>Register</Button>
+                                    <Button variant="text" color="inherit" sx={{ mr: 2 }} className="btn-color-active" onClick={() => { navigate('/login'); }}>Login</Button>
+                                    <Button variant="outlined" color="inherit" className="btn-color-active" onClick={() => { navigate('/register'); }}>Register</Button>
                                 </>
                             }
                         </Box>
@@ -124,8 +131,8 @@ function MyNavbar(props) {
                             <List>
                                 {Object.entries(navItems).map(([name, route]) => (
                                     <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${activePage === name ? 'active-link' : ''}`}
-                                            onClick={() => { changeActivePage(name); navigate(route); }}>
+                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${String(location.pathname) === String(route) ? 'active-link' : ''}`}
+                                            onClick={() => { navigate(route); }}>
                                             <ListItemText primary={name} />
                                         </ListItemButton>
                                     </ListItem>

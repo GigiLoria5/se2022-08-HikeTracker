@@ -43,7 +43,6 @@ router.post('/users', [
         }
 
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });
@@ -71,7 +70,6 @@ router.get("/users/confirm/:token", async (req, res) => {
             return res.status(404).json({ error: "Missing token" });
         }
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });

@@ -1,16 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AvailableHikesV2 from "./Components/AvailableHikesV2";
 import Navbar from "./Components/Navbar";
-import LoginForm from "./Components/Loginform";
-import SignUpForm from "./Components/SignupForm";
+import LoginForm from "./Components/Auth/Loginform";
+import SignUpForm from "./Components/Auth/SignupForm";
 import Homepage from "./Components/Homepage"
-import LocalGuidePage from "./Components/LocalGuidePage"
-import AddHike from "./Components/AddHike"
+import LocalGuidePage from "./Components/LocalGuide/LocalGuidePage"
+import AddHike from "./Components/LocalGuide/AddHike"
+import AddHut from './Components/Hut/AddHut';
+import AddHike2 from "./Components/LocalGuide/AddHike2"
 import './Styles/App.css';
 import { useState, useEffect } from 'react';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
+import HikesContainer from './Components/Hikes/HikesContainer';
+import HikeDetails from './Components/Hikes/HikeDetails';
 import AddParking from "./Components/LocalGuide/AddParking"
 
 function App() {
@@ -26,11 +29,6 @@ function Root() {
     const [loggedIn, setLoggedIn] = useState(false);        /* Boolean user login status (true,false) */
     const [loggedUser, setLoggedUser] = useState(false);    /* Contains logged user info */
     const [message, setMessage] = useState('');             /* Contains Welcome messages for login */
-    const [activePage, setActivePage] = useState(null);
-
-    const changeActivePage = (activePageName) => {
-        setActivePage(activePageName);
-    };
 
     /* Reload session after refresh */
     useEffect(() => {
@@ -78,11 +76,11 @@ function Root() {
 
     return (
         <Routes>
-            <Route path='/' element={<Navbar activePage={activePage} changeActivePage={changeActivePage}
-                handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
+            <Route path='/' element={<Navbar handleLogout={handleLogout} isloggedIn={loggedIn} loggedUser={loggedUser} message={message} setMessage={setMessage} />} >
                 {/* Outlets */}
-                <Route path='' element={<Homepage changeActivePage={changeActivePage} />} />
-                <Route path='/hikes' element={<AvailableHikesV2 loggedUser={loggedUser} />} />
+                <Route path='' element={<Homepage />} />
+                <Route path='/hikes' element={<HikesContainer />} />
+                <Route path='/hikes/:hikeId' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
 
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
@@ -90,8 +88,14 @@ function Root() {
                 <Route path='/local-guide-page' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<LocalGuidePage />} />
                 </Route>
-                <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                <Route path='/local-guide-add-hikes1' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
+                </Route>
+                <Route path='/local-guide-add-hikes2' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddHike2 />} />
+                </Route>
+                <Route path='/local-guide-add-hut' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddHut message={message} setMessage={setMessage} />} />
                 </Route>
                 <Route path='/local-guide-add-parking'  element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddParking />} />   
