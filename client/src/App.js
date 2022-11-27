@@ -96,6 +96,9 @@ function Root() {
                 <Route path='/local-guide-add-hikes2' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike2 />} />
                 </Route>
+                <Route path='/local-guide-add-hikes2' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddHike2 />} />
+                </Route>
             </Route>
 
             {/* The following routes will NOT have the navbar */}
