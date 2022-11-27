@@ -34,16 +34,16 @@ exports.getHutById = (id) => {
 
 exports.addHut = (userid, hut) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id';
+        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.get(sql, [
-            hut.name, 
-            hut.city, 
-            hut.province, 
-            hut.country, 
-            hut.address, 
-            hut.altitude, 
-            hut.description, 
-            hut.beds_number, 
+            hut.name,
+            hut.city,
+            hut.province,
+            hut.country,
+            hut.address,
+            hut.altitude,
+            hut.description,
+            hut.beds_number,
             "",
             hut.coordinates,
             hut.phone_number,
@@ -51,12 +51,12 @@ exports.addHut = (userid, hut) => {
             hut.website,
             hut.type,
             userid
-            ], function (err, row) {
+        ], function (err, _) {
             if (err) {
                 reject(err);
                 return;
             }
-            resolve(row.id);
+            resolve(this.lastID);
         });
     });
 }
@@ -64,22 +64,22 @@ exports.addHut = (userid, hut) => {
 exports.checkExisting = (hut) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM hut WHERE (coordinates = ? OR (city=? AND province=? AND country=? AND address=?))';
-        db.get(sql, [hut.coordinates, hut.city, hut.province,hut.country,hut.address], (err, row) => {
+        db.get(sql, [hut.coordinates, hut.city, hut.province, hut.country, hut.address], (err, row) => {
             if (err) { reject(err); }
             else if (row === undefined) {
-                     resolve(false); 
-                    }
+                resolve(false);
+            }
             else {
-                    resolve(true);
+                resolve(true);
             }
         });
     });
 };
 
-exports.deleteHut = (id, userid) =>{
-    return new Promise((resolve, reject)=>{
+exports.deleteHut = (id, userid) => {
+    return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM hut WHERE id=? AND user_id=?';
-        db.run(sql, [id,userid], function (err) { 
+        db.run(sql, [id, userid], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -89,10 +89,10 @@ exports.deleteHut = (id, userid) =>{
     })
 }
 
-exports.deleteHutByName = (name, userid) =>{
-    return new Promise((resolve, reject)=>{
+exports.deleteHutByName = (name, userid) => {
+    return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM hut WHERE name=? AND user_id=?';
-        db.run(sql, [name,userid], function (err) { 
+        db.run(sql, [name, userid], function (err) {
             if (err) {
                 reject(err);
                 return;
