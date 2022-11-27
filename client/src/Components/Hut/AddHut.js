@@ -60,10 +60,12 @@ export default function AddHut(props) {
         },
     });
 
-    const thm = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+    const thm = { 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        textTransform: 'uppercase', 
+        fontWeight: 600 
     };
 
     const handleSubmission = async (ev) => {
@@ -131,14 +133,14 @@ export default function AddHut(props) {
 
                 {/* Title */}
                 <Grid xs={12}>
-                    <Typography variant="h4" marginTop={1} gutterBottom sx={thm}>
-                        <br />ADD HUT
+                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={thm}>
+                        Add Hut
                     </Typography>
                 </Grid>
 
                 <Grid xs={0} md={3}></Grid>
 
-                <Grid xs={12} md={6}  >
+                <Grid xs={12} md={6} marginTop={3} >
 
                     {/* Form in 2 pages */}
                     {

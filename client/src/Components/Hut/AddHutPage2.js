@@ -2,9 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -14,9 +12,12 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
+import { Breadcrumbs, Divider, TextField } from '@mui/material';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import SmootherTextField from "../SmootherTextField";
+import { Link } from "react-router-dom";
 
 /**
  * 
@@ -56,7 +57,7 @@ export default function AddHutPage2(props) {
     });
 
     const thm = {
-        marginBottom: 3,
+        marginBottom: 1,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -74,33 +75,41 @@ export default function AddHutPage2(props) {
     };
 
     return (
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
 
                 {/* Form */}
                 <Paper elevation={3} sx={{ ...thm }} >
+
+                    <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
+                        [
+                        <Typography key="3" color="inherit">
+                            Hut location
+                        </Typography>,
+                        <Typography key="3" color="primary">
+                            Hut details
+                        </Typography>,
+                        ];
+                    </Breadcrumbs>
+
                     <Box component="form" onSubmit={handleSubmit}>
 
-                        <Grid container marginTop={3} justifyContent="center">
-                            <Stack direction={{ xs: 'row', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                <Chip label="1" color="primary" variant="outlined" />{"   "}
-                                <Chip label="2" color="primary" variant="filled" />
-                            </Stack>
-                        </Grid>
 
                         {/* General informations */}
-                        <Typography variant="h6" sx={thm}>
-                            <br />General informations<br />
-                        </Typography>
+                        <Grid xs={12} sx={thm}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                                GENERAL INFORMATIONS
+                            </Typography>
+                        </Grid>
 
-                        <Grid container justifyContent="center">
-                            <Stack direction={{ xs: 'column', sm: 'column' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2 }} >
+                            <Stack direction={{ xs: 'column', sm: 'column' }} >
 
                                 {/*NAME FIELD*/}
-                                <TextField variant="outlined" required label="Name" sx={{ width: 'fit-content' }} value={props.hutName} onChange={ev => props.setHutName(ev.target.value)} />
+                                <TextField margin="normal" variant="outlined" required label="Name" sx={{ width: '30ch', maxWidth: '30ch', m: 1 }} value={props.hutName} onChange={ev => props.setHutName(ev.target.value)} />
 
                                 {/*TYPE FIELD*/}
-                                <FormControl required sx={{ width: 'fit-content', minWidth: '25ch' }} >
+                                <FormControl margin="normal" variant="outlined" required sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}>
                                     <InputLabel>Type</InputLabel>
                                     <Select
                                         value={props.type}
@@ -121,41 +130,50 @@ export default function AddHutPage2(props) {
                                 </FormControl>
 
                                 {/*BEDS NUMBER FIELD*/}
-                                <TextField variant="outlined" label="Beds number" type="number" InputProps={{ inputProps: { min: 0 }}} sx={{ width: 'fit-content' }} value={props.bedsNumber} onChange={ev => props.setBedsNumber(ev.target.value)} />
+                                <TextField variant="outlined" label="Beds number" type="number" InputProps={{ inputProps: { min: 0 } }} sx={{ width: '30ch', maxWidth: '30ch', m: 1 }} value={props.bedsNumber} onChange={ev => props.setBedsNumber(ev.target.value)} />
 
                             </Stack>
                         </Grid>
 
-                        {/* Optional informations */}
-                        <Typography variant="h6" sx={thm}>
-                            <br />Optional informations<br />
-                        </Typography>
+                        <Divider variant="middle" />
 
-                        <Grid container justifyContent="center">
-                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                        {/* Optional informations */}
+                        <Grid xs={12} sx={thm}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                                OPTIONAL INFORMATIONS
+                            </Typography>
+                        </Grid>
+
+                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2 }} >
+                            <Stack direction={{ xs: 'column', sm: 'column' }}>
 
                                 {/*WEBSITE FIELD*/}
-                                <TextField variant="outlined" label="Website" sx={{ width: 'fit-content' }} value={props.website} onChange={ev => props.setWebsite(ev.target.value)} />
+                                <TextField margin="normal" variant="outlined" label="Website" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.website} onChange={ev => props.setWebsite(ev.target.value)} />
 
                                 {/*EMAIL FIELD*/}
-                                <TextField variant="outlined" label="Email Address" required={(props.email !== "")} sx={{ width: 'fit-content' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
+                                <TextField margin="normal" variant="outlined" label="Email Address" required={(props.email !== "")} sx={{ width: '30ch', maxWidth: '30ch' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
 
                             </Stack>
                         </Grid>
 
                         <br></br>
 
-                        <Grid>
+                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2 }} >
                             {/*PHONE NUMBER FIELD*/}
                             <PhoneInput placeholder="Phone number" required={(props.phoneNumber !== "")} value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
                         </Grid>
 
+                        <Divider variant="middle" />
+
                         {/* Description */}
-                        <Typography variant="h6" sx={thm}>
-                            <br />Description<br />
-                        </Typography>
+                        <Grid xs={12} sx={thm}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                                DESCRIPTION
+                            </Typography>
+                        </Grid>
                         <Box display="flex" justifyContent="center" alignItems="center">
-                            <TextField variant="outlined" label="Description" required multiline rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
+                            {/* <TextField variant="outlined" label="Description" required multiline rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} /> */}
+                            <TextField variant="outlined" required multiline maxWidth='30ch' label="Description" rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
                         </Box>
 
                         <Grid xs={12}>
@@ -175,7 +193,7 @@ export default function AddHutPage2(props) {
                                     :
                                     <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
                                         <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
-                                        <Button color="error" variant="outlined" onClick={() => props.reset()}>RESET</Button>
+                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
                                         <Button type="submit" variant="contained" color='primary'>ADD HUT</Button>
                                     </Stack>
                             }
@@ -185,8 +203,8 @@ export default function AddHutPage2(props) {
                     </Box>
                 </Paper>
 
-                </Container>
+            </Container>
 
-            </ThemeProvider >
+        </ThemeProvider >
     );
 }
