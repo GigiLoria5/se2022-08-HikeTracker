@@ -54,7 +54,6 @@ describe('frontend test: hut creation', () => {
         }
         catch (err){
             expect(err);
-            console.log(err);
         }  
     })
 
@@ -64,7 +63,6 @@ describe('frontend test: hut creation', () => {
         }
         catch (err){
             expect(err);
-            console.log(err);
         } 
     })
 
