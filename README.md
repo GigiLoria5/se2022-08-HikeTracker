@@ -1,7 +1,10 @@
 # se2022-08-HikeTracker
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
 [![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
+[![E2E Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/E2E%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -338,6 +341,77 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ]
   ```
 
+### Parking lot
+
+- POST `/api/parking`
+
+  - Description: Add a new parking lot
+  - Permissions allowed: Local guide
+  - Request body: Parking lot description
+
+  ```
+  {
+    "city": "Torino",
+    "province": "Torino",
+    "country": "Italy",
+    "latitude": 15.7,
+    "longitude": 45.4,
+    "address": "Address Test"
+  }
+  ```
+
+  - Response: `200 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Fields validation failed` or `A parking lot having the same location parameters already exists` (Wrong body content)
+    - `404 User not found` (specified user not found)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/parking/:id`
+
+  - Description: Delete a parking lot by an id
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+
+- DELETE `/api/parking/address/:address`
+
+  - Description: Delete a parking lot by an address
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed`(Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```  
+  
 ## Database Tables
 
 - Table `user` contains: id(PK), name, surname, email, password, salt, email_verified, phone_number, role, token
@@ -345,12 +419,16 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
     > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
-- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
+- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates
   - _altitude_ is in meters
-- Table `parking_lot` contains: id(PK), city, province, country, address
-- Table `location` contains: id(PK), value_type, value, description
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates, user_id
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
     > Again, there is no database control on the type. Although value_type may not be needed, I think it is useful to specify what type of value is present and should be expected by the person making the queries or handling the data.
+  - If the value type is gps, the field value will be null and the actual gps coordinates will be inserted inside coordinates field, to avoid data replication
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `hike` contains: id(PK), title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id
   - _peak_altitude_ is in meters
   - _ascent_ is in meters

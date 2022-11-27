@@ -26,4 +26,24 @@ async function addParking(parking) {
     }
 }
 
-export {addParking}
+async function deleteParking(parkingAddress) {
+    const url = APIURL + '/api/parking/address/' + parkingAddress;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            /* Application error (404, 500, 503 ...) */
+            const errDetails = await response.text();
+            throw errDetails;
+        }
+    } catch (err) {
+        /* Network error */
+        throw err;
+    }
+}
+
+export {addParking, deleteParking}

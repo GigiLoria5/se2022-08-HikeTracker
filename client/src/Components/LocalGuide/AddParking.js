@@ -20,8 +20,8 @@ import { useNavigate } from "react-router-dom";
 
 
 const zoomLevel = 15;
-const initialLat = 51.505;
-const initialLng = -0.09;
+const initialLat = 45.06968;
+const initialLng = 7.70493;
 
 function AddParking() {
     const [country, setCountry] = useState("");
@@ -91,7 +91,8 @@ function AddParking() {
             setMessage("Parking lot geographical info missing");
             return;
         }
-        addParking(<Parking city={city} province={province} country={country} longitude={position.lng} latitude={position.lat} address={address}/>).then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating parking");});
+        await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
+        .then(_a=>navigate("/local-guide-page")).catch(err=>{setMessage("Server error in creating parking");});
         
     };
 
@@ -142,8 +143,8 @@ function AddParking() {
                                     </Box>
                                     
                                     <Stack direction='row' justifyContent="center" alignItems="center" marginTop={2}>
-                                        <TextField variant="outlined" color='primary' label="Latitude" sx={{ width: '13ch', m:1, mb:1 }}  value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} disabled /> 
-                                        <TextField variant="outlined" color='primary' label="Longitude" sx={{ width: '13ch', m:1, mb:1 }} value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} disabled/>
+                                        <TextField required variant="outlined" color='primary' label="Latitude" sx={{ width: '13ch', m:1, mb:1 }}  value={position ? `${position.lat}` : ""} onChange={(e) => handleChangeLat(e.target.value)} disabled /> 
+                                        <TextField required variant="outlined" color='primary' label="Longitude" sx={{ width: '13ch', m:1, mb:1 }} value={position ? `${position.lng}` : ""} onChange={(e) => handleChangeLng(e.target.value)} disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
@@ -161,7 +162,7 @@ function AddParking() {
                                                 e.preventDefault();
                                                 const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                                 setCountry(name); setProvince(''); setCity('')}}
-                                            renderInput={(params) => <TextField {...params}  label="Country" />}
+                                            renderInput={(params) => <TextField {...params} required  label="Country" />}
                                         />
                                         {/*PROVINCE/REGION FIELD*/}
                                         <Autocomplete
@@ -176,7 +177,7 @@ function AddParking() {
                                                 e.preventDefault(); 
                                                 const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                                 setProvince(name); setCity('')}}
-                                            renderInput={(params) => <TextField {...params}  label="Province/Region" />}
+                                            renderInput={(params) => <TextField {...params} required label="Province/Region" />}
                                         />
                                         {/*CITY FIELD*/}
                                         <Autocomplete
@@ -191,9 +192,9 @@ function AddParking() {
                                                 e.preventDefault();
                                                 const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
                                                 setCity(name)}} 
-                                            renderInput={(params) => <TextField {...params} label="City"/>}
+                                            renderInput={(params) => <TextField {...params} required label="City"/>}
                                         />
-                                        <TextField variant="outlined" color='primary' label="Address" sx={{ width: '28ch', m:1, mb:1 }}  value={address} onChange={(e) => setAddress(e.target.value)}  /> 
+                                        <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m:1, mb:1 }}  value={address} onChange={(e) => setAddress(e.target.value)}  /> 
 
                                     </Stack>
                                 </Grid>

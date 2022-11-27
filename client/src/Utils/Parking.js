@@ -9,7 +9,7 @@
  * @param {string} address  
  */
 
- class Parking{
+class Parking{
     constructor(id, city, province, country, longitude, latitude, address){
         this.id=id;
         this.city=city;
