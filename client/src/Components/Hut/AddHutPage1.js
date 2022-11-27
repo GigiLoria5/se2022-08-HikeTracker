@@ -196,10 +196,9 @@ export default function AddHutPage1(props) {
                                 options={cities}
                                 key={[props.province, props.country]}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
-                                onChange={e => {
+                                onChange={(e, value) => {
                                     e.preventDefault();
-                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                    props.setCity(name)
+                                    props.setCity(value);
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="City" />}
                             />

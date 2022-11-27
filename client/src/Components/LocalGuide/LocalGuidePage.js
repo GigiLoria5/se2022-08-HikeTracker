@@ -31,7 +31,7 @@ function LocalGuidePage() {
 
                 <Grid item xs={12} marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <ThemeProvider theme={theme}>
-                    <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" size="large" color='primary'>ADD HIKE</Button>
+                        <Button component={Link} to={"/local-guide-add-hikes1"} variant="contained" size="large" color='primary'>ADD HIKE</Button>
                     </ThemeProvider>
                     <Grid><br /></Grid>
                     <ThemeProvider theme={theme}>
@@ -39,7 +39,7 @@ function LocalGuidePage() {
                     </ThemeProvider>
                     <Grid><br /></Grid>
                     <ThemeProvider theme={theme}>
-                            <Button component={Link} to={"/local-guide-add-parking"} variant="contained" size="large" color='primary'>ADD A PARKING LOT</Button>
+                        <Button component={Link} to={"/local-guide-add-parking"} variant="contained" size="large" color='primary'>ADD PARKING LOT</Button>
                     </ThemeProvider>
                 </Grid>
 

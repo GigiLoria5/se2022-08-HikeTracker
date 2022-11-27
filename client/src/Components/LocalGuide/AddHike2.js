@@ -341,10 +341,9 @@ function AddHike2() {
                                     id="combo-box-demo"
                                     options={countries}
                                     sx={{ m: 1, width: '28ch' }}
-                                    onChange={e => {
+                                    oonChange={(e, value) => {
                                         e.preventDefault();
-                                        const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                        setCountry(name); setProvince(''); setCity('')
+                                        setCountry(value); setProvince(''); setCity('')
                                     }}
                                     renderInput={(params) => <TextField required {...params} label="Country" />}
                                 />
@@ -356,10 +355,9 @@ function AddHike2() {
                                     options={provinces}
                                     key={country}
                                     sx={{ m: 1, width: '28ch' }}
-                                    onChange={e => {
+                                    onChange={(e, value) => {
                                         e.preventDefault();
-                                        const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                        setProvince(name); setCity('')
+                                        setProvince(value); setCity('')
                                     }}
                                     renderInput={(params) => <TextField required {...params} label="Province" />}
                                 />
@@ -371,10 +369,9 @@ function AddHike2() {
                                     options={cities}
                                     key={[province, country]}
                                     sx={{ m: 1, width: '28ch' }}
-                                    onChange={e => {
+                                    onChange={(e, value) => {
                                         e.preventDefault();
-                                        const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                        setCity(name)
+                                        setCity(value);
                                     }}
                                     renderInput={(params) => <TextField required {...params} label="City" />}
                                 />
