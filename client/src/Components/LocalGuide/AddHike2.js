@@ -134,7 +134,17 @@ function AddHike2() {
             setRefPointDescription("");
             setRefPointMessage("");
         }
-
+        else{
+            
+            setRefPoints([{ 
+                latitude: lat, 
+                longitude: long, 
+                description: refPointDescription,
+                type: refPointType,
+                value: refPointValue }, ...refPoints.slice(1)])
+            setRefPointLat(lat);
+            setRefPointLon(long);
+        }
     }
 
     const deleteRefPointCoord = (lat, lon) => {
