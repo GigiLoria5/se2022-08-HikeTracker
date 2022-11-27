@@ -17,6 +17,7 @@ import { floatInputSanitizer } from '../../Utils/InputSanitizer';
 import {addParking} from '../../API/Parking'
 import { Parking } from '../../Utils/Parking';
 import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 
 const zoomLevel = 15;
@@ -120,9 +121,9 @@ function AddParking() {
                 
                 <ThemeProvider theme={theme} >
                     <Grid xs={12}>
-                        <Typography variant="h4" margin={2} marginTop={4} gutterBottom sx={thm}>
-                            ADD A PARKING LOT
-                        </Typography>
+                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={thm} align={'center'}>
+                        ADD PARKING LOT
+                    </Typography>
                     </Grid>
                     <Grid xs={0} md={2}></Grid>
 
@@ -131,13 +132,19 @@ function AddParking() {
                             <Grid container>
 
                                 <Grid xs={12} md={6} sx={thm}>
-                                    <Typography variant="h6" sx={thm} margin={1} marginTop={4} align='center'>
-                                        Click on the map to add a parking lot
-                                    </Typography>
+                                <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
+                                <br />Select a point<br /><br />
+                                </Typography>
+
+                                <Stack direction="row" marginBottom={2}>
+                                    <Typography sx={{ fontSize: 14 }} color="grey.700">
+                                    Click on the map to define a parking lot
+                                </Typography>
+                                </Stack>
 
                                     {/*MAP*/}
                                     <Box component="div" width={'100%'} align='center'>
-                                        <Box component="div" sx={{ maxWidth: "40ch", marginTop: 2 }}>
+                                        <Box>
                                             <MapLocator position={position} setPosition={setPosition} radius={null} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel}/>
                                         </Box>
                                     </Box>
@@ -148,9 +155,10 @@ function AddParking() {
                                     </Stack>
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
+
                                     {width < 900 ? <Grid></Grid> : <Grid marginTop={13}></Grid>}
 
-                                    <Stack direction='column' sx={{ mb:2, m:1 }}  align='center'>
+                                    <Stack direction='column' sx={{ mb:2, m:3.7 }}  align='center'>
                                         {/*COUNTRY FIELD*/}
                                         <Autocomplete
                                             required
@@ -205,7 +213,7 @@ function AddParking() {
 
 {/****************************************************SUBMIT BUTTONS********************************************************/}     
                         <Stack direction="row" justifyContent="center" alignItems="center">
-                            <Button sx={{ m:1, mb:4, mt:4, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                            <Button sx={{ m:1, mb:4, mt:4, minWidth: '80px'}} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
                             <Button sx={{ m:1, mb:4, mt:4, minWidth: '80px'}} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
                         </Stack>
 
