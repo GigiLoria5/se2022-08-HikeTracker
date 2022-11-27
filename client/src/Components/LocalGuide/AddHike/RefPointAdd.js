@@ -87,7 +87,7 @@ function RefPointAdd(props) {
                     <Grid><br /></Grid>  </>
             }
             <Stack direction="row" justifyContent="center" alignItems="center" marginTop={2}>
-                <Button sx={{ m: 1, minWidth: '80px' }} onClick={deleteReferencePoint} variant="contained" color='error'>{addingRefPoint ? "CANCEL" : "DELETE"}</Button>
+                <Button sx={{ m: 1, minWidth: '80px' }} onClick={deleteReferencePoint} variant="outlined" color='error'>{addingRefPoint ? "CANCEL" : "DELETE"}</Button>
                 <Button sx={{ m: 1, minWidth: '80px' }} onClick={addReferencePoint} variant="contained" color='primary'>{addingRefPoint ? "ADD" : "UPDATE"}</Button>
             </Stack>
 

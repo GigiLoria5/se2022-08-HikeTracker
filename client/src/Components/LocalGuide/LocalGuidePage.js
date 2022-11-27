@@ -35,7 +35,7 @@ function LocalGuidePage() {
                     </ThemeProvider>
                     <Grid><br /></Grid>
                     <ThemeProvider theme={theme}>
-                        <Button component={Link} to={"/local-guide-add-hut"} variant="contained" size="large" color='primary'>ADD A HUT</Button>
+                        <Button component={Link} to={"/local-guide-add-hut"} variant="contained" size="large" color='primary'>ADD HUT</Button>
                     </ThemeProvider>
                 </Grid>
 

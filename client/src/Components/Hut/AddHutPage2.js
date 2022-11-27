@@ -16,7 +16,6 @@ import { Breadcrumbs, Divider, TextField } from '@mui/material';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import SmootherTextField from "../SmootherTextField";
 import { Link } from "react-router-dom";
 
 /**
@@ -97,7 +96,7 @@ export default function AddHutPage2(props) {
 
                         {/* General informations */}
                         <Grid xs={12} sx={thm}>
-                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 GENERAL INFORMATIONS
                             </Typography>
                         </Grid>
@@ -139,7 +138,7 @@ export default function AddHutPage2(props) {
 
                         {/* Optional informations */}
                         <Grid xs={12} sx={thm}>
-                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 OPTIONAL INFORMATIONS
                             </Typography>
                         </Grid>
@@ -156,24 +155,22 @@ export default function AddHutPage2(props) {
                             </Stack>
                         </Grid>
 
-                        <br></br>
-
-                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2 }} >
+                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2, width: '30ch', marginLeft: 0.2 }} >
                             {/*PHONE NUMBER FIELD*/}
-                            <PhoneInput placeholder="Phone number" required={(props.phoneNumber !== "")} value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                            <PhoneInput placeholder="Phone number" sx={{ width: "100%" }} required={(props.phoneNumber !== "")} value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
                         </Grid>
 
                         <Divider variant="middle" />
 
                         {/* Description */}
                         <Grid xs={12} sx={thm}>
-                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 DESCRIPTION
                             </Typography>
                         </Grid>
                         <Box display="flex" justifyContent="center" alignItems="center">
                             {/* <TextField variant="outlined" label="Description" required multiline rows={4} margin="normal" value={props.description} onChange={ev => props.setDescription(ev.target.value)} /> */}
-                            <TextField variant="outlined" required multiline maxWidth='30ch' label="Description" rows={4} margin="normal" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
+                            <TextField variant="outlined" required multiline label="Description" rows={4} margin="normal" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
                         </Box>
 
                         <Grid xs={12}>
@@ -193,7 +190,7 @@ export default function AddHutPage2(props) {
                                     :
                                     <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
                                         <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
-                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
+                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
                                         <Button type="submit" variant="contained" color='primary'>ADD HUT</Button>
                                     </Stack>
                             }

@@ -13,6 +13,7 @@ import { Breadcrumbs, Divider, TextField } from '@mui/material';
 
 import MapLocator from '../Map/MapLocator';
 import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData'
+import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 import { Link } from "react-router-dom";
 
 /**
@@ -31,7 +32,7 @@ import { Link } from "react-router-dom";
  */
 export default function AddHutPage1(props) {
 
-    const [position, setPosition] = useState({ lat: 45.06968, lng: 7.70493 }); // set default position
+    const [position, setPosition] = useState({ lat: initialLat, lng: initialLng }); // set default position
 
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
@@ -115,7 +116,7 @@ export default function AddHutPage1(props) {
                     </Breadcrumbs>
 
                     <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
-                        <br />Select a point<br /><br />
+                        <br />Specify a position<br /><br />
                     </Typography>
 
                     <Stack direction="row" marginBottom={2}>
@@ -126,12 +127,12 @@ export default function AddHutPage1(props) {
                     <Box component="form" onSubmit={handleSubmit} >
                         {/* MAP */}
                         <Box>
-                            <MapLocator position={position} setPosition={setPosition} radius={0} height={'50vh'} width={'100'} initialLat={props.latitude} initialLng={props.longitude} zoomLevel={11} />
+                            <MapLocator position={position} setPosition={setPosition} radius={null} height={'50vh'} width={'100'} initialLat={initialLat} initialLng={initialLng} zoomLevel={14} />
                         </Box>
 
                         {/* Geographic informations */}
                         <Grid xs={12} sx={thm}>
-                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 GPS COORDINATES
                             </Typography>
                         </Grid>
@@ -139,22 +140,22 @@ export default function AddHutPage1(props) {
                         <Grid xs={12} sx={{ ...thm, mb: 2 }} >
 
                             {/*LATITUDE FIELD*/}
-                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch' }} required label="Latitude" type="number" value={props.latitude}
+                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} required label="Latitude" type="number" value={props.latitude}
                                 onChange={ev => { props.setLatitude(ev.target.value); setPosition({ lat: ev.target.value, lng: position.lng }) }} />
 
                             {/*LONGITUDE FIELD*/}
-                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch' }} required label="Longitude" type="number" value={props.longitude}
+                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} required label="Longitude" type="number" value={props.longitude}
                                 onChange={ev => { props.setLongitude(ev.target.value); setPosition({ lat: position.lat, lng: ev.target.value }) }} />
 
                             {/*ALTITUDE FIELD*/}
-                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch' }} required label="Altitude" type="number" InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => props.setAltitude(ev.target.value)} />
+                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} required label="Altitude" type="number" InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => props.setAltitude(ev.target.value)} />
 
                         </Grid>
                         <Divider variant="middle" />
 
                         {/* Geographic informations */}
                         <Grid xs={12} sx={thm}>
-                            <Typography align='center' variant="h6" fontWeight={520} margin={2}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 GEOGRAPHIC INFORMATION
                             </Typography>
                         </Grid>
@@ -167,10 +168,9 @@ export default function AddHutPage1(props) {
                                 id="combo-box-demo"
                                 options={countries}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
-                                onChange={e => {
+                                onChange={(e, value) => {
                                     e.preventDefault();
-                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                    props.setCountry(name); props.setProvince(''); props.setCity('')
+                                    props.setCountry(value); props.setProvince(''); props.setCity('')
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="Country" />}
                             />
@@ -182,10 +182,9 @@ export default function AddHutPage1(props) {
                                 options={provinces}
                                 key={props.country}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
-                                onChange={e => {
+                                onChange={(e, value) => {
                                     e.preventDefault();
-                                    const name = e._reactName === "onKeyDown" ? e.target.value : e.target.textContent;
-                                    props.setProvince(name); props.setCity('')
+                                    props.setProvince(value); props.setCity('')
                                 }}
                                 renderInput={(params) => <TextField required {...params} label="Province" />}
                             />
@@ -205,16 +204,16 @@ export default function AddHutPage1(props) {
                                 renderInput={(params) => <TextField required {...params} label="City" />}
                             />
                             {/*ADDRESS FIELD*/}
-                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
+                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
 
                         </Grid>
 
 
 
-                            <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="contained" color='secondary'>CANCEL</Button>
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary'>CONTINUE</Button>
-                            </Stack>
+                        <Stack direction="row" justifyContent="center" alignItems="center">
+                            <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
+                            <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary'>CONTINUE</Button>
+                        </Stack>
                     </Box>
                 </Paper>
 
