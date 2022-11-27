@@ -404,7 +404,31 @@ describe('test Add hut other errors', () => {
             });
     });
 
-    step('T16: POST/api/huts [HUT ALREADY EXISTS]', async function () {
+    step('T16: POST/api/huts [GOOD]', async function () {
+        await authenticatedUser
+            .post('/api/huts')
+            .send({
+                "name": "Hut test",
+                "city": "Turin",
+                "province": "TO",
+                "country": "Italy",
+                "address": "Hut route 66",
+                "altitude": 1950 ,
+                "description": "Amazing hut in the middle of the mountains",
+                "beds_number": 10,
+                "latitude": 15.7,
+                "longitude": 45.4,
+                "phone_number" : "+393331171111",
+                "email" : "hut@hut.it",
+                "website" : "www.hut.com",
+                "type" : "alpine_hut"
+              })
+            .then(function (res) {
+                res.should.have.status(200);
+            });
+    });
+
+    step('T17: POST/api/huts [HUT ALREADY EXISTS]', async function () {
         await authenticatedUser
             .post('/api/huts')
             .send({
@@ -427,6 +451,17 @@ describe('test Add hut other errors', () => {
                 res.should.have.status(422);
             });
     });
+
+    step('T18: DELETE/api/huts [GOOD]', async function () {
+        await authenticatedUser
+            .delete('/api/huts/name')
+            .send({
+                "hutName": "Hut test",
+              })
+            .then(function (res) {
+                res.should.have.status(200);
+            });
+    });    
 });
 
 describe('test Add hut good', () => {
@@ -472,9 +507,9 @@ describe('test Add hut good', () => {
 
     step('T3: DELETE/api/huts [GOOD]', async function () {
         await authenticatedUser
-            .delete('/api/huts')
+            .delete('/api/huts/name')
             .send({
-                "hutId": 5,
+                "hutName": "Hut test",
               })
             .then(function (res) {
                 res.should.have.status(200);
@@ -511,7 +546,7 @@ describe('test Add hut wrong_delete', () => {
             });
     });
 
-    step('T1: DELETE/api/huts [field invalid]', async function () {
+    step('T3: DELETE/api/huts [field invalid]', async function () {
         await authenticatedUser
             .delete('/api/huts')
             .send({
