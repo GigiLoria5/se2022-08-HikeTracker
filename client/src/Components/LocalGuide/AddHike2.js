@@ -433,7 +433,7 @@ function AddHike2() {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-add-hikes1"} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-add-hikes1"} state={{newHike:false, prevFile:selectedFile, prevStartPoint:start_point, prevEndPoint:end_point}} variant="contained" color='secondary'>GO BACK</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 
