@@ -49,7 +49,6 @@ const findFarthestPoint = (referencePointCoordinates, trailCoordinates) => {
     for (let i = 0; i < trailCoordinates.length; i++) {
         const actualPoint = trailCoordinates[i];
         const distance = getDistance(referencePointCoordinates, actualPoint);
-        console.log(distance);
         if (distance > farthestPointDistance) {
             farthestPoint = actualPoint;
             farthestPointDistance = distance;

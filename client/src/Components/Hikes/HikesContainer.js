@@ -6,9 +6,7 @@ import HikesList from './HikesList';
 import API from '../../API';
 import { isPointInsideRange } from '../../Utils/GeoUtils';
 import { emptyFilter } from '../../Utils/EmptyFilter';
-
-const initialLat = 45.07084254710618;
-const initialLng = 7.685585541811552;
+import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 
 const HikesContainer = () => {
     const [showTopBtn, setShowTopBtn] = useState(false);

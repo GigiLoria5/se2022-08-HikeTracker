@@ -8,8 +8,6 @@ import { floatInputSanitizer, positiveIntegerSanitizer } from '../../Utils/Input
 import { splitCoordinates } from '../../Utils/GeoUtils';
 
 const zoomLevel = 15;
-const initialLat = 45.07084254710618;
-const initialLng = 7.685585541811552;
 
 function GeographicFilter(props) {
     const { filter, setFilter, hikes, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
@@ -202,7 +200,7 @@ function GeographicFilter(props) {
                     </IconButton>
                 </Box>
                 {/* Map (coordinate picker) */}
-                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })} />
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })} />
             </Box>
         </Box>
     )

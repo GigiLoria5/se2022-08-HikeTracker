@@ -30,4 +30,22 @@ const getColorByDifficulty = (difficulty) => {
     }
 }
 
-export { customDifficultyIcons, getColorByDifficulty }
+const difficultyFromState = (difficultyValue) => {
+    let val = null;
+    switch (difficultyValue) {
+        case "Tourist":
+            val = 1;
+            break;
+        case "Hiker":
+            val = 2;
+            break;
+        case "Professionnal":
+            val = 3;
+            break;
+        default:
+            break;
+    }
+    return val;
+}
+
+export { customDifficultyIcons, getColorByDifficulty, difficultyFromState }

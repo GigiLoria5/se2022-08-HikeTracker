@@ -1,4 +1,4 @@
 /server/node_modules/
 /server/mochawesome-report
-/server/.nyc_output/
 /client/node_modules/
+/server/.nyc_output

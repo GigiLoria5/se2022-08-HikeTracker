@@ -20,13 +20,13 @@ import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
 const navItemsFixed = { 'Hikes': '/hikes' };
-let navItems = { ...navItemsFixed };
 
 function MyNavbar(props) {
 
     const { window, isloggedIn, loggedUser } = props;
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [navItems, setNavItems] = React.useState(navItemsFixed);
     const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
@@ -38,9 +38,9 @@ function MyNavbar(props) {
     /* SETUP HIDDEN NAV ITEMS LINKS */
     React.useEffect(() => {
         if (isloggedIn && loggedUser.role === "local_guide")
-            navItems = { ...navItemsFixed, 'Platform Content': '/local-guide-page' };
+            setNavItems({ ...navItemsFixed, 'Platform Content': '/local-guide-page' });
         else
-            navItems = { ...navItemsFixed };
+            setNavItems({ ...navItemsFixed });
     }, [isloggedIn, loggedUser.role]);
 
     return (
@@ -67,12 +67,13 @@ function MyNavbar(props) {
                         </Container>
                         {/* Nav Links */}
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                            {Object.entries(navItems).map(([name, route]) => (
-                                <Button className={`${location.pathname === route ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
-                                    onClick={() => { navigate(route); }}>
-                                    {name}
-                                </Button>
-                            ))}
+                            {
+                                Object.entries(navItems).map(([name, route]) => (
+                                    <Button className={`${String(location.pathname) === String(route) ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
+                                        onClick={() => { navigate(route); }}>
+                                        {name}
+                                    </Button>
+                                ))}
                         </Box>
                         {/* User Account Actions */}
                         <Box sx={{ display: { xs: 'flex', sm: 'flex' } }} className="box-end margin-right-32">
@@ -130,7 +131,7 @@ function MyNavbar(props) {
                             <List>
                                 {Object.entries(navItems).map(([name, route]) => (
                                     <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${location.pathname === route ? 'active-link' : ''}`}
+                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${String(location.pathname) === String(route) ? 'active-link' : ''}`}
                                             onClick={() => { navigate(route); }}>
                                             <ListItemText primary={name} />
                                         </ListItemButton>

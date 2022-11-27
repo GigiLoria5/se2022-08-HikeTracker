@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import { Circle, LayersControl, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
+import { initialLat as defaultLat, initialLng as defaultLng } from '../../Utils/MapLocatorConstants';
 import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 import markerIconRed from '../../Assets/Map/marker-icon-red.png';
 
@@ -20,7 +21,8 @@ function LocationMarker(props) {
 
     // on start locate user to the current position (if the gps is allowed from the browser)
     useEffect(() => {
-        map.locate();
+        if (defaultLat === position.lat && defaultLng === position.lng)
+            map.locate();
         // eslint-disable-next-line 
     }, []);
 

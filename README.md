@@ -4,7 +4,7 @@
 
 [![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
-[![E2E Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/E2E%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+[![Frontend tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Frontend%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
@@ -56,6 +56,41 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - email address: compulsory, the value inserted is checked using html email validator
   - password: compulsory, minimum lenght is 8 maximum is 64.
     At the bottom of this form there is a submit button and a link to go back to login route.
+
+- Route `/local-guide-page`: the page contains the actions a local guide can do
+  - Adding an hike to the list of hikes
+
+- Route `/local-guide-add-hikes1`: the page contains a form that allows the local guide to add a GPX file, specifying start and end point types and related information
+  - upload gpx file
+  - start point type: can be "gps", "address", "name"
+    - start point name: if name is selected
+    - start point address: if address is selected
+  - start point description
+  - end point type: can be "gps", "address", "name"
+    - end point name: if name is selected
+    - end point address: if address is selected
+  - start point description
+
+
+- Route `/local-guide-add-hikes2`: the page contains a form that allows the local guide to add information about the hike, by inserting
+  - title
+  - length (automatically extracted from gpx file)
+  - expected time
+    - if possible computed from gpx
+    - otherwise to be inserted manually as hours and minutes
+  - total ascent (automatically extracted from gpx file)
+  - difficulty: can be "Tourist", "Hiker", "Professional Hiker"
+  - geographical area
+    - country
+    - province
+    - city
+  - reference points: points can be added/edited clicking on the map, for each point:
+    - type: can be "gps", "address", "name"
+      - name: if name is selected
+      - address: if address is selected
+    - description
+  - description
+  At the bottom of this form there is a submit button and a button to get back to the previous page.
 
 ## API Format
 
@@ -173,6 +208,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Description: Add description for hike
   - Permissions allowed: Local guide
   - Request body: Hike description, including gpx file with gpx tag
+  - gpx file size must be less than 10MB
 
   ```
   {
@@ -186,32 +222,31 @@ Application developed during the Software Engineering II course (Year 2022-23) b
         "track_length": 6.2,
         "expected_time": 3.3,
         "difficulty": 2,
-        "start_point_type": "parking_lot",
-        "start_point_id": 3,
-        "end_point_type": "location",
-        "end_point_id": 18
-        "reference_points": {
-          "points": [
-            {
-              "type":"hut",
-              "id":1
-            },
-            {
-              "type":"hut",
-              "id":2
-            },
-            {
-              "type":"location",
-              "id":12
-            }
+        "start_point": {
+          "latitude":44.57425086759031,
+          "longitude":6.982689192518592,
+          "description":"Start point",
+          "type":"gps",
+          "value":"gps"
+        },
+        "end_point": {
+          "latitude":44.574263943359256,
+          "longitude":6.982647031545639,
+          "description":"End point",
+          "type":"name",
+          "value":"End point name"
+        },
+        "reference_points":{
+          "points":[
+            {"latitude":44.59376471183216,"longitude":6.970151980345208,"type":"gps","value":"gps","description":"Colle Reisassetto"},{"latitude":44.605312234235114,"longitude":6.97978383606973,"type":"gps","value":"gps","description":"Punta di Fiutrusa"}
           ]
-        }
+        },
         "gpx" : ...
   }
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `500 Internal Server Error` (generic error)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions), `400 Bad Request` (arguments error),`500 Internal Server Error` (generic error)
   - Response body: An error message in case of failure
 
   ```
@@ -416,11 +451,16 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Possible roles are: hiker, emergency_operator, platform_manager, local_guide, hut_worker
   - _email_verified_ is a flag which indicates whether (value 1) or not (value 0) the email has been verified. An user with email_verified=0 can't do anything (like a visitor).
   - _token_ is a string used to verify the user email.
-- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period
+    > The existing role verification is not made into the database, it must be performed within the backend. Remember that name, surname and phone number are mandatory only for local guides and hut workers.
+- Table `hut` contains: id(PK), name, city, province, country, address, phone_number, altitude, description, beds_number, opening_period, coordinates
   - _altitude_ is in meters
-- Table `parking_lot` contains: id(PK), city, province, country, address
-- Table `location` contains: id(PK), value_type, value, description
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
+- Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
+  - If the value type is gps, the field value will be null and the actual gps coordinates will be inserted inside coordinates field, to avoid data replication
+  - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `hike` contains: id(PK), title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id
   - _peak_altitude_ is in meters
   - _ascent_ is in meters

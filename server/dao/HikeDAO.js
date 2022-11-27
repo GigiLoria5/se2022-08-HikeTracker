@@ -6,7 +6,7 @@ const db = require("./db");
 
 exports.getCountries = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT DISTINCT country FROM hike`;
+        const sql = `SELECT DISTINCT country FROM hike ORDER BY country`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
@@ -22,7 +22,7 @@ exports.getCountries = () => {
 
 exports.getProvincesByCountry = (country) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT DISTINCT province FROM hike WHERE country = ?`;
+        const sql = `SELECT DISTINCT province FROM hike WHERE country = ? ORDER BY province`;
         db.all(sql, [country], (err, rows) => {
             if (err)
                 reject(err);
@@ -38,7 +38,7 @@ exports.getProvincesByCountry = (country) => {
 
 exports.getCitiesByProvince = (province) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT DISTINCT city FROM hike WHERE province = ?`;
+        const sql = `SELECT DISTINCT city FROM hike WHERE province = ? ORDER BY city`;
         db.all(sql, [province], (err, rows) => {
             if (err)
                 reject(err);
@@ -136,7 +136,7 @@ exports.addHike = (hike, author_id) => {
             hike.start_point_id,
             hike.end_point_type,
             hike.end_point_id,
-            hike.author_id
+            author_id
         ], function (err, row) {
             if (err) {
                 reject(err);
