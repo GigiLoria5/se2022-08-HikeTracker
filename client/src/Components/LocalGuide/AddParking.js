@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
-//import Grid from "@mui/material/Grid";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
@@ -17,7 +16,6 @@ import { floatInputSanitizer } from '../../Utils/InputSanitizer';
 import {addParking} from '../../API/Parking'
 import { Parking } from '../../Utils/Parking';
 import { useNavigate } from "react-router-dom";
-import { Divider } from "@mui/material";
 
 
 const zoomLevel = 15;
@@ -129,21 +127,26 @@ function AddParking() {
 
                     <Grid xs={12} md={8} marginTop={3} >
                         <Paper elevation={3} sx={{  ...thm, mb:4}} >
-                            <Grid container>
-
-                                <Grid xs={12} md={6} sx={thm}>
-                                <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
+                            <Box >
+                            <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1} >
                                 <br />Select a point<br /><br />
-                                </Typography>
+                            </Typography>
 
-                                <Stack direction="row" marginBottom={2}>
-                                    <Typography sx={{ fontSize: 14 }} color="grey.700">
+                            <Stack direction="row" marginBottom={1}>
+                                <Typography sx={{ fontSize: 14 }} color="grey.700">
                                     Click on the map to define a parking lot
                                 </Typography>
-                                </Stack>
+                            </Stack>
+                            </Box>
+
+
+                            <Grid container>
+
+                                <Grid xs={12} md={6} sx={thm} >
+                                
 
                                     {/*MAP*/}
-                                    <Box component="div" width={'100%'} align='center'>
+                                    <Box component="div" width={'100%'} align='center' marginTop={3}>
                                         <Box>
                                             <MapLocator position={position} setPosition={setPosition} radius={null} height={'200px'} width={'300px'} initialLat={initialLat} initialLng={initialLng} zoomLevel={zoomLevel}/>
                                         </Box>
@@ -156,9 +159,9 @@ function AddParking() {
                                 </Grid>
                                 <Grid xs={12} md={6} sx={thm}>
 
-                                    {width < 900 ? <Grid></Grid> : <Grid marginTop={13}></Grid>}
+                                    {width < 900 ? <Grid></Grid> : <Grid></Grid>}
 
-                                    <Stack direction='column' sx={{ mb:2, m:3.7 }}  align='center'>
+                                    <Stack direction='column' sx={{ mb:2, m:2 }}  align='center'>
                                         {/*COUNTRY FIELD*/}
                                         <Autocomplete
                                             required
