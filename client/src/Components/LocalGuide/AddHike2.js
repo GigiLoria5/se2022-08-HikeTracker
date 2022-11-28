@@ -309,8 +309,9 @@ function AddHike2() {
                                 {computedExpectedTime > 0 ?
                                     <TextField margin="normal" variant="outlined" label="Expected time" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }} value={timeToHHMM(computedExpectedTime)} disabled />
                                     :
-                                    <Stack direction="row" justifyContent="center" alignItems="center">
+                                    <Stack direction="row" sx={{ width: '30ch'}} justifyContent='space-between'>
                                         <TextField
+                                            label="Expected time h"
                                             value={hh}
                                             onChange={(e) => {
                                                 const regex = /^[0-9\b]+$/;
@@ -318,8 +319,10 @@ function AddHike2() {
                                                     if (e.target.value < 0) setHH(0);
                                                     else setHH(e.target.value);
                                                 }
-                                            }} margin="normal" type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '12ch', maxWidth: '13ch', m: 1 }} />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, ml:0, verticalAlign: 'middle', display: 'inline-flex'}} />
                                         <TextField
+                                            label="Expected time min"
+                                            align="right"
                                             value={mm}
                                             onChange={(e) => {
                                                 const regex = /^[0-9\b]+$/;
@@ -328,7 +331,7 @@ function AddHike2() {
                                                     else if (e.target.value < 0) setMM(0);
                                                     else setMM(e.target.value);
                                                 }
-                                            }} margin="normal" type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '13ch', maxWidth: '13ch', m: 1 }} step="1" />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, mr:0, verticalAlign: 'middle', display: 'inline-flex'}} step="1" />
                                     </Stack>
                                 }
 
