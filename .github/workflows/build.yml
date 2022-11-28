@@ -23,6 +23,7 @@ jobs:
          cd server
          npm test
          npm run test_integration
+         npm run test_format
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
