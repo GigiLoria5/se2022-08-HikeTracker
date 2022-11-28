@@ -24,12 +24,13 @@
         "start": "nodemon index.js",
         "test": "jest",
         "test_coverage": "jest --coverage",
-        "test_integration": "nyc mocha --runInBand --require mocha-steps --reporter mochawesome --timeout 30000 --exit",
-		"test_format": "nyc report --reporter=lcov --report-dir=.nyc_coverage"
+        "test_integration": "nyc mocha --runInBand --require mocha-steps --reporter mocha-sonarqube-reporter --timeout 30000 --exit",
+        "test_format": "nyc report --reporter=lcov --report-dir=.nyc_coverage"
     },
     "devDependencies": {
         "chai": "^4.3.6",
         "mocha": "^10.1.0",
+        "mocha-multi-reporters": "^1.5.1",
         "mocha-steps": "^1.3.0",
         "mochawesome": "^7.1.3",
         "nyc": "^15.1.0",
