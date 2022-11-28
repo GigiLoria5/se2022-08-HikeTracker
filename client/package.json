@@ -44,7 +44,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll --coverage --testResultsProcessor ./node_modules/jest-sonar-reporter/index.js",
+    "test": "react-scripts test --coverage --testResultsProcessor jest-sonar-reporter",
     "test_integration": "nyc mocha --runInBand --require mocha-steps --reporter mocha-sonarqube-reporter --timeout 30000 --exit",
     "test_format": "nyc report --reporter=lcov --report-dir=.nyc_coverage",
     "eject": "react-scripts eject"
