@@ -1,43 +1,24 @@
+const { getDistance } = require('geolib');
 const gpxParser = require('gpxparser');
 
-//*IMPORTED FROM: https://stackoverflow.com/questions/18883601*//
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-    var dLon = deg2rad(lon2 - lon1);
-    var a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        ;
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c; // Distance in km
-    return d;
-}
-
-function deg2rad(deg) {
-    return deg * (Math.PI / 180)
-}
-
-
-function GPXData(
-    length,
-    start_point_lat,
-    start_point_lon,
-    end_point_lat,
-    end_point_lon,
-    ascent,
-    peak_altitude,
-    expectedTime
-) {
-    this.length = length;
-    this.start_point_lat = start_point_lat;
-    this.start_point_lon = start_point_lon;
-    this.end_point_lat = end_point_lat;
-    this.end_point_lon = end_point_lon;
-    this.ascent = ascent;
-    this.peak_altitude = peak_altitude;
-    this.expectedTime = expectedTime;
+class GPXData {
+    constructor(length,
+        start_point_lat,
+        start_point_lon,
+        end_point_lat,
+        end_point_lon,
+        ascent,
+        peak_altitude,
+        expectedTime) {
+        this.length = length;
+        this.start_point_lat = start_point_lat;
+        this.start_point_lon = start_point_lon;
+        this.end_point_lat = end_point_lat;
+        this.end_point_lon = end_point_lon;
+        this.ascent = ascent;
+        this.peak_altitude = peak_altitude;
+        this.expectedTime = expectedTime;
+    }
 }
 
 const parseGPX = async (gpxFile) => {
@@ -91,7 +72,7 @@ const parseGPXnoPoints = (points) => {
 
     let dist = 0;
     for (let i = 0; i < points.length - 1; i++) {
-        dist += getDistanceFromLatLonInKm(points[i].lat, points[i].lon, points[i + 1].lat, points[i + 1].lon);
+        dist += getDistance([points[i].lat, points[i].lon], [points[i+1].lat, points[i+1].lon]);
     }
 
     return new GPXData(
