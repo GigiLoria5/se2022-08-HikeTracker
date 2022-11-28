@@ -44,7 +44,7 @@ function RefPointMapLocator(props) {
         <MapContainer
             center={[initialLat, initialLng]}
             zoom={zoomLevel}
-            scrollWheelZoom={true}
+            scrollWheelZoom={false}
             style={{ height: height, width: width }}
         >
             {/* Map Controls */}
