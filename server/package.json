@@ -42,7 +42,11 @@
         "testResultsProcessor": "jest-sonar-reporter",
         "coveragePathIgnorePatterns": [
             "/node_modules/",
-            "/test/"
+            "/test/",
+            "/coverage/",
+            "/unit_test/",
+            "/gpx_files/",
+            "/.nyc_output/"
         ]
     },
     "jestSonar": {
