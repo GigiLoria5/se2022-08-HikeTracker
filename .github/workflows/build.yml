@@ -3,7 +3,7 @@ name: Build
 on:
  push:
    branches:
-     - feature_gciacco_sonarcloud_setup
+     - feature_gciacco_sc_coverage
  pull_request:
    types: [opened, synchronize, reopened]
 jobs:
