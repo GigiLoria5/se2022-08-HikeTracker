@@ -73,7 +73,6 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-<<<<<<< HEAD
 
   - Our main problem was that we were too optimistic about the changes needed to complete the stories that had not been completed in the previous sprint, which in fact needed more adjustment than expected.
   - There was no communication between the different (intended in different stories) frontend developers in designing interfaces with the same style and this caused refactoring problems in the last few days.
@@ -100,18 +99,3 @@ sections:
 
 - One thing you are proud of as a Team!!
   - We managed to complete almost all the stories we committed to in this sprint with a solid result, following business priority unlike the last sprint. In particular, there was a lot of transparency in realising that stories 5 and 6 needed more time, and deciding, correctly, to move the time allocated to story 7 to where it was needed.
-=======
-  - Our main problem was...
-- What lessons did you learn (both positive and negative) in this sprint?
-  - ...
-- Which improvement goals set in the previous retrospective were you able to achieve?
-  - Compared with the previous sprint, we managed to improve the estimation of both front-end and back-end tasks, by adding more specific tasks and define better what to do, but there is still the problem of being too optimistic in the estimations.
-- Which ones you were not able to achieve? Why?
-  - _Something about the coordination_
-- Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - **...**: ...
-  - **...**: ...
-  - **...**: ...
-- One thing you are proud of as a Team!!
-  - ...
->>>>>>> b5409e4 (docs: add retrospective 2 stats + few assessments)
