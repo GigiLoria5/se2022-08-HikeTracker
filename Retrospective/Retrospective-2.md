@@ -73,16 +73,29 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-  - Our main problem was...
+
+  - Our main problem was that we were too optimistic about the changes needed to complete the stories that had not been completed in the previous sprint, which in fact needed more adjustment than expected.
+  - There was no communication between the different (intended in different stories) frontend developers in designing interfaces with the same style and this caused refactoring problems in the last few days.
+
 - What lessons did you learn (both positive and negative) in this sprint?
-  - ...
+
+  - Working with more communication between frontend and backend developers, and also with having fewer members on the same story (maximum three including tests), would help to have better productivity and higher code quality.
+  - The merging task should be a separate task and assigned to no more than two specific member(s), in order to avoid having a 'completed' story but broken up over several branches without knowing who should merge them.
+
 - Which improvement goals set in the previous retrospective were you able to achieve?
-  - Compared with the previous sprint, we managed to improve the estimation of both front-end and back-end tasks, by adding more specific tasks and define better what to do, but there is still the problem of being too optimistic in the estimations.
+
+  - Compared to the previous sprint, we definitely managed to improve the estimation of both front-end and testing tasks, adding more specific tasks and better defining what to do. In particular, for the front-end it helped a lot to add the interface design task, and for the testing part to have the E2E, integration and code review tasks separate.
+
 - Which ones you were not able to achieve? Why?
-  - _Something about the coordination_
+
+  - Although we managed to improve the estimates, there remains the problem of being too optimistic and this leads to not considering problems and improvements to be made to the code as a result of tests/reviews.
+  - Coordination between frontend and backend has certainly improved through greater use of GitHub issues to communicate problems and things to do, but it still can be improved further to avoid situations where one does not know who exactly has to do something (as happened with the merge).
+
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - **...**: ...
-  - **...**: ...
-  - **...**: ...
+
+  - **Improve Code Review**: in order to have higher quality code, we should separate the code review task into two parts, one for the backend and one for the frontend. This way, each reviewer can focus more on the details that ultimately end up making a difference, and it would also solve many problems in the merge.
+  - **Check GUI consistency**: before merging, we should check the developed user interface to see whether or not it is consistent with the general style of the application and whether the general HCI guidelines have been followed. 
+  - **Assign Git Merge Task**: in some stories there was the problem of not knowing who was in charge of merging the frontend and backend work together because there was no specific task but it was included in other ones. To prevent this from happening again, separate tasks related to this activity should be added.
+
 - One thing you are proud of as a Team!!
-  - ...
+  - We managed to complete almost all the stories we committed to in this sprint with a solid result, following business priority unlike the last sprint. In particular, there was a lot of transparency in realising that stories 5 and 6 needed more time, and deciding, correctly, to move the time allocated to story 7 to where it was needed.
