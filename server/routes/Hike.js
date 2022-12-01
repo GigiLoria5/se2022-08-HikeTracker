@@ -224,39 +224,37 @@ router.get('/hikes/filters', async (req, res) => {
     hikeDao.getAllHikes()
         .then(async (hikes) => {
             let result = hikes;
-            if (city) {
-                result = result.filter(h => h.city == city);
+            const equalFilters = {
+                city:city,
+                province:province,
+                country:country,
+                difficulty:difficulty
+            };
+
+            const rangeFilters = {
+                track_length : [track_length_min, track_length_max],
+                ascent: [ascent_min, ascent_max],
+                expected_time: [expected_time_min, expected_time_max]
             }
-            if (province) {
-                result = result.filter(h => h.province == province);
-            }
-            if (country) {
-                result = result.filter(h => h.country == country);
-            }
-            if (difficulty) {
-                result = result.filter(h => h.difficulty == difficulty);
-            }
-            if (track_length_min && track_length_max) {
-                if (track_length_min >= 0.0 && track_length_max >= 0.0) {
-                    result = result.filter(h => h.track_length >= track_length_min && h.track_length <= track_length_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
+
+            for (const key in equalFilters){
+                if(equalFilters[key]){
+                    result = result.filter(h => equalFilters[key] == h[key]);
                 }
             }
-            if (ascent_min && ascent_max) {
-                if (ascent_min >= 0 && ascent_max >= 0) {
-                    result = result.filter(h => h.ascent >= ascent_min && h.ascent <= ascent_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
+
+            for(const key in rangeFilters){
+                if(rangeFilters[key][0] && rangeFilters[key][1]){
+                    if (rangeFilters[key][0] >= 0.0 && rangeFilters[key][1] >= 0.0){
+                        result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
+                    }
+                    else{
+                        return res.status(400).json({ error: `Parameter error` });
+                    }
                 }
             }
-            if (expected_time_min && expected_time_max) {
-                if (expected_time_min >= 0.0 && expected_time_max >= 0.0) {
-                    result = result.filter(h => h.expected_time >= expected_time_min && h.expected_time <= expected_time_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
-                }
-            }
+
+           
 
             for (let hike of result) {
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);

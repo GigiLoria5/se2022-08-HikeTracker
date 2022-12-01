@@ -2,7 +2,6 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
-//import { useNavigate } from 'react-router-dom';
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
