@@ -46,30 +46,30 @@ function validateHut(hut){
     
     //id: don't care
     //name: not empty string
-    if(hut.name === "") return false;
+    if(hut.name == "") return false;
     //city: not empty string
-    if(hut.city === "") return false;
+    if(hut.city == "") return false;
     //province: not empty string
-    if(hut.province === "") return false;
+    if(hut.province == "") return false;
     //country: not empty string
-    if(hut.country === "") return false;
+    if(hut.country == "") return false;
     //address: not empty string
-    if(hut.address === "") return false;
+    if(hut.address == "") return false;
     //altitude: not empty string
-    if(hut.altitude === "") return false;
+    if(hut.altitude == "") return false;
     //description: not empty string
-    if(hut.description === "") return false;
+    if(hut.description == "") return false;
     //beds_number: don't care
     //opening_period: don't care
     //longitude: not empty string
-    if(hut.longitude === "") return false;
+    if(hut.longitude == "") return false;
     //latitude: not empty string
-    if(hut.latitude === "") return false;
+    if(hut.latitude == "") return false;
     //phone_number: don't care
     //email: don't care
     //website: don't care
     //type: not empty string
-    return (!hut.type === "");
+    return (!hut.type == "");
 }
 
 module.exports = { Hut, validateHut };
