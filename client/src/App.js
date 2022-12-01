@@ -52,7 +52,7 @@ function Root() {
             //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
 
         } catch (err) {
-            var obj = JSON.parse(err);
+            const obj = JSON.parse(err);
             setMessage({ msg: `${obj.error}!`, type: 'error' });
         }
     };
@@ -62,7 +62,7 @@ function Root() {
             await API.addUser(credentials);
             setMessage({ msg: 'Check your email to validate your account, then perform the login', type: 'info' });
         } catch (err) {
-            var obj = JSON.parse(err);
+            const obj = JSON.parse(err);
             setMessage({ msg: `${obj.error}!`, type: 'error' });
         }
     };
