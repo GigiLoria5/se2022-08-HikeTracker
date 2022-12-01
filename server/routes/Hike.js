@@ -242,8 +242,8 @@ router.get('/hikes/filters', async (req, res) => {
                     result = result.filter(h => equalFilters[key] == h[key]);
                 }
             })
-
-            Object.keys(rangeFilters).forEach(key => {
+            
+            for(const key in rangeFilters){
                 if(rangeFilters[key][0] && rangeFilters[key][1]){
                     if (rangeFilters[key][0] >= 0.0 && rangeFilters[key][1] >= 0.0){
                         result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
@@ -252,7 +252,7 @@ router.get('/hikes/filters', async (req, res) => {
                         return res.status(400).json({ error: `Parameter error` });
                     }
                 }
-            })
+            }
 
            
 
