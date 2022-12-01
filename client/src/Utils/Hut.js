@@ -69,9 +69,7 @@ function validateHut(hut){
     //email: don't care
     //website: don't care
     //type: not empty string
-    if(hut.type === "") return false;
-
-    return true;
+    return (!hut.type === "");
 }
 
 module.exports = { Hut, validateHut };

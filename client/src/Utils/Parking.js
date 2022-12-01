@@ -38,8 +38,7 @@ class Parking{
     //latitude: not empty string
     if(parking.latitude === "") return false;
     //address: not empty string
-    if(parking.address === "") return false;
-    return true;
+    return(!parking.address === "")
 }
 
 module.exports = { Parking, validateParking };

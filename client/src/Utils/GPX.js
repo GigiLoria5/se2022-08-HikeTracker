@@ -102,10 +102,7 @@ const checkValidGPX = (gpxFileText) => {
     const text = gpxFileText;
     const domParser = new DOMParser();
     const dom = domParser.parseFromString(text, 'text/xml');
-    if (dom.documentElement.nodeName === "parsererror") {
-        return false;
-    }
-    return true;
+    return !(dom.documentElement.nodeName === "parsererror");
 }
 
 module.exports = { parseGPX, getPoints, checkValidGPX };

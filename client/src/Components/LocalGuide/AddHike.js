@@ -5,8 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import UiLink from '@mui/material/Link'
 
 import Alert from '@mui/material/Alert';

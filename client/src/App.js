@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from "./Components/Navbar";
 import LoginForm from "./Components/Auth/Loginform";
@@ -9,7 +9,6 @@ import AddHike from "./Components/LocalGuide/AddHike"
 import AddHut from './Components/Hut/AddHut';
 import AddHike2 from "./Components/LocalGuide/AddHike2"
 import './Styles/App.css';
-import { useState, useEffect } from 'react';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
 import HikesContainer from './Components/Hikes/HikesContainer';

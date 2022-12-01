@@ -6,10 +6,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import InputAdornment from '@mui/material/InputAdornment';
-import { useLocation } from 'react-router-dom'
 import API from '../../API';
 import { Hike } from "../../Utils/Hike"
 import Stack from '@mui/material/Stack';
@@ -17,7 +16,6 @@ import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../
 import SmootherTextField from '../SmootherTextField'
 import { difficultyFromState } from '../../Utils/DifficultyMapping';
 import Alert from '@mui/material/Alert';
-import { useNavigate } from "react-router-dom";
 import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
