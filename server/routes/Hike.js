@@ -82,22 +82,23 @@ router.post('/hikes',
                 const end_point = await JSON.parse(req.body.end_point);
                 const start_point_id = await locationDao.addLocation(start_point);
                 const end_point_id = await locationDao.addLocation(end_point);
-                const hike = new Hike(
-                    req.body.title,
-                    req.body.peak_altitude,
-                    req.body.city,
-                    req.body.province,
-                    req.body.country,
-                    req.body.description,
-                    req.body.ascent,
-                    req.body.track_length,
-                    req.body.expected_time,
-                    req.body.difficulty,
-                    name,
-                    "location",
-                    start_point_id,
-                    "location",
-                    end_point_id
+                const hike = new Hike({
+                    title:req.body.title,
+                    peak_altitude:req.body.peak_altitude,
+                    city:req.body.city,
+                    province:req.body.province,
+                    country:req.body.country,
+                    description:req.body.description,
+                    ascent:req.body.ascent,
+                    track_length:req.body.track_length,
+                    expected_time:req.body.expected_time,
+                    difficulty:req.body.difficulty,
+                    gps_track:name,
+                    start_point_type:"location",
+                    start_point_id:start_point_id,
+                    end_point_type:"location",
+                    end_point_id:end_point_id
+                }
                 )
                 let hike_id;
 
