@@ -66,4 +66,13 @@ const findFarthestPoint = (referencePointCoordinates, trailCoordinates) => {
  */
 const getMidPoint = ([x1, y1], [x2, y2]) => [(x1 + x2) / 2, (y1 + y2) / 2];
 
-export { isPointInsideRange, splitCoordinates, findFarthestPoint, getMidPoint };  
+const getClosestPoint = (point, points) => {
+    return points
+        .map(p1 => { return {point:p1, dist:getDistance(point, p1)}})
+        .reduce((p1,p2) => {
+            if(p1.dist < p2.dist) return p1;
+            else return p2;
+        }).point;
+}
+
+export { isPointInsideRange, splitCoordinates, findFarthestPoint, getMidPoint, getClosestPoint };  

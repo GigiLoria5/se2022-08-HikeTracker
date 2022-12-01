@@ -5,6 +5,7 @@ import { Icon } from 'leaflet';
 import markerIconRed from '../../Assets/Map/marker-icon-red.png';
 import markerStart from '../../Assets/Map/start-flag.png';
 import 'leaflet/dist/leaflet.css';
+import { getClosestPoint } from '../../Utils/GeoUtils';
 function RefPointMarker(props) {
     const { position } = props;
 
@@ -20,7 +21,9 @@ function RefPointMarker(props) {
 function AddPoint(props) {
     useMapEvents({
         click(e) {
-            props.addPoint(e.latlng.lat, e.latlng.lng)
+            const p = getClosestPoint([e.latlng.lat, e.latlng.lng], props.points)
+            //props.addPoint(e.latlng.lat, e.latlng.lng)
+            props.addPoint(p[0], p[1])
         }
     })
 
@@ -41,7 +44,7 @@ function RefPointMapLocator(props) {
         <MapContainer
             center={[initialLat, initialLng]}
             zoom={zoomLevel}
-            scrollWheelZoom={true}
+            scrollWheelZoom={false}
             style={{ height: height, width: width }}
         >
             {/* Map Controls */}
@@ -64,7 +67,7 @@ function RefPointMapLocator(props) {
                 pathOptions={{ color: 'blue' }}
                 positions={points}
             />
-            <AddPoint addPoint={addRefPoints} />
+            <AddPoint addPoint={addRefPoints} points={points}/>
             {/* Map Elements */}
             {/*<LocationMarker position={position} setPosition={setPosition} radius={radius}/>*/}
             <Marker position={[initialLat, initialLng]} icon={new Icon({ iconUrl: markerStart, iconSize: [29, 41], iconAnchor: [12, 41] })} >
