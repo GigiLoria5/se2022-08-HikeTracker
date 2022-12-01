@@ -2,22 +2,10 @@ const { getDistance } = require('geolib');
 const gpxParser = require('gpxparser');
 
 class GPXData {
-    constructor(length,
-        start_point_lat,
-        start_point_lon,
-        end_point_lat,
-        end_point_lon,
-        ascent,
-        peak_altitude,
-        expectedTime) {
-        this.length = length;
-        this.start_point_lat = start_point_lat;
-        this.start_point_lon = start_point_lon;
-        this.end_point_lat = end_point_lat;
-        this.end_point_lon = end_point_lon;
-        this.ascent = ascent;
-        this.peak_altitude = peak_altitude;
-        this.expectedTime = expectedTime;
+    constructor(data) {
+        Object.keys(data).forEach(key =>
+            this[key] = data[key]
+        )
     }
 }
 
@@ -34,15 +22,16 @@ const parseGPX = async (gpxFile) => {
     if (t1 != null && t2 != null) {
         expectedTime = (t1.getTime() - t2.getTime()) / 3600000;
     }
-    return new GPXData(
-        parseFloat((gpx.tracks[0].distance.total / 1000).toFixed(1)),
-        gpx.tracks[0].points[0].lat,
-        gpx.tracks[0].points[0].lon,
-        gpx.tracks[0].points[gpx.tracks[0].points.length - 1].lat,
-        gpx.tracks[0].points[gpx.tracks[0].points.length - 1].lon,
-        Math.floor(gpx.tracks[0].elevation.pos),
-        Math.floor(gpx.tracks[0].elevation.max),
-        parseFloat((expectedTime.toFixed(2)))
+    return new GPXData({
+        length:parseFloat((gpx.tracks[0].distance.total / 1000).toFixed(1)),
+        start_point_lat:gpx.tracks[0].points[0].lat,
+        start_point_lon:gpx.tracks[0].points[0].lon,
+        end_point_lat:gpx.tracks[0].points[gpx.tracks[0].points.length - 1].lat,
+        end_point_lon:gpx.tracks[0].points[gpx.tracks[0].points.length - 1].lon,
+        ascent:Math.floor(gpx.tracks[0].elevation.pos),
+        peak_altitude:Math.floor(gpx.tracks[0].elevation.max),
+        expectedTime:parseFloat((expectedTime.toFixed(2)))
+    }
     );
 };
 
@@ -75,15 +64,16 @@ const parseGPXnoPoints = (points) => {
         dist += getDistance([points[i].lat, points[i].lon], [points[i+1].lat, points[i+1].lon]);
     }
 
-    return new GPXData(
-        parseFloat(dist.toFixed(1)),
-        points[0].lat,
-        points[0].lon,
-        points[points.length - 1].lat,
-        points[points.length - 1].lon,
-        Math.floor(el),
-        Math.floor(eleMax),
-        parseFloat((expectedTime.toFixed(2)))
+    return new GPXData({
+        length:parseFloat(dist.toFixed(1)),
+        start_point_lat:points[0].lat,
+        start_point_lon:points[0].lon,
+        end_point_lat:points[points.length - 1].lat,
+        end_point_lon:points[points.length - 1].lon,
+        ascent:Math.floor(el),
+        peak_altitude:Math.floor(eleMax),
+        expectedTime:parseFloat((expectedTime.toFixed(2)))
+    }
     );
 }
 

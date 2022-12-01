@@ -225,21 +225,22 @@ function AddHike2() {
             setMessage("Hike description missing");
             return;
         }
-        const hike = new Hike(
-            title,
-            peak_altitude,
-            city,
-            province,
-            country,
-            description,
-            ascent,
-            length,
-            computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
-            difficultyFromState(difficulty),
-            start_point,
-            end_point,
-            referencePoint,
-            selectedFile
+        const hike = new Hike({
+            title:title,
+            peak_altitude:peak_altitude,
+            city:city,
+            province:province,
+            country:country,
+            description:description,
+            ascent:ascent,
+            track_length:length,
+            expected_time:computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
+            difficulty:difficultyFromState(difficulty),
+            start_point:start_point,
+            end_point:end_point,
+            reference_points:referencePoint,
+            gpx:selectedFile
+        }
         )
         API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
     };
