@@ -1,0 +1,43 @@
+name: Build
+
+on:
+ push:
+ pull_request:
+   types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 
+      - name: Install dependencies (server)
+        run: |
+         cd server
+         npm install
+      - name: Install dependencies (client)
+        run: |
+         cd client
+         npm install  
+      - name: Test and coverage (server)
+        run: |
+         cd server
+         npm test
+         npm run test_integration
+         npm run test_format
+      - name: Test and coverage (client)
+        run: |
+         cd server
+         node index.js &
+         cd ..
+         cd client
+         npm install
+         npm test
+         npm run test_integration
+         npm run test_format
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

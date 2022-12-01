@@ -255,7 +255,7 @@ function AddHike() {
                             </Button>
                             {isSelected ? (
                                 <div>
-                                    <Typography sx={thm} margin={2}>Filename: {selectedFile.name}</Typography>
+                                    <Typography sx={thm} margin={2}>Filename: {selectedFile && selectedFile.name}</Typography>
                                     <Divider variant="middle" />
                                     <Grid container >
                                         {/*****************************************************START POINT***********************************************/}
