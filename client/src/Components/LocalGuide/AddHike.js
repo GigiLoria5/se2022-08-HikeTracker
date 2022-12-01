@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
-//import Grid from "@mui/material/Grid";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import Paper from "@mui/material/Paper";
@@ -17,20 +16,6 @@ import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
 import PointsInput from './AddHike/PointsInput';
 
-
-/*
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-*/
 
 
 function AddHike() {

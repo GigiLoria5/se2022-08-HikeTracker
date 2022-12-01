@@ -36,25 +36,25 @@ router.post('/hikes',
         const start_point = await JSON.parse(req.body.start_point);
         if (isNaN(start_point.latitude) ||
             isNaN(start_point.longitude) ||
-            (start_point.description.length == 0)) throw "Invalid start point"
+            (start_point.description.length == 0)) throw new Error("Invalid start point");
         return true;
     }),
     check('end point').custom(async (value, { req }) => {
         const end_point = await JSON.parse(req.body.end_point);
         if (isNaN(end_point.latitude) ||
             isNaN(end_point.longitude) ||
-            (end_point.description.length == 0)) throw "Invalid start point"
+            (end_point.description.length == 0)) throw new Error("Invalid start point");
         return true;
     }),
 
     check('gpx file').custom(async (value, { req }) => {
-        if (!req.files) throw "no file uploaded";
+        if (!req.files) throw new Error("no file uploaded");
         const sizeKB = req.files.gpx.size / 1024;
-        if (sizeKB > 1024 * 10) throw "gpx file too large";
+        if (sizeKB > 1024 * 10) throw new Error("gpx file too large");
         if (req.files.gpx.mimetype != "application/gpx+xml") {
             const { fileTypeFromBuffer } = await import('file-type');
             const fileType = await fileTypeFromBuffer(req.files.gpx.data);
-            if (fileType.mime != "application/xml") throw "invalid gpx file";
+            if (fileType.mime != "application/xml") throw new Error("invalid gpx file");
         }
         return true;
     }),
@@ -72,7 +72,7 @@ router.post('/hikes',
 
             }
             if (!req.files) {
-                throw "no file uploaded"
+                throw new Error("no file uploaded");
             } else {
                 const gpx = req.files.gpx;
                 const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
@@ -111,7 +111,7 @@ router.post('/hikes',
                         hikeDao.deleteHike(id).then(_a => {
                             hikeDao.deleteReferencePoints(id);
                         });
-                        throw "error adding reference points"
+                        throw new Error("error adding reference points");
                     })
                 }
 
@@ -121,7 +121,7 @@ router.post('/hikes',
                         hikeDao.deleteHike(hike_id).then(_a => {
                             hikeDao.deleteReferencePoints(hike_id);
                         });
-                        throw "error saving gpx file";
+                        throw new Error("error saving gpx file");
                     }
                 });
                 //send response
@@ -130,7 +130,7 @@ router.post('/hikes',
                 });
             }
         } catch (err) {
-            res.status(500).send(err);
+            res.status(500).send(err.message);
         }
     });
 

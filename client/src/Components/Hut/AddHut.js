@@ -27,25 +27,11 @@ export default function AddHut(props) {
     const [stepOneDone, setStepOneDone] = useState(false);
     const [stepTwoDone, setStepTwoDone] = useState(false);
 
-    //const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
-        // eslint-disable-next-line
     }, [])
 
-    /*
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-    */
     const theme = createTheme({
         palette: {
             primary: {
@@ -102,7 +88,6 @@ export default function AddHut(props) {
 
         if (response === true) {
             props.setMessage({ msg: `Hut correctly created`});
-            //navigate("/local-guide-page");
             setStepTwoDone(true);
         }
     }

@@ -49,7 +49,6 @@ function Root() {
             const user = await API.logIn(credentials);
             setLoggedUser(user);
             setLoggedIn(true);
-            //setMessage({ msg: `Welcome, ${user.name}!`, type: 'success' });
 
         } catch (err) {
             const obj = JSON.parse(err);
