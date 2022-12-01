@@ -96,7 +96,7 @@ export default function AddHut(props) {
         }
 
         const response = await API.addHut(hut).catch(e => {
-            var obj = JSON.parse(e);
+            const obj = JSON.parse(e);
             props.setMessage({ msg: `${obj.error}!`, type: 'error' });
         })
 

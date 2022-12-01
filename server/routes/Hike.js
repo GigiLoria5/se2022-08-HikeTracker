@@ -108,7 +108,6 @@ router.post('/hikes',
                 for (const p of JSON.parse(req.body.reference_points).points) {
                     const ref_point_id = await locationDao.addLocation(p);
                     hikeDao.addReferencePoint(id, "location", ref_point_id).catch(err => {
-                        added = false;
                         hikeDao.deleteHike(id).then(_a => {
                             hikeDao.deleteReferencePoints(id);
                         });
@@ -224,7 +223,7 @@ router.get('/hikes/filters', async (req, res) => {
 
     hikeDao.getAllHikes()
         .then(async (hikes) => {
-            var result = hikes;
+            let result = hikes;
             if (city) {
                 result = result.filter(h => h.city == city);
             }
@@ -259,7 +258,7 @@ router.get('/hikes/filters', async (req, res) => {
                 }
             }
 
-            for (var hike of result) {
+            for (let hike of result) {
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
                 hike.end = await utilsHike.getPoint(hike.end_point_type, hike.end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(hike.id);
