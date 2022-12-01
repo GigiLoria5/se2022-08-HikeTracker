@@ -56,23 +56,24 @@ export default function AddHut(props) {
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
-        const hut = new Hut(
-            undefined, //id - assigned by backend
-            hutName,
-            city,
-            province,
-            country,
-            address,
-            altitude,
-            description,
-            bedsNumber,
-            undefined, //opening period - non static information
-            longitude.toString(),
-            latitude.toString(),
-            phoneNumber,
-            email,
-            website,
-            type
+        const hut = new Hut({
+            id:undefined, //id - assigned by backend
+            name:hutName,
+            city:city,
+            province:province,
+            country:country,
+            address:address,
+            altitude:altitude,
+            description:description,
+            beds_number:bedsNumber,
+            opening_period:undefined, //opening period - non static information
+            longitude:longitude.toString(),
+            latitude:latitude.toString(),
+            phone_number:phoneNumber,
+            email:email,
+            website:website,
+            type:type
+        }
         );
 
         if (!validateHut(hut)) {
