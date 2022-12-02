@@ -36,25 +36,25 @@ router.post('/hikes',
         const start_point = await JSON.parse(req.body.start_point);
         if (isNaN(start_point.latitude) ||
             isNaN(start_point.longitude) ||
-            (start_point.description.length == 0)) throw "Invalid start point"
+            (start_point.description.length == 0)) throw new Error("Invalid start point");
         return true;
     }),
     check('end point').custom(async (value, { req }) => {
         const end_point = await JSON.parse(req.body.end_point);
         if (isNaN(end_point.latitude) ||
             isNaN(end_point.longitude) ||
-            (end_point.description.length == 0)) throw "Invalid start point"
+            (end_point.description.length == 0)) throw new Error("Invalid start point");
         return true;
     }),
 
     check('gpx file').custom(async (value, { req }) => {
-        if (!req.files) throw "no file uploaded";
+        if (!req.files) throw new Error("no file uploaded");
         const sizeKB = req.files.gpx.size / 1024;
-        if (sizeKB > 1024 * 10) throw "gpx file too large";
+        if (sizeKB > 1024 * 10) throw new Error("gpx file too large");
         if (req.files.gpx.mimetype != "application/gpx+xml") {
             const { fileTypeFromBuffer } = await import('file-type');
             const fileType = await fileTypeFromBuffer(req.files.gpx.data);
-            if (fileType.mime != "application/xml") throw "invalid gpx file";
+            if (fileType.mime != "application/xml") throw new Error("invalid gpx file");
         }
         return true;
     }),
@@ -72,7 +72,7 @@ router.post('/hikes',
 
             }
             if (!req.files) {
-                throw "no file uploaded"
+                throw new Error("no file uploaded");
             } else {
                 const gpx = req.files.gpx;
                 const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
@@ -82,22 +82,23 @@ router.post('/hikes',
                 const end_point = await JSON.parse(req.body.end_point);
                 const start_point_id = await locationDao.addLocation(start_point);
                 const end_point_id = await locationDao.addLocation(end_point);
-                const hike = new Hike(
-                    req.body.title,
-                    req.body.peak_altitude,
-                    req.body.city,
-                    req.body.province,
-                    req.body.country,
-                    req.body.description,
-                    req.body.ascent,
-                    req.body.track_length,
-                    req.body.expected_time,
-                    req.body.difficulty,
-                    name,
-                    "location",
-                    start_point_id,
-                    "location",
-                    end_point_id
+                const hike = new Hike({
+                    title:req.body.title,
+                    peak_altitude:req.body.peak_altitude,
+                    city:req.body.city,
+                    province:req.body.province,
+                    country:req.body.country,
+                    description:req.body.description,
+                    ascent:req.body.ascent,
+                    track_length:req.body.track_length,
+                    expected_time:req.body.expected_time,
+                    difficulty:req.body.difficulty,
+                    gps_track:name,
+                    start_point_type:"location",
+                    start_point_id:start_point_id,
+                    end_point_type:"location",
+                    end_point_id:end_point_id
+                }
                 )
                 let hike_id;
 
@@ -108,11 +109,10 @@ router.post('/hikes',
                 for (const p of JSON.parse(req.body.reference_points).points) {
                     const ref_point_id = await locationDao.addLocation(p);
                     hikeDao.addReferencePoint(id, "location", ref_point_id).catch(err => {
-                        added = false;
                         hikeDao.deleteHike(id).then(_a => {
                             hikeDao.deleteReferencePoints(id);
                         });
-                        throw "error adding reference points"
+                        throw new Error("error adding reference points");
                     })
                 }
 
@@ -122,7 +122,7 @@ router.post('/hikes',
                         hikeDao.deleteHike(hike_id).then(_a => {
                             hikeDao.deleteReferencePoints(hike_id);
                         });
-                        throw "error saving gpx file";
+                        throw new Error("error saving gpx file");
                     }
                 });
                 //send response
@@ -131,7 +131,7 @@ router.post('/hikes',
                 });
             }
         } catch (err) {
-            res.status(500).send(err);
+            res.status(500).send(err.message);
         }
     });
 
@@ -224,42 +224,40 @@ router.get('/hikes/filters', async (req, res) => {
 
     hikeDao.getAllHikes()
         .then(async (hikes) => {
-            var result = hikes;
-            if (city) {
-                result = result.filter(h => h.city == city);
+            let result = hikes;
+            const equalFilters = {
+                city:city,
+                province:province,
+                country:country,
+                difficulty:difficulty
+            };
+
+            const rangeFilters = {
+                track_length : [track_length_min, track_length_max],
+                ascent: [ascent_min, ascent_max],
+                expected_time: [expected_time_min, expected_time_max]
             }
-            if (province) {
-                result = result.filter(h => h.province == province);
-            }
-            if (country) {
-                result = result.filter(h => h.country == country);
-            }
-            if (difficulty) {
-                result = result.filter(h => h.difficulty == difficulty);
-            }
-            if (track_length_min && track_length_max) {
-                if (track_length_min >= 0.0 && track_length_max >= 0.0) {
-                    result = result.filter(h => h.track_length >= track_length_min && h.track_length <= track_length_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
+
+            Object.keys(equalFilters).forEach(key => {
+                if(equalFilters[key]){
+                    result = result.filter(h => equalFilters[key] == h[key]);
                 }
-            }
-            if (ascent_min && ascent_max) {
-                if (ascent_min >= 0 && ascent_max >= 0) {
-                    result = result.filter(h => h.ascent >= ascent_min && h.ascent <= ascent_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
-                }
-            }
-            if (expected_time_min && expected_time_max) {
-                if (expected_time_min >= 0.0 && expected_time_max >= 0.0) {
-                    result = result.filter(h => h.expected_time >= expected_time_min && h.expected_time <= expected_time_max);
-                } else {
-                    return res.status(400).json({ error: `Parameter error` });
+            })
+            
+            for(const key in rangeFilters){
+                if(rangeFilters[key][0] && rangeFilters[key][1]){
+                    if (rangeFilters[key][0] >= 0.0 && rangeFilters[key][1] >= 0.0){
+                        result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
+                    }
+                    else{
+                        return res.status(400).json({ error: `Parameter error` });
+                    }
                 }
             }
 
-            for (var hike of result) {
+           
+
+            for (let hike of result) {
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
                 hike.end = await utilsHike.getPoint(hike.end_point_type, hike.end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(hike.id);

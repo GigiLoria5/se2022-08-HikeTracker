@@ -13,7 +13,18 @@ exports.getUser = (email, password) => {
             if (err) { reject(err); }
             else if (row === undefined) { resolve(false); }
             else {
-                const user = new User(row.id, row.name, row.surname, row.email, "", "", row.email_verified, row.phone_number, row.role, row.token);
+                const user = new User({
+                    id:row.id,
+                    name:row.name,
+                    surname:row.surname,
+                    email:row.email,
+                    password:"",
+                    salt:"",
+                    email_verified:row.email_verified,
+                    phone_number:row.phone_number,
+                    role:row.role,
+                    token:row.token
+                });
                 const salt = row.salt;
                 const hashedPassword = crypto.createHash('sha256')
                     .update(password, "utf8")
@@ -49,7 +60,18 @@ exports.getAllUsers = () => {
                 reject(err);
             } else {
                 resolve(rows.map((row) =>
-                    new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token)
+                    new User({
+                        id:row.id,
+                        name:row.name,
+                        surname:row.surname,
+                        email:row.email,
+                        password:row.password,
+                        salt:row.salt,
+                        email_verified:row.email_verified,
+                        phone_number:row.phone_number,
+                        role:row.role,
+                        token:row.token
+                    })
                 ));
             }
         });
@@ -78,7 +100,18 @@ exports.getUserById = (userId) => {
             else if (row === undefined)
                 resolve(null); // user not found
             else {
-                const user = new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token);
+                const user = new User({
+                    id:row.id,
+                    name:row.name,
+                    surname:row.surname,
+                    email:row.email,
+                    password:row.password,
+                    salt:row.salt,
+                    email_verified:row.email_verified,
+                    phone_number:row.phone_number,
+                    role:row.role,
+                    token:row.token
+                });
                 resolve(user);
             }
         });
@@ -94,7 +127,18 @@ exports.getUserByEmail = (email) => {
             else if (row === undefined)
                 resolve(false); // user not found
             else {
-                const user = new User(row.id, row.name, row.surname, row.email, row.password, row.salt, row.email_verified, row.phone_number, row.role, row.token);
+                const user = new User({
+                    id:row.id,
+                    name:row.name,
+                    surname:row.surname,
+                    email:row.email,
+                    password:row.password,
+                    salt:row.salt,
+                    email_verified:row.email_verified,
+                    phone_number:row.phone_number,
+                    role:row.role,
+                    token:row.token
+                });
                 resolve(user);
             }
         });

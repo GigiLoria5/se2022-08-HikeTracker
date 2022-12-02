@@ -46,7 +46,23 @@ router.post('/huts', [
             if (user !== undefined && user.role === "local_guide") {
 
                 // Create a new hut object given the fields received from the client
-                const hut = new Hut(0, req.body.name, req.body.city, req.body.province, req.body.country, req.body.address, req.body.altitude, req.body.description, req.body.beds_number, "", (req.body.latitude + ", " + req.body.longitude), req.body.phone_number, req.body.email, req.body.website, req.body.type)
+                const hut = new Hut({
+                    id:0, 
+                    name:req.body.name,
+                    city:req.body.city,
+                    province:req.body.province,
+                    country:req.body.country,
+                    address:req.body.address,
+                    altitude:req.body.altitude,
+                    description:req.body.description,
+                    beds_number:req.body.beds_number,
+                    opening_period:"",
+                    coordinates:(req.body.latitude + ", " + req.body.longitude),
+                    phone_number:req.body.phone_number,
+                    email:req.body.email,
+                    website:req.body.website,
+                    type:req.body.type
+                })
 
                 // Checks if the hut coordinates and location infos alread exists
                 const exists = await HutDAO.checkExisting(hut);

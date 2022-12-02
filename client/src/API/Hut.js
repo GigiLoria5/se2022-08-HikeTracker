@@ -24,6 +24,7 @@ async function addHut(hut) {
         }
     } catch (err) {
         /* Network error */
+        console.log(err);
         throw err;
     }
 }
@@ -48,6 +49,7 @@ async function deleteHut(hutName) {
         }
     } catch (err) {
         /* Network error */
+        console.log(err);
         throw err;
     }
 }

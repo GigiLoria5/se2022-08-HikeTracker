@@ -22,6 +22,7 @@ async function addParking(parking) {
             throw errDetails;
         }
     } catch(err) {
+        console.log(err);
         throw err;
     }
 }
@@ -42,6 +43,7 @@ async function deleteParking(parkingAddress) {
         }
     } catch (err) {
         /* Network error */
+        console.log(err);
         throw err;
     }
 }
