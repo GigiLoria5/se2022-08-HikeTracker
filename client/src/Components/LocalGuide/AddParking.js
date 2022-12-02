@@ -154,6 +154,10 @@ function AddParking() {
             setMessage("Parking lot capacity info missing");
             return;
         }
+        if (!capacity) {
+            setMessage("Parking lot capacity info missing");
+            return;
+        }
         //add capacity of parking here
         await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
             .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
