@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { LayersControl, MapContainer, Marker, Polyline, TileLayer, useMapEvents } from 'react-leaflet';
 import { Icon } from 'leaflet';
@@ -8,8 +8,6 @@ import markerStart from '../../Assets/Map/start-flag.png';
 import 'leaflet/dist/leaflet.css';
 import { getClosestPoint } from '../../Utils/GeoUtils';
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import {useLeafletContext} from '@react-leaflet/core';
-import L from 'leaflet';
 import { Button } from '@mui/material';
 function RefPointMarker(props) {
     const { position } = props;
