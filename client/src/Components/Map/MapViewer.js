@@ -62,7 +62,7 @@ function MapViewer(props) {
 
     useEffect(() => {
         // Parse GPX file
-        getPoints({text: () => gpxFileContent}).then(
+        getPoints({ text: () => gpxFileContent }).then(
             positions => {
                 // Find center
                 const startPointGPXCoordinates = positions[0].map(c => c);
@@ -71,10 +71,9 @@ function MapViewer(props) {
                 // Set states
                 setCenter(midPointPosition);
                 setPositions(positions);
-                // eslint-disable-next-line
             }
         )
-        
+        // eslint-disable-next-line
     }, []);
 
     return (

@@ -6,6 +6,8 @@
 
 [![Frontend tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Frontend%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GigiLoria5_se2022-08-HikeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GigiLoria5_se2022-08-HikeTracker)
+
 Manual test reports in client/gui_test
 
 ## Technical Debt Handling Strategy
