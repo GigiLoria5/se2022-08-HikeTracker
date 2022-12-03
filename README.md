@@ -9,6 +9,7 @@
 Manual test reports in client/gui_test
 
 ## Technical Debt Handling Strategy
+
 - Solving all Blocking Issues
 - Solving all Critical Issues
 - Solving Major Issues if there's time left
@@ -53,8 +54,10 @@ Application developed during the Software Engineering II course (Year 2022-23) b
 - Route `/` : a simple welcome page that acts as an entry point for all users
 - Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
 - Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
-- Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
+- Route `/huts` : shows authenticated users the list of huts added by local guides, with the possibility of adding filters and searches for certain fields to show a desired subset. For each hut, a certain amount of information is visible.
+- Route `/huts/:id` : shows authenticated users all information about a hut. There is also a map in the sidebar, showing the specific location of it.
 
+- Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
 
   - user account type: hiker, hut worker, local guide, emergency operator. <ins>Platform managers cannot be registered in this way, but requires system administrator the creation of their accounts. <ins>
@@ -478,7 +481,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   ```
 
   - Response: `200 OK` (Created)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Fields validation failed` or `A parking lot having the same location parameters already exists` (Wrong body content)
     - `404 User not found` (specified user not found)
@@ -497,7 +500,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Permissions allowed: Local guide
   - Request body: _None_
   - Response: `200 OK` (Deleted)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Params validation failed`(Wrong params)
     - `500 Database error` (Database error)
@@ -516,7 +519,7 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   - Permissions allowed: Local guide
   - Request body: _None_
   - Response: `200 OK` (Deleted)
-  - Error responses: 
+  - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `422 Params validation failed`(Wrong params)
     - `500 Database error` (Database error)
@@ -527,8 +530,8 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "error": "message text"
   }
-  ```  
-  
+  ```
+
 ### Huts
 
 - POST `/api/huts`
@@ -569,6 +572,120 @@ Application developed during the Software Engineering II course (Year 2022-23) b
   {
       "error": "message text"
   }
+  ```
+
+  - GET `/api/huts/countries`
+
+  - Description: Return an array containing all the countries where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the countries, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "country": "Italy"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/huts/provinces/:country`
+
+  - Description: Return an array containing all the provinces of a specific country where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the provinces, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "province": "Cuneo"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/huts/cities/:province`
+
+  - Description: Return an array containing all the cities of a specific province where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the cities, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "city": "Condove"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/huts/:id`
+
+  - Description: Return an object contaning hut information
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions) `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: Hut object, or an error message in case of failure
+
+  ```
+    {
+      "id": 1,
+      "name": "Rifugio Melezè",
+      "city": "Carignano",
+      "province": "Torino",
+      "country": "Italy",
+      "description": "It runs between ...",
+      "address": "Pian Melezè, 1, 12020",
+      "altitude": 1812,
+      "beds_number": 50,
+      "coordinates": "44.5741321312, 8.31231231",
+      "phone_number": "0175956410",
+      "email": "melezze@meleze.it",
+      "website": "www.meleze.it",
+      "type": "alpine_hut",
+      "author": "Martina Piccolo"
+    }
+  ```
+
+- GET `/api/huts/filters?...`
+
+  - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `401 Unauthorized` (not logged in or wrong permissions) `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the huts, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": 1,
+      "name": "Rifugio Melezè",
+      "city": "Carignano",
+      "province": "Torino",
+      "country": "Italy",
+      "description": "It runs between ...",
+      "address": "Pian Melezè, 1, 12020",
+      "altitude": 1812,
+      "beds_number": 50,
+      "coordinates": "44.5741321312, 8.31231231",
+      "phone_number": "0175956410",
+      "email": "melezze@meleze.it",
+      "website": "www.meleze.it",
+      "type": "alpine_hut",
+      "author": "Martina Piccolo"
+    },
+    ...
+  ]
   ```
 
 - DELETE `/api/huts`
