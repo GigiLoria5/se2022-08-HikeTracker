@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
+import {Address} from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -16,6 +17,7 @@ export default function AddHut(props) {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [address, setAddress] = useState("");
+    const [location, setLocation] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [altitude, setAltitude] = useState(0.0);
@@ -29,7 +31,15 @@ export default function AddHut(props) {
 
     useEffect(() => {
         props.setMessage('');
+        // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        if(latitude !== "" && longitude !== ""){
+            getLocation();
+        }
+        // eslint-disable-next-line
+    }, [latitude,longitude])
 
     const theme = createTheme({
         palette: {
@@ -52,6 +62,11 @@ export default function AddHut(props) {
         textTransform: 'uppercase', 
         fontWeight: 600 
     };
+
+    const getLocation = async () =>{
+        const addr= await API.getAddressByCoordinates(longitude,latitude);   // Get address information starting from coordinates
+        setLocation(new Address(addr));
+    }
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
@@ -140,7 +155,8 @@ export default function AddHut(props) {
                                 address={address} setAddress={setAddress}
                                 setStepOneDone={setStepOneDone}
                                 setMessage={props.setMessage}
-                                reset={handleReset}
+                                reset={handleReset} 
+                                location={location}                              
                             />
                             :
                             <AddHutPage2

@@ -14,8 +14,10 @@ import Box from '@mui/material/Box';
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer } from '../../Utils/InputSanitizer';
 import { addParking } from '../../API/Parking'
+import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
+import {Address, validateAddress} from '../../Utils/Address';
 
 
 const zoomLevel = 15;
@@ -25,7 +27,7 @@ function AddParking() {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
-
+    const [location, setLocation] = useState("");
     const [message, setMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
@@ -49,6 +51,19 @@ function AddParking() {
 
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if(position.lat !== "" && position.lng !== ""){
+            getLocation();
+        }
+        // eslint-disable-next-line
+    }, [position])
+
+    const getLocation = async () =>{
+        const addr= await getAddressByCoordinates(position.lng,position.lat);   // Get address information starting from coordinates
+        setLocation(new Address(addr));
+        console.log(addr);
+    }
 
     useEffect(() => {
         if (country !== '') {
@@ -87,9 +102,18 @@ function AddParking() {
         if (!country || !province || !city || !address) {
             setMessage("Parking lot geographical info missing");
             return;
+        }else{
+            const res = validateAddress(location, country, province, city, address);
+            if( res === true){
+                await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
+                .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
+            }else{
+                console.log(res);
+                ev.stopPropagation();
+            }
+
         }
-        await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-            .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
+       
 
     };
 

@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Autocomplete from '@mui/material/Autocomplete';
+import {validateAddress} from '../../Utils/Address';
 
 import MapLocator from '../Map/MapLocator';
 import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData'
@@ -40,6 +41,10 @@ export default function AddHutPage1(props) {
     useEffect(() => {
         props.setLatitude(position.lat);
         props.setLongitude(position.lng);
+        props.setCountry("")
+        props.setAddress("");
+        props.setCity("");
+        props.setProvince("");
         // eslint-disable-next-line
     }, [position]);
 
@@ -93,7 +98,13 @@ export default function AddHutPage1(props) {
         if (form.checkValidity() === false) {
             event.stopPropagation();
         } else {
-            props.setStepOneDone(true)
+            const res = validateAddress(props.location, props.country, props.province, props.city, props.address);
+            if( res === true){
+                props.setStepOneDone(true)
+            }else{
+                console.log(res);
+                event.stopPropagation();
+            }
         }
     };
 
