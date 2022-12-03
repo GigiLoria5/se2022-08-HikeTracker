@@ -42,6 +42,7 @@ svg {
     margin-top: auto;
     margin-bottom: auto;
 }
+
 .container-full-page {
     height: 100% !important;
     width: 100% !important;
@@ -178,12 +179,17 @@ svg {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    height: 80px;
 }
 
 .no-exceed {
     display: flex;
     overflow: auto;
     white-space: nowrap;
+}
+
+.card {
+    height: 100% !important;
 }
 
 .card:hover {
