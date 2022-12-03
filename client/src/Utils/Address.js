@@ -27,7 +27,7 @@ class Address{
  */
  function validateAddress(location, country, province, city, address){
     if(location.country!==country){
-        return "Wrong country";
+        return "country";
     }
 
     if(country=== "Italy"){
@@ -43,19 +43,19 @@ class Address{
             }
 
             if(location.county!==provinceita){ 
-                return "Wrong province"; 
+                return "province"; 
             }
             if(location.city!==undefined){
-                if(location.city!==city){return "Wrong city"}
+                if(location.city!==city){return "city"}
             }else{
                 if(location.town!==undefined){
-                    if(location.town!==city){return "Wrong town"}
+                    if(location.town!==city){return "city"}
                 }else{
                     if(location.village!==undefined){
-                        if(location.village!==city){return "Wrong village"}
+                        if(location.village!==city){return "city"}
                     }else{
                         if(location.hamlet!==undefined){
-                            if(location.hamlet!==city){return "Wrong hamlet"}
+                            if(location.hamlet!==city){return "city"}
                         }
                     }
                 }
@@ -66,19 +66,19 @@ class Address{
         const provinceclear = province.replace('-', ' ');
         const stateclear = location.state.replace('-', ' ');
             if(stateclear!==provinceclear){ 
-                return "Wrong province"; 
+                return "province"; 
             }
             if(location.city!==undefined){
-                if(location.city!==city){return "Wrong city"}
+                if(location.city!==city){return "city"}
             }else{
                 if(location.town!==undefined){
-                    if(location.town!==city){return "Wrong town"}
+                    if(location.town!==city){return "city"}
                 }else{
                     if(location.municipality!==undefined){
-                        if(location.municipality!==city){return "Wrong municipality"}
+                        if(location.municipality!==city){return "city"}
                     }else{
                         if(location.village!==undefined){
-                            if(location.village!==city){return "Wrong village"}
+                            if(location.village!==city){return "city"}
                         }
                     }
                 }
@@ -90,7 +90,7 @@ class Address{
         const addressNoDigitsNoSpace = address.replace(/[0-9]/g, '').toLowerCase().trim().replace(/\s+/g, ''); // Trim string, remove spaces and digits and put lowercase
         const locationNoDigitsNoSpace = (location.road).toLowerCase().replace(/\s+/g, ''); // Remove spaces and put string in lowercase
 
-        if(locationNoDigitsNoSpace!==addressNoDigitsNoSpace){return "Wrong address"}
+        if(locationNoDigitsNoSpace!==addressNoDigitsNoSpace){return "address"}
     }
     return true;
  }

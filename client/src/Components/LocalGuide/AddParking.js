@@ -17,7 +17,7 @@ import { addParking } from '../../API/Parking'
 import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
-import {Address, validateAddress} from '../../Utils/Address';
+import { Address, validateAddress } from '../../Utils/Address';
 
 
 const zoomLevel = 15;
@@ -34,6 +34,24 @@ function AddParking() {
     const [cities, setCities] = useState([]);
     const [address, setAddress] = useState("");
     const [width, setWidth] = React.useState(window.innerWidth);
+    const [formValues, setFormValues] = useState({
+        country: {
+            error: false,
+            errorMessage: ""
+        },
+        province: {
+            error: false,
+            errorMessage: ""
+        },
+        city: {
+            error: false,
+            errorMessage: ""
+        },
+        address: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
     const updateWidth = () => {
         setWidth(window.innerWidth);
@@ -53,14 +71,14 @@ function AddParking() {
     }, []);
 
     useEffect(() => {
-        if(position.lat !== "" && position.lng !== ""){
+        if (position.lat !== "" && position.lng !== "") {
             getLocation();
         }
         // eslint-disable-next-line
     }, [position])
 
-    const getLocation = async () =>{
-        const addr= await getAddressByCoordinates(position.lng,position.lat);   // Get address information starting from coordinates
+    const getLocation = async () => {
+        const addr = await getAddressByCoordinates(position.lng, position.lat);   // Get address information starting from coordinates
         setLocation(new Address(addr));
         console.log(addr);
     }
@@ -96,24 +114,61 @@ function AddParking() {
 
     const navigate = useNavigate();
 
+    const reset = () => {
+        const formFields = Object.keys(formValues);
+        let newFormValues = { ...formValues }
+
+        formFields.forEach(key => {
+            newFormValues[key].error = false;
+            newFormValues[key].errorMessage = "";
+        });
+        setFormValues(newFormValues);
+    }
+
+    const printErrors = (res,msg) => {
+        const formFields = Object.keys(formValues);
+        let newFormValues = { ...formValues }
+
+        if(res===""){
+            const array = [country,province,city,address];
+            let index = 0;
+            formFields.forEach(key => {
+                newFormValues[key].error = (array[index]===""||array[index]===null)? true : false;
+                newFormValues[key].errorMessage = (array[index]===""||array[index]===null)? key.charAt(0).toUpperCase() + key.slice(1) + " "+msg : "";
+            index++;
+        });
+
+        }else{
+            formFields.forEach(key => {
+                newFormValues[key].error = key===res? true : false;
+                newFormValues[key].errorMessage = key===res? key.charAt(0).toUpperCase() + key.slice(1) + " "+msg : "";
+        });
+        }
+
+
+        setFormValues(newFormValues);
+    }
+
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
         if (!country || !province || !city || !address) {
-            setMessage("Parking lot geographical info missing");
+            printErrors("","missing");
+            //setMessage("Parking lot geographical info missing");
             return;
-        }else{
-            const res = validateAddress(location, country, province, city, address);
-            if( res === true){
+        } else {
+            const res = validateAddress(location, country, province, city, address); // res contains: true (no errors), country, province, city or address
+
+            if (res === true) {
                 await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-                .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
-            }else{
-                console.log(res);
+                    .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
+            } else {
+                printErrors(res,"doesn't match with the location");
                 ev.stopPropagation();
             }
 
         }
-       
+
 
     };
 
@@ -194,9 +249,10 @@ function AddParking() {
                                             sx={{ m: 1, width: '28ch', pt: { xs: 0, md: 1.1 } }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setCountry(value); setProvince(''); setCity('')
+                                                setCountry(value); setProvince(''); setCity(''); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField required {...params} label="Country" />}
+                                            renderInput={(params) => <TextField required {...params} label="Country" error={formValues.country.error} helperText={formValues.country.error && formValues.country.errorMessage} />}
                                         />
                                         {/*PROVINCE FIELD*/}
                                         <Autocomplete
@@ -209,9 +265,10 @@ function AddParking() {
                                             sx={{ m: 1, width: '28ch' }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setProvince(value); setCity('')
+                                                setProvince(value); setCity(''); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField {...params} required label="Province" />}
+                                            renderInput={(params) => <TextField {...params} required label="Province" error={formValues.province.error} helperText={formValues.province.error && formValues.province.errorMessage} />}
                                         />
                                         {/*CITY FIELD*/}
                                         <Autocomplete
@@ -224,11 +281,12 @@ function AddParking() {
                                             sx={{ m: 1, width: '28ch' }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setCity(value);
+                                                setCity(value); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField {...params} required label="City" />}
+                                            renderInput={(params) => <TextField {...params} required label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                         />
-                                        <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} />
+                                        <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} error={formValues.address.error} helperText={formValues.address.error && formValues.address.errorMessage} />
 
                                     </Stack>
                                 </Grid>
