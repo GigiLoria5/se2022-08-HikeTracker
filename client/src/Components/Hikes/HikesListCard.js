@@ -17,7 +17,7 @@ export default function HikesListCard(props) {
     return (
         <Grid item xs={12} sm={6} lg={4} >
             <Card width="100%" className='card'>
-                <CardActionArea onClick={handleNavigation()}>
+                <CardActionArea onClick={handleNavigation()} >
                     <CardContent sx={{ paddingBottom: 2 }}>
                         {/* Location & Difficulty */}
                         <Box component="div" display="flex" className="flex-font" marginBottom={1}>
