@@ -387,8 +387,9 @@ function AddHike2() {
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
                                 Reference points
                             </Typography>
-                            <Typography sx={thm} marginBottom={0}>
-                                Click on the map to add reference points<br />
+                            <Typography sx={thm} marginBottom={0} align="center">
+                                Click on the map to add reference points on the track<br />
+                                Click on a reference point to edit it
                             </Typography>
 
                             <Grid xs={12} sx={thm} margin={1}>
