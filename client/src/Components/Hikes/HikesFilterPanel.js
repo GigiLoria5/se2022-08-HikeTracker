@@ -3,8 +3,9 @@ import React, { useEffect } from 'react'
 import { Box, Button, ClickAwayListener, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
-import GeographicFilter from '../Filters/GeographicFilter';
 import API from '../../API';
+import NameFilter from '../Filters/NameFilter';
+import GeographicFilter from '../Filters/GeographicFilter';
 import DifficultyFilter from '../Filters/DifficultyFilter';
 import LengthFilter from '../Filters/LengthFilter';
 import AscentFilter from '../Filters/AscentFilter';
@@ -20,10 +21,11 @@ const theme = createTheme({
 });
 
 const HikesFilterPanel = (props) => {
-    const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius } = props;
+    const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius, setSearch } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = React.useState(false);
     const [countryList, setCountryList] = React.useState([]);
 
+    const [resetSearch, setResetSearch] = React.useState(false);
     const [resetGeographic, setResetGeographic] = React.useState(false);
     const [resetDifficulty, setResetDifficulty] = React.useState(false);
     const [resetLength, setResetLength] = React.useState(false);
@@ -67,6 +69,7 @@ const HikesFilterPanel = (props) => {
     };
 
     const handleResetFilters = () => {
+        setResetSearch(true);
         setResetGeographic(true);
         setResetDifficulty(true);
         setResetLength(true);
@@ -78,6 +81,8 @@ const HikesFilterPanel = (props) => {
     // Filter Components
     const filterComponents = (
         <>
+            {/* Search By Name */}
+            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHikes} resetSearch={resetSearch} setResetSearch={setResetSearch} />
             {/* Geographic Area Filter */}
             <GeographicFilter filter={filter} setFilter={setFilter} hikes={hikes} setLoadingHikes={setLoadingHikes}
                 resetGeographic={resetGeographic} setResetGeographic={setResetGeographic}
