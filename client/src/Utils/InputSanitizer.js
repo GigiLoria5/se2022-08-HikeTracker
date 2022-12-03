@@ -11,7 +11,7 @@ const floatInputSanitizer = (inputToSanitize) => {
     let newLngSanitized2 = newLngSanitized1;
     if (splitDecimal.length > 1) {
         newLngSanitized2 = splitDecimal[0] + ".";
-        splitDecimal.forEach((n, i) => i !== 0 ? newLngSanitized2 += n : null);
+        splitDecimal.forEach((n, i) => {if(i !== 0) newLngSanitized2 += n});
     }
     // - can be only at the beginning
     let newLngSanitized3 = newLngSanitized2;

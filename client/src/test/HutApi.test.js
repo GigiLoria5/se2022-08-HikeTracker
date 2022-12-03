@@ -10,29 +10,81 @@ const APIURL = 'http://localhost:3001';
 
 describe('frontend test: hut creation', () => {
     
-    let h0 = new Hut(
-        undefined, "Hut 0", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
-        "Description of the hut", 12, undefined, "12.3456", "65.4321",
-        "3456789012", "hut0@hut.it", "www.hut1.com", "hiking_hut"
-    );
+    let h0 = new Hut({
+        id:undefined,
+        name:"Hut 0",
+        city:"Turin",
+        province:"TO",
+        country:"Italy",
+        address:"Corso Duca, 12",
+        altitude:"200",
+        description:"Description of the hut",
+        beds_number:12,
+        opening_period:undefined,
+        longitude:"12.3456",
+        latitude:"65.4321",
+        phone_number:"3456789012",
+        email:"hut0@hut.it",
+        website:"www.hut1.com",
+        type:"hiking_hut"
+    });
 
-    let h1 = new Hut(
-        undefined, "Hut 1", "Aosta", "AO", "Italy", "Via dei matti, 0", "42",
-        "Era una casa molto carina", 0, undefined, "65.4321", "12.3456", 
-        "", "", "", "unmanaged_hut"
-    );
+    let h1 = new Hut({
+        id:undefined,
+        name:"Hut 1",
+        city:"Aosta",
+        province:"AO",
+        country:"Italy",
+        address:"Via dei matti, 0",
+        altitude:"42",
+        description:"Era una casa molto carina",
+        beds_number:0,
+        opening_period:undefined,
+        longitude:"65.4321",
+        latitude:"12.3456",
+        phone_number:"",
+        email:"",
+        website:"",
+        type:"unmanaged_hut"
+    });
 
-    let h2 = new Hut(
-        undefined, "Hut 2", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
-        "Description of the hut", 12, undefined, "12.3432", "65.4321",
-        "3456789012", "hut2@hut.it", "www.hut1.com", ""
-    );
+    let h2 = new Hut({
+        id:undefined,
+        name:"Hut 2",
+        city:"Turin",
+        province:"TO",
+        country:"Italy",
+        address:"Corso Duca, 12",
+        altitude:"200",
+        description:"Description of the hut",
+        beds_number:12,
+        opening_period:undefined,
+        longitude:"12.3456",
+        latitude:"65.4321",
+        phone_number:"3456789012",
+        email:"hut2@hut.it",
+        website:"www.hut1.com",
+        type:""
+    });
 
-    let h3 = new Hut(
-        undefined, "Hut 3", "Turin", "TO", "Italy", "Corso Duca, 12", "200",
-        "Description of the hut", 12, undefined, 12.3456, 65.4321,
-        "3456789012", "hut3@hut.it", "www.hut1.com", "hiking_hut"
-    );
+    let h3 = new Hut({
+        id:undefined,
+        name:"Hut 3",
+        city:"Turin",
+        province:"TO",
+        country:"Italy",
+        address:"Corso Duca, 12",
+        altitude:"200",
+        description:"Description of the hut",
+        beds_number:12,
+        opening_period:undefined,
+        longitude:12.3456,
+        latitude:65.4321,
+        phone_number:"3456789012",
+        email:"hut2@hut.it",
+        website:"www.hut1.com",
+        type:"hiking_hut"
+    });
 
     it('setup', async () => {
         const user = await API.logIn({username:"g.desantis@localguide.it", password:"password"});

@@ -2,7 +2,6 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
-//import { useNavigate } from 'react-router-dom';
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
 import AddHutPage1 from './AddHutPage1';
@@ -27,25 +26,11 @@ export default function AddHut(props) {
     const [stepOneDone, setStepOneDone] = useState(false);
     const [stepTwoDone, setStepTwoDone] = useState(false);
 
-    //const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
-        // eslint-disable-next-line
     }, [])
 
-    /*
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-    */
     const theme = createTheme({
         palette: {
             primary: {
@@ -71,23 +56,24 @@ export default function AddHut(props) {
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
-        const hut = new Hut(
-            undefined, //id - assigned by backend
-            hutName,
-            city,
-            province,
-            country,
-            address,
-            altitude,
-            description,
-            bedsNumber,
-            undefined, //opening period - non static information
-            longitude.toString(),
-            latitude.toString(),
-            phoneNumber,
-            email,
-            website,
-            type
+        const hut = new Hut({
+            id:undefined, //id - assigned by backend
+            name:hutName,
+            city:city,
+            province:province,
+            country:country,
+            address:address,
+            altitude:altitude,
+            description:description,
+            beds_number:bedsNumber,
+            opening_period:undefined, //opening period - non static information
+            longitude:longitude.toString(),
+            latitude:latitude.toString(),
+            phone_number:phoneNumber,
+            email:email,
+            website:website,
+            type:type
+        }
         );
 
         if (!validateHut(hut)) {
@@ -96,13 +82,12 @@ export default function AddHut(props) {
         }
 
         const response = await API.addHut(hut).catch(e => {
-            var obj = JSON.parse(e);
+            const obj = JSON.parse(e);
             props.setMessage({ msg: `${obj.error}!`, type: 'error' });
         })
 
         if (response === true) {
             props.setMessage({ msg: `Hut correctly created`});
-            //navigate("/local-guide-page");
             setStepTwoDone(true);
         }
     }

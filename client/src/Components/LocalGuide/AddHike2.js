@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
-//import Grid from "@mui/material/Grid";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import InputAdornment from '@mui/material/InputAdornment';
-import { useLocation } from 'react-router-dom'
 import API from '../../API';
 import { Hike } from "../../Utils/Hike"
 import Stack from '@mui/material/Stack';
@@ -18,7 +16,6 @@ import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../
 import SmootherTextField from '../SmootherTextField'
 import { difficultyFromState } from '../../Utils/DifficultyMapping';
 import Alert from '@mui/material/Alert';
-import { useNavigate } from "react-router-dom";
 import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
@@ -228,21 +225,22 @@ function AddHike2() {
             setMessage("Hike description missing");
             return;
         }
-        const hike = new Hike(
-            title,
-            peak_altitude,
-            city,
-            province,
-            country,
-            description,
-            ascent,
-            length,
-            computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
-            difficultyFromState(difficulty),
-            start_point,
-            end_point,
-            referencePoint,
-            selectedFile
+        const hike = new Hike({
+            title:title,
+            peak_altitude:peak_altitude,
+            city:city,
+            province:province,
+            country:country,
+            description:description,
+            ascent:ascent,
+            track_length:length,
+            expected_time:computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
+            difficulty:difficultyFromState(difficulty),
+            start_point:start_point,
+            end_point:end_point,
+            reference_points:referencePoint,
+            gpx:selectedFile
+        }
         )
         API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
     };

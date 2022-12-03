@@ -28,18 +28,17 @@ class Parking{
  function validateParking(parking){
     
     //city: not empty string
-    if(parking.city === "") return false;
+    if(parking.city == "") return false;
     //province: not empty string
-    if(parking.province === "") return false;
+    if(parking.province == "") return false;
     //country: not empty string
-    if(parking.country === "") return false;
+    if(parking.country == "") return false;
     //longitude: not empty string
-    if(parking.longitude === "") return false;
+    if(parking.longitude == "") return false;
     //latitude: not empty string
-    if(parking.latitude === "") return false;
+    if(parking.latitude == "") return false;
     //address: not empty string
-    if(parking.address === "") return false;
-    return true;
+    return(!parking.address == "")
 }
 
 module.exports = { Parking, validateParking };

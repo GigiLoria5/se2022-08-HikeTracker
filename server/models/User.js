@@ -12,17 +12,10 @@
  * @param {string} token 
  */
 class User{
-    constructor(id, name, surname, email, password, salt, email_verified, phone_number, role, token){
-        this.id=id;
-        this.name=name;
-        this.surname=surname;
-        this.email=email;
-        this.password=password;
-        this.salt=salt;
-        this.email_verified=email_verified;
-        this.phone_number=phone_number;
-        this.role=role;
-        this.token=token;
+    constructor(user){
+        Object.keys(user).forEach(key =>
+            this[key] = user[key]
+        )
     }
 }
 
