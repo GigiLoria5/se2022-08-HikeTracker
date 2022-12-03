@@ -121,6 +121,7 @@ function AddHike2() {
     const navigate = useNavigate();
 
     const addRefPoints = (lat, long) => {
+        if(refPoints.filter(p => (p.latitude == lat && p.longitude == long)).length > 0) return;
         if (!addingRefPoint && !editingRefPoint) {
             setAddingRefPoint(true);
             setRefPoints([{ latitude: lat, longitude: long, description: "test" }, ...refPoints])
@@ -184,14 +185,6 @@ function AddHike2() {
 
 
     const editRefPoint = (lat, lon) => {
-        if (!refPointValue) {
-            setRefPointMessage("Missing required fields");
-            return;
-        }
-        if (!refPointDescription) {
-            setRefPointMessage("Missing description");
-            return;
-        }
         if (!addingRefPoint && !editingRefPoint) {
             const point = referencePoint.filter(a => (a.latitude === lat && a.longitude === lon))[0];
             const points = referencePoint.filter(a => (a.latitude !== lat && a.longitude !== lon));
@@ -420,7 +413,7 @@ function AddHike2() {
                                     addReferencePoint={addReferencePoint}
                                     deleteReferencePoint={deleteReferencePoint}
                                 />
-                                <RefPointTable points={referencePoint} deletePoint={deleteRefPointCoord} canDelete={!addingRefPoint && !editingRefPoint} />
+                                <RefPointTable points={referencePoint} deletePoint={deleteRefPointCoord} editPoint={editRefPoint} canDelete={!addingRefPoint && !editingRefPoint} />
                             </Grid>
 
                             {/****************************************************DESCRIPTION********************************************************/}
