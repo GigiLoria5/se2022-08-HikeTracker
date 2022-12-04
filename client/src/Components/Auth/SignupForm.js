@@ -42,6 +42,12 @@ export default function SignUp(props) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const [formValues, setFormValues] = useState({
+        password: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
     const navigate = useNavigate();
 
@@ -50,30 +56,46 @@ export default function SignUp(props) {
         // eslint-disable-next-line
     }, [])
 
+    const reset = async () => {
+        let newFormValues = { ...formValues }
+        newFormValues["password"].error = false;
+        newFormValues["password"].errorMessage = "";
+        setFormValues(newFormValues);
+    }
+
+    const printErrors = async () => {
+        let newFormValues = { ...formValues }
+        newFormValues["password"].error = true;
+        newFormValues["password"].errorMessage = "The password confirmation does not match";
+        setFormValues(newFormValues);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
-        } else {
-            if (confirmPassword !== password) {
-                event.stopPropagation();
-                props.setMessage({ msg: `The password confirmation does not match`, type: 'error' });
-                return;
-            }
-
-            let role = '';
-            switch (type) {
-                case 1: role = "hiker"; break;
-                case 2: role = "hut_worker"; break;
-                case 3: role = "local_guide"; break;
-                case 4: role = "emergency_operator"; break;
-                default: break;
-            }
-            const credentials = { role, name, surname, phone_number, email, password };         // define object having username and password as elements 
-            props.signUp(credentials);                           // call login function in App.js
+            return;
         }
+        if (confirmPassword !== password) {
+            event.stopPropagation();
+            printErrors();
+            return;
+        }
+
+        let role = '';
+
+        switch (type) {
+            case 1: role = "hiker"; break;
+            case 2: role = "hut_worker"; break;
+            case 3: role = "local_guide"; break;
+            case 4: role = "emergency_operator"; break;
+            default: break;
+        }
+        const credentials = { role, name, surname, phone_number, email, password };         // define object having username and password as elements 
+        props.signUp(credentials);                           // call login function in App.js
+
     };
 
     return (
@@ -156,7 +178,7 @@ export default function SignUp(props) {
                                     id="password"
                                     autoComplete="new-password"
                                     inputProps={{ minLength: 8 }}
-                                    onChange={ev => setPassword(ev.target.value)}
+                                    onChange={ev => { setPassword(ev.target.value); reset(); }}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -181,7 +203,9 @@ export default function SignUp(props) {
                                     id="confirmpassword"
                                     autoComplete="new-password"
                                     inputProps={{ minLength: 8 }}
-                                    onChange={ev => setConfirmPassword(ev.target.value)}
+                                    error={formValues.password.error}
+                                    helperText={formValues.password.error && formValues.password.errorMessage}
+                                    onChange={ev => { setConfirmPassword(ev.target.value); reset(); }}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
                                             <InputAdornment position="end">
