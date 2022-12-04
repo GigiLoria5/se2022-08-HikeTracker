@@ -17,7 +17,7 @@ import { addParking } from '../../API/Parking'
 import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
-import { Address, validateAddress } from '../../Utils/Address';
+import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
 import { ResetErrors, PrintCheckErrors, PrintMissingErrors } from '../../Utils/PositionErrorMgmt';
 
 const zoomLevel = 15;
@@ -81,6 +81,27 @@ function AddParking() {
     const getLocation = async () => {
         const addr = await getAddressByCoordinates(position.lng, position.lat);   // Get address information starting from coordinates
         setLocation(new Address(addr));
+        autoFill(addr);
+    }
+
+    const autoFill = (loc) =>{
+
+        setCountry(loc.country);
+
+        if(loc.country === "Italy"){
+            setProvince(translateProvince(loc.county));
+        }else{
+            setProvince(loc.state);
+        }
+
+        setCity(getCity(loc));
+
+        if(loc.road!==undefined){
+            setAddress(loc.road);
+        }else{
+            setAddress("");
+        }
+
     }
 
     useEffect(() => {
@@ -226,6 +247,7 @@ function AddParking() {
                                             disablePortal
                                             id="combo-box-demo"
                                             options={countries}
+                                            value={country}
                                             sx={{ m: 1, width: '28ch', pt: { xs: 0, md: 1.1 } }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
@@ -240,6 +262,7 @@ function AddParking() {
                                             disabled={!(country)}
                                             disablePortal
                                             id="combo-box-demo2"
+                                            value={province}
                                             options={provinces}
                                             key={country}
                                             sx={{ m: 1, width: '28ch' }}
@@ -256,6 +279,7 @@ function AddParking() {
                                             disabled={!(country && province)}
                                             disablePortal
                                             id="combo-box-demo3"
+                                            value={city}
                                             options={cities}
                                             key={[province, country]}
                                             sx={{ m: 1, width: '28ch' }}

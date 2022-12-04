@@ -74,19 +74,20 @@ function validateAddress(location, country, province, city, address) {
     return "true";
 }
 
+/* Reverse translate to cast values from GEOCODE to GPX */
 function translateProvince(province) {
     switch (province) {
-        case "Turin": return "Torino";
-        case "Milan": return "Milano";
-        case "Venice": return "Venezia";
-        case "Naples": return "Napoli";
-        case "Rome": return "Roma";
-        case "Florence": return "Firenze";
+        case "Torino": return "Turin";
+        case "Milano": return "Milan";
+        case "Venezia": return "Venice";
+        case "Napoli": return "Naples";
+        case "Roma": return "Rome";
+        case "Firenze": return "Florence";
         default: return province;
     }
 }
 
-/* Returns ture if the city selected is correct, false instead  */
+/* Returns true if the city selected is correct, false instead  */
 function validateCity(array, city) {
     let result = false;
     array.forEach(item => {
@@ -97,5 +98,22 @@ function validateCity(array, city) {
     return result;
 }
 
+/* Returns the city (it can be also town, village, municipality, hamlet ) */
+function getCity(location){
+    let array = [];
+    if(location.contry==="Italy"){
+        array = [location.city, location.town, location.village, location.hamlet];
+    }else{
+        array = [location.city, location.town, location.municipality, location.village];
+    }
+    let city= ""
+    array.forEach(item => {
+        if (item !== undefined) {
+            city=item;
+        }
+    });
+    return city;
+}
 
-module.exports = { Address, validateAddress };
+
+module.exports = { Address, validateAddress, translateProvince, getCity };
