@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../../API';
@@ -23,7 +23,14 @@ import DifficultySelector from './AddHike/DifficultySelector';
 import { timeToHHMM } from '../../Utils/TimeFormat';
 
 
-function AddHike2() {
+function AddHike2(props) {
+    const [message, setMessage] = useState("");
+    const setStepOneDone=props.setStepOneDone
+    const computedExpectedTime=props.expectedTime
+
+    const ascent=props.ascent
+    const length=props.length
+
     const [title, setTitle] = useState("");
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
@@ -32,9 +39,12 @@ function AddHike2() {
     const [refPoints, setRefPoints] = React.useState([]);
     const [difficulty, setDifficulty] = useState("");
     const [description, setDescription] = useState("");
+    const [expectedTime, setExpectedTime] = useState(0.0);
 
-    const location = useLocation();
-    const [message, setMessage] = useState("");
+    const selectedFile=props.selectedFile
+    const peak_altitude=props.peakAltitude
+    const setNewHike=props.setNewHike
+
     const [refPointMessage, setRefPointMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
@@ -46,13 +56,25 @@ function AddHike2() {
     const [refPointLon, setRefPointLon] = useState(0);
     const [addingRefPoint, setAddingRefPoint] = useState(false);
     const [editingRefPoint, setEditingRefPoint] = useState(false);
-    const [expectedTime, setExpectedTime] = useState(0);
     const [hh, setHH] = useState(0);
     const [mm, setMM] = useState(0);
 
     const [points, setPoints] = useState([]);
-    const { ascent, length, start_point, end_point, computedExpectedTime, selectedFile, peak_altitude } = location.state;
 
+    const startPointDescription=props.startPointDescription
+    const endPointDescription=props.endPointDescription
+
+    const startPointGPSlat=props.startPointGPSlat
+    const startPointGPSlon=props.startPointGPSlon
+
+    const endPointGPSlat=props.endPointGPSlat
+    const endPointGPSlon=props.endPointGPSlon
+
+    const startPointType=props.startPointType
+    const endPointType=props.endPointType
+
+    const startPointValue=props.startPointValue
+    const endPointValue=props.endPointValue
 
     const Description = () => {
         const [localDescription, setLocalDescription] = React.useState(description);
@@ -120,6 +142,21 @@ function AddHike2() {
 
     const navigate = useNavigate();
 
+    const start_point = {
+        latitude: startPointGPSlat,
+        longitude: startPointGPSlon,
+        description: startPointDescription,
+        type: startPointType,
+        value: startPointValue
+    };
+    const end_point = {
+        latitude: endPointGPSlat,
+        longitude: endPointGPSlon,
+        description: endPointDescription,
+        type: endPointType,
+        value: endPointValue
+    };
+
     const addRefPoints = (lat, long) => {
         if(refPoints.filter(p => (p.latitude == lat && p.longitude == long)).length > 0) return;
         if (!addingRefPoint && !editingRefPoint) {
@@ -183,7 +220,6 @@ function AddHike2() {
         setRefPointMessage("");
     }
 
-
     const editRefPoint = (lat, lon) => {
         if (!addingRefPoint && !editingRefPoint) {
             const point = referencePoint.filter(a => (a.latitude === lat && a.longitude === lon))[0];
@@ -238,18 +274,15 @@ function AddHike2() {
         API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
     };
 
-
     const thm = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     };
 
-
     return (
         <div>
             <Grid container >
-
                 <ThemeProvider theme={theme} >
                     <Grid xs={12}>
                         <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -429,17 +462,14 @@ function AddHike2() {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-add-hikes1"} state={{ newHike: false, prevFile: selectedFile, prevStartPoint: start_point, prevEndPoint: end_point }} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => {setStepOneDone(false); setNewHike(false)}} variant="contained" color='secondary'>GO BACK</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 
                         </Paper>
                     </Grid>
                 </ThemeProvider>
-
             </Grid>
-
-
         </div>
     );
 }
