@@ -106,6 +106,7 @@ export default function AddHutPage1(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
+        console.log(cities);
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
@@ -190,6 +191,7 @@ export default function AddHutPage1(props) {
                                 required
                                 disablePortal
                                 id="combo-box-demo"
+                                value={props.country!==""? props.country: ''}
                                 options={countries}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
@@ -205,6 +207,7 @@ export default function AddHutPage1(props) {
                                 disablePortal
                                 id="combo-box-demo2"
                                 options={provinces}
+                                value={props.province!==""? props.province: ''}
                                 key={props.country}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
@@ -220,6 +223,7 @@ export default function AddHutPage1(props) {
                                 disablePortal
                                 id="combo-box-demo3"
                                 options={cities}
+                                value={props.city!==""? props.city: ''}
                                 key={[props.province, props.country]}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {

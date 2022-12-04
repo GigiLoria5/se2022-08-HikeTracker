@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
-import {Address} from '../../Utils/Address';
+import {Address, translateProvince, getCity} from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -84,7 +84,27 @@ export default function AddHut(props) {
     const getLocation = async () =>{
         const addr= await API.getAddressByCoordinates(longitude,latitude);   // Get address information starting from coordinates
         setLocation(new Address(addr));
-        console.log(addr);
+        autoFill(addr);
+    }
+
+    const autoFill = (loc) =>{
+
+        setCountry(loc.country);
+
+        if(loc.country === "Italy"){
+            setProvince(translateProvince(loc.county));
+        }else{
+            setProvince(loc.state);
+        }
+
+        setCity(getCity(loc));
+
+        if(loc.road!==undefined){
+            setAddress(loc.road);
+        }else{
+            setAddress("");
+        }
+
     }
 
     const handleSubmission = async (ev) => {
