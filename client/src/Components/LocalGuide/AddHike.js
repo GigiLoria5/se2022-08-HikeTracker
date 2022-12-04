@@ -281,7 +281,7 @@ function AddHike() {
                             {message && <Alert sx={{ mb: 1 }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
 
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary' disabled={!isSelected}>CONTINUE</Button>
                             </Stack>
                         </Paper>
