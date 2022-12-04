@@ -125,35 +125,46 @@ function AddParking() {
         setFormValues(newFormValues);
     }
 
-    const printErrors = (res,msg) => {
+    const printErrors = (res) => {
         const formFields = Object.keys(formValues);
         let newFormValues = { ...formValues }
 
-        if(res===""){
-            const array = [country,province,city,address];
-            let index = 0;
             formFields.forEach(key => {
-                newFormValues[key].error = (array[index]===""||array[index]===null)? true : false;
-                newFormValues[key].errorMessage = (array[index]===""||array[index]===null)? key.charAt(0).toUpperCase() + key.slice(1) + " "+msg : "";
-            index++;
+                if(key===res){
+                    newFormValues[key].error = true;
+                    newFormValues[key].errorMessage = key.charAt(0).toUpperCase() + key.slice(1) + " doesn't match with the location";
+                }else{
+                    newFormValues[key].error = false;
+                    newFormValues[key].errorMessage = "";
+                }
         });
-
-        }else{
-            formFields.forEach(key => {
-                newFormValues[key].error = key===res? true : false;
-                newFormValues[key].errorMessage = key===res? key.charAt(0).toUpperCase() + key.slice(1) + " "+msg : "";
-        });
-        }
-
-
         setFormValues(newFormValues);
+    }
+
+    const printMissing = () =>{
+        const formFields = Object.keys(formValues);
+        let newFormValues = { ...formValues }
+        const array = [country,province,city,address];
+        let index = 0;
+        formFields.forEach(key => {
+            if(array[index]===""||array[index]===null){
+                newFormValues[key].error = true;
+                newFormValues[key].errorMessage = key.charAt(0).toUpperCase() + key.slice(1) + " missing";
+            }else{
+                newFormValues[key].error = false;
+                newFormValues[key].errorMessage = "";
+            }
+        index++;
+    });
+    setFormValues(newFormValues);
+
     }
 
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
         if (!country || !province || !city || !address) {
-            printErrors("","missing");
+            printMissing();
             //setMessage("Parking lot geographical info missing");
             return;
         } else {
@@ -163,7 +174,7 @@ function AddParking() {
                 await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
                     .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
             } else {
-                printErrors(res,"doesn't match with the location");
+                printErrors(res);
                 ev.stopPropagation();
             }
 
