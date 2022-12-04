@@ -97,15 +97,18 @@ export default function AddHutPage1(props) {
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
-        } else {
-            const res = validateAddress(props.location, props.country, props.province, props.city, props.address);
+            return;
+        } 
+
+        const res = validateAddress(props.location, props.country, props.province, props.city, props.address);
+
             if( res === "true"){
                 props.setStepOneDone(true)
             }else{
                 console.log(res);
                 event.stopPropagation();
             }
-        }
+        
     };
 
     return (

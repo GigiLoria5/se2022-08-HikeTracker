@@ -66,6 +66,7 @@ export default function AddHut(props) {
     const getLocation = async () =>{
         const addr= await API.getAddressByCoordinates(longitude,latitude);   // Get address information starting from coordinates
         setLocation(new Address(addr));
+        console.log(addr);
     }
 
     const handleSubmission = async (ev) => {

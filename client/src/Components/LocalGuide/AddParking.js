@@ -18,7 +18,7 @@ import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 import { Address, validateAddress } from '../../Utils/Address';
-
+import { ResetErrors, PrintCheckErrors, PrintMissingErrors } from '../../Utils/PositionErrorMgmt';
 
 const zoomLevel = 15;
 
@@ -81,7 +81,6 @@ function AddParking() {
     const getLocation = async () => {
         const addr = await getAddressByCoordinates(position.lng, position.lat);   // Get address information starting from coordinates
         setLocation(new Address(addr));
-        console.log(addr);
     }
 
     useEffect(() => {
@@ -115,50 +114,20 @@ function AddParking() {
 
     const navigate = useNavigate();
 
-    const reset = () => {
-        const formFields = Object.keys(formValues);
-        let newFormValues = { ...formValues }
-
-        formFields.forEach(key => {
-            newFormValues[key].error = false;
-            newFormValues[key].errorMessage = "";
-        });
-        setFormValues(newFormValues);
+    const reset = async () => {
+        const formValueClean =  ResetErrors(formValues);
+        setFormValues(formValueClean);
     }
 
-    const printErrors = (res) => {
-        const formFields = Object.keys(formValues);
-        let newFormValues = { ...formValues }
-
-            formFields.forEach(key => {
-                if(key===res){
-                    newFormValues[key].error = true;
-                    newFormValues[key].errorMessage = key.charAt(0).toUpperCase() + key.slice(1) + " doesn't match with the location";
-                }else{
-                    newFormValues[key].error = false;
-                    newFormValues[key].errorMessage = "";
-                }
-        });
-        setFormValues(newFormValues);
+    const printErrors = async (res) => {
+        const formValueWithErrors =  PrintCheckErrors(formValues,res);
+        setFormValues(formValueWithErrors);
     }
 
-    const printMissing = () =>{
-        const formFields = Object.keys(formValues);
-        let newFormValues = { ...formValues }
+    const printMissing = async () =>{
         const array = [country,province,city,address];
-        let index = 0;
-        formFields.forEach(key => {
-            if(array[index]===""||array[index]===null){
-                newFormValues[key].error = true;
-                newFormValues[key].errorMessage = key.charAt(0).toUpperCase() + key.slice(1) + " missing";
-            }else{
-                newFormValues[key].error = false;
-                newFormValues[key].errorMessage = "";
-            }
-        index++;
-    });
-    setFormValues(newFormValues);
-
+        const formValueWithMissing =  PrintMissingErrors(formValues,array);
+        setFormValues(formValueWithMissing);
     }
 
 
