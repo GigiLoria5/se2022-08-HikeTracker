@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, Link as Link2 } from "react-router-dom";
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
@@ -24,7 +24,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { Link as Link2} from "react-router-dom";
 
 const drawerWidth = 240;
 const navItemsFixed = { 'Hikes': '/hikes' };
