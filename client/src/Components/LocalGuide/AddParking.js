@@ -71,7 +71,8 @@ function AddParking() {
     }, []);
 
     useEffect(() => {
-        if (position.lat !== "" && position.lng !== "") {
+        // eslint-disable-next-line
+        if (position.lat != "" && position.lng != "") {
             getLocation();
         }
         // eslint-disable-next-line
@@ -165,19 +166,17 @@ function AddParking() {
         ev.preventDefault();
         if (!country || !province || !city || !address) {
             printMissing();
-            //setMessage("Parking lot geographical info missing");
             return;
-        } else {
-            const res = validateAddress(location, country, province, city, address); // res contains: true (no errors), country, province, city or address
+        }
+        
+        const res = validateAddress(location, country, province, city, address); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
-            if (res === true) {
+        if (res === "true") {
                 await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
                     .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
-            } else {
+        } else {
                 printErrors(res);
                 ev.stopPropagation();
-            }
-
         }
 
 

@@ -13,8 +13,8 @@
  * @param {string} suburb
  * @param {int} house_number
  */
-class Address{
-    constructor(address){
+class Address {
+    constructor(address) {
         Object.keys(address).forEach(key =>
             this[key] = address[key]
         )
@@ -25,76 +25,76 @@ class Address{
  * Validates an address 
  * @param {Address} location 
  */
- function validateAddress(location, country, province, city, address){
-    if(location.country!==country){
+function validateAddress(location, country, province, city, address) {
+    /* VALIDATE COUNTRY  */
+    if (location.country !== country) {
         return "country";
     }
 
-    if(country=== "Italy"){
-            var provinceita;
-            switch(province){
-                case "Turin": provinceita="Torino"; break;
-                case "Milan": provinceita="Milano"; break;
-                case "Venice": provinceita="Venezia"; break;
-                case "Naples": provinceita="Napoli"; break;
-                case "Rome": provinceita="Roma"; break;
-                case "Florence": provinceita="Firenze"; break;
-                default: provinceita=province;
-            }
+    /* Italy provinces and Cities are managed differently  */
 
-            if(location.county!==provinceita){ 
-                return "province"; 
-            }
-            if(location.city!==undefined){
-                if(location.city!==city){return "city"}
-            }else{
-                if(location.town!==undefined){
-                    if(location.town!==city){return "city"}
-                }else{
-                    if(location.village!==undefined){
-                        if(location.village!==city){return "city"}
-                    }else{
-                        if(location.hamlet!==undefined){
-                            if(location.hamlet!==city){return "city"}
-                        }
-                    }
-                }
-            }
-        }else{
+    if (country === "Italy") {
 
-        // Province corresponds to state
+        /* VALIDATE PROVINCE  */
+        const provinceita = translateProvince(province);
+
+        if (location.county !== provinceita) {
+            return "province";
+        }
+
+        /* VALIDATE CITY  */
+        const array = [location.city, location.town, location.village, location.hamlet];
+        const result = validateCity(array, city);
+        if (result) return "city";
+
+
+    } else {
+
+        /* VALIDATE PROVINCE ("states" for other countries)  */
         const provinceclear = province.replace('-', ' ');
         const stateclear = location.state.replace('-', ' ');
-            if(stateclear!==provinceclear){ 
-                return "province"; 
-            }
-            if(location.city!==undefined){
-                if(location.city!==city){return "city"}
-            }else{
-                if(location.town!==undefined){
-                    if(location.town!==city){return "city"}
-                }else{
-                    if(location.municipality!==undefined){
-                        if(location.municipality!==city){return "city"}
-                    }else{
-                        if(location.village!==undefined){
-                            if(location.village!==city){return "city"}
-                        }
-                    }
-                }
-            }
+        if (stateclear !== provinceclear) {
+            return "province";
+        }
+
+        /* VALIDATE CITY  */
+        const array = [location.city, location.town, location.municipality, location.village];
+        const result = validateCity(array, city);
+        if (result) return "city";
 
     }
 
-    if(location.road!==undefined){
-        const addressNoDigitsNoSpace = address.replace(/[0-9]/g, '').toLowerCase().trim().replace(/\s+/g, ''); // Trim string, remove spaces and digits and put lowercase
+    /* VALIDATE ADDRESS  */
+    if (location.road !== undefined) {
+        const addressNoDigitsNoSpace = address.replace(/\d+/g, '').toLowerCase().trim().replace(/\s+/g, ''); // Trim string, remove spaces and digits and put lowercase
         const locationNoDigitsNoSpace = (location.road).toLowerCase().replace(/\s+/g, ''); // Remove spaces and put string in lowercase
 
-        if(locationNoDigitsNoSpace!==addressNoDigitsNoSpace){return "address"}
+        if (locationNoDigitsNoSpace !== addressNoDigitsNoSpace) { return "address" }
     }
-    return true;
- }
+    return "true";
+}
 
+function translateProvince(province) {
+    switch (province) {
+        case "Turin": return "Torino";
+        case "Milan": return "Milano";
+        case "Venice": return "Venezia";
+        case "Naples": return "Napoli";
+        case "Rome": return "Roma";
+        case "Florence": return "Firenze";
+        default: return province;
+    }
+}
+
+function validateCity(array, city) {
+    let result = false;
+    array.forEach(item => {
+        if (item !== undefined && item !== city) {
+            result = true;
+        }
+    });
+    return result;
+}
 
 
 module.exports = { Address, validateAddress };
