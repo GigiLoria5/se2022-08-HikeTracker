@@ -191,7 +191,7 @@ export default function AddHutPage1(props) {
                                 required
                                 disablePortal
                                 id="combo-box-demo"
-                                value={props.country!==""? props.country: ''}
+                                value={props.country!==""? props.country: null}
                                 options={countries}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
@@ -207,7 +207,7 @@ export default function AddHutPage1(props) {
                                 disablePortal
                                 id="combo-box-demo2"
                                 options={provinces}
-                                value={props.province!==""? props.province: ''}
+                                value={props.province!==""? props.province: null}
                                 key={props.country}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
@@ -223,7 +223,7 @@ export default function AddHutPage1(props) {
                                 disablePortal
                                 id="combo-box-demo3"
                                 options={cities}
-                                value={props.city!==""? props.city: ''}
+                                value={props.city!==""? props.city: null}
                                 key={[props.province, props.country]}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {

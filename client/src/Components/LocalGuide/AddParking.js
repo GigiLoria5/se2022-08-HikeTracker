@@ -247,7 +247,7 @@ function AddParking() {
                                             disablePortal
                                             id="combo-box-demo"
                                             options={countries}
-                                            value={country}
+                                            value={country!==""? country : null}
                                             sx={{ m: 1, width: '28ch', pt: { xs: 0, md: 1.1 } }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
@@ -262,7 +262,7 @@ function AddParking() {
                                             disabled={!(country)}
                                             disablePortal
                                             id="combo-box-demo2"
-                                            value={province}
+                                            value={province!==""? province : null}
                                             options={provinces}
                                             key={country}
                                             sx={{ m: 1, width: '28ch' }}
@@ -279,7 +279,7 @@ function AddParking() {
                                             disabled={!(country && province)}
                                             disablePortal
                                             id="combo-box-demo3"
-                                            value={city}
+                                            value={city!==""? city: null}
                                             options={cities}
                                             key={[province, country]}
                                             sx={{ m: 1, width: '28ch' }}
