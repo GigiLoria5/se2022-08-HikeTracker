@@ -133,6 +133,7 @@ function AddParking() {
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
+        
         if (!country || !province || !city || !address) {
             printMissing();
             return;

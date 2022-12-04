@@ -27,6 +27,24 @@ export default function AddHut(props) {
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
     const [stepTwoDone, setStepTwoDone] = useState(false);
+    const [formValues, setFormValues] = useState({
+        country: {
+            error: false,
+            errorMessage: ""
+        },
+        province: {
+            error: false,
+            errorMessage: ""
+        },
+        city: {
+            error: false,
+            errorMessage: ""
+        },
+        address: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
 
     useEffect(() => {
@@ -157,7 +175,8 @@ export default function AddHut(props) {
                                 setStepOneDone={setStepOneDone}
                                 setMessage={props.setMessage}
                                 reset={handleReset} 
-                                location={location}                              
+                                location={location}
+                                formValues={formValues} setFormValues={setFormValues}                           
                             />
                             :
                             <AddHutPage2

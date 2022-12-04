@@ -10,11 +10,12 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Autocomplete from '@mui/material/Autocomplete';
 import {validateAddress} from '../../Utils/Address';
-
 import MapLocator from '../Map/MapLocator';
 import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData'
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 import { Link } from "react-router-dom";
+import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
+
 
 /**
  * 
@@ -28,7 +29,8 @@ import { Link } from "react-router-dom";
  * setStepOneDone
  * setMessage
  * reset
- * 
+ * location
+ * formValues, setFormValues
  */
 export default function AddHutPage1(props) {
 
@@ -91,21 +93,30 @@ export default function AddHutPage1(props) {
         alignItems: 'center',
     };
 
+    const reset = async () => {
+        const formValueClean =  ResetErrors(props.formValues);
+        props.setFormValues(formValueClean);
+    }
+
+    const printErrors = async (res) => {
+        const formValueWithErrors =  PrintCheckErrors(props.formValues,res);
+        props.setFormValues(formValueWithErrors);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
-            return;
-        } 
+        }
 
         const res = validateAddress(props.location, props.country, props.province, props.city, props.address);
 
             if( res === "true"){
                 props.setStepOneDone(true)
             }else{
-                console.log(res);
+                printErrors(res);
                 event.stopPropagation();
             }
         
@@ -183,9 +194,10 @@ export default function AddHutPage1(props) {
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
                                     e.preventDefault();
-                                    props.setCountry(value); props.setProvince(''); props.setCity('')
+                                    props.setCountry(value); props.setProvince(''); props.setCity(''); props.setAddress('');
+                                    reset();
                                 }}
-                                renderInput={(params) => <TextField required {...params} label="Country" />}
+                                renderInput={(params) => <TextField required {...params} label="Country" error={props.formValues.country.error} helperText={props.formValues.country.error && props.formValues.country.errorMessage} />}
                             />
                             <Autocomplete
                                 required
@@ -197,9 +209,10 @@ export default function AddHutPage1(props) {
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
                                     e.preventDefault();
-                                    props.setProvince(value); props.setCity('')
+                                    props.setProvince(value); props.setCity(''); props.setAddress('');
+                                    reset();
                                 }}
-                                renderInput={(params) => <TextField required {...params} label="Province" />}
+                                renderInput={(params) => <TextField required {...params} label="Province" error={props.formValues.province.error} helperText={props.formValues.province.error && props.formValues.province.errorMessage} />}
                             />
                             <Autocomplete
                                 required
@@ -211,12 +224,13 @@ export default function AddHutPage1(props) {
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
                                     e.preventDefault();
-                                    props.setCity(value);
+                                    props.setCity(value); props.setAddress('');
+                                    reset();
                                 }}
-                                renderInput={(params) => <TextField required {...params} label="City" />}
+                                renderInput={(params) => <TextField required {...params} label="City" error={props.formValues.city.error} helperText={props.formValues.city.error && props.formValues.city.errorMessage} />}
                             />
                             {/*ADDRESS FIELD*/}
-                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
+                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} error={props.formValues.address.error} helperText={props.formValues.address.error && props.formValues.address.errorMessage} />
 
                         </Grid>
 
