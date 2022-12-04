@@ -45,7 +45,7 @@ function validateAddress(location, country, province, city, address) {
         /* VALIDATE CITY  */
         const array = [location.city, location.town, location.village, location.hamlet];
         const result = validateCity(array, city);
-        if (result) return "city";
+        if (result===false) return "city";
 
 
     } else {
@@ -60,7 +60,7 @@ function validateAddress(location, country, province, city, address) {
         /* VALIDATE CITY  */
         const array = [location.city, location.town, location.municipality, location.village];
         const result = validateCity(array, city);
-        if (result) return "city";
+        if (result===false) return "city";
 
     }
 
@@ -86,10 +86,11 @@ function translateProvince(province) {
     }
 }
 
+/* Returns ture if the city selected is correct, false instead  */
 function validateCity(array, city) {
     let result = false;
     array.forEach(item => {
-        if (item !== undefined && item !== city) {
+        if (item !== undefined && item === city) {
             result = true;
         }
     });

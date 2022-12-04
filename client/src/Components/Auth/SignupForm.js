@@ -66,7 +66,7 @@ export default function SignUp(props) {
     const printErrors = async () => {
         let newFormValues = { ...formValues }
         newFormValues["password"].error = true;
-        newFormValues["password"].errorMessage = "The password confirmation does not match";
+        newFormValues["password"].errorMessage = "Confirmation does not match";
         setFormValues(newFormValues);
     }
 
