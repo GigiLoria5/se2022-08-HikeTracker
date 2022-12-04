@@ -36,7 +36,7 @@ function validateAddress(location, country, province, city, address) {
     if (country === "Italy") {
 
         /* VALIDATE PROVINCE  */
-        const provinceita = translateProvince(province);
+        const provinceita = translateProvinceReverse(province);
 
         if (location.county !== provinceita) {
             return "province";
@@ -74,7 +74,7 @@ function validateAddress(location, country, province, city, address) {
     return "true";
 }
 
-/* Reverse translate to cast values from GEOCODE to GPX */
+/* Translates from Italian -> English, where possible */
 function translateProvince(province) {
     switch (province) {
         case "Torino": return "Turin";
@@ -83,6 +83,19 @@ function translateProvince(province) {
         case "Napoli": return "Naples";
         case "Roma": return "Rome";
         case "Firenze": return "Florence";
+        default: return province;
+    }
+}
+
+/* Translates from English -> Italian, where possible */
+function translateProvinceReverse(province) {
+    switch (province) {
+        case "Turin": return "Torino";
+        case "Milan": return "Milano";
+        case "Venice": return "Venezia";
+        case "Naples": return "Napoli";
+        case "Rome": return "Roma";
+        case "Florence": return "Firenze";
         default: return province;
     }
 }

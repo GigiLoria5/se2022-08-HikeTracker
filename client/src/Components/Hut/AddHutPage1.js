@@ -106,7 +106,6 @@ export default function AddHutPage1(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
-        console.log(cities);
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
