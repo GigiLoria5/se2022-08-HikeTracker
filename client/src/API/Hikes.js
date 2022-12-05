@@ -45,7 +45,7 @@ const createHike = async (hike) => {
 // get
 // Return the countries
 async function getCountries() {
-    const response = await fetch(new URL('/api/countries', APIURL), { credentials: 'include' });
+    const response = await fetch(new URL('/api/hikes/countries', APIURL), { credentials: 'include' });
     const countriesJson = await response.json();
     if (response.ok) {
         return countriesJson.map((c) => ({ country: c.country }));
@@ -57,7 +57,7 @@ async function getCountries() {
 // get
 // Return provinces by a country
 async function getProvincesByCountry(country) {
-    const response = await fetch(new URL('/api/provinces/' + country, APIURL), { credentials: 'include' });
+    const response = await fetch(new URL('/api/hikes/provinces/' + country, APIURL), { credentials: 'include' });
     const provincesJson = await response.json();
     if (response.ok) {
         return provincesJson.map((p) => ({ province: p.province }));
@@ -69,7 +69,7 @@ async function getProvincesByCountry(country) {
 // get
 // Return cities by a province
 async function getCitiesByProvince(province) {
-    const response = await fetch(new URL('/api/cities/' + province, APIURL), { credentials: 'include' });
+    const response = await fetch(new URL('/api/hikes/cities/' + province, APIURL), { credentials: 'include' });
 
     const citiesJson = await response.json();
     if (response.ok) {

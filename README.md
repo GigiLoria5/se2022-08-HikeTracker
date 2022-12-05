@@ -271,7 +271,7 @@ Manual test reports in client/gui_test
   }
   ```
 
-- GET `/api/countries`
+- GET `/api/hikes/countries`
 
   - Description: Return an array containing all the countries where hikes are available
   - Request body: _None_
@@ -289,7 +289,7 @@ Manual test reports in client/gui_test
   ]
   ```
 
-- GET `/api/provinces/:country`
+- GET `/api/hikes/provinces/:country`
 
   - Description: Return an array containing all the provinces of a specific country where hikes are available
   - Request body: _None_
@@ -307,7 +307,7 @@ Manual test reports in client/gui_test
   ]
   ```
 
-- GET `/api/cities/:province`
+- GET `/api/hikes/cities/:province`
 
   - Description: Return an array containing all the cities of a specific province where hikes are available
   - Request body: _None_
@@ -533,6 +533,60 @@ Manual test reports in client/gui_test
   ```  
   
 ### Huts
+
+- GET `/api/huts/countries`
+
+  - Description: Return an array containing all the countries where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the countries, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "country": "Italy"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/huts/provinces/:country`
+
+  - Description: Return an array containing all the provinces of a specific country where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the provinces, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "province": "Cuneo"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/huts/cities/:province`
+
+  - Description: Return an array containing all the cities of a specific province where huts are available
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the cities, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "city": "Condove"
+    },
+    ...
+  ]
+  ```
 
 - POST `/api/huts`
 
