@@ -92,7 +92,7 @@ const HikesContainer = () => {
                 <ArrowUpwardIcon />
             </Fab>}
         </Container >
-    )
+    );
 }
 
 export default HikesContainer
