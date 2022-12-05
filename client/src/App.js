@@ -7,7 +7,6 @@ import Homepage from "./Components/Homepage"
 import LocalGuidePage from "./Components/LocalGuide/LocalGuidePage"
 import AddHike from "./Components/LocalGuide/AddHike"
 import AddHut from './Components/Hut/AddHut';
-import AddHike2 from "./Components/LocalGuide/AddHike2"
 import './Styles/App.css';
 import API from './API';
 import ProtectedRoute from './Utils/ProtectedRoute';
@@ -86,11 +85,8 @@ function Root() {
                 <Route path='/local-guide-page' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<LocalGuidePage />} />
                 </Route>
-                <Route path='/local-guide-add-hikes1' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
-                </Route>
-                <Route path='/local-guide-add-hikes2' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
-                    <Route path="" element={<AddHike2 />} />
                 </Route>
                 <Route path='/local-guide-add-hut' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHut message={message} setMessage={setMessage} />} />

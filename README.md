@@ -1,4 +1,6 @@
 # se2022-08-HikeTracker
+Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
+
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
@@ -17,7 +19,6 @@ Manual test reports in client/gui_test
 - Solving Major Issues if there's time left
 - Backend coverage must be greater than 80%
 
-Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
 ## Usage
 
