@@ -38,7 +38,7 @@ async function deleteHut(hutName) {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
-            body: JSON.stringify({"hutName": hutName}),
+            body: JSON.stringify({ "hutName": hutName }),
         });
         if (response.ok) {
             return true;
@@ -54,4 +54,114 @@ async function deleteHut(hutName) {
     }
 }
 
-export {addHut,deleteHut}
+
+// get
+// Return the countries
+async function getHutsCountries() {
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/countries', APIURL), { credentials: 'include' });
+    const countriesJson = await response.json();
+    if (response.ok) {
+        return countriesJson.map((c) => ({ country: c.country }));
+    } else {
+        throw countriesJson;
+    }
+}
+
+// get
+// Return provinces by a country
+async function getHutsProvincesByCountry(country) {
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/provinces/' + country, APIURL), { credentials: 'include' });
+    const provincesJson = await response.json();
+    if (response.ok) {
+        return provincesJson.map((p) => ({ province: p.province }));
+    } else {
+        throw provincesJson;
+    }
+}
+
+// get
+// Return cities by a province
+async function getHutsCitiesByProvince(province) {
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/cities/' + province, APIURL), { credentials: 'include' });
+
+    const citiesJson = await response.json();
+    if (response.ok) {
+        return citiesJson.map((c) => ({ city: c.city }));
+    } else {
+        throw citiesJson;
+    }
+}
+
+// get
+// Return huts by the filters
+/**
+ * 
+ * @param {Object} filter an object with the following fields: city, province, country, difficulty, track_length, ascent, expected_time (null if not filtered by that field)
+ * @returns Array of objects
+ */
+async function getHutsWithFilters(filter) {
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const fakeHut = {
+        "id": 1,
+        "name": "Rifugio Melezè",
+        "city": "Carignano",
+        "province": "Torino",
+        "country": "Italy",
+        "description": "It runs between ...",
+        "address": "Pian Melezè, 1, 12020",
+        "altitude": 1812,
+        "beds_number": 50,
+        "coordinates": "44.5741321312, 8.31231231",
+        "phone_number": "0175956410",
+        "email": "melezze@meleze.it",
+        "website": "www.meleze.it",
+        "type": "alpine_hut",
+        "author": "Martina Piccolo"
+    };
+
+    const fakeHutList = [];
+
+    for (let i = 0; i < 10; i++) {
+        fakeHutList.push(fakeHut);
+    }
+
+    return fakeHutList;
+}
+
+/**
+ * 
+ * @param {Number} hutId identifier of an hut
+ * @returns Hut object
+ */
+function getHutById(hutId) {
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const fakeHut = {
+        "id": 1,
+        "name": "Rifugio Melezè",
+        "city": "Carignano",
+        "province": "Torino",
+        "country": "Italy",
+        "description": "It runs between ...",
+        "address": "Pian Melezè, 1, 12020",
+        "altitude": 1812,
+        "beds_number": 50,
+        "coordinates": "44.5741321312, 8.31231231",
+        "phone_number": "0175956410",
+        "email": "melezze@meleze.it",
+        "website": "www.meleze.it",
+        "type": "alpine_hut",
+        "author": "Martina Piccolo"
+    };
+
+    return fakeHut;
+}
+
+export { addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById }

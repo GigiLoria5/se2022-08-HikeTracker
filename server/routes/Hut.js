@@ -87,7 +87,6 @@ router.post('/huts', [
 
 
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });
@@ -114,7 +113,6 @@ router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
             return res.status(401).json({ error: 'Not authorized' });
         }
     }catch(err){
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });
@@ -137,7 +135,6 @@ router.delete('/huts/name',[body('hutName').exists().isString()], async(req,res)
             return res.status(401).json({ error: 'Not authorized' });
         }
     }catch(err){
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });

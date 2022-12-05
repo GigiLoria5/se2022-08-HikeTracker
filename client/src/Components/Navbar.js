@@ -37,9 +37,16 @@ function MyNavbar(props) {
 
     /* SETUP HIDDEN NAV ITEMS LINKS */
     React.useEffect(() => {
+        /* Protected Routes only available for hikers and local guides */
+        if (isloggedIn && ["hiker", "local_guide"].includes(loggedUser.role))
+            setNavItems({ ...navItemsFixed, 'Huts': '/huts' });
+
+        /* Protected Routes only available for local guides */
         if (isloggedIn && loggedUser.role === "local_guide")
             setNavItems({ ...navItemsFixed, 'Platform Content': '/local-guide-page' });
-        else
+
+        // Clean navigation bar when user is logged out
+        if (!isloggedIn)
             setNavItems({ ...navItemsFixed });
     }, [isloggedIn, loggedUser.role]);
 
