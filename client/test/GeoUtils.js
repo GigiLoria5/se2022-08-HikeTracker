@@ -66,8 +66,8 @@ describe('GeoUtils test', () =>{
         expect(res).not.to.be.undefined;
         expect(res[0]).not.to.be.undefined;
         expect(res[1]).not.to.be.undefined;
-        expect(res[0]).to.equal(0.3);
-        expect(res[1]).to.equal(0.4);
+        expect(res[0].toFixed(1)).to.equal("0.3");
+        expect(res[1].toFixed(1)).to.equal("0.4");
     })
 
     it('T5: get farthest point', async () => {
@@ -97,40 +97,31 @@ describe('GeoUtils test', () =>{
         expect(res[1]).to.equal("2.0");
     })
 
-    it('T8: test split coordinates [MULTIPLE SPACES]', async () => {
-        const res = splitCoordinates(" 1.0 ,   2.0 ");
-        expect(res).not.to.be.undefined;
-        expect(res[0]).not.to.be.undefined;
-        expect(res[1]).not.to.be.undefined;
-        expect(res[0]).to.equal("1.0");
-        expect(res[1]).to.equal("2.0");
-    })
-
-    it('T9: test point range [OUTSIDE]', async () => {
+    it('T8: test point range [OUTSIDE]', async () => {
         const res = isPointInsideRange({latitude:1.0, longitude:0.0}, 1, {latitude:23.0, longitude:20.0});
         expect(res).not.to.be.undefined;
         expect(res).to.equal(false);
     })
 
-    it('T10: test point range [INSIDE]', async () => {
-        const res = isPointInsideRange({latitude:1.0, longitude:0.0}, 10, {latitude:1.001, longitude:0.002});
+    it('T9: test point range [INSIDE]', async () => {
+        const res = isPointInsideRange({latitude:1.0, longitude:0.0}, 100, {latitude:1.00001, longitude:0.00002});
         expect(res).not.to.be.undefined;
         expect(res).to.equal(true);
     })
 
-    it('T11: test point range [NO RADIUS]', async () => {
+    it('T10: test point range [NO RADIUS]', async () => {
         const res = isPointInsideRange({latitude:1.0, longitude:0.0}, null, {latitude:1.001, longitude:0.002});
         expect(res).not.to.be.undefined;
         expect(res).to.equal(false);
     })
 
-    it('T12: test point range [INVALID POINT ATTRIBUTES]', async () => {
+    it('T11: test point range [INVALID POINT ATTRIBUTES]', async () => {
         const res = isPointInsideRange({lat:1.0, long:0.0}, 1, {latitude:1.001, longitude:0.002});
         expect(res).not.to.be.undefined;
         expect(res).to.equal(false);
     })
 
-    it('T13: test point range [INVALID POINT VALUES]', async () => {
+    it('T12: test point range [INVALID POINT VALUES]', async () => {
         const res = isPointInsideRange({latitude:"1.0", longitude:null}, 1, {latitude:1.001, longitude:0.002});
         expect(res).not.to.be.undefined;
         expect(res).to.equal(false);
