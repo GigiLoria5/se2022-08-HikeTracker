@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, Link as Link2 } from "react-router-dom";
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
@@ -17,6 +17,13 @@ import Link from '@mui/material/Link';
 import Grid from "@mui/material/Grid";
 import Logo from "../Assets/Logo";
 import { Typography } from "@mui/material";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const drawerWidth = 240;
 const navItemsFixed = { 'Hikes': '/hikes' };
@@ -27,10 +34,31 @@ function MyNavbar(props) {
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [navItems, setNavItems] = React.useState(navItemsFixed);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [menuMobile, setMenuMobile] = React.useState(false);
+    const open = Boolean(anchorEl);
     const navigate = useNavigate();
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleChoice = (route) => {
+        setAnchorEl(null);
+        setMobileOpen(false);
+        setMenuMobile(false);
+    };
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleMenuMobile = () => {
+        setMenuMobile(!menuMobile);
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -69,10 +97,53 @@ function MyNavbar(props) {
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                             {
                                 Object.entries(navItems).map(([name, route]) => (
-                                    <Button className={`${String(location.pathname) === String(route) ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
-                                        onClick={() => { navigate(route); }}>
-                                        {name}
-                                    </Button>
+                                    name === 'Platform Content' ?
+                                        <Box key={name}>
+                                            <Button id="fade-button"
+                                                aria-controls={open ? 'fade-menu' : undefined}
+                                                aria-haspopup="true"
+                                                aria-expanded={open ? 'true' : undefined}
+                                                onClick={handleClick}
+                                                sx={{
+                                                    color: '#fff',
+                                                    '&:hover': {
+                                                        backgroundColor: '#08961D',
+                                                        color: '#fff',
+                                                    }
+                                                }}
+                                                endIcon={<KeyboardArrowDownIcon />}
+                                            >
+                                                {name}
+                                            </Button>
+                                            <Menu
+                                                id="fade-menu"
+                                                MenuListProps={{
+                                                    'aria-labelledby': 'fade-button',
+                                                }}
+                                                anchorEl={anchorEl}
+                                                open={open}
+                                                onClose={handleClose}
+                                                TransitionComponent={Fade}
+                                                sx={{
+                                                    "& .MuiPaper-root": {
+                                                        backgroundColor: '#008037',
+                                                        color: '#fff',
+                                                    }
+                                                }}
+                                            >
+                                                <MenuItem key={'hike'} component={Link2} to={"/local-guide-add-hikes1"} state={{newHike:true}} onClick={handleChoice}>NEW HIKE</MenuItem>
+                                                <Divider style={{ width: '100%' }} />
+                                                <MenuItem key={'hut'} component={Link2} to={"/local-guide-add-hut"} onClick={handleChoice}>NEW HUT</MenuItem>
+                                                <Divider style={{ width: '100%' }} />
+                                                <MenuItem key={'parking'} component={Link2} to={"/local-guide-add-parking"} onClick={handleChoice}>NEW PARKING LOT</MenuItem>
+                                            </Menu>
+                                        </Box>
+                                        :
+                                        <Button className={`${String(location.pathname) === String(route) ? 'active-link' : ''} btn-color-active`} key={name} sx={{ color: '#fff' }}
+                                            onClick={() => { navigate(route); }}>
+                                            {name}
+                                        </Button>
+
                                 ))}
                         </Box>
                         {/* User Account Actions */}
@@ -117,7 +188,7 @@ function MyNavbar(props) {
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                         }}
                     >
-                        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+                        <Box sx={{ textAlign: 'center' }}>
                             {/* Logo */}
                             <Container className="container-background-color">
                                 <Container maxWidth="xs">
@@ -130,12 +201,35 @@ function MyNavbar(props) {
                             {/* Nav Links */}
                             <List>
                                 {Object.entries(navItems).map(([name, route]) => (
-                                    <ListItem key={name} disablePadding>
-                                        <ListItemButton sx={{ textAlign: 'center' }} className={`${String(location.pathname) === String(route) ? 'active-link' : ''}`}
-                                            onClick={() => { navigate(route); }}>
-                                            <ListItemText primary={name} />
-                                        </ListItemButton>
-                                    </ListItem>
+                                    name === 'Platform Content' ?
+                                        <Box key={name} >
+                                            <ListItem disablePadding>
+                                                <ListItemButton sx={{ textAlign: 'center' }} onClick={handleMenuMobile}>
+                                                    <ListItemText primary="Platform Content" />
+                                                    {menuMobile ? <ExpandLess /> : <ExpandMore />}
+                                                </ListItemButton>
+                                            </ListItem>
+                                            <Collapse in={menuMobile} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                    <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hikes1"} state={{newHike:true}} onClick={handleDrawerToggle}>
+                                                        <ListItemText primary="Add hike" />
+                                                    </ListItemButton>
+                                                    <ListItemButton sx={{ textAlign: 'center'}} component={Link2} to={"/local-guide-add-hut"} onClick={handleDrawerToggle}>
+                                                        <ListItemText primary="Add hut" />
+                                                    </ListItemButton>
+                                                    <ListItemButton sx={{ textAlign: 'center'}} component={Link2} to={"/local-guide-add-parking"} onClick={handleDrawerToggle}>
+                                                        <ListItemText primary="Add parking lot" />
+                                                    </ListItemButton>
+                                                </List>
+                                            </Collapse>
+                                        </Box>
+                                        :
+                                        <ListItem key={name} disablePadding>
+                                            <ListItemButton sx={{ textAlign: 'center' }} className={`${String(location.pathname) === String(route) ? 'active-link' : ''}`}
+                                                onClick={() => { navigate(route); }}>
+                                                <ListItemText primary={name} />
+                                            </ListItemButton>
+                                        </ListItem>
                                 ))}
                             </List>
                         </Box>

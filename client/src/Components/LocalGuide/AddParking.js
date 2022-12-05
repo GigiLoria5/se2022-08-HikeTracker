@@ -89,7 +89,7 @@ function AddParking() {
             return;
         }
         await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-            .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
+            .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
 
     };
 
@@ -215,7 +215,7 @@ function AddParking() {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
+                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
                                 <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
                             </Stack>
 
