@@ -159,8 +159,8 @@ function AddParking() {
             return;
         }
         //add capacity of parking here
-        await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-            .then(_a => navigate("/local-guide-page")).catch(err => { setMessage("Server error in creating parking"); });
+        await addParking(new Parking("", city, province, country, position.lng, position.lat, address, capacity))
+            .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
 
     };
 
