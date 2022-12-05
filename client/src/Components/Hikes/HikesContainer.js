@@ -5,7 +5,7 @@ import HikesFilterPanel from './HikesFilterPanel';
 import HikesList from './HikesList';
 import API from '../../API';
 import { isPointInsideRange } from '../../Utils/GeoUtils';
-import { emptyFilter } from '../../Utils/EmptyFilter';
+import { emptyFilter } from '../../Utils/Hike';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 
 const HikesContainer = () => {

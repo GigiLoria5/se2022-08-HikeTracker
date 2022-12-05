@@ -140,7 +140,7 @@ async function getHutsWithFilters(filter) {
  * @param {Number} hutId identifier of an hut
  * @returns Hut object
  */
-function getHutById(hutId) {
+async function getHutById(hutId) {
     // TO BE MODIFIED
     // FOR NOW IS JUST A "MOCK"
     const fakeHut = {

@@ -10,7 +10,7 @@ import DifficultyFilter from '../Filters/DifficultyFilter';
 import LengthFilter from '../Filters/LengthFilter';
 import AscentFilter from '../Filters/AscentFilter';
 import ExpectedTimeFilter from '../Filters/ExpectedTimeFilter';
-import { emptyFilter } from '../../Utils/EmptyFilter';
+import { emptyFilter } from '../../Utils/Hike';
 
 const theme = createTheme({
     palette: {
