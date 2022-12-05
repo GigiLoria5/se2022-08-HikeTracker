@@ -33,6 +33,8 @@ function AddHike1(props) {
 
     const [isSelected, setIsSelected] = useState(false);
 
+
+
     const startPointDescription=props.startPointDescription
     const setStartPointDescription=props.setStartPointDescription
     const endPointDescription=props.endPointDescription
@@ -75,6 +77,22 @@ function AddHike1(props) {
         value: endPointValue
     };
 
+/************************************* TO REPLACE WITH LISTs FROM API *******************************************/
+/********************* each element of a list has an id and a title, like shown below ***************************/
+
+//for start points, using startPointGPSlat and startPointGPSlon, get the huts & parking lots 2km around the start point
+//put the parking list in startParkings and the hut list in startHuts
+
+    const startParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    const startHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+
+//for end points, using endPointGPSlat and endPointGPSlon, get the huts & parking lots 2km around the end point
+//put the parking list in endParkings and the hut list in endHuts
+
+    const endParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    const endHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+
+/***************************************************************************************************************/
 
 
     useEffect(() => {
@@ -157,6 +175,7 @@ function AddHike1(props) {
             setStartPointValue("")
         }
     }
+    
 
     /* Function called on end point input click (PointsInput component) */
     const handleChange2 = (e) => {
@@ -187,6 +206,7 @@ function AddHike1(props) {
             return false;
         }
         if (!startPointValue || !endPointValue) {
+            console.log(startPointValue)
             setMessage("Missing point attribute(s)");
             return false;
         }
@@ -254,7 +274,10 @@ function AddHike1(props) {
                                                 description={startPointDescription}
                                                 handleChange={handleChange1}
                                                 setPointValue={setStartPointValue}
-                                                setPointDescription={setStartPointDescription} />
+                                                setPointDescription={setStartPointDescription} 
+                                                parkings={startParkings}
+                                                huts={startHuts}
+                                                />
                                         </Grid>
                                         {/*****************************************************END POINT***********************************************/}
 
@@ -268,7 +291,10 @@ function AddHike1(props) {
                                                 description={endPointDescription}
                                                 handleChange={handleChange2}
                                                 setPointValue={setEndPointValue}
-                                                setPointDescription={setEndPointDescription} />
+                                                setPointDescription={setEndPointDescription} 
+                                                parkings={endParkings}
+                                                huts={endHuts}
+                                                />
                                         </Grid>
                                     </Grid>
                                 </div>
