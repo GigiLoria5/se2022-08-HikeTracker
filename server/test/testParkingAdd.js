@@ -19,7 +19,8 @@ describe('test Add Parking',()=>{
         country: "Italy",
         latitude: 15.7,
         longitude: 45.4,
-        address: "Address Test"
+        address: "Address Test",
+        capacity: 200
       }
     before('Get all parkings before tests', async function () {
         existingParkings = await ParkingDao.getAllParkingLots();
@@ -175,6 +176,16 @@ describe('test Add Parking',()=>{
             .send(validParking)
             .then(function(res) {
                 res.should.have.status(200);
+            });
+    });
+    
+    step('T16: POST/api/parking [WRONG CAPACITY]', async function() {
+        const wrongParking = validParking;
+        wrongParking.capacity = null;
+        await authenticatedUser.post('/api/parking')
+            .send(wrongParking)
+            .then(function(res) {
+                res.should.have.status(422);
             });
     });
 });
