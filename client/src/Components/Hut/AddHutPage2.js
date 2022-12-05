@@ -183,12 +183,12 @@ export default function AddHutPage2(props) {
                             {
                                 props.stepTwoDone ?
                                     <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                        <Button onClick={() => navigate("/local-guide-page")} variant="contained" color='primary'>OK</Button>
+                                        <Button onClick={() => navigate("/")} variant="contained" color='primary'>OK</Button>
                                     </Stack>
                                     :
                                     <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
                                         <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
-                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
+                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
                                         <Button type="submit" variant="contained" color='primary'>ADD HUT</Button>
                                     </Stack>
                             }
