@@ -233,7 +233,7 @@ export default function AddHutPage1(props) {
                                 renderInput={(params) => <TextField required {...params} label="City" error={props.formValues.city.error} helperText={props.formValues.city.error && props.formValues.city.errorMessage} />}
                             />
                             {/*ADDRESS FIELD*/}
-                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} error={props.formValues.address.error} helperText={props.formValues.address.error && props.formValues.address.errorMessage} />
+                            <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
 
                         </Grid>
 

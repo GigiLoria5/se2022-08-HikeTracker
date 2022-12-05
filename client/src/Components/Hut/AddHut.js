@@ -3,7 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import API from '../../API';
-import { Hut, validateHut } from '../../Utils/Hut';
+import { Hut } from '../../Utils/Hut';
 import {Address, translateProvince, getCity} from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
@@ -37,10 +37,6 @@ export default function AddHut(props) {
             errorMessage: ""
         },
         city: {
-            error: false,
-            errorMessage: ""
-        },
-        address: {
             error: false,
             errorMessage: ""
         }

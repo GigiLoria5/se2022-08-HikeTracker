@@ -46,10 +46,6 @@ function AddParking() {
         city: {
             error: false,
             errorMessage: ""
-        },
-        address: {
-            error: false,
-            errorMessage: ""
         }
     });
 
@@ -273,7 +269,7 @@ function AddParking() {
                                             value={city!==""? city: null}
                                             renderInput={(params) => <TextField {...params} required label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                         />
-                                        <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} error={formValues.address.error} helperText={formValues.address.error && formValues.address.errorMessage} />
+                                        <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} />
 
                                     </Stack>
                                 </Grid>
