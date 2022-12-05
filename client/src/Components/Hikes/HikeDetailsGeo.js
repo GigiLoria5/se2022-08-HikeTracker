@@ -18,19 +18,9 @@ function HikeDetailsGeo(props) {
     const { hike, isloggedIn, loggedUser, deviceFilterPanelOpen, toggleFilterPanelDrawer } = props;
     const usersRoleMapPermission = ['hiker', 'local_guide'];
 
-    const geoDetailsComponents = (
-        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 } }}>
-            {/* Map */}
-            <Box component="div" sx={{ width: "100%", height: "40vh", marginTop: 2 }}>
-                {isloggedIn && usersRoleMapPermission.includes(loggedUser.role)
-                    ? < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} trailColor={getColorByDifficulty(hike.difficulty)} />
-                    : <Box component="div" sx={{ backgroundColor: "black", height: "100%", opacity: 0.9, display: "flex", textAlign: "center", alignItems: "center" }}>
-                        <Typography gutterBottom variant="h5" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, color: 'white' }}>
-                            Only a Hiker or a Local Guide can view the map.<br /><Link to="/login" className={"link"}>Sign In</ Link> or <Link to="/register" className={"link"}>Register</ Link> for free
-                        </Typography>
-                    </Box>
-                }
-            </Box>
+    // Information about: start point, end point and reference points (if any)
+    const geoDetailsPoints = (
+        <>
             {/* Start Point */}
             <Box component="div" sx={{ marginTop: 2 }}>
                 {/* Section Title */}
@@ -67,6 +57,24 @@ function HikeDetailsGeo(props) {
                     : hike.reference_points.map(rp => { return <HikeDetailsGeoPoint key={`rp-${rp.id}`} pointType={rp.ref_point_type} point={rp} /> })
                 }
             </Box>
+        </>
+    );
+
+    // Right Sidebar component which include map + information about points. Only Available for hikers and local guides
+    const geoDetailsComponent = (
+        <Box component="div" sx={{ margin: 2, marginTop: { xs: 2, lg: 3 } }}>
+            {/* Map */}
+            <Box component="div" sx={{ width: "100%", height: "40vh", marginTop: 2 }}>
+                {isloggedIn && usersRoleMapPermission.includes(loggedUser.role)
+                    ? < MapViewer gpxFileContent={hike.gpx_content} height={'100%'} width={'100%'} startPoint={hike.start} endPoint={hike.end} refPoints={hike.reference_points} trailColor={getColorByDifficulty(hike.difficulty)} />
+                    : <Box component="div" sx={{ backgroundColor: "black", height: "100%", opacity: 0.9, display: "flex", textAlign: "center", alignItems: "center" }}>
+                        <Typography gutterBottom variant="h5" sx={{ fontWeight: 550, fontSize: { xs: '4.50vw', sm: '3vw', md: '2.5vw', lg: '1.5vw' }, color: 'white', padding: 1 }}>
+                            Only a Hiker or a Local Guide can view the map.<br /><Link to="/login" className={"link"}>Sign In</ Link> or <Link to="/register" className={"link"}>Register</ Link> for free
+                        </Typography>
+                    </Box>
+                }
+            </Box>
+            {isloggedIn ? geoDetailsPoints : null}
         </Box>
     );
 
@@ -88,7 +96,7 @@ function HikeDetailsGeo(props) {
                     </IconButton>
                 </Box>
             </ThemeProvider>
-            {geoDetailsComponents}
+            {geoDetailsComponent}
         </Box >
     );
 
@@ -96,7 +104,7 @@ function HikeDetailsGeo(props) {
         <>
             {/* Hike Geo Details Panel - Full Size */}
             <Grid item sx={{ display: { xs: 'none', sm: 'none', md: 'none', lg: 'block' }, border: "1px solid #BBBBBB" }} lg={3} >
-                {geoDetailsComponents}
+                {geoDetailsComponent}
             </Grid>
 
             {/* Filter Panel - Small Screen */}

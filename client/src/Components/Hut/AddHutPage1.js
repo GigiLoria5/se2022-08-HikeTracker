@@ -240,7 +240,7 @@ export default function AddHutPage1(props) {
 
 
                         <Stack direction="row" justifyContent="center" alignItems="center">
-                            <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/local-guide-page"} variant="outlined" color='error'>CANCEL</Button>
+                            <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
                             <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary'>CONTINUE</Button>
                         </Stack>
                     </Box>

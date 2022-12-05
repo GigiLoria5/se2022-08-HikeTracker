@@ -1,10 +1,14 @@
 # se2022-08-HikeTracker
+Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
+
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 [![Integration Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Integration%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
 [![Frontend tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Frontend%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GigiLoria5_se2022-08-HikeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GigiLoria5_se2022-08-HikeTracker)
 
 Manual test reports in client/gui_test
 
@@ -14,7 +18,6 @@ Manual test reports in client/gui_test
 - Solving Major Issues if there's time left
 - Backend coverage must be greater than 80%
 
-Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
 ## Usage
 

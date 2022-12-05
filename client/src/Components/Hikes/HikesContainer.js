@@ -14,15 +14,20 @@ const HikesContainer = () => {
     const [filter, setFilter] = useState(emptyFilter);
     const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
     const [radius, setRadius] = useState(null);
+    const [search, setSearch] = useState("");
     const [loadingHikes, setLoadingHikes] = useState(true);
 
     useEffect(() => {
         API.getHikesWithFilters(filter)
             .then(hikes => {
-                // APPLY HERE HIKES AROUND A POINT WITHIN RADIUS FILTER
-                const hikesFiltered = (radius === null)
+                // APPLY SEARCH BY NAME
+                let hikesFiltered = (search === "")
                     ? hikes
-                    : hikes.filter(h => {
+                    : hikes.filter(h => h.title.toLowerCase().includes(search.toLowerCase()));
+                // APPLY HIKES AROUND A POINT WITHIN RADIUS FILTER
+                hikesFiltered = (radius === null)
+                    ? hikesFiltered
+                    : hikesFiltered.filter(h => {
                         const coordinates = h.start.coordinates.split(', ');
                         const hikeLatitude = coordinates[0];
                         const hikeLongitude = coordinates[1];
@@ -38,7 +43,7 @@ const HikesContainer = () => {
         // eslint-disable-next-line 
     }, [filter.country, filter.province, filter.city, filter.difficulty,
     filter.track_length_min, filter.track_length_max, filter.ascent_min, filter.ascent_max, filter.expected_time_min, filter.expected_time_max,
-    position.lat, position.lng, radius]);
+    position.lat, position.lng, radius, search]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -68,7 +73,8 @@ const HikesContainer = () => {
                 </Grid>
 
                 {/* Filter */}
-                <HikesFilterPanel hikes={hikes} setLoadingHikes={setLoadingHikes} filter={filter} setFilter={setFilter} position={position} setPosition={setPosition} radius={radius} setRadius={setRadius} />
+                <HikesFilterPanel hikes={hikes} setLoadingHikes={setLoadingHikes} filter={filter} setFilter={setFilter} position={position} setPosition={setPosition}
+                    radius={radius} setRadius={setRadius} setSearch={setSearch} />
 
                 {/* Hikes List */}
                 <HikesList hikes={hikes} loadingHikes={loadingHikes} />
