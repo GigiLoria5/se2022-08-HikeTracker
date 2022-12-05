@@ -18,7 +18,7 @@ import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
-import { ResetErrors, PrintCheckErrors, PrintMissingErrors } from '../../Utils/PositionErrorMgmt';
+import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
 
 const zoomLevel = 15;
 
@@ -145,20 +145,9 @@ function AddParking() {
         setFormValues(formValueWithErrors);
     }
 
-    const printMissing = async () =>{
-        const array = [country,province,city,address];
-        const formValueWithMissing =  PrintMissingErrors(formValues,array);
-        setFormValues(formValueWithMissing);
-    }
-
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-        
-        if (!country || !province || !city || !address) {
-            printMissing();
-            return;
-        }
         
         const res = validateAddress(location, country, province, city, address); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
@@ -205,7 +194,7 @@ function AddParking() {
                     <Grid xs={0} md={2}></Grid>
 
                     <Grid xs={12} md={8} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} >
+                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} component="form" onSubmit={handleSubmission} >
                             <Box >
                                 <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
                                     <br />Specify a position<br /><br />
@@ -279,7 +268,6 @@ function AddParking() {
                                             disabled={!(country && province)}
                                             disablePortal
                                             id="combo-box-demo3"
-                                            value={city!==""? city: null}
                                             options={cities}
                                             key={[province, country]}
                                             sx={{ m: 1, width: '28ch' }}
@@ -288,6 +276,7 @@ function AddParking() {
                                                 setCity(value); setAddress('');
                                                 reset();
                                             }}
+                                            value={city!==""? city: null}
                                             renderInput={(params) => <TextField {...params} required label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                         />
                                         <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} error={formValues.address.error} helperText={formValues.address.error && formValues.address.errorMessage} />
@@ -302,7 +291,7 @@ function AddParking() {
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
                                 <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
-                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
+                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} type="submit" variant="contained" color='primary'>ADD PARKING LOT</Button>
                             </Stack>
 
                         </Paper>

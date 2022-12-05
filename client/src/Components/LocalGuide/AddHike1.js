@@ -182,14 +182,6 @@ function AddHike1(props) {
             setMessage("GPX file not uploaded");
             return false;
         }
-        if (!startPointDescription || !endPointDescription) {
-            setMessage("Missing point description(s)");
-            return false;
-        }
-        if (!startPointValue || !endPointValue) {
-            setMessage("Missing point attribute(s)");
-            return false;
-        }
         return true;
     }
    
@@ -211,7 +203,7 @@ function AddHike1(props) {
                     </Grid>
                     <Grid xs={0} md={3}></Grid>
                     <Grid xs={12} md={6} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...thm }} >
+                        <Paper elevation={3} sx={{ ...thm }} component="form" onSubmit={handleSubmission} >
                             <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                                 [
                                 <Typography key="3" color="primary"> Upload a GPX file </Typography>,
@@ -282,7 +274,7 @@ function AddHike1(props) {
 
                             <Stack direction="row" justifyContent="center" alignItems="center">
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary' disabled={!isSelected}>CONTINUE</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary' disabled={!isSelected}>CONTINUE</Button>
                             </Stack>
                         </Paper>
                     </Grid>

@@ -32,20 +32,21 @@ function validateAddress(location, country, province, city, address) {
     }
 
     /* Italy provinces and Cities are managed differently  */
-
     if (country === "Italy") {
 
         /* VALIDATE PROVINCE  */
         const provinceita = translateProvinceReverse(province);
 
-        if (location.county !== provinceita) {
+        if ( !(location.county.includes(provinceita)||location.county.includes(province))) {
             return "province";
         }
 
         /* VALIDATE CITY  */
-        const array = [location.city, location.town, location.village, location.hamlet];
+        const array = [location.city, location.town, location.village];
         const result = validateCity(array, city);
-        if (result===false) return "city";
+        if (result===false){
+            return "city";
+        } 
 
 
     } else {
@@ -104,24 +105,24 @@ function translateProvinceReverse(province) {
 function validateCity(array, city) {
     let result = false;
     array.forEach(item => {
-        if (item !== undefined && item === city) {
+        if (item !== undefined && (item.includes(city)||city.includes(item))) {
             result = true;
         }
     });
     return result;
 }
 
-/* Returns the city (it can be also town, village, municipality, hamlet ) */
+/* Returns the city (it can be also town, village, municipality ) */
 function getCity(location){
     let array = [];
-    if(location.contry==="Italy"){
-        array = [location.city, location.town, location.village, location.hamlet];
+    if(location.country==="Italy"){
+        array = [location.city, location.town, location.village];
     }else{
         array = [location.city, location.town, location.municipality, location.village];
     }
     let city= ""
     array.forEach(item => {
-        if (item !== undefined) {
+        if (item !== undefined && city==="") {
             city=item;
         }
     });

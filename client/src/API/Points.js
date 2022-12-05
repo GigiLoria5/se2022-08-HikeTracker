@@ -2,7 +2,7 @@
 // get
 // Return provinces by a country
 async function getAddressByCoordinates(longitude, latitude) {
-    const url =  'https://nominatim.openstreetmap.org/reverse?format=json&lat='+latitude+'&lon='+longitude+'&accept-language=en&zoom=18';
+    const url =  'https://nominatim.openstreetmap.org/reverse?format=json&lat='+latitude+'&lon='+longitude+'&accept-language=en&zoom=10';
     try {
         const response = await fetch(url, {
             method: 'GET',

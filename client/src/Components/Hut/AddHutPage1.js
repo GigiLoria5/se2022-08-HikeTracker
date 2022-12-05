@@ -222,7 +222,6 @@ export default function AddHutPage1(props) {
                                 disablePortal
                                 id="combo-box-demo3"
                                 options={cities}
-                                value={props.city!==""? props.city: null}
                                 key={[props.province, props.country]}
                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                 onChange={(e, value) => {
@@ -230,6 +229,7 @@ export default function AddHutPage1(props) {
                                     props.setCity(value); props.setAddress('');
                                     reset();
                                 }}
+                                value={props.city!==""? props.city: null}
                                 renderInput={(params) => <TextField required {...params} label="City" error={props.formValues.city.error} helperText={props.formValues.city.error && props.formValues.city.errorMessage} />}
                             />
                             {/*ADDRESS FIELD*/}
