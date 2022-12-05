@@ -1,4 +1,4 @@
-import { getDistance } from 'geolib';
+const { getDistance } = require('geolib');
 
 /**
  * 
@@ -74,4 +74,4 @@ const getClosestPoint = (point, points) => {
         }).point;
 }
 
-export { isPointInsideRange, splitCoordinates, findFarthestPoint, getMidPoint, getClosestPoint };  
+module.exports = { isPointInsideRange, splitCoordinates, findFarthestPoint, getMidPoint, getClosestPoint };  
