@@ -111,7 +111,7 @@ export default function AddHutPage1(props) {
             event.stopPropagation();
         }
 
-        const res = validateAddress(props.location, props.country, props.province, props.city, props.address);
+        const res = validateAddress(props.location, props.country, props.province, props.city);
 
             if( res === "true"){
                 props.setStepOneDone(true)

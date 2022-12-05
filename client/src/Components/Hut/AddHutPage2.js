@@ -148,14 +148,14 @@ export default function AddHutPage2(props) {
                                 <TextField margin="normal" variant="outlined" label="Website" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.website} onChange={ev => props.setWebsite(ev.target.value)} />
 
                                 {/*EMAIL FIELD*/}
-                                <TextField margin="normal" variant="outlined" label="Email Address" required={(props.email !== "")} sx={{ width: '30ch', maxWidth: '30ch' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
+                                <TextField margin="normal" variant="outlined" label="Email Address" required sx={{ width: '30ch', maxWidth: '30ch' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
 
                             </Stack>
                         </Grid>
 
                         <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2, width: '30ch', marginLeft: 0.2 }} >
                             {/*PHONE NUMBER FIELD*/}
-                            <PhoneInput placeholder="Phone number" sx={{ width: "100%" }} required={(props.phoneNumber !== "")} value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                            <PhoneInput placeholder="Phone number" sx={{ width: "100%" }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
                         </Grid>
 
                         <Divider variant="middle" />

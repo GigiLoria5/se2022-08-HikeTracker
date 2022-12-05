@@ -99,12 +99,6 @@ export default function AddHut(props) {
 
         setCity(getCity(loc));
 
-        if(loc.road!==undefined){
-            setAddress(loc.road);
-        }else{
-            setAddress("");
-        }
-
     }
 
     const handleSubmission = async (ev) => {
@@ -129,11 +123,6 @@ export default function AddHut(props) {
             type:type
         }
         );
-
-        if (!validateHut(hut)) {
-            props.setMessage({ msg: `Please, complete all the requested fields: you can leave blank only the "Optional informations"`, type: 'error' });
-            return;
-        }
 
         const response = await API.addHut(hut).catch(e => {
             const obj = JSON.parse(e);

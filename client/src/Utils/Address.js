@@ -25,7 +25,7 @@ class Address {
  * Validates an address 
  * @param {Address} location 
  */
-function validateAddress(location, country, province, city, address) {
+function validateAddress(location, country, province, city) {
     /* VALIDATE COUNTRY  */
     if (location.country !== country) {
         return "country";
@@ -65,13 +65,6 @@ function validateAddress(location, country, province, city, address) {
 
     }
 
-    /* VALIDATE ADDRESS  */
-    if (location.road !== undefined) {
-        const addressNoDigitsNoSpace = address.replace(/\d+/g, '').toLowerCase().trim().replace(/\s+/g, ''); // Trim string, remove spaces and digits and put lowercase
-        const locationNoDigitsNoSpace = (location.road).toLowerCase().replace(/\s+/g, ''); // Remove spaces and put string in lowercase
-
-        if (locationNoDigitsNoSpace !== addressNoDigitsNoSpace) { return "address" }
-    }
     return "true";
 }
 

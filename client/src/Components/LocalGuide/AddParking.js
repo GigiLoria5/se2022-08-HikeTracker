@@ -96,12 +96,6 @@ function AddParking() {
 
         setCity(getCity(loc));
 
-        if(loc.road!==undefined){
-            setAddress(loc.road);
-        }else{
-            setAddress("");
-        }
-
     }
 
     useEffect(() => {
@@ -149,7 +143,7 @@ function AddParking() {
     const handleSubmission = async (ev) => {
         ev.preventDefault();
         
-        const res = validateAddress(location, country, province, city, address); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
+        const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
         if (res === "true") {
                 await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
