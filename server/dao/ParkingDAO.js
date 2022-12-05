@@ -17,7 +17,8 @@ exports.getParkingLotById = (id) => {
                     province: row.province,
                     country: row.country,
                     address: row.address,
-                    coordinates: row.coordinates
+                    coordinates: row.coordinates,
+                    capacity: row.capacity
                 })));
                 resolve(parking[0]);
             }
@@ -38,6 +39,7 @@ exports.getAllParkingLots = () => {
                     province: row.province,
                     country: row.country,
                     address: row.address,
+                    capacity: row.capacity
                 })));
                 resolve(parking);
             }
@@ -62,8 +64,8 @@ exports.checkExisting = (parking) => {
 
 exports.addParking = (parking, user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO parking_lot(city, province, country, address, coordinates, user_id) VALUES(?, ?, ?, ?, ?, ?)';
-        db.get(sql, [parking.city, parking.province, parking.country, parking.address, parking.coordinates, user_id], function (err, row) {
+        const sql = 'INSERT INTO parking_lot(city, province, country, address, coordinates, capacity, user_id) VALUES(?, ?, ?, ?, ?, ?, ?)';
+        db.get(sql, [parking.city, parking.province, parking.country, parking.address, parking.coordinates, parking.capacity, user_id], function (err, row) {
             if(err) {
                 reject(err);
                 return;
