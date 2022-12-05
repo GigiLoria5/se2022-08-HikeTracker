@@ -43,7 +43,7 @@ export default function SignUp(props) {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const [formValues, setFormValues] = useState({
-        passwd: {
+        form: {
             error: false,
             errorMessage: ""
         }
@@ -58,15 +58,15 @@ export default function SignUp(props) {
 
     const reset = async () => {
         let newFormValues = { ...formValues }
-        newFormValues["passwd"].error = false;
-        newFormValues["passwd"].errorMessage = "";
+        newFormValues["form"].error = false;
+        newFormValues["form"].errorMessage = "";
         setFormValues(newFormValues);
     }
 
     const printErrors = async () => {
         let newFormValues = { ...formValues }
-        newFormValues["passwd"].error = true;
-        newFormValues["passwd"].errorMessage = "Confirmation does not match";
+        newFormValues["form"].error = true;
+        newFormValues["form"].errorMessage = "Confirmation does not match";
         setFormValues(newFormValues);
     }
 
@@ -203,8 +203,8 @@ export default function SignUp(props) {
                                     id="confirmpassword"
                                     autoComplete="new-password"
                                     inputProps={{ minLength: 8 }}
-                                    error={formValues.passwd.error}
-                                    helperText={formValues.passwd.error && formValues.passwd.errorMessage}
+                                    error={formValues.form.error}
+                                    helperText={formValues.form.error && formValues.form.errorMessage}
                                     onChange={ev => { setConfirmPassword(ev.target.value); reset(); }}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
