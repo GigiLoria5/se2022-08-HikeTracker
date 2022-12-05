@@ -19,16 +19,20 @@ function HutsContainer() {
     useEffect(() => {
         API.getHutsWithFilters(null)
             .then(huts => {
-                console.log(huts);
+                // APPLY SEARCH BY NAME
+                let hikesFiltered = (search === "")
+                    ? huts
+                    : huts.filter(h => h.name.toLowerCase().includes(search.toLowerCase()));
                 // Set Huts After Filtered
-                setHuts(huts);
+                setHuts(hikesFiltered);
                 // Add some delay to load smoothly
                 setTimeout(() => {
                     setLoadingHuts(false);
                 }, 300);
             });
         // eslint-disable-next-line 
-    }, []);
+    }, [filter.country, filter.province, filter.city,
+    position.lat, position.lng, radius, search]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {

@@ -110,7 +110,6 @@ async function getHutsWithFilters(filter) {
     // FOR NOW IS JUST A "MOCK"
     const hutType = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
     const fakeHut = {
-        "id": 1,
         "name": "Rifugio Melezè",
         "city": "Carignano",
         "province": "Torino",
@@ -129,7 +128,7 @@ async function getHutsWithFilters(filter) {
     const fakeHutList = [];
 
     for (let i = 0; i < 10; i++) {
-        const newHut = { ...fakeHut, type: hutType[Math.floor(Math.random() * (4 - 0 + 1)) + 0] };
+        const newHut = { ...fakeHut, id: i + 1, name: `${fakeHut.name} ${i}`, type: hutType[Math.floor(Math.random() * (4 - 0 + 1)) + 0] };
         fakeHutList.push(newHut);
     }
 
