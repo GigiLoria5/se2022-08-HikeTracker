@@ -3,7 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import API from '../../API';
-import { Hut, validateHut } from '../../Utils/Hut';
+import { Hut } from '../../Utils/Hut';
+import {Address, translateProvince, getCity} from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -16,6 +17,7 @@ export default function AddHut(props) {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [address, setAddress] = useState("");
+    const [location, setLocation] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [altitude, setAltitude] = useState(0.0);
@@ -25,11 +27,33 @@ export default function AddHut(props) {
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
     const [stepTwoDone, setStepTwoDone] = useState(false);
+    const [formValues, setFormValues] = useState({
+        country: {
+            error: false,
+            errorMessage: ""
+        },
+        province: {
+            error: false,
+            errorMessage: ""
+        },
+        city: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
 
     useEffect(() => {
         props.setMessage('');
+        // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        if(latitude !== "" && longitude !== ""){
+            getLocation();
+        }
+        // eslint-disable-next-line
+    }, [latitude,longitude])
 
     const theme = createTheme({
         palette: {
@@ -53,6 +77,26 @@ export default function AddHut(props) {
         fontWeight: 600 
     };
 
+    const getLocation = async () =>{
+        const addr= await API.getAddressByCoordinates(longitude,latitude);   // Get address information starting from coordinates
+        setLocation(new Address(addr));
+        autoFill(addr);
+    }
+
+    const autoFill = (loc) =>{
+
+        setCountry(loc.country);
+
+        if(loc.country === "Italy"){
+            setProvince(translateProvince(loc.county));
+        }else{
+            setProvince(loc.state);
+        }
+
+        setCity(getCity(loc));
+
+    }
+
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
@@ -75,11 +119,6 @@ export default function AddHut(props) {
             type:type
         }
         );
-
-        if (!validateHut(hut)) {
-            props.setMessage({ msg: `Please, complete all the requested fields: you can leave blank only the "Optional informations"`, type: 'error' });
-            return;
-        }
 
         const response = await API.addHut(hut).catch(e => {
             const obj = JSON.parse(e);
@@ -140,7 +179,9 @@ export default function AddHut(props) {
                                 address={address} setAddress={setAddress}
                                 setStepOneDone={setStepOneDone}
                                 setMessage={props.setMessage}
-                                reset={handleReset}
+                                reset={handleReset} 
+                                location={location}
+                                formValues={formValues} setFormValues={setFormValues}                           
                             />
                             :
                             <AddHutPage2

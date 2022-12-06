@@ -14,9 +14,11 @@ import Box from '@mui/material/Box';
 import MapLocator from '../Map/MapLocator';
 import { floatInputSanitizer } from '../../Utils/InputSanitizer';
 import { addParking } from '../../API/Parking'
+import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
-
+import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
+import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
 
 const zoomLevel = 15;
 
@@ -25,13 +27,27 @@ function AddParking() {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
-
+    const [location, setLocation] = useState("");
     const [message, setMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [address, setAddress] = useState("");
     const [width, setWidth] = React.useState(window.innerWidth);
+    const [formValues, setFormValues] = useState({
+        country: {
+            error: false,
+            errorMessage: ""
+        },
+        province: {
+            error: false,
+            errorMessage: ""
+        },
+        city: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
     const updateWidth = () => {
         setWidth(window.innerWidth);
@@ -49,6 +65,34 @@ function AddParking() {
 
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        // eslint-disable-next-line
+        if (position.lat != "" && position.lng != "") {
+            getLocation();
+        }
+        // eslint-disable-next-line
+    }, [position])
+
+    const getLocation = async () => {
+        const addr = await getAddressByCoordinates(position.lng, position.lat);   // Get address information starting from coordinates
+        setLocation(new Address(addr));
+        autoFill(addr);
+    }
+
+    const autoFill = (loc) =>{
+
+        setCountry(loc.country);
+
+        if(loc.country === "Italy"){
+            setProvince(translateProvince(loc.county));
+        }else{
+            setProvince(loc.state);
+        }
+
+        setCity(getCity(loc));
+
+    }
 
     useEffect(() => {
         if (country !== '') {
@@ -81,15 +125,30 @@ function AddParking() {
 
     const navigate = useNavigate();
 
+    const reset = async () => {
+        const formValueClean =  ResetErrors(formValues);
+        setFormValues(formValueClean);
+    }
+
+    const printErrors = async (res) => {
+        const formValueWithErrors =  PrintCheckErrors(formValues,res);
+        setFormValues(formValueWithErrors);
+    }
+
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-        if (!country || !province || !city || !address) {
-            setMessage("Parking lot geographical info missing");
-            return;
+        
+        const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
+
+        if (res === "true") {
+                await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
+                    .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
+        } else {
+                printErrors(res);
+                ev.stopPropagation();
         }
-        await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-            .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
+
 
     };
 
@@ -125,7 +184,7 @@ function AddParking() {
                     <Grid xs={0} md={2}></Grid>
 
                     <Grid xs={12} md={8} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} >
+                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} component="form" onSubmit={handleSubmission} >
                             <Box >
                                 <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
                                     <br />Specify a position<br /><br />
@@ -167,12 +226,14 @@ function AddParking() {
                                             disablePortal
                                             id="combo-box-demo"
                                             options={countries}
+                                            value={country!==""? country : null}
                                             sx={{ m: 1, width: '28ch', pt: { xs: 0, md: 1.1 } }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setCountry(value); setProvince(''); setCity('')
+                                                setCountry(value); setProvince(''); setCity(''); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField required {...params} label="Country" />}
+                                            renderInput={(params) => <TextField required {...params} label="Country" error={formValues.country.error} helperText={formValues.country.error && formValues.country.errorMessage} />}
                                         />
                                         {/*PROVINCE FIELD*/}
                                         <Autocomplete
@@ -180,14 +241,16 @@ function AddParking() {
                                             disabled={!(country)}
                                             disablePortal
                                             id="combo-box-demo2"
+                                            value={province!==""? province : null}
                                             options={provinces}
                                             key={country}
                                             sx={{ m: 1, width: '28ch' }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setProvince(value); setCity('')
+                                                setProvince(value); setCity(''); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField {...params} required label="Province" />}
+                                            renderInput={(params) => <TextField {...params} required label="Province" error={formValues.province.error} helperText={formValues.province.error && formValues.province.errorMessage} />}
                                         />
                                         {/*CITY FIELD*/}
                                         <Autocomplete
@@ -200,9 +263,11 @@ function AddParking() {
                                             sx={{ m: 1, width: '28ch' }}
                                             onChange={(e, value) => {
                                                 e.preventDefault();
-                                                setCity(value);
+                                                setCity(value); setAddress('');
+                                                reset();
                                             }}
-                                            renderInput={(params) => <TextField {...params} required label="City" />}
+                                            value={city!==""? city: null}
+                                            renderInput={(params) => <TextField {...params} required label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                         />
                                         <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '28ch', m: 1, mb: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} />
 
@@ -216,7 +281,7 @@ function AddParking() {
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
                                 <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
-                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
+                                <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} type="submit" variant="contained" color='primary'>ADD PARKING LOT</Button>
                             </Stack>
 
                         </Paper>
