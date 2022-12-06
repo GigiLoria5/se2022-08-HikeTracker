@@ -12,8 +12,8 @@ describe('test HikeAPI',()=>{
     let countries;
     let provinces = [];
     let cities = [];
-    step('T1: GET/api/countries', async function() {
-        await agent.get('/api/countries')
+    step('T1: GET/api/hikes/countries', async function() {
+        await agent.get('/api/hikes/countries')
                     .then(function(res) {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
@@ -21,9 +21,9 @@ describe('test HikeAPI',()=>{
                     });
     });
 
-    step('T2: GET/api/provinces', async function() {
+    step('T2: GET/api/hikes/provinces', async function() {
         for (const c of countries){
-            await agent.get('/api/provinces/'+c.country)
+            await agent.get('/api/hikes/provinces/'+c.country)
             .then(function(res) {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
@@ -34,9 +34,9 @@ describe('test HikeAPI',()=>{
         }
     });
 
-    step('T3: GET/api/cities', async function() {
+    step('T3: GET/api/hikes/cities', async function() {
         for (const p of provinces){
-            await agent.get('/api/cities/'+p.province)
+            await agent.get('/api/ikes/cities/'+p.province)
             .then(function(res) {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
