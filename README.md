@@ -536,7 +536,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/huts/countries`
 
-  - Description: Return an array containing all the countries where huts are available
+  - Description: Return an array containing all the countries where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -554,7 +554,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/huts/provinces/:country`
 
-  - Description: Return an array containing all the provinces of a specific country where huts are available
+  - Description: Return an array containing all the provinces of a specific country where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -572,7 +572,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/huts/cities/:province`
 
-  - Description: Return an array containing all the cities of a specific province where huts are available
+  - Description: Return an array containing all the cities of a specific province where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `500 Internal Server Error` (generic error)
@@ -583,6 +583,76 @@ Manual test reports in client/gui_test
     ...,
     {
       "city": "Condove"
+    },
+    ...
+  ]
+  ```
+
+- GET `/api/hut/:id`
+
+  - Description: Return an object contaning hut information. The user must be a local_guide or an hiker.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: 
+    - `401 Unauthorized to execute this operation!` (user not authorized) 
+    - `422 Fields validation failed` (parameter error) 
+    - `500 Internal Server Error` (generic error)
+  - Response body: Hut object, or an error message in case of failure
+
+  ```
+    {
+      "id": "3",
+      "name": "Rifugio Barfè",
+      "city": "Angrogna",
+      "province": "Turin",
+      "country": "Italy",
+      "address": "Barfè Superiore, 197, 10060 ",
+      "phone_number": "+393336277798",
+      "altitude": 1220,
+      "description": "The 'Rifugio Barfè' ...",
+      "beds_number": 30,
+      "opening_period": "Open on Saturday, Sunday and Holidays",
+      "coordinates": "44.850656, 7.191959",
+      "email": "rifugiobarfe@gmail.com",
+      "website": "www.facebook.com/rifugio.barfe",
+      "type": "alpine_hut",
+      "author_id": 6,
+      "author": "Luigi De Russis"
+    }
+  ```
+
+- GET `/api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value&hut_type=value`
+
+  - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified, the complete list is obtained. The hut_type parameter is repeated for every filter selected about hut types. The user must be a local_guide or an hiker.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: 
+    - `400 Bad Request` (parameter error) 
+    - `401 Unauthorized to execute this operation!` (user not authorized) 
+    - `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the hikes, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": "3",
+      "name": "Rifugio Barfè",
+      "city": "Angrogna",
+      "province": "Turin",
+      "country": "Italy",
+      "address": "Barfè Superiore, 197, 10060 ",
+      "phone_number": "+393336277798",
+      "altitude": 1220,
+      "description": "The 'Rifugio Barfè' ...",
+      "beds_number": 30,
+      "opening_period": "Open on Saturday, Sunday and Holidays",
+      "coordinates": "44.850656, 7.191959",
+      "email": "rifugiobarfe@gmail.com",
+      "website": "www.facebook.com/rifugio.barfe",
+      "type": "alpine_hut",
+      "author_id": 6,
+      "author": "Luigi De Russis"
     },
     ...
   ]

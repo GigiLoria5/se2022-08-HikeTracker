@@ -108,7 +108,7 @@ router.get('/huts/filters', async (req, res) => {
     const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
 
 
-    // if(usersRole.includes(req.user.role) && req.isAuthenticated()){
+    if(usersRole.includes(req.user.role) && req.isAuthenticated()){
         HutDAO.getAllHuts()
         .then(async (huts) => {
             let result = huts;
@@ -139,13 +139,24 @@ router.get('/huts/filters', async (req, res) => {
                     }
                 }
             }
-//PROBLEMA NEL CONTROLLO
-            // if(!hutTypes.includes(hut_type)){
-            //     console.log(hutTypes);
-            //     console.log(hut_type);
-            //     return res.status(401).json({ error: `Parameter error` });
-            // }
-            result = result.filter(h => hut_type.includes(h.type));
+
+            if(hut_type){
+                if(Array.isArray(hut_type)){
+                    let temp = [];
+                    for(let type of hut_type){
+                        if(!hutTypes.includes(type)){
+                            return res.status(400).json({ error: `Parameter error` });
+                        }
+                        temp = temp.concat(result.filter(h => h.type == type));
+                    }
+                    result = temp;
+                } else {
+                    if(!hutTypes.includes(hut_type)){
+                        return res.status(400).json({ error: `Parameter error` });
+                    }
+                    result = result.filter(h => hut_type.includes(h.type));
+                }
+            } 
 
             for(let hut of result){
                 const author = await UserDAO.getUserById(hut.author_id)
@@ -155,9 +166,9 @@ router.get('/huts/filters', async (req, res) => {
             res.status(200).json(result);
         })
         .catch(() => res.status(500).json({ error: `Database error while retrieving the huts` }));
-    // } else{
-    //     return res.status(401).json({ error: "Unauthorized to execute this operation!" });
-    // }
+    } else{
+        return res.status(401).json({ error: "Unauthorized to execute this operation!" });
+    }
 });    
 
 /////////////////////////////////////////////////////////////////////
