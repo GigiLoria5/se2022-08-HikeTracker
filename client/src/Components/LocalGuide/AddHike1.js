@@ -83,17 +83,20 @@ function AddHike1(props) {
 //for start points, using startPointGPSlat and startPointGPSlon, get the huts & parking lots 2km around the start point
 //put the parking list in startParkings and the hut list in startHuts
 
-    const startParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
-    const startHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+    //const startParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    //const startHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
 
 //for end points, using endPointGPSlat and endPointGPSlon, get the huts & parking lots 2km around the end point
 //put the parking list in endParkings and the hut list in endHuts
 
-    const endParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
-    const endHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+    //const endParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    //const endHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
 
 /***************************************************************************************************************/
-
+    const [startParkings, setStartParkings] = useState([]);
+    const [startHuts, setStartHuts] = useState([]);
+    const [endParkings, setEndParkings] = useState([]);
+    const [endHuts, setEndHuts] = useState([]);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -147,15 +150,25 @@ function AddHike1(props) {
             setSelectedFile(event.target.files[0]);
             setIsSelected(true);
             const gpx = await parseGPX(event.target.files[0]);
-            setStartPointGPSlat(gpx.start_point_lat)
-            setStartPointGPSlon(gpx.start_point_lon)
-            setEndPointGPSlat(gpx.end_point_lat)
-            setEndPointGPSlon(gpx.end_point_lon)
+            setStartPointGPSlat(gpx.start_point_lat);
+            setStartPointGPSlon(gpx.start_point_lon);
+            setEndPointGPSlat(gpx.end_point_lat);
+            setEndPointGPSlon(gpx.end_point_lon);
             setAscent(gpx.ascent);
             setLength(gpx.length);
             setExpectedTime(gpx.expectedTime);
-            setPeakAltitude(gpx.peak_altitude)
-            setMessage("")
+            setPeakAltitude(gpx.peak_altitude);
+
+            const startParkingList = await API.getParkingsByRadius(gpx.start_point_lat, gpx.start_point_lon, 2000);
+            const startHutsList = await API.getHutsByRadius(gpx.start_point_lat, gpx.start_point_lon, 2000);
+            const endParkingList = await API.getParkingsByRadius(gpx.end_point_lat, gpx.end_point_lon, 2000);
+            const endHutsList = await API.getHutsByRadius(gpx.end_point_lat, gpx.end_point_lon, 2000);
+            setStartParkings(startParkingList);
+            setStartHuts(startHutsList);
+            setEndParkings(endParkingList);
+            setEndHuts(endHutsList);
+            
+            setMessage("");
         }
         else {
             setSelectedFile(null);

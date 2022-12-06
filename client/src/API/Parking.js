@@ -27,6 +27,17 @@ async function addParking(parking) {
     }
 }
 
+/**
+ * 
+ * @param {*} lat 
+ * @param {*} lon 
+ * @param {*} radius (max distance in meters)
+ * @returns an array of Parking objects
+ */
+async function getParkingsByRadius(lat, lon, radius) {
+    return [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}];
+}
+
 async function deleteParking(parkingAddress) {
     const url = APIURL + '/api/parking/address/' + parkingAddress;
     try {
@@ -48,4 +59,4 @@ async function deleteParking(parkingAddress) {
     }
 }
 
-export {addParking, deleteParking}
+export {addParking, getParkingsByRadius, deleteParking}
