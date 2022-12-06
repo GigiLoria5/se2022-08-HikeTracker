@@ -31,7 +31,6 @@ import PhoneInput from 'react-phone-number-input';
  * stepTwoDone
  * setMessage
  * message
- * reset
  * 
  */
 export default function AddHutPage2(props) {
@@ -137,7 +136,7 @@ export default function AddHutPage2(props) {
                         {/* Optional informations */}
                         <Grid xs={12} sx={thm}>
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                OPTIONAL INFORMATIONS
+                                CONTACT INFORMATIONS
                             </Typography>
                         </Grid>
 
@@ -150,12 +149,12 @@ export default function AddHutPage2(props) {
                                 {/*EMAIL FIELD*/}
                                 <TextField margin="normal" variant="outlined" label="Email Address" required sx={{ width: '30ch', maxWidth: '30ch' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
 
-                            </Stack>
-                        </Grid>
+                                {/*PHONE NUMBER FIELD*/}
+                                <Grid item sx={{ width: '30ch', maxWidth: '30ch', mt: 2, mb: 1 }}>
+                                <PhoneInput placeholder="Phone number *" sx={{ width: '30ch', maxWidth: '30ch', mt: 3, mb: 2 }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                                </Grid>
 
-                        <Grid container justifyContent="center" xs={12} sx={{ ...thm, mb: 2, width: '30ch', marginLeft: 0.2 }} >
-                            {/*PHONE NUMBER FIELD*/}
-                            <PhoneInput placeholder="Phone number" sx={{ width: "100%" }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                            </Stack>
                         </Grid>
 
                         <Divider variant="middle" />
@@ -180,26 +179,14 @@ export default function AddHutPage2(props) {
 
                         {/* Buttons */}
                         <Grid container marginTop={3} justifyContent="center">
-                            {
-                                props.stepTwoDone ?
-                                    <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                        <Button onClick={() => navigate("/")} variant="contained" color='primary'>OK</Button>
-                                    </Stack>
-                                    :
-                                    <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
-                                        <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
-                                        <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
-                                        <Button type="submit" variant="contained" color='primary'>ADD HUT</Button>
-                                    </Stack>
-                            }
+                            <Stack direction={{ xs: 'column', sm: 'row' }} marginBottom={1} spacing={{ xs: 1, sm: 2, md: 4 }} >
+                                <Button onClick={() => props.setStepOneDone(false)} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button type="submit" variant="contained" color='primary'>ADD HUT</Button>
+                            </Stack>
                         </Grid>
-
-
                     </Box>
                 </Paper>
-
             </Container>
-
         </ThemeProvider >
     );
 }
