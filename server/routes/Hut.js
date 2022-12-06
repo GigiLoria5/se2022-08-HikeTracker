@@ -4,7 +4,7 @@
 const express = require('express');
 const Hut = require('../models/Hut');
 
-const { body, validationResult } = require('express-validator'); // validation middleware
+const { body, check, validationResult } = require('express-validator'); // validation middleware
 const HutDAO = require('../dao/HutDAO');
 const UserDAO = require('../dao/UserDAO');
 const { route } = require('./User');
@@ -18,9 +18,16 @@ const router = express.Router();
 // Return the countries
 router.get('/huts/countries',
     async (req, res) => {
-        HutDAO.getCountries()
+
+        const usersRole = ['hiker', 'local_guide'];
+        if(usersRole.include(req.user.role) && req.isAuthenticated()){
+            HutDAO.getCountries()
             .then((countries) => res.status(200).json(countries))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the countries` }));
+        } else{
+            return res.status(401).json({ error: "Unauthorized to execute this operation!" });
+        }
+
     });
 
 // /api/huts/provinces/:country
@@ -30,9 +37,16 @@ router.get('/huts/provinces/:country',
 
     async (req, res) => {
 
-        HutDAO.getProvincesByCountry(req.params.country)
+        const usersRole = ['hiker', 'local_guide'];
+
+        if(usersRole.include(req.user.role) && req.isAuthenticated()){
+            HutDAO.getProvincesByCountry(req.params.country)
             .then((provinces) => res.status(200).json(provinces))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the provinces` }));
+        } else{
+            return res.status(401).json({ error: "Unauthorized to execute this operation!" });
+        }
+
     });
 
 // /api/huts/cities/:province
@@ -42,9 +56,15 @@ router.get('/huts/cities/:province',
 
     async (req, res) => {
 
-        HutDAO.getCitiesByProvince(req.params.province)
+        const usersRole = ['hiker', 'local_guide'];
+
+        if(usersRole.include(req.user.role) && req.isAuthenticated()){
+            HutDAO.getCitiesByProvince(req.params.province)
             .then((cities) => res.status(200).json(cities))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the cities` }));
+        } else{
+            return res.status(401).json({ error: "Unauthorized to execute this operation!" });
+        }
     });
 
 router.get('/hut/:id',
@@ -62,15 +82,83 @@ router.get('/hut/:id',
         if(usersRole.include(req.user.role) && req.isAuthenticated()){
             HutDAO.getHutById(req.params.id)
                 .then( async (hut) => {
-                    const author = await userDao.getUserById(hike.author_id)
-                    hike.author = author.name + " " + author.surname;
-                    res.status(200).json(hike);
+                    const author = await UserDAO.getUserById(hut.author_id);
+                    hut.author = author.name + " " + author.surname;
+                    res.status(200).json(hut);
                 })
                 .catch((_) => { res.status(500).json({ error: `Database error while retrieving the hut` }); });
         } else{
             return res.status(401).json({ error: "Unauthorized to execute this operation!" });
         }
     });
+
+// /api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value&hut_type=value
+router.get('/huts/filters', async (req, res) => {
+
+    const country = req.query.country;
+    const province = req.query.province;
+    const city = req.query.city;
+    const altitude_min = req.query.altitude_min;
+    const altitude_max = req.query.altitude_max;
+    const beds_number_min = req.query.beds_number_min;
+    const beds_number_max = req.query.beds_number_max;
+    const hut_type = req.query.hut_type;
+
+    const usersRole = ['hiker', 'local_guide'];
+    const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
+
+
+    // if(usersRole.includes(req.user.role) && req.isAuthenticated()){
+        HutDAO.getAllHuts()
+        .then(async (huts) => {
+            let result = huts;
+            const equalFilters = {
+                city:city,
+                province:province,
+                country:country,
+            };
+
+            const rangeFilters = {
+                altitude : [altitude_min, altitude_max],
+                beds_number: [beds_number_min, beds_number_max]
+            }
+
+            Object.keys(equalFilters).forEach(key => {
+                if(equalFilters[key]){
+                    result = result.filter(h => equalFilters[key] == h[key]);
+                }
+            })
+            
+            for(const key in rangeFilters){
+                if(rangeFilters[key][0] && rangeFilters[key][1]){
+                    if (key === 'beds_number' && (rangeFilters[key][0] < 0 || rangeFilters[key][1] < 0)){
+                        return res.status(400).json({ error: `Parameter error` });
+                    }
+                    else{
+                        result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
+                    }
+                }
+            }
+//PROBLEMA NEL CONTROLLO
+            // if(!hutTypes.includes(hut_type)){
+            //     console.log(hutTypes);
+            //     console.log(hut_type);
+            //     return res.status(401).json({ error: `Parameter error` });
+            // }
+            result = result.filter(h => hut_type.includes(h.type));
+
+            for(let hut of result){
+                const author = await UserDAO.getUserById(hut.author_id)
+                hut.author = author.name + " " + author.surname;
+            }
+
+            res.status(200).json(result);
+        })
+        .catch(() => res.status(500).json({ error: `Database error while retrieving the huts` }));
+    // } else{
+    //     return res.status(401).json({ error: "Unauthorized to execute this operation!" });
+    // }
+});    
 
 /////////////////////////////////////////////////////////////////////
 //////                          POST                           //////

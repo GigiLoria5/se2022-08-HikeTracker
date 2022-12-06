@@ -4,6 +4,53 @@
 
 const db = require("./db");
 
+exports.getCountries = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT country FROM hut ORDER BY country`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const countries = rows.map((row => ({
+                    country: row.country
+                })));
+                resolve(countries);
+            }
+        });
+    });
+};
+
+exports.getProvincesByCountry = (country) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT province FROM hut WHERE country = ? ORDER BY province`;
+        db.all(sql, [country], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const provinces = rows.map((row => ({
+                    province: row.province
+                })));
+                resolve(provinces);
+            }
+        });
+    });
+};
+
+exports.getCitiesByProvince = (province) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT city FROM hut WHERE province = ? ORDER BY city`;
+        db.all(sql, [province], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const cities = rows.map((row => ({
+                    city: row.city
+                })));
+                resolve(cities);
+            }
+        });
+    });
+};
 
 exports.getHutById = (id) => {
     return new Promise((resolve, reject) => {
@@ -24,9 +71,44 @@ exports.getHutById = (id) => {
                     description: row.description,
                     beds_number: row.beds_number,
                     opening_period: row.opening_period,
-                    coordinates: row.coordinates
+                    coordinates: row.coordinates,
+                    email: row.email,
+                    website: row.website,
+                    type: row.type,
+                    author_id: row.user_id
                 })));
                 resolve(hut[0]);
+            }
+        });
+    });
+};
+
+exports.getAllHuts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM hut ORDER BY name`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const huts = rows.map((row => ({
+                    id: row.id,
+                    name: row.name,
+                    city: row.city,
+                    province: row.province,
+                    country: row.country,
+                    address: row.address,
+                    phone_number: row.phone_number,
+                    altitude: row.altitude,
+                    description: row.description,
+                    beds_number: row.beds_number,
+                    opening_period: row.opening_period,
+                    coordinates: row.coordinates,
+                    email: row.email,
+                    website: row.website,
+                    type: row.type,
+                    author_id: row.user_id
+                })));
+                resolve(huts);
             }
         });
     });
