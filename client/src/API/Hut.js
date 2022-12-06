@@ -29,6 +29,17 @@ async function addHut(hut) {
     }
 }
 
+/**
+ * 
+ * @param {*} lat 
+ * @param {*} lon 
+ * @param {*} radius (max distance in meters)
+ * @returns an array of Hut objects
+ */
+async function getHutsByRadius(lat, lon, radius) {
+    return [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}];
+}
+
 async function deleteHut(hutName) {
     const url = APIURL + '/api/huts/name';
     try {
@@ -54,4 +65,4 @@ async function deleteHut(hutName) {
     }
 }
 
-export {addHut,deleteHut}
+export {addHut, getHutsByRadius, deleteHut}
