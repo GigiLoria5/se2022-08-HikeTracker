@@ -36,7 +36,7 @@ describe('test HikeAPI',()=>{
 
     step('T3: GET/api/hikes/cities', async function() {
         for (const p of provinces){
-            await agent.get('/api/ikes/cities/'+p.province)
+            await agent.get('/api/hikes/cities/'+p.province)
             .then(function(res) {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
