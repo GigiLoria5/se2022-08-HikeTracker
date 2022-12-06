@@ -10,6 +10,8 @@ const UserDAO = require('../dao/UserDAO');
 const { route } = require('./User');
 const router = express.Router();
 
+const utilsHut = require('../utils/Utils_hut');
+
 /////////////////////////////////////////////////////////////////////
 //////                          GET                            //////
 /////////////////////////////////////////////////////////////////////
@@ -134,27 +136,14 @@ router.get('/huts/filters', async (req, res) => {
                     if (key === 'beds_number' && (rangeFilters[key][0] < 0 || rangeFilters[key][1] < 0)){
                         return res.status(400).json({ error: `Parameter error` });
                     }
-                    else{
-                        result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
-                    }
+                    result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
                 }
             }
 
             if(hut_type){
-                if(Array.isArray(hut_type)){
-                    let temp = [];
-                    for(let type of hut_type){
-                        if(!hutTypes.includes(type)){
-                            return res.status(400).json({ error: `Parameter error` });
-                        }
-                        temp = temp.concat(result.filter(h => h.type == type));
-                    }
-                    result = temp;
-                } else {
-                    if(!hutTypes.includes(hut_type)){
-                        return res.status(400).json({ error: `Parameter error` });
-                    }
-                    result = result.filter(h => hut_type.includes(h.type));
+                result = await utilsHut.handleHutType(result, hut_type, hutTypes);
+                if(result === -1){
+                    return res.status(400).json({ error: `Parameter error` });
                 }
             } 
 
