@@ -2,7 +2,7 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui
 import SmootherTextField from "../../SmootherTextField";
 
 const PointsInput = (props) => {
-    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription, description, parking, hut, handleParking, handleHut, huts, parkings} = props;
+    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription, description, parking, hut, handleParking, handleHut, huts, parkings } = props;
     return (
         <FormControl sx={{ width: '30ch' }}>
             <InputLabel id="demo-simple-select-label">Location type</InputLabel>
@@ -35,29 +35,38 @@ const PointsInput = (props) => {
 
             {pointType === "parking" ? (
                 <>
-                    <FormControl sx={{ width: '30ch', mt:2}}>
-                        <InputLabel id="demo-simple-select-label">Choose a parking</InputLabel>
-                        <Select value={pointValue} label="Choose a parking" onChange={ev => {setPointValue(ev.target.value)}}>
-                            {parkings.map((p) => <MenuItem key={p.id} value={p.id}>{p.title}</MenuItem>)}
+                    <FormControl sx={{ width: '30ch', mt: 2 }}>
+                        {
+                            parkings.length === 0
+                                ? <InputLabel id="demo-simple-select-label">Tere are no known parkings near this point</InputLabel>
+                                : <InputLabel id="demo-simple-select-label">Choose a parking</InputLabel>
+                        }
 
-                            
+                        <Select value={pointValue} label="Choose a parking" onChange={ev => { setPointValue(ev.target.value) }}>
+                            {parkings.map((p) => <MenuItem key={p.id} value={p.id}>{p.address}, {p.city} ({p.province}) - {p.country}</MenuItem>)}
+
+
                         </Select>
                     </FormControl>
-                </> 
+                </>
             ) : (
                 <Grid></Grid>
             )}
 
             {pointType === "hut" ? (
                 <>
-                    <FormControl sx={{ width: '30ch', mt:2}}>
-
-                        <InputLabel id="demo-simple-select-label">Choose a hut</InputLabel>
-                        <Select value={pointValue} label="Choose a hut" onChange={ev => {setPointValue(ev.target.value)}}>
-                            {huts.map((h) => <MenuItem key={h.id} value={h.id}>{h.title}</MenuItem>)}
+                    <FormControl sx={{ width: '30ch', mt: 2 }}>
+                        {
+                            huts.length === 0
+                                ? <InputLabel id="demo-simple-select-label">Tere are no known huts near this point</InputLabel>
+                                : <InputLabel id="demo-simple-select-label">Choose a hut</InputLabel>
+                        }
+                        
+                        <Select value={pointValue} label="Choose a hut" onChange={ev => { setPointValue(ev.target.value) }}>
+                            {huts.map((h) => <MenuItem key={h.id} value={h.id}>{h.name}</MenuItem>)}
                         </Select>
                     </FormControl>
-                </>             
+                </>
             ) : (
                 <Grid></Grid>
             )}

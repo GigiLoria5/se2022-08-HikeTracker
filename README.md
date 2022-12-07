@@ -494,19 +494,12 @@ Manual test reports in client/gui_test
   }
   ```
 
-- GET `/api/parking/radius`
+- GET `/api/parking`
 
-  - Description: Return an array containing all the parkings in a given radius from a given point.
-  - Request body: 
-  ```
-  {
-    "latitude": 15.5,
-    "longitude": 45.5,
-    "radius": 2000
-  }
-  ```
+  - Description: Return an array containing all the parkings.
+  - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Error responses: `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the parkings, or an error message in case of failure
 
   ```
@@ -605,17 +598,10 @@ Manual test reports in client/gui_test
   }
   ```
 
-- GET `/api/huts/radius`
+- GET `/api/huts`
 
-  - Description: Return an array containing all the parkings in a given radius from a given point.
-  - Request body: 
-  ```
-  {
-    "latitude": 15.5,
-    "longitude": 45.5,
-    "radius": 2000
-  }
-  ```
+  - Description: Return an array containing all the huts.
+  - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the parkings, or an error message in case of failure

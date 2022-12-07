@@ -18,7 +18,7 @@ const router = express.Router();
 router.post('/huts', [
     body('name').isString(),
     body('type').isString().isIn(['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other']),
-    body('beds_number').isNumeric().isInt({ min: 0}),
+    body('beds_number').isNumeric().isInt({ min: 0 }),
     body('country').isString(),
     body('province').isString(),
     body('city').isString(),
@@ -47,21 +47,21 @@ router.post('/huts', [
 
                 // Create a new hut object given the fields received from the client
                 const hut = new Hut({
-                    id:0, 
-                    name:req.body.name,
-                    city:req.body.city,
-                    province:req.body.province,
-                    country:req.body.country,
-                    address:req.body.address,
-                    altitude:req.body.altitude,
-                    description:req.body.description,
-                    beds_number:req.body.beds_number,
-                    opening_period:"",
-                    coordinates:(req.body.latitude + ", " + req.body.longitude),
-                    phone_number:req.body.phone_number,
-                    email:req.body.email,
-                    website:req.body.website,
-                    type:req.body.type
+                    id: 0,
+                    name: req.body.name,
+                    city: req.body.city,
+                    province: req.body.province,
+                    country: req.body.country,
+                    address: req.body.address,
+                    altitude: req.body.altitude,
+                    description: req.body.description,
+                    beds_number: req.body.beds_number,
+                    opening_period: "",
+                    coordinates: (req.body.latitude + ", " + req.body.longitude),
+                    phone_number: req.body.phone_number,
+                    email: req.body.email,
+                    website: req.body.website,
+                    type: req.body.type
                 })
 
                 // Checks if the hut coordinates and location infos alread exists
@@ -96,50 +96,64 @@ router.post('/huts', [
 //////                        DELETE                           //////
 /////////////////////////////////////////////////////////////////////
 
-router.delete('/huts',[body('hutId').exists().isNumeric()], async(req,res)=>{
-    try{
-        if(req.isAuthenticated()){
+router.delete('/huts', [body('hutId').exists().isNumeric()], async (req, res) => {
+    try {
+        if (req.isAuthenticated()) {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
-            
-            await HutDAO.deleteHut(req.body.hutId,req.user.id)
-            .then(() =>  res.status(200).end())
-            .catch(() => res.status(500).json({ error: `Database error` }));
 
-            
-        }else{
+            await HutDAO.deleteHut(req.body.hutId, req.user.id)
+                .then(() => res.status(200).end())
+                .catch(() => res.status(500).json({ error: `Database error` }));
+
+
+        } else {
             return res.status(401).json({ error: 'Not authorized' });
         }
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(503).json({ error: err });
     }
 });
 
-router.delete('/huts/name',[body('hutName').exists().isString()], async(req,res)=>{
-    try{
-        if(req.isAuthenticated()){
+router.delete('/huts/name', [body('hutName').exists().isString()], async (req, res) => {
+    try {
+        if (req.isAuthenticated()) {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
-            
-            await HutDAO.deleteHutByName(req.body.hutName,req.user.id)
-            .then(() =>  res.status(200).end())
-            .catch(() => res.status(500).json({ error: `Database error` }));
 
-            
-        }else{
+            await HutDAO.deleteHutByName(req.body.hutName, req.user.id)
+                .then(() => res.status(200).end())
+                .catch(() => res.status(500).json({ error: `Database error` }));
+
+
+        } else {
             return res.status(401).json({ error: 'Not authorized' });
         }
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(503).json({ error: err });
     }
+});
+
+/////////////////////////////////////////////////////////////////////
+//////                          GET                            //////
+/////////////////////////////////////////////////////////////////////
+
+router.get('/huts', async (req, res) => {
+    try {
+        const huts = await HutDAO.getAllHuts();
+        return res.status(200).json(huts);
+    }
+    catch (err) {
+        return res.status(500).json({ error: `Database error` })
+    };
 });
 
 module.exports = router;

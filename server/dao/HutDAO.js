@@ -101,3 +101,43 @@ exports.deleteHutByName = (name, userid) => {
         });
     })
 }
+
+exports.getAllHuts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM hut`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const huts = rows.map((row => ({
+                    id: row.id,
+                    name: row.name,
+                    city: row.city,
+                    province: row.province,
+                    country: row.country,
+                    address: row.address,
+                    phone_number: row.phone_number,
+                    altitude: row.altitude,
+                    description: row.description,
+                    beds_number: row.beds_number,
+                    opening_period: row.opening_period,
+                    latitude: splitCoordinates(row.coordinates, "lat"),
+                    longitude: splitCoordinates(row.coordinates, "lon"),
+                    email: row.email,
+                    website: row.website, 
+                    type: row.type
+                })));
+                resolve(huts);
+            }
+        });
+    });
+};
+
+const splitCoordinates = (coordinates, type) => {
+    const coordinatesNoSpaces = coordinates.replace(" ", ""); // Remove any possible space
+    const [lat, lon] = coordinatesNoSpaces.split(",");
+    switch(type){
+        case "lat": return lat;
+        case "lon": return lon;
+    }
+}
