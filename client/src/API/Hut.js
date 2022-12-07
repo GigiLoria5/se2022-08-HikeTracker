@@ -38,7 +38,7 @@ async function deleteHut(hutName) {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
-            body: JSON.stringify({"hutName": hutName}),
+            body: JSON.stringify({ "hutName": hutName }),
         });
         if (response.ok) {
             return true;
@@ -94,7 +94,7 @@ async function getHutsCitiesByProvince(province) {
 // Return huts by the filters
 /**
  * 
- * @param {Object} filter an object with the following fields: city, province, country, difficulty, track_length, ascent, expected_time (null if not filtered by that field)
+ * @param {Object} filter an object with the following fields: city, province, country, type, altitude and beds_number
  * @returns Array of objects
  */
 async function getHutsWithFilters(filter) {
@@ -117,7 +117,7 @@ async function getHutsWithFilters(filter) {
             country: h.country,
             address: h.address,
             phone_number: h.phone_number,
-            altitude: h.altitutde,
+            altitude: h.altitude,
             description: h.description,
             beds_number: h.beds_number,
             coordinates: h.coordinates,
@@ -158,4 +158,4 @@ async function getHutById(hutId) {
 }
 
 
-export {addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById}
+export { addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById }

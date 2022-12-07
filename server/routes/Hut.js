@@ -20,9 +20,8 @@ const utilsHut = require('../utils/Utils_hut');
 // Return the countries
 router.get('/huts/countries',
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
-        if (usersRole.include(req.user.role) && req.isAuthenticated()) {
+        if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCountries()
                 .then((countries) => res.status(200).json(countries))
                 .catch(() => res.status(500).json({ error: `Database error while retrieving the countries` }));
@@ -38,10 +37,8 @@ router.get('/huts/provinces/:country',
     check('country').exists(),
 
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
-
-        if (usersRole.include(req.user.role) && req.isAuthenticated()) {
+        if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getProvincesByCountry(req.params.country)
                 .then((provinces) => res.status(200).json(provinces))
                 .catch(() => res.status(500).json({ error: `Database error while retrieving the provinces` }));
@@ -57,10 +54,8 @@ router.get('/huts/cities/:province',
     check('province').exists(),
 
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
-
-        if (usersRole.include(req.user.role) && req.isAuthenticated()) {
+        if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCitiesByProvince(req.params.province)
                 .then((cities) => res.status(200).json(cities))
                 .catch(() => res.status(500).json({ error: `Database error while retrieving the cities` }));
@@ -73,15 +68,13 @@ router.get('/hut/:id',
     check('id').exists().isInt(),
 
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ error: "Fields validation failed" });
         }
 
-        if (usersRole.include(req.user.role) && req.isAuthenticated()) {
+        if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getHutById(req.params.id)
                 .then(async (hut) => {
                     const author = await UserDAO.getUserById(hut.author_id);
@@ -108,7 +101,6 @@ router.get('/huts/filters', async (req, res) => {
 
     const usersRole = ['hiker', 'local_guide'];
     const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
-
 
     if (!usersRole.includes(req.user.role) || !req.isAuthenticated()) {
         return res.status(401).json({ error: "Unauthorized to execute this operation!" });
@@ -232,7 +224,6 @@ router.post('/huts', [
 
 
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });

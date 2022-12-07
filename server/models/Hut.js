@@ -16,8 +16,8 @@
  * @param {string} website 
  * @param {string} type
  */
- class Hut{
-    constructor(hut){
+class Hut {
+    constructor(hut) {
         Object.keys(hut).forEach(key =>
             this[key] = hut[key]
         )
