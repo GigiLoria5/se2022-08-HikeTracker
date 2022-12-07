@@ -533,6 +533,17 @@ describe('test Add hut wrong_delete', () => {
             });
     });
 
+    step('T1.1: DELETE/api/huts/name [not authenticated]', async function () {
+        await agent
+            .delete('/api/huts/name')
+            .send({
+                "hutName": "Name",
+              })
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
+
     step('T2 login [GOOD]', (done) => {
         authenticatedUser
             .post('/api/sessions')
