@@ -12,6 +12,8 @@ import ProtectedRoute from './Utils/ProtectedRoute';
 import HikesContainer from './Components/Hikes/HikesContainer';
 import HikeDetails from './Components/Hikes/HikeDetails';
 import AddParking from "./Components/LocalGuide/AddParking"
+import HutsContainer from './Components/Hut/HutsContainer';
+import HutDetails from './Components/Hut/HutDetails';
 
 function App() {
     /* A little Router trick */
@@ -77,18 +79,24 @@ function Root() {
                 <Route path='' element={<Homepage />} />
                 <Route path='/hikes' element={<HikesContainer />} />
                 <Route path='/hikes/:hikeId' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
+                <Route path='/huts' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide']} />} >
+                    <Route path="" element={<HutsContainer />} />
+                </Route>
+                <Route path='/huts/:hutId' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide']} />} >
+                    <Route path="" element={<HutDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
+                </Route>
 
                 <Route path='/login' element={<LoginForm login={handleLogin} isloggedIn={loggedIn} message={message} setMessage={setMessage} />} />
                 <Route path='/register' element={<SignUpForm signUp={handleSignUp} message={message} setMessage={setMessage} />} />
 
-                <Route path='/local-guide-add-hikes' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                <Route path='/local-guide-add-hikes' element={<ProtectedRoute rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHike />} />
                 </Route>
-                <Route path='/local-guide-add-hut' element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
+                <Route path='/local-guide-add-hut' element={<ProtectedRoute rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddHut message={message} setMessage={setMessage} />} />
                 </Route>
-                <Route path='/local-guide-add-parking'  element={<ProtectedRoute isLoggedIn={loggedIn} loggedUserRole={loggedUser.role} rolesAllowed={['local_guide']} />} >
-                    <Route path="" element={<AddParking />} />   
+                <Route path='/local-guide-add-parking' element={<ProtectedRoute rolesAllowed={['local_guide']} />} >
+                    <Route path="" element={<AddParking />} />
                 </Route>
             </Route>
 

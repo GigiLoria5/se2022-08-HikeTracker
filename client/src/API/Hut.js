@@ -38,7 +38,7 @@ async function deleteHut(hutName) {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
-            body: JSON.stringify({"hutName": hutName}),
+            body: JSON.stringify({ "hutName": hutName }),
         });
         if (response.ok) {
             return true;
@@ -54,10 +54,13 @@ async function deleteHut(hutName) {
     }
 }
 
+
 // get
 // Return the countries
 async function getHutsCountries() {
-    const response = await fetch(new URL('/api/huts/countries', APIURL), { credentials: 'include' });
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/countries', APIURL), { credentials: 'include' });
     const countriesJson = await response.json();
     if (response.ok) {
         return countriesJson.map((c) => ({ country: c.country }));
@@ -69,7 +72,9 @@ async function getHutsCountries() {
 // get
 // Return provinces by a country
 async function getHutsProvincesByCountry(country) {
-    const response = await fetch(new URL('/api/huts/provinces/' + country, APIURL), { credentials: 'include' });
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/provinces/' + country, APIURL), { credentials: 'include' });
     const provincesJson = await response.json();
     if (response.ok) {
         return provincesJson.map((p) => ({ province: p.province }));
@@ -81,7 +86,10 @@ async function getHutsProvincesByCountry(country) {
 // get
 // Return cities by a province
 async function getHutsCitiesByProvince(province) {
-    const response = await fetch(new URL('/api/huts/cities/' + province, APIURL), { credentials: 'include' });
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const response = await fetch(new URL('/api/cities/' + province, APIURL), { credentials: 'include' });
+
     const citiesJson = await response.json();
     if (response.ok) {
         return citiesJson.map((c) => ({ city: c.city }));
@@ -98,37 +106,33 @@ async function getHutsCitiesByProvince(province) {
  * @returns Array of objects
  */
 async function getHutsWithFilters(filter) {
-    // Remove "null" field from the filter because the server does not want them specified
-    Object.keys(filter).forEach(key => {
-        if (filter[key] === null) {
-            delete filter[key];
-        }
-    });
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const hutType = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
+    const fakeHut = {
+        "name": "Rifugio Melezè",
+        "city": "Carignano",
+        "province": "Torino",
+        "country": "Italy",
+        "description": "It runs between ...",
+        "address": "Pian Melezè, 1, 12020",
+        "altitude": 1812,
+        "beds_number": 50,
+        "coordinates": "44.5741321312, 8.31231231",
+        "phone_number": "0175956410",
+        "email": "melezze@meleze.it",
+        "website": "www.meleze.it",
+        "author": "Martina Piccolo"
+    };
 
-    const searchParams = new URLSearchParams(filter);
-    const response = await fetch(new URL('/api/huts/filters?' + searchParams, APIURL), { credentials: 'include' });
-    const hutsJson = await response.json();
-    if (response.ok) {
-        return hutsJson.map((h) => ({
-            id: h.id,
-            name: h.name,
-            city: h.city,
-            province: h.province,
-            country: h.country,
-            address: h.address,
-            phone_number: h.phone_number,
-            altitude: h.altitutde,
-            description: h.description,
-            beds_number: h.beds_number,
-            coordinates: h.coordinates,
-            email: h.email,
-            website: h.website,
-            type: h.type,
-            author: h.author
-        }));
-    } else {
-        throw hutsJson;
+    const fakeHutList = [];
+
+    for (let i = 0; i < 10; i++) {
+        const newHut = { ...fakeHut, id: i + 1, name: `${fakeHut.name} ${i}`, type: hutType[Math.floor(Math.random() * (4 - 0 + 1)) + 0] };
+        fakeHutList.push(newHut);
     }
+
+    return fakeHutList;
 }
 
 /**
@@ -137,25 +141,27 @@ async function getHutsWithFilters(filter) {
  * @returns Hut object
  */
 async function getHutById(hutId) {
-    return new Promise((resolve, reject) => {
-        fetch(new URL(`/api/hut/${hutId}`, APIURL), {
-            method: "GET",
-            credentials: "include"
-        })
-            .then(async (response) => {
-                if (response.ok) {
-                    const hut = await response.json();
-                    resolve(hut);
-                } else {
-                    // errors
-                    response.json()
-                        .then((message) => { reject(message); }) // error(s) message in the response body
-                        .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
-                }
-            })
-            .catch(() => { reject({ error: "Cannot communicate with the server." }) });
-    });
+    // TO BE MODIFIED
+    // FOR NOW IS JUST A "MOCK"
+    const fakeHut = {
+        "id": 1,
+        "name": "Rifugio Melezè",
+        "city": "Carignano",
+        "province": "Torino",
+        "country": "Italy",
+        "description": "It runs between ...",
+        "address": "Pian Melezè, 1, 12020",
+        "altitude": 1812,
+        "beds_number": 50,
+        "coordinates": "44.5741321312, 8.31231231",
+        "phone_number": "0175956410",
+        "email": "melezze@meleze.it",
+        "website": "www.meleze.it",
+        "type": "alpine_hut",
+        "author": "Martina Piccolo"
+    };
+
+    return fakeHut;
 }
 
-
-export {addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById}
+export { addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById }

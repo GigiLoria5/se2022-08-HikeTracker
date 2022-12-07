@@ -232,7 +232,6 @@ router.post('/huts', [
 
 
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });

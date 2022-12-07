@@ -20,16 +20,16 @@ import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
 import DifficultySelector from './AddHike/DifficultySelector';
-import { timeToHHMM } from '../../Utils/TimeFormat';
+import { timeToHHMM } from '../../Utils/TimeUtils';
 
 
 function AddHike2(props) {
     const [message, setMessage] = useState("");
-    const setStepOneDone=props.setStepOneDone
-    const computedExpectedTime=props.expectedTime
+    const setStepOneDone = props.setStepOneDone
+    const computedExpectedTime = props.expectedTime
 
-    const ascent=props.ascent
-    const length=props.length
+    const ascent = props.ascent
+    const length = props.length
 
     const [title, setTitle] = useState("");
     const [country, setCountry] = useState("");
@@ -41,9 +41,9 @@ function AddHike2(props) {
     const [description, setDescription] = useState("");
     const [expectedTime, setExpectedTime] = useState(0.0);
 
-    const selectedFile=props.selectedFile
-    const peak_altitude=props.peakAltitude
-    const setNewHike=props.setNewHike
+    const selectedFile = props.selectedFile
+    const peak_altitude = props.peakAltitude
+    const setNewHike = props.setNewHike
 
     const [refPointMessage, setRefPointMessage] = useState("");
     const [countries, setCountries] = useState([]);
@@ -61,20 +61,20 @@ function AddHike2(props) {
 
     const [points, setPoints] = useState([]);
 
-    const startPointDescription=props.startPointDescription
-    const endPointDescription=props.endPointDescription
+    const startPointDescription = props.startPointDescription
+    const endPointDescription = props.endPointDescription
 
-    const startPointGPSlat=props.startPointGPSlat
-    const startPointGPSlon=props.startPointGPSlon
+    const startPointGPSlat = props.startPointGPSlat
+    const startPointGPSlon = props.startPointGPSlon
 
-    const endPointGPSlat=props.endPointGPSlat
-    const endPointGPSlon=props.endPointGPSlon
+    const endPointGPSlat = props.endPointGPSlat
+    const endPointGPSlon = props.endPointGPSlon
 
-    const startPointType=props.startPointType
-    const endPointType=props.endPointType
+    const startPointType = props.startPointType
+    const endPointType = props.endPointType
 
-    const startPointValue=props.startPointValue
-    const endPointValue=props.endPointValue
+    const startPointValue = props.startPointValue
+    const endPointValue = props.endPointValue
 
     const Description = () => {
         const [localDescription, setLocalDescription] = React.useState(description);
@@ -158,7 +158,7 @@ function AddHike2(props) {
     };
 
     const addRefPoints = (lat, long) => {
-        if(refPoints.filter(p => (p.latitude == lat && p.longitude == long)).length > 0) return;
+        if (refPoints.filter(p => (p.latitude == lat && p.longitude == long)).length > 0) return;
         if (!addingRefPoint && !editingRefPoint) {
             setAddingRefPoint(true);
             setRefPoints([{ latitude: lat, longitude: long, description: "test" }, ...refPoints])
@@ -255,20 +255,20 @@ function AddHike2(props) {
             return;
         }
         const hike = new Hike({
-            title:title,
-            peak_altitude:peak_altitude,
-            city:city,
-            province:province,
-            country:country,
-            description:description,
-            ascent:ascent,
-            track_length:length,
-            expected_time:computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
-            difficulty:difficultyFromState(difficulty),
-            start_point:start_point,
-            end_point:end_point,
-            reference_points:referencePoint,
-            gpx:selectedFile
+            title: title,
+            peak_altitude: peak_altitude,
+            city: city,
+            province: province,
+            country: country,
+            description: description,
+            ascent: ascent,
+            track_length: length,
+            expected_time: computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
+            difficulty: difficultyFromState(difficulty),
+            start_point: start_point,
+            end_point: end_point,
+            reference_points: referencePoint,
+            gpx: selectedFile
         }
         )
         API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
@@ -333,7 +333,7 @@ function AddHike2(props) {
                                 {computedExpectedTime > 0 ?
                                     <TextField margin="normal" variant="outlined" label="Expected time" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }} value={timeToHHMM(computedExpectedTime)} disabled />
                                     :
-                                    <Stack direction="row" sx={{ width: '30ch'}} justifyContent='space-between'>
+                                    <Stack direction="row" sx={{ width: '30ch' }} justifyContent='space-between'>
                                         <TextField
                                             label="Expected time h"
                                             value={hh}
@@ -343,7 +343,7 @@ function AddHike2(props) {
                                                     if (e.target.value < 0) setHH(0);
                                                     else setHH(e.target.value);
                                                 }
-                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, ml:0, verticalAlign: 'middle', display: 'inline-flex'}} />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, ml: 0, verticalAlign: 'middle', display: 'inline-flex' }} />
                                         <TextField
                                             label="Expected time min"
                                             align="right"
@@ -355,7 +355,7 @@ function AddHike2(props) {
                                                     else if (e.target.value < 0) setMM(0);
                                                     else setMM(e.target.value);
                                                 }
-                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, mr:0, verticalAlign: 'middle', display: 'inline-flex'}} step="1" />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, mr: 0, verticalAlign: 'middle', display: 'inline-flex' }} step="1" />
                                     </Stack>
                                 }
 
@@ -462,7 +462,7 @@ function AddHike2(props) {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => {setStepOneDone(false); setNewHike(false)}} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => { setStepOneDone(false); setNewHike(false) }} variant="contained" color='secondary'>GO BACK</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 
