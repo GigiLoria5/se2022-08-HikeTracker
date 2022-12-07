@@ -133,7 +133,7 @@ export default function AddHut(props) {
         }
         );
 
-        const response = await API.addHut(hut)
+        await API.addHut(hut)
             .then(_a => navigate("/")) //navigate("/huts") when available?
             .catch(e => {
                 const obj = JSON.parse(e);

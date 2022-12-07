@@ -10,9 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
-import { useNavigate, Link } from 'react-router-dom';
 import Container from '@mui/material/Container';
-
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 
@@ -34,8 +32,6 @@ import PhoneInput from 'react-phone-number-input';
  * 
  */
 export default function AddHutPage2(props) {
-
-    const navigate = useNavigate();
 
 
     const theme = createTheme({
@@ -66,7 +62,7 @@ export default function AddHutPage2(props) {
         if (form.checkValidity() === false) {
             event.stopPropagation();
         } else {
-            props.handleSubmission(event);
+        props.handleSubmission(event);
         }
     };
 

@@ -42,6 +42,8 @@ export default function AddHutPage1(props) {
     useEffect(() => {
         props.setLatitude(position.lat);
         props.setLongitude(position.lng);
+        ResetErrors(props.formValues)
+    // eslint-disable-next-line
     }, [position]);
     
 
@@ -109,6 +111,7 @@ export default function AddHutPage1(props) {
         const res = validateAddress(props.location, props.country, props.province, props.city);
 
         if (res === "true") {
+            props.setMessage('');
             props.setStepOneDone(true)
         } else {
             printErrors(res);
