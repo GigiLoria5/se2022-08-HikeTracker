@@ -1,4 +1,7 @@
 import { APIURL } from './APIUrl';
+import { Parking } from '../Utils/Parking';
+import { isPointInsideRange } from '../Utils/GeoUtils';
+
 /* Credentials required  */
 /**
  *
@@ -35,7 +38,27 @@ async function addParking(parking) {
  * @returns an array of Parking objects
  */
 async function getParkingsByRadius(lat, lon, radius) {
-    return [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}];
+
+    const response = await fetch(new URL('/api/parking', APIURL));
+    const parkingsJson = await response.json();
+
+    if (response.ok) {
+        let parkings = parkingsJson.map((p) => new Parking( 
+            p.id, 
+            p.city, 
+            p.province, 
+            p.country, 
+            p.longitude, 
+            p.latitude, 
+            p.address
+        ));
+
+        parkings = parkings.filter((p) => isPointInsideRange({latitude:lat, longitude:lon}, radius, {latitude:p.latitude, longitude:p.longitude}));
+        return parkings;
+
+    } else {
+        throw parkingsJson;
+    }
 }
 
 async function deleteParking(parkingAddress) {

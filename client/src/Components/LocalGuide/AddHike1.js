@@ -14,51 +14,52 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
 import PointsInput from './AddHike/PointsInput';
+import API from './../../API'
 
 
 
 function AddHike1(props) {
     const [message, setMessage] = useState("");
 
-    const setStepOneDone=props.setStepOneDone
+    const setStepOneDone = props.setStepOneDone
 
-    const setExpectedTime=props.setExpectedTime
-    const setAscent=props.setAscent
-    const setLength=props.setLength
+    const setExpectedTime = props.setExpectedTime
+    const setAscent = props.setAscent
+    const setLength = props.setLength
 
-    const selectedFile=props.selectedFile
-    const setSelectedFile=props.setSelectedFile
-    const setPeakAltitude=props.setPeakAltitude
+    const selectedFile = props.selectedFile
+    const setSelectedFile = props.setSelectedFile
+    const setPeakAltitude = props.setPeakAltitude
     const newHike = props.newHike
 
     const [isSelected, setIsSelected] = useState(false);
 
 
 
-    const startPointDescription=props.startPointDescription
-    const setStartPointDescription=props.setStartPointDescription
-    const endPointDescription=props.endPointDescription
-    const setEndPointDescription=props.setEndPointDescription
+    const startPointDescription = props.startPointDescription
+    const setStartPointDescription = props.setStartPointDescription
+    const endPointDescription = props.endPointDescription
+    const setEndPointDescription = props.setEndPointDescription
 
-    const startPointGPSlat=props.startPointGPSlat
-    const setStartPointGPSlat=props.setStartPointGPSlat
-    const startPointGPSlon=props.startPointGPSlon
-    const setStartPointGPSlon=props.setStartPointGPSlon
+    const startPointGPSlat = props.startPointGPSlat
+    const setStartPointGPSlat = props.setStartPointGPSlat
+    const startPointGPSlon = props.startPointGPSlon
+    const setStartPointGPSlon = props.setStartPointGPSlon
 
-    const endPointGPSlat=props.endPointGPSlat
-    const setEndPointGPSlat=props.setEndPointGPSlat
-    const endPointGPSlon=props.endPointGPSlon
-    const setEndPointGPSlon=props.setEndPointGPSlon
+    const endPointGPSlat = props.endPointGPSlat
+    const setEndPointGPSlat = props.setEndPointGPSlat
+    const endPointGPSlon = props.endPointGPSlon
+    const setEndPointGPSlon = props.setEndPointGPSlon
 
-    const startPointType=props.startPointType
-    const setStartPointType=props.setStartPointType
-    const endPointType=props.endPointType
-    const setEndPointType=props.setEndPointType
+    const startPointType = props.startPointType
+    const setStartPointType = props.setStartPointType
+    const endPointType = props.endPointType
+    const setEndPointType = props.setEndPointType
 
-    const startPointValue=props.startPointValue
-    const setStartPointValue=props.setStartPointValue
-    const endPointValue=props.endPointValue
-    const setEndPointValue=props.setEndPointValue
+    const startPointValue = props.startPointValue
+    const setStartPointValue = props.setStartPointValue
+    const endPointValue = props.endPointValue
+    const setEndPointValue = props.setEndPointValue
 
 
     const prevStartPoint = {
@@ -77,22 +78,22 @@ function AddHike1(props) {
         value: endPointValue
     };
 
-/************************************* TO REPLACE WITH LISTs FROM API *******************************************/
-/********************* each element of a list has an id and a title, like shown below ***************************/
+    /************************************* TO REPLACE WITH LISTs FROM API *******************************************/
+    /********************* each element of a list has an id and a title, like shown below ***************************/
 
-//for start points, using startPointGPSlat and startPointGPSlon, get the huts & parking lots 2km around the start point
-//put the parking list in startParkings and the hut list in startHuts
+    //for start points, using startPointGPSlat and startPointGPSlon, get the huts & parking lots 2km around the start point
+    //put the parking list in startParkings and the hut list in startHuts
 
     //const startParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
     //const startHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
 
-//for end points, using endPointGPSlat and endPointGPSlon, get the huts & parking lots 2km around the end point
-//put the parking list in endParkings and the hut list in endHuts
+    //for end points, using endPointGPSlat and endPointGPSlon, get the huts & parking lots 2km around the end point
+    //put the parking list in endParkings and the hut list in endHuts
 
     //const endParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
     //const endHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
 
-/***************************************************************************************************************/
+    /***************************************************************************************************************/
     const [startParkings, setStartParkings] = useState([]);
     const [startHuts, setStartHuts] = useState([]);
     const [endParkings, setEndParkings] = useState([]);
@@ -124,6 +125,25 @@ function AddHike1(props) {
         }
         // eslint-disable-next-line
     }, [newHike]);
+
+    useEffect( () => {
+
+        const getParkingsHutsLists = async () => {
+            const startParkingList = await API.getParkingsByRadius(startPointGPSlat, startPointGPSlon, 2000);
+            const startHutsList = await API.getHutsByRadius(startPointGPSlat, startPointGPSlon, 2000);
+            const endParkingList = await API.getParkingsByRadius(endPointGPSlat, endPointGPSlon, 2000);
+            const endHutsList = await API.getHutsByRadius(endPointGPSlat, endPointGPSlon, 2000);
+            setStartParkings(startParkingList);
+            setStartHuts(startHutsList);
+            setEndParkings(endParkingList);
+            setEndHuts(endHutsList);
+        };
+
+        if (isSelected) {
+            getParkingsHutsLists();
+        }
+
+    }, [isSelected]);
 
     const theme = createTheme({
         palette: {
@@ -158,16 +178,6 @@ function AddHike1(props) {
             setLength(gpx.length);
             setExpectedTime(gpx.expectedTime);
             setPeakAltitude(gpx.peak_altitude);
-
-            const startParkingList = await API.getParkingsByRadius(gpx.start_point_lat, gpx.start_point_lon, 2000);
-            const startHutsList = await API.getHutsByRadius(gpx.start_point_lat, gpx.start_point_lon, 2000);
-            const endParkingList = await API.getParkingsByRadius(gpx.end_point_lat, gpx.end_point_lon, 2000);
-            const endHutsList = await API.getHutsByRadius(gpx.end_point_lat, gpx.end_point_lon, 2000);
-            setStartParkings(startParkingList);
-            setStartHuts(startHutsList);
-            setEndParkings(endParkingList);
-            setEndHuts(endHutsList);
-            
             setMessage("");
         }
         else {
@@ -188,7 +198,7 @@ function AddHike1(props) {
             setStartPointValue("")
         }
     }
-    
+
 
     /* Function called on end point input click (PointsInput component) */
     const handleChange2 = (e) => {
@@ -225,7 +235,7 @@ function AddHike1(props) {
         }
         return true;
     }
-   
+
     const thm = {
         display: 'flex',
         flexDirection: 'column',
@@ -287,10 +297,10 @@ function AddHike1(props) {
                                                 description={startPointDescription}
                                                 handleChange={handleChange1}
                                                 setPointValue={setStartPointValue}
-                                                setPointDescription={setStartPointDescription} 
+                                                setPointDescription={setStartPointDescription}
                                                 parkings={startParkings}
                                                 huts={startHuts}
-                                                />
+                                            />
                                         </Grid>
                                         {/*****************************************************END POINT***********************************************/}
 
@@ -304,10 +314,10 @@ function AddHike1(props) {
                                                 description={endPointDescription}
                                                 handleChange={handleChange2}
                                                 setPointValue={setEndPointValue}
-                                                setPointDescription={setEndPointDescription} 
+                                                setPointDescription={setEndPointDescription}
                                                 parkings={endParkings}
                                                 huts={endHuts}
-                                                />
+                                            />
                                         </Grid>
                                     </Grid>
                                 </div>
