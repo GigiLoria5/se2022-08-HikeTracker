@@ -127,17 +127,20 @@ router.get('/huts/filters', async (req, res) => {
                 beds_number: [beds_number_min, beds_number_max]
             }
 
+            //Filter by equal filters (city, province, country)
             Object.keys(equalFilters).forEach(key => {
                 if (equalFilters[key]) {
                     result = result.filter(h => equalFilters[key] == h[key]);
                 }
             })
 
+            //Filter by range filters (altitudemin-altitudemax, bedsnumbermin-bedsnumbermax)
             result = await utilsHut.handleRangeFilters(result, rangeFilters);
             if (result === -1) {
                 return res.status(400).json({ error: `Parameter error` });
             }
 
+            //Filter by hut type
             if (hut_type) {
                 result = await utilsHut.handleHutType(result, hut_type, hutTypes);
                 if (result === -1) {
@@ -145,6 +148,7 @@ router.get('/huts/filters', async (req, res) => {
                 }
             }
 
+            //Add author name and surname given its id
             for (let hut of result) {
                 const author = await UserDAO.getUserById(hut.author_id)
                 hut.author = author.name + " " + author.surname;
