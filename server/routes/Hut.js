@@ -140,17 +140,20 @@ router.get('/huts/filters', [
                 beds_number: [beds_number_min, beds_number_max]
             }
 
+            //Filter by equal filters (city, province, country)
             Object.keys(equalFilters).forEach(key => {
                 if (equalFilters[key]) {
                     result = result.filter(h => equalFilters[key] == h[key]);
                 }
             })
 
+            //Filter by range filters (altitudemin-altitudemax, bedsnumbermin-bedsnumbermax)
             result = await utilsHut.handleRangeFilters(result, rangeFilters);
             if (result === -1) {
                 return res.status(422).json({ error: "Fields validation failed" });
             }
 
+            //Filter by hut type
             if (hut_type) {
                 result = await utilsHut.handleHutType(result, hut_type);
                 if (result === -1) {
@@ -229,9 +232,6 @@ router.post('/huts', [
                 }
 
             } else {
-                if (user === undefined) {
-                    return res.status(404).json({ error: "User not found" });
-                }
                 return res.status(401).json({ error: "Unauthorized to execute this operation!" });
             }
         }
@@ -266,7 +266,6 @@ router.delete('/huts', [body('hutId').exists().isNumeric()], async (req, res) =>
             return res.status(401).json({ error: 'Not authorized' });
         }
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });
@@ -289,7 +288,6 @@ router.delete('/huts/name', [body('hutName').exists().isString()], async (req, r
             return res.status(401).json({ error: 'Not authorized' });
         }
     } catch (err) {
-        console.log(err);
         return res.status(503).json({ error: err });
     }
 });
