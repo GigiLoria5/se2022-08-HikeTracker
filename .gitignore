@@ -2,3 +2,4 @@
 /server/node_modules/
 /server/mochawesome-report
 /server/.nyc_output/
+client/reports/test-report.xml

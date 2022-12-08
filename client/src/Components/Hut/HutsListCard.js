@@ -3,18 +3,12 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { hutTypeLabel } from '../../Utils/Hut';
 
 function HutsListCard(props) {
     const { hut } = props;
     const navigate = useNavigate();
     const { id, city, province, country, type, name, altitude, description, author } = hut;
-    const typeLabel = {
-        'alpine_hut': 'Alpine Hut',
-        'fixed_bivouac': 'Fixed Bivouac',
-        'unmanaged_hut': 'Unmanaged Hut',
-        'hiking_hut': 'Hiking Hut',
-        'other': 'Uncategorized Hut'
-    };
 
     function handleNavigation() {
         return (event) => { event.preventDefault(); navigate(`/huts/${id}`); };
@@ -31,7 +25,7 @@ function HutsListCard(props) {
                                 {city}, {province}, {country} &nbsp;
                             </Typography>
                             <Typography gutterBottom variant="body2" color="text.secondary" margin={0} marginLeft={"auto"}>
-                                {typeLabel[type]}
+                                {hutTypeLabel[type]}
                             </Typography>
                         </Box>
                         {/* Name & Altitude */}

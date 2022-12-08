@@ -6,6 +6,7 @@ import API from '../../API';
 import { emptyFilter } from '../../Utils/Hut';
 import NameFilter from '../Filters/NameFilter';
 import GeographicFilter from '../Filters/GeographicFilter';
+import HutTypeFilter from '../Filters/HutTypeFilter';
 
 const theme = createTheme({
     palette: {
@@ -75,13 +76,16 @@ function HutsFilterPanel(props) {
     const filterComponents = (
         <>
             {/* Search By Name */}
-            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHuts} resetSearch={resetSearch} setResetSearch={setResetSearch} />
+            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHuts} resetSearch={resetSearch} setResetSearch={setResetSearch} label="Search by hut name..." />
             {/* Geographic Area Filter */}
             <GeographicFilter filter={filter} setFilter={setFilter} huts={huts} setLoadingHikes={setLoadingHuts}
                 resetGeographic={resetGeographic} setResetGeographic={setResetGeographic}
                 countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList}
                 position={position} setPosition={setPosition} radius={radius} setRadius={setRadius}
             />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Hut Type Filter */}
+            <HutTypeFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHuts} resetHutType={resetHutType} setResetHutType={setResetHutType} />
         </>
     );
 

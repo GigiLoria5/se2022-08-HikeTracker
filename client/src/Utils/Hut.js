@@ -61,9 +61,19 @@ function validateHut(hut) {
 
 const emptyFilter = {
     "country": null, "province": null, "city": null,
-    "hut_type": null,
+    "hut_type": [],
     "altitude_min": null, "altitude_max": null,
     "beds_number_min": null, "beds_number_max": null
 };
 
-module.exports = { Hut, validateHut, emptyFilter };
+const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
+
+const hutTypeLabel = {
+    'alpine_hut': 'Alpine Hut',
+    'fixed_bivouac': 'Fixed Bivouac',
+    'unmanaged_hut': 'Unmanaged Hut',
+    'hiking_hut': 'Hiking Hut',
+    'other': 'Uncategorized Hut'
+};
+
+module.exports = { Hut, validateHut, emptyFilter, hutTypes, hutTypeLabel };

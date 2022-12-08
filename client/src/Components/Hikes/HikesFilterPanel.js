@@ -81,7 +81,7 @@ const HikesFilterPanel = (props) => {
     const filterComponents = (
         <>
             {/* Search By Name */}
-            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHikes} resetSearch={resetSearch} setResetSearch={setResetSearch} />
+            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHikes} resetSearch={resetSearch} setResetSearch={setResetSearch} label="Search by hike title..." />
             {/* Geographic Area Filter */}
             <GeographicFilter filter={filter} setFilter={setFilter} hikes={hikes} setLoadingHikes={setLoadingHikes}
                 resetGeographic={resetGeographic} setResetGeographic={setResetGeographic}

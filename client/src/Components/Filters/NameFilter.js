@@ -50,7 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function NameFilter(props) {
-    const { setSearch, setLoadingHikes, resetSearch, setResetSearch } = props;
+    const { setSearch, setLoadingHikes, resetSearch, setResetSearch, label } = props;
     const [timer, setTimer] = React.useState(null);
     const [value, setValue] = React.useState(null);
 
@@ -91,7 +91,7 @@ function NameFilter(props) {
                         <SearchIcon />
                     </SearchIconWrapper>
                     <StyledInputBase
-                        placeholder="Search by hike title…"
+                        placeholder={label}
                         inputProps={{ 'aria-label': 'search' }}
                         onChange={(e) => { changeDelay(e.target.value); }}
                         value={value !== null ? value : ""}

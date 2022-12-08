@@ -29,9 +29,9 @@ function HutsContainer() {
                     ? hutsFiltered
                     : hutsFiltered.filter(h => {
                         const coordinates = h.coordinates.split(', ');
-                        const hikeLatitude = coordinates[0];
-                        const hikeLongitude = coordinates[1];
-                        return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });
+                        const hutLatitude = coordinates[0];
+                        const hutLongitude = coordinates[1];
+                        return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hutLatitude, longitude: hutLongitude });
                     });
                 // Set Huts After Filtered
                 setHuts(hutsFiltered);
@@ -42,6 +42,8 @@ function HutsContainer() {
             });
         // eslint-disable-next-line 
     }, [filter.country, filter.province, filter.city,
+    filter.hut_type.length, filter.altitude_max, filter.altitude_min,
+    filter.beds_number_max, filter.beds_number_min,
     position.lat, position.lng, radius, search]);
 
     useEffect(() => {
