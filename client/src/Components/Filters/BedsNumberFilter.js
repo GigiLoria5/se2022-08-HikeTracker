@@ -20,9 +20,9 @@ function BedsNumberFilter(props) {
     // This is needed for the setup of the max value
     useEffect(() => {
         if (huts.length > 0 && maxBedsNumber === null) {
-            const newMaxLength = Math.max(...huts.map(h => parseInt(h.beds_number)));
-            setValue([0, newMaxLength]);
-            setBedsNumber(newMaxLength);
+            const newMaxBedsNumber = Math.max(...huts.map(h => parseInt(h.beds_number)));
+            setValue([0, newMaxBedsNumber]);
+            setBedsNumber(newMaxBedsNumber);
         }
         // eslint-disable-next-line 
     }, [huts.length]);
@@ -30,9 +30,9 @@ function BedsNumberFilter(props) {
     // This is needed in case of a new maxium length (hike added during the navigation)
     useEffect(() => {
         if (huts.length > 0) {
-            const newMaxLength = Math.max(...huts.map(h => parseInt(h.beds_number)));
-            if (newMaxLength > maxBedsNumber)
-                setBedsNumber(newMaxLength);
+            const newMaxBedsNumber = Math.max(...huts.map(h => parseInt(h.beds_number)));
+            if (newMaxBedsNumber > maxBedsNumber)
+                setBedsNumber(newMaxBedsNumber);
         }
         // eslint-disable-next-line 
     }, [huts.length]);

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, ClickAwayListener, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
+import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 import { splitCoordinates } from '../../Utils/GeoUtils';
 import PointViewer from '../Map/PointViewer';
 
@@ -15,6 +15,10 @@ const theme = createTheme({
 
 function HutDetailsAdditional(props) {
     const { hut, deviceFilterPanelOpen, toggleFilterPanelDrawer } = props;
+
+    const openInNewTab = url => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
 
     // Additional Information: address, phone number, email and website (if any)
     const hutDetailsAdditional = (
@@ -35,6 +39,10 @@ function HutDetailsAdditional(props) {
                         <Typography gutterBottom variant="body2" color="text.secondary" margin={0} paddingRight={2}>
                             {hut.address}
                         </Typography>
+                        {/* Point Link to Google Maps */}
+                        <IconButton color="warning" aria-label="reset radius" component="label" sx={{ marginLeft: "auto", padding: 0 }} onClick={() => openInNewTab(`https://maps.google.com/maps?q=${hut.coordinates}`)}>
+                            <AssistantDirectionIcon />
+                        </IconButton>
                     </Box>
                 </Box >
             </Box>
@@ -89,7 +97,7 @@ function HutDetailsAdditional(props) {
                     Website
                 </Typography>
                 {/* Point Description */}
-                {hut.website === null
+                {!hut.website
                     ? <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>
                         No website available for this hut
                     </Typography>

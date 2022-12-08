@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { LayersControl, MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet';
-import markerStart from '../../Assets/Map/start-flag.png';
+import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 import { Icon } from 'leaflet';
 
 function LocationMarker(props) {
     const { position, label } = props;
 
     return (
-        <Marker position={position} icon={new Icon({ iconUrl: markerStart, iconSize: [29, 41], iconAnchor: [12, 41] })} >
+        <Marker position={position} icon={new Icon({ iconUrl: markerIconBlue, iconSize: [25, 41], iconAnchor: [12, 41] })} >
             <Tooltip direction="bottom" offset={[1, 0]} opacity={1}>
                 {label}
             </Tooltip>
@@ -22,7 +22,7 @@ function PointViewer(props) {
     return (
         <MapContainer
             center={[lat, lng]}
-            zoom={15}
+            zoom={18}
             scrollWheelZoom={true}
             style={{ height: height, maxWidth: width }}
         >

@@ -38,6 +38,7 @@ function HutTypeFilter(props) {
             <Autocomplete
                 multiple
                 id="checkboxes-hut-type"
+                value={value}
                 options={hutTypes}
                 disableCloseOnSelect
                 getOptionLabel={(option) => hutTypeLabel[option]}

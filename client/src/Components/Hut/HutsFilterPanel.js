@@ -90,10 +90,10 @@ function HutsFilterPanel(props) {
             <HutTypeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} resetHutType={resetHutType} setResetHutType={setResetHutType} />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Altitude Filter */}
-            <AltitudeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetAltitude={resetHutType} setResetAltitude={setResetHutType} />
+            <AltitudeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetAltitude={resetAltitude} setResetAltitude={setResetAltitude} />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Beds Number Filter */}
-            <BedsNumberFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetBedsNumber={resetHutType} setResetBedsNumber={setResetHutType} />
+            <BedsNumberFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetBedsNumber={resetBedsNumber} setResetBedsNumber={setResetBedsNumber} />
         </>
     );
 
@@ -152,7 +152,7 @@ function HutsFilterPanel(props) {
             {/* Filter Panel - Small Screen */}
             {deviceFilterPanelOpen &&
                 <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                    <React.Fragment key={"filter-left-panel"} >
+                    <React.Fragment key={"filter-left-panel-huts"} >
                         <ClickAwayListener onClickAway={toggleFilterPanelDrawer(false)}>
                             <Drawer
                                 anchor={"left"}

@@ -158,7 +158,7 @@ const HikesFilterPanel = (props) => {
             {/* Filter Panel - Small Screen */}
             {deviceFilterPanelOpen &&
                 <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                    <React.Fragment key={"filter-left-panel"} >
+                    <React.Fragment key={"filter-left-panel-hikes"} >
                         <ClickAwayListener onClickAway={toggleFilterPanelDrawer(false)}>
                             <Drawer
                                 anchor={"left"}

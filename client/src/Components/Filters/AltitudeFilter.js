@@ -20,9 +20,9 @@ function AltitudeFilter(props) {
     // This is needed for the setup of the max value
     useEffect(() => {
         if (huts.length > 0 && maxAltitude === null) {
-            const newMaxLength = Math.max(...huts.map(h => parseInt(h.altitude)));
-            setValue([0, newMaxLength]);
-            setMaxAltitude(newMaxLength);
+            const newMaxAltitude = Math.max(...huts.map(h => parseInt(h.altitude)));
+            setValue([0, newMaxAltitude]);
+            setMaxAltitude(newMaxAltitude);
         }
         // eslint-disable-next-line 
     }, [huts.length]);
@@ -30,9 +30,9 @@ function AltitudeFilter(props) {
     // This is needed in case of a new maxium length (hut added during the navigation)
     useEffect(() => {
         if (huts.length > 0) {
-            const newMaxLength = Math.max(...huts.map(h => parseInt(h.altitude)));
-            if (newMaxLength > maxAltitude)
-                setMaxAltitude(newMaxLength);
+            const newMaxAltitude = Math.max(...huts.map(h => parseInt(h.altitude)));
+            if (newMaxAltitude > maxAltitude)
+                setMaxAltitude(newMaxAltitude);
         }
         // eslint-disable-next-line 
     }, [huts.length]);
