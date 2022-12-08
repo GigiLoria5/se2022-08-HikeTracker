@@ -542,7 +542,9 @@ Manual test reports in client/gui_test
   - Description: Return an array containing all the countries where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized)  
+    - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the countries, or an error message in case of failure
 
   ```
@@ -560,7 +562,11 @@ Manual test reports in client/gui_test
   - Description: Return an array containing all the provinces of a specific country where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
+  - Error responses: 
+    - `401 Unauthorized to execute this operation!` (user not authorized) 
+    - `404 Page not found` (missing parameter) 
+    - `422 Fields validation failed` (parameter error) 
+    - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the provinces, or an error message in case of failure
 
   ```
@@ -578,14 +584,18 @@ Manual test reports in client/gui_test
   - Description: Return an array containing all the cities of a specific province where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized)
+    - `404 Page not found` (missing parameter)  
+    - `422 Fields validation failed` (parameter error) 
+    - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the cities, or an error message in case of failure
 
   ```
   [
     ...,
     {
-      "city": "Condove"
+      "city": "Bellino"
     },
     ...
   ]
@@ -598,6 +608,7 @@ Manual test reports in client/gui_test
   - Response: `200 OK` (success)
   - Error responses: 
     - `401 Unauthorized to execute this operation!` (user not authorized) 
+    - `404 Page not found` (missing parameter)
     - `422 Fields validation failed` (parameter error) 
     - `500 Internal Server Error` (generic error)
   - Response body: Hut object, or an error message in case of failure
@@ -624,14 +635,14 @@ Manual test reports in client/gui_test
     }
   ```
 
-- GET `/api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value&hut_type=value`
+- GET `/api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value`
 
-  - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified, the complete list is obtained. The hut_type parameter is repeated for every filter selected about hut types. The user must be a local_guide or an hiker.
+  - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified, the complete list is obtained. The hut_type parameter is repeated for every filter selected about hut types (0-5 times, example:&hut_type=value&hut_type=value&hut_type=value&hut_type=value&hut_type=value). The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: 
-    - `400 Bad Request` (parameter error) 
     - `401 Unauthorized to execute this operation!` (user not authorized) 
+    - `422 Fields validation failed` (parameter error)
     - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the hikes, or an error message in case of failure
 
@@ -699,120 +710,6 @@ Manual test reports in client/gui_test
   {
       "error": "message text"
   }
-  ```
-
-  - GET `/api/huts/countries`
-
-  - Description: Return an array containing all the countries where huts are available
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the countries, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "country": "Italy"
-    },
-    ...
-  ]
-  ```
-
-- GET `/api/huts/provinces/:country`
-
-  - Description: Return an array containing all the provinces of a specific country where huts are available
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the provinces, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "province": "Cuneo"
-    },
-    ...
-  ]
-  ```
-
-- GET `/api/huts/cities/:province`
-
-  - Description: Return an array containing all the cities of a specific province where huts are available
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the cities, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "city": "Condove"
-    },
-    ...
-  ]
-  ```
-
-- GET `/api/huts/:id`
-
-  - Description: Return an object contaning hut information
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions) `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: Hut object, or an error message in case of failure
-
-  ```
-    {
-      "id": 1,
-      "name": "Rifugio Melezè",
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "address": "Pian Melezè, 1, 12020",
-      "altitude": 1812,
-      "beds_number": 50,
-      "coordinates": "44.5741321312, 8.31231231",
-      "phone_number": "0175956410",
-      "email": "melezze@meleze.it",
-      "website": "www.meleze.it",
-      "type": "alpine_hut",
-      "author": "Martina Piccolo"
-    }
-  ```
-
-- GET `/api/huts/filters?...`
-
-  - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified (null values), the complete list is obtained.
-  - Request body: _None_
-  - Response: `200 OK` (success)
-  - Error responses: `401 Unauthorized` (not logged in or wrong permissions) `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
-  - Response body: An array of objects, containing all the huts, or an error message in case of failure
-
-  ```
-  [
-    ...,
-    {
-      "id": 1,
-      "name": "Rifugio Melezè",
-      "city": "Carignano",
-      "province": "Torino",
-      "country": "Italy",
-      "description": "It runs between ...",
-      "address": "Pian Melezè, 1, 12020",
-      "altitude": 1812,
-      "beds_number": 50,
-      "coordinates": "44.5741321312, 8.31231231",
-      "phone_number": "0175956410",
-      "email": "melezze@meleze.it",
-      "website": "www.meleze.it",
-      "type": "alpine_hut",
-      "author": "Martina Piccolo"
-    },
-    ...
-  ]
   ```
 
 - DELETE `/api/huts`

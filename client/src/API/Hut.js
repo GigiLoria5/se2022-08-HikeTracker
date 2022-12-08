@@ -94,18 +94,31 @@ async function getHutsCitiesByProvince(province) {
 // Return huts by the filters
 /**
  * 
- * @param {Object} filter an object with the following fields: city, province, country, type, altitude and beds_number
+ * @param {Object} filter an object with the following fields: city, province, country, type, altitude_min, altitude_max, beds_number_min and beds_number_max
+ * The type field can be a string or an array of string
  * @returns Array of objects
  */
 async function getHutsWithFilters(filter) {
+    let hut_types = [];
     // Remove "null" field from the filter because the server does not want them specified
     Object.keys(filter).forEach(key => {
+        if (key === "type"){
+            hut_types = filter[key];
+            filter[key] = null;
+        }
         if (filter[key] === null) {
             delete filter[key];
         }
     });
 
     const searchParams = new URLSearchParams(filter);
+    if (Array.isArray(hut_types)) {
+        for (let type of hut_types) {
+            searchParams.append("hut_type", type);
+        }
+    } else {
+        searchParams.append("hut_type", hut_types);
+    }
     const response = await fetch(new URL('/api/huts/filters?' + searchParams, APIURL), { credentials: 'include' });
     const hutsJson = await response.json();
     if (response.ok) {
