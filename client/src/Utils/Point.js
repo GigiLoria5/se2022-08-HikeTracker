@@ -24,4 +24,4 @@ const getPointShortDescription = (pointType, point) => {
     }
 }
 
-export { getPointShortDescription };
+module.exports = { getPointShortDescription };

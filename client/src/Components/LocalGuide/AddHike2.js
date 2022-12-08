@@ -7,6 +7,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
+import { getAddressByCoordinates } from '../../API/Points.js'
+import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
 
 import InputAdornment from '@mui/material/InputAdornment';
 import API from '../../API';
@@ -40,6 +43,21 @@ function AddHike2(props) {
     const [difficulty, setDifficulty] = useState("");
     const [description, setDescription] = useState("");
     const [expectedTime, setExpectedTime] = useState(0.0);
+    const [location, setLocation] = useState("");
+    const [formValues, setFormValues] = useState({
+        country: {
+            error: false,
+            errorMessage: ""
+        },
+        province: {
+            error: false,
+            errorMessage: ""
+        },
+        city: {
+            error: false,
+            errorMessage: ""
+        }
+    });
 
     const selectedFile = props.selectedFile
     const peak_altitude = props.peakAltitude
@@ -93,6 +111,7 @@ function AddHike2(props) {
 
 
     useEffect(() => {
+        getLocation();
         window.scrollTo(0, 0)
         getCountries().then(cn => {
             setCountries([...cn]);
@@ -101,8 +120,10 @@ function AddHike2(props) {
         getPoints(selectedFile).then(a => {
             setPoints([...a]);
         });
+
         // eslint-disable-next-line
     }, []);
+
 
     useEffect(() => {
         const time = Number(hh) + (Number(mm) / 60)
@@ -123,6 +144,36 @@ function AddHike2(props) {
 
         // eslint-disable-next-line
     }, [country, province]);
+
+    const getLocation = async () => {
+        const addr = await getAddressByCoordinates(startPointGPSlon,startPointGPSlat);   // Get address information starting from coordinates
+        setLocation(new Address(addr));
+        autoFill(addr);
+    }
+
+    const autoFill = (loc) =>{
+
+        setCountry(loc.country);
+
+        if(loc.country === "Italy"){
+            setProvince(translateProvince(loc.county));
+        }else{
+            setProvince(loc.state);
+        }
+
+        setCity(getCity(loc));
+
+    }
+
+    const reset = async () => {
+        const formValueClean =  ResetErrors(formValues);
+        setFormValues(formValueClean);
+    }
+
+    const printErrors = async (res) => {
+        const formValueWithErrors =  PrintCheckErrors(formValues,res);
+        setFormValues(formValueWithErrors);
+    }
 
     const theme = createTheme({
         palette: {
@@ -158,7 +209,7 @@ function AddHike2(props) {
     };
 
     const addRefPoints = (lat, long) => {
-        if (refPoints.filter(p => (p.latitude == lat && p.longitude == long)).length > 0) return;
+        if(refPoints.filter(p => (p.latitude === lat && p.longitude === long)).length > 0) return;
         if (!addingRefPoint && !editingRefPoint) {
             setAddingRefPoint(true);
             setRefPoints([{ latitude: lat, longitude: long, description: "test" }, ...refPoints])
@@ -238,40 +289,35 @@ function AddHike2(props) {
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-        if (!title) {
-            setMessage("Hike title missing");
-            return;
+
+
+        const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
+
+        if(res === "true"){
+            const hike = new Hike({
+                title:title,
+                peak_altitude:peak_altitude,
+                city:city,
+                province:province,
+                country:country,
+                description:description,
+                ascent:ascent,
+                track_length:length,
+                expected_time:computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
+                difficulty:difficultyFromState(difficulty),
+                start_point:start_point,
+                end_point:end_point,
+                reference_points:referencePoint,
+                gpx:selectedFile
+            }
+            )
+            API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
+        }else{
+            printErrors(res);
+            ev.stopPropagation();
         }
-        if (!difficulty) {
-            setMessage("Hike difficulty missing");
-            return;
-        }
-        if (!country || !province || !city) {
-            setMessage("Hike geographical info missing");
-            return;
-        }
-        if (!description) {
-            setMessage("Hike description missing");
-            return;
-        }
-        const hike = new Hike({
-            title: title,
-            peak_altitude: peak_altitude,
-            city: city,
-            province: province,
-            country: country,
-            description: description,
-            ascent: ascent,
-            track_length: length,
-            expected_time: computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
-            difficulty: difficultyFromState(difficulty),
-            start_point: start_point,
-            end_point: end_point,
-            reference_points: referencePoint,
-            gpx: selectedFile
-        }
-        )
-        API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
+
+
     };
 
     const thm = {
@@ -291,7 +337,7 @@ function AddHike2(props) {
                     </Grid>
                     <Grid xs={0} md={2}></Grid>
                     <Grid xs={12} md={8} marginTop={3} >
-                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} >
+                        <Paper elevation={3} sx={{ ...thm, mb: 4 }} component="form" onSubmit={handleSubmission} >
                             <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                                 [
                                 <Typography key="3" color="inherit">
@@ -378,12 +424,14 @@ function AddHike2(props) {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={countries}
+                                    value={country!==""? country : null}
                                     sx={{ m: 1, width: '28ch' }}
                                     onChange={(e, value) => {
                                         e.preventDefault();
                                         setCountry(value); setProvince(''); setCity('');
+                                        reset();
                                     }}
-                                    renderInput={(params) => <TextField required {...params} label="Country" />}
+                                    renderInput={(params) => <TextField required {...params} label="Country" error={formValues.country.error} helperText={formValues.country.error && formValues.country.errorMessage} />}
                                 />
                                 <Autocomplete
                                     required
@@ -392,12 +440,14 @@ function AddHike2(props) {
                                     id="combo-box-demo2"
                                     options={provinces}
                                     key={country}
+                                    value={province!==""? province : null}
                                     sx={{ m: 1, width: '28ch' }}
                                     onChange={(e, value) => {
                                         e.preventDefault();
                                         setProvince(value); setCity('');
+                                        reset();
                                     }}
-                                    renderInput={(params) => <TextField required {...params} label="Province" />}
+                                    renderInput={(params) => <TextField required {...params} label="Province" error={formValues.province.error} helperText={formValues.province.error && formValues.province.errorMessage} />}
                                 />
                                 <Autocomplete
                                     required
@@ -410,8 +460,10 @@ function AddHike2(props) {
                                     onChange={(e, value) => {
                                         e.preventDefault();
                                         setCity(value);
+                                        reset();
                                     }}
-                                    renderInput={(params) => <TextField required {...params} label="City" />}
+                                    value={city!==""? city: null}
+                                    renderInput={(params) => <TextField required {...params} label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                 />
                             </Stack>
 
@@ -462,8 +514,8 @@ function AddHike2(props) {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => { setStepOneDone(false); setNewHike(false) }} variant="contained" color='secondary'>GO BACK</Button>
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD HIKE</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => {setStepOneDone(false); setNewHike(false)}} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 
                         </Paper>
