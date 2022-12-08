@@ -22,6 +22,12 @@ class Hut {
             this[key] = hut[key]
         )
     }
+
+    static getHutTypes() {
+        const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
+        return hutTypes;
+    }
 }
+
 
 module.exports = Hut;

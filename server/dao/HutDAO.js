@@ -54,28 +54,29 @@ exports.getCitiesByProvince = (province) => {
 
 exports.getHutById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM hut WHERE id = ?`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id AND hid = ?`;
         db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
             else {
                 const hut = rows.map((row => ({
                     id: id,
-                    name: row.name,
+                    name: row.hname,
                     city: row.city,
                     province: row.province,
                     country: row.country,
                     address: row.address,
-                    phone_number: row.phone_number,
+                    phone_number: row.hphone_number,
                     altitude: row.altitude,
                     description: row.description,
                     beds_number: row.beds_number,
                     opening_period: row.opening_period,
                     coordinates: row.coordinates,
-                    email: row.email,
+                    email: row.hemail,
                     website: row.website,
                     type: row.type,
-                    author_id: row.user_id
+                    author_id: row.user_id,
+                    author: row.uname + " " + row.surname
                 })));
                 resolve(hut[0]);
             }
@@ -85,28 +86,29 @@ exports.getHutById = (id) => {
 
 exports.getAllHuts = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM hut ORDER BY name`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
             else {
                 const huts = rows.map((row => ({
-                    id: row.id,
-                    name: row.name,
+                    id: row.hid,
+                    name: row.hname,
                     city: row.city,
                     province: row.province,
                     country: row.country,
                     address: row.address,
-                    phone_number: row.phone_number,
+                    phone_number: row.hphone_number,
                     altitude: row.altitude,
                     description: row.description,
                     beds_number: row.beds_number,
                     opening_period: row.opening_period,
                     coordinates: row.coordinates,
-                    email: row.email,
+                    email: row.hemail,
                     website: row.website,
                     type: row.type,
-                    author_id: row.user_id
+                    author_id: row.user_id,
+                    author: row.uname + " " + row.surname 
                 })));
                 resolve(huts);
             }
