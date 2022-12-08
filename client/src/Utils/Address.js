@@ -37,7 +37,7 @@ function validateAddress(location, country, province, city) {
         /* VALIDATE PROVINCE  */
         const provinceita = translateProvinceReverse(province);
 
-        if (!(location.country.includes(provinceita) || location.country.includes(province))) {
+        if ( location.county!==undefined && !(location.county.includes(provinceita)||location.county.includes(province))) {
             return "province";
         }
 

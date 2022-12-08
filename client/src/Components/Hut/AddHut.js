@@ -89,7 +89,7 @@ export default function AddHut(props) {
         setCountry(loc.country);
 
         if (loc.country === "Italy") {
-            setProvince(translateProvince(loc.country));
+            setProvince(translateProvince(loc.county));
         } else {
             setProvince(loc.state);
         }
