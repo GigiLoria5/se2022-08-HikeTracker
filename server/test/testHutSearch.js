@@ -93,11 +93,27 @@ describe('test get hut provinces, cities MISSING/BAD PARAMETERS',()=>{
             });
     });
 
+    step('T1: GET/api/huts/provinces [WRONG COUNTRY TYPE]', async function () {
+        await authenticatedUser
+            .get('/api/huts/provinces/5')
+            .then(function (res) {
+                res.should.have.status(422);
+            });
+    });
+
     step('T3: GET/api/huts/cities [WRONG CITY]', async function () {
         await authenticatedUser
             .get('/api/huts/cities/')
             .then(function (res) {
                 res.should.have.status(404);
+            });
+    });
+
+    step('T3: GET/api/huts/cities [WRONG CITY TYPE]', async function () {
+        await authenticatedUser
+            .get('/api/huts/cities/5')
+            .then(function (res) {
+                res.should.have.status(422);
             });
     });
 
@@ -113,16 +129,16 @@ describe('test get hut provinces, cities MISSING/BAD PARAMETERS',()=>{
                         "&beds_number_max=" + null +
                         "&hut_type=" + null)
         .then(function(res) {
-            res.should.have.status(400);
+            res.should.have.status(422);
         });
     });
 
     step('T4: GET/api/huts/filter [BAD ALTITUDE RANGES]', async function() {
         await authenticatedUser
-        .get('/api/huts/filters?altitude_min=' + -10 +
-                        "&altitude_max=" + 10)
+        .get('/api/huts/filters?altitude_min=' + 10 +
+                        "&altitude_max=" + -10)
         .then(function(res) {
-            res.should.have.status(400);
+            res.should.have.status(422);
         });
     });
 
@@ -131,7 +147,15 @@ describe('test get hut provinces, cities MISSING/BAD PARAMETERS',()=>{
         .get('/api/huts/filters?beds_number_min=' + -10 +
                         "&beds_number_max=" + 10)
         .then(function(res) {
-            res.should.have.status(400);
+            res.should.have.status(422);
+        });
+    });
+
+    step('T4: GET/api/huts/filter [BAD HUT TYPE]', async function() {
+        await authenticatedUser
+        .get('/api/huts/filters?hut_type=' + "wrong_hut_type")
+        .then(function(res) {
+            res.should.have.status(422);
         });
     });
 
@@ -166,6 +190,7 @@ describe('test get hut GOOD',()=>{
     let countries;
     let provinces = [];
     let cities = [];
+    let huts = [];
 
     step('T0 login [GOOD LOGIN GOOD ROLE ]', (done) => {
         authenticatedUser
@@ -224,6 +249,9 @@ describe('test get hut GOOD',()=>{
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
+            for (const h of res.body){
+                huts.push(h);
+            }
         });
     });
 
@@ -234,6 +262,9 @@ describe('test get hut GOOD',()=>{
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
+            for(const b of res.body){
+                expect(b.type).to.equal("alpine_hut");
+            }
         });
     });
 
@@ -281,10 +312,14 @@ describe('test get hut GOOD',()=>{
 
 
     step('T1: GET/api/hut/:id [GOOD]', async function () {
-        await authenticatedUser
-        .get('/api/hut/1')
-            .then(function (res) {
-                res.should.have.status(200);
-            });
+        for (const h of huts){
+            await authenticatedUser
+            .get('/api/hut/'+h.id)
+                .then(function (res) {
+                    res.should.have.status(200);
+                    expect(res.body).to.eql(h);
+                });
+        }
+
     });
 });

@@ -60,7 +60,7 @@ exports.getHutById = (id) => {
                 reject(err);
             else {
                 const hut = rows.map((row => ({
-                    id: id,
+                    id: parseInt(id),
                     name: row.hname,
                     city: row.city,
                     province: row.province,
