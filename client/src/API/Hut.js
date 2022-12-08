@@ -99,7 +99,7 @@ async function getHutsCitiesByProvince(province) {
  * @returns Array of objects
  */
 async function getHutsWithFilters(filter) {
-    const hut_types = [];
+    let hut_types = [];
     // Remove "null" field from the filter because the server does not want them specified
     Object.keys(filter).forEach(key => {
         if (key === "type"){
