@@ -1,5 +1,8 @@
+const Hut = require('../models/Hut');
+
 //It returns the huts applying hut type filters
-async function handleHutType(huts, hut_type, hutTypes) {
+async function handleHutType(huts, hut_type) {
+    const hutTypes = Hut.getHutTypes();
     if (Array.isArray(hut_type)) {
         let temp = [];
         for (let type of hut_type) {
@@ -23,7 +26,7 @@ async function handleHutType(huts, hut_type, hutTypes) {
 async function handleRangeFilters(result, rangeFilters) {
     for (const key in rangeFilters) {
         if (rangeFilters[key][0] && rangeFilters[key][1]) {
-            if (rangeFilters[key][0] < 0.0 || rangeFilters[key][1] < 0.0) {
+            if (rangeFilters[key][0] > rangeFilters[key][1]) {
                 return -1;
             }
             result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]); 

@@ -4,7 +4,7 @@
 const express = require('express');
 const Hut = require('../models/Hut');
 
-const { body, check, validationResult } = require('express-validator'); // validation middleware
+const { body, check, query, validationResult } = require('express-validator'); // validation middleware
 const HutDAO = require('../dao/HutDAO');
 const UserDAO = require('../dao/UserDAO');
 const { route } = require('./User');
@@ -20,7 +20,6 @@ const utilsHut = require('../utils/Utils_hut');
 // Return the countries
 router.get('/huts/countries',
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCountries()
@@ -35,12 +34,15 @@ router.get('/huts/countries',
 // /api/huts/provinces/:country
 // Return provinces by a country
 router.get('/huts/provinces/:country',
-    check('country').exists(),
+    check('country').exists({ checkNull: true }).isString().isLength({ min: 1 }),
 
     async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ error: "Fields validation failed!" });
+        }
 
         const usersRole = ['hiker', 'local_guide'];
-
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getProvincesByCountry(req.params.country)
                 .then((provinces) => res.status(200).json(provinces))
@@ -54,12 +56,15 @@ router.get('/huts/provinces/:country',
 // /api/huts/cities/:province
 // Return cities by a province
 router.get('/huts/cities/:province',
-    check('province').exists(),
+    check('province').exists({ checkNull: true }).isString().isLength({ min: 1 }),
 
     async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ error: "Fields validation failed!" });
+        }
 
         const usersRole = ['hiker', 'local_guide'];
-
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCitiesByProvince(req.params.province)
                 .then((cities) => res.status(200).json(cities))
@@ -73,9 +78,7 @@ router.get('/hut/:id',
     check('id').exists().isInt(),
 
     async (req, res) => {
-
         const usersRole = ['hiker', 'local_guide'];
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ error: "Fields validation failed" });
@@ -84,8 +87,6 @@ router.get('/hut/:id',
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getHutById(req.params.id)
                 .then(async (hut) => {
-                    const author = await UserDAO.getUserById(hut.author_id);
-                    hut.author = author.name + " " + author.surname;
                     res.status(200).json(hut);
                 })
                 .catch((_) => { res.status(500).json({ error: `Database error while retrieving the hut` }); });
@@ -95,7 +96,21 @@ router.get('/hut/:id',
     });
 
 // /api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value&hut_type=value
-router.get('/huts/filters', async (req, res) => {
+router.get('/huts/filters', [
+    query('city').optional({ nullable: true }).isString().isLength({ min: 1 }),
+    query('province').optional({ nullable: true }).isString().isLength({ min: 1 }),
+    query('country').optional({ nullable: true }).isString().isLength({ min: 1 }),
+    query('altitude_min').optional({ nullable: true }).isInt(),
+    query('altitude_max').optional({ nullable: true }).isInt(),
+    query('beds_number_min').optional({ nullable: true }).isInt({ min: 0 }),
+    query('beds_number_max').optional({ nullable: true }).isInt({ min: 0 }),
+
+], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ error: "Fields validation failed" });
+    }
 
     const country = req.query.country;
     const province = req.query.province;
@@ -107,8 +122,6 @@ router.get('/huts/filters', async (req, res) => {
     const hut_type = req.query.hut_type;
 
     const usersRole = ['hiker', 'local_guide'];
-    const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
-
 
     if (!usersRole.includes(req.user.role) || !req.isAuthenticated()) {
         return res.status(401).json({ error: "Unauthorized to execute this operation!" });
@@ -137,21 +150,15 @@ router.get('/huts/filters', async (req, res) => {
             //Filter by range filters (altitudemin-altitudemax, bedsnumbermin-bedsnumbermax)
             result = await utilsHut.handleRangeFilters(result, rangeFilters);
             if (result === -1) {
-                return res.status(400).json({ error: `Parameter error` });
+                return res.status(422).json({ error: "Fields validation failed" });
             }
 
             //Filter by hut type
             if (hut_type) {
-                result = await utilsHut.handleHutType(result, hut_type, hutTypes);
+                result = await utilsHut.handleHutType(result, hut_type);
                 if (result === -1) {
-                    return res.status(400).json({ error: `Parameter error` });
+                    return res.status(422).json({ error: "Fields validation failed" });
                 }
-            }
-
-            //Add author name and surname given its id
-            for (let hut of result) {
-                const author = await UserDAO.getUserById(hut.author_id)
-                hut.author = author.name + " " + author.surname;
             }
 
             res.status(200).json(result);
