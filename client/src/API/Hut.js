@@ -99,26 +99,20 @@ async function getHutsCitiesByProvince(province) {
  * @returns Array of objects
  */
 async function getHutsWithFilters(filter) {
-    let hut_types = [];
     // Remove "null" field from the filter because the server does not want them specified
     Object.keys(filter).forEach(key => {
-        if (key === "type"){
-            hut_types = filter[key];
-            filter[key] = null;
-        }
         if (filter[key] === null) {
             delete filter[key];
         }
     });
 
     const searchParams = new URLSearchParams(filter);
-    if (Array.isArray(hut_types)) {
-        for (let type of hut_types) {
+    searchParams.delete('hut_type');
+    if (Array.isArray(filter.hut_type)) {
+        for (let type of filter.hut_type) {
             searchParams.append("hut_type", type);
         }
-    } else {
-        searchParams.append("hut_type", hut_types);
-    }
+    } 
     const response = await fetch(new URL('/api/huts/filters?' + searchParams, APIURL), { credentials: 'include' });
     const hutsJson = await response.json();
     if (response.ok) {

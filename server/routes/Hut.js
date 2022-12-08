@@ -34,7 +34,7 @@ router.get('/huts/countries',
 // /api/huts/provinces/:country
 // Return provinces by a country
 router.get('/huts/provinces/:country',
-    check('country').exists({ checkNull: true }).isString().isLength({ min: 1 }),
+    check('country').exists({ checkNull: true }).not().isInt().not().isDecimal(),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -56,7 +56,7 @@ router.get('/huts/provinces/:country',
 // /api/huts/cities/:province
 // Return cities by a province
 router.get('/huts/cities/:province',
-    check('province').exists({ checkNull: true }).isString().isLength({ min: 1 }),
+    check('province').exists({ checkNull: true }).not().isInt().not().isDecimal(),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -97,9 +97,9 @@ router.get('/hut/:id',
 
 // /api/huts/filters?city=value&province=value&country=value&altitude_min=value&altitude_max=value&beds_number_min=value&beds_number_max=value&hut_type=value&hut_type=value
 router.get('/huts/filters', [
-    query('city').optional({ nullable: true }).isString().isLength({ min: 1 }),
-    query('province').optional({ nullable: true }).isString().isLength({ min: 1 }),
-    query('country').optional({ nullable: true }).isString().isLength({ min: 1 }),
+    query('city').optional({ nullable: true }).not().isInt().not().isDecimal(),
+    query('province').optional({ nullable: true }).not().isInt().not().isDecimal(),
+    query('country').optional({ nullable: true }).not().isInt().not().isDecimal(),
     query('altitude_min').optional({ nullable: true }).isInt(),
     query('altitude_max').optional({ nullable: true }).isInt(),
     query('beds_number_min').optional({ nullable: true }).isInt({ min: 0 }),
