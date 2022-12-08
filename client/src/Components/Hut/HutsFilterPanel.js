@@ -7,6 +7,8 @@ import { emptyFilter } from '../../Utils/Hut';
 import NameFilter from '../Filters/NameFilter';
 import GeographicFilter from '../Filters/GeographicFilter';
 import HutTypeFilter from '../Filters/HutTypeFilter';
+import AltitudeFilter from '../Filters/AltitudeFilter';
+import BedsNumberFilter from '../Filters/BedsNumberFilter';
 
 const theme = createTheme({
     palette: {
@@ -85,7 +87,13 @@ function HutsFilterPanel(props) {
             />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
             {/* Hut Type Filter */}
-            <HutTypeFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHuts} resetHutType={resetHutType} setResetHutType={setResetHutType} />
+            <HutTypeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} resetHutType={resetHutType} setResetHutType={setResetHutType} />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Altitude Filter */}
+            <AltitudeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetAltitude={resetHutType} setResetAltitude={setResetHutType} />
+            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
+            {/* Beds Number Filter */}
+            <BedsNumberFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetBedsNumber={resetHutType} setResetBedsNumber={setResetHutType} />
         </>
     );
 

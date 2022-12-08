@@ -10,7 +10,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 function HutTypeFilter(props) {
-    const { filter, setFilter, setLoadingHikes, resetHutType, setResetHutType } = props;
+    const { filter, setFilter, setLoadingHuts, resetHutType, setResetHutType } = props;
     const [value, setValue] = React.useState([]);
 
     // RESET
@@ -24,7 +24,7 @@ function HutTypeFilter(props) {
 
     const handleChangeType = (newTypes) => {
         setValue(newTypes);
-        setLoadingHikes(true);
+        setLoadingHuts(true);
         setFilter({ ...filter, hut_type: newTypes });
     };
 
