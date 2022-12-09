@@ -1,8 +1,11 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import SmootherTextField from "../../SmootherTextField";
+import Typography from "@mui/material/Typography";
+import UiLink from '@mui/material/Link'
+import { Link } from "react-router-dom";
 
 const PointsInput = (props) => {
-    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription, description, parking, hut, handleParking, handleHut, huts, parkings } = props;
+    const { pointType, pointValue, pointGPSlat, pointGPSlon, handleChange, setPointValue, setPointDescription, description, huts, parkings } = props;
     return (
         <FormControl sx={{ width: '30ch' }}>
             <InputLabel id="demo-simple-select-label">Location type</InputLabel>
@@ -38,15 +41,21 @@ const PointsInput = (props) => {
                     <FormControl sx={{ width: '30ch', mt: 2 }}>
                         {
                             parkings.length === 0
-                                ? <InputLabel id="demo-simple-select-label">Tere are no known parkings near this point</InputLabel>
-                                : <InputLabel id="demo-simple-select-label">Choose a parking</InputLabel>
+                                ? <Typography sx={{ fontSize: 14 }} color="grey.700">
+                                    There aren't known parking lots near this point. You can create one
+                                    <UiLink sx={{ ml: .5 }} underline="always" color="grey.700" component={Link} to={"/local-guide-add-parking"}>
+                                        here
+                                    </UiLink>
+                                </Typography>
+                                : <>
+                                    <InputLabel id="demo-simple-select-label">Choose a parking</InputLabel>
+                                    <Select value={pointValue} label="Choose a parking" onChange={ev => { setPointValue(ev.target.value) }}>
+                                        {parkings.map((p) => <MenuItem key={p.id} value={p.id}>{p.address}, {p.city} ({p.province}) - {p.country}</MenuItem>)}
+                                    </Select>
+                                </>
                         }
 
-                        <Select value={pointValue} label="Choose a parking" onChange={ev => { setPointValue(ev.target.value) }}>
-                            {parkings.map((p) => <MenuItem key={p.id} value={p.id}>{p.address}, {p.city} ({p.province}) - {p.country}</MenuItem>)}
 
-
-                        </Select>
                     </FormControl>
                 </>
             ) : (
@@ -58,21 +67,32 @@ const PointsInput = (props) => {
                     <FormControl sx={{ width: '30ch', mt: 2 }}>
                         {
                             huts.length === 0
-                                ? <InputLabel id="demo-simple-select-label">Tere are no known huts near this point</InputLabel>
-                                : <InputLabel id="demo-simple-select-label">Choose a hut</InputLabel>
+                                ? <Typography sx={{ fontSize: 14 }} color="grey.700">
+                                    There aren't known huts near this point. You can create one
+                                    <UiLink sx={{ ml: .5 }} underline="always" color="grey.700" component={Link} to={"/local-guide-add-hut"}>
+                                        here
+                                    </UiLink>
+                                </Typography>
+                                : <>
+                                    <InputLabel id="demo-simple-select-label">Choose a hut</InputLabel>
+                                    <Select value={pointValue} label="Choose a hut" onChange={ev => { setPointValue(ev.target.value) }}>
+                                        {huts.map((h) => <MenuItem key={h.id} value={h.id}>{h.name}</MenuItem>)}
+                                    </Select>
+                                </>
                         }
-                        
-                        <Select value={pointValue} label="Choose a hut" onChange={ev => { setPointValue(ev.target.value) }}>
-                            {huts.map((h) => <MenuItem key={h.id} value={h.id}>{h.name}</MenuItem>)}
-                        </Select>
+
+
                     </FormControl>
                 </>
             ) : (
                 <Grid></Grid>
             )}
 
-            <SmootherTextField maxWidth='30ch' label="Description" text={description} setText={setPointDescription} required={true} />
-
+            {
+                ((pointType === "hut" && huts.length === 0) || (pointType === "parking" && parkings.length === 0))
+                    ? false
+                    : <SmootherTextField maxWidth='30ch' label="Description" text={description} setText={setPointDescription} required={true} />
+            }
         </FormControl>
     )
 }
