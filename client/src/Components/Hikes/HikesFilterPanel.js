@@ -74,7 +74,8 @@ const HikesFilterPanel = (props) => {
         setResetLength(true);
         setResetAscent(true);
         setResetExpectedTime(true);
-        setFilter(emptyFilter)
+        setFilter(emptyFilter);
+        setLoadingHikes(true);
     };
 
     // Filter Components

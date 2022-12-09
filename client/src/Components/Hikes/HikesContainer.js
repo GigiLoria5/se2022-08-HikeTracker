@@ -18,32 +18,34 @@ const HikesContainer = () => {
     const [loadingHikes, setLoadingHikes] = useState(true);
 
     useEffect(() => {
-        API.getHikesWithFilters(filter)
-            .then(hikes => {
-                // APPLY SEARCH BY NAME
-                let hikesFiltered = (search === "")
-                    ? hikes
-                    : hikes.filter(h => h.title.toLowerCase().includes(search.toLowerCase()));
-                // APPLY HIKES AROUND A POINT WITHIN RADIUS FILTER
-                hikesFiltered = (radius === null)
-                    ? hikesFiltered
-                    : hikesFiltered.filter(h => {
-                        const coordinates = h.start.coordinates.split(', ');
-                        const hikeLatitude = coordinates[0];
-                        const hikeLongitude = coordinates[1];
-                        return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });
-                    });
-                // Set Hikes After Filtered
-                setHikes(hikesFiltered);
-                // Add some delay to load smoothly
-                setTimeout(() => {
-                    setLoadingHikes(false);
-                }, 300);
-            });
+        if (loadingHikes) {
+            API.getHikesWithFilters(filter)
+                .then(hikes => {
+                    // APPLY SEARCH BY NAME
+                    let hikesFiltered = (search === "")
+                        ? hikes
+                        : hikes.filter(h => h.title.toLowerCase().includes(search.toLowerCase()));
+                    // APPLY HIKES AROUND A POINT WITHIN RADIUS FILTER
+                    hikesFiltered = (radius === null)
+                        ? hikesFiltered
+                        : hikesFiltered.filter(h => {
+                            const coordinates = h.start.coordinates.split(', ');
+                            const hikeLatitude = coordinates[0];
+                            const hikeLongitude = coordinates[1];
+                            return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });
+                        });
+                    // Set Hikes After Filtered
+                    setHikes(hikesFiltered);
+                    // Add some delay to load smoothly
+                    setTimeout(() => {
+                        setLoadingHikes(false);
+                    }, 300);
+                });
+        }
         // eslint-disable-next-line 
     }, [filter.country, filter.province, filter.city, filter.difficulty,
     filter.track_length_min, filter.track_length_max, filter.ascent_min, filter.ascent_max, filter.expected_time_min, filter.expected_time_max,
-    position.lat, position.lng, radius, search]);
+    position.lat, position.lng, radius, search, loadingHikes]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {

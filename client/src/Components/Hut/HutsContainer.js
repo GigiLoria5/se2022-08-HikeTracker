@@ -18,33 +18,35 @@ function HutsContainer() {
     const [loadingHuts, setLoadingHuts] = useState(true);
 
     useEffect(() => {
-        API.getHutsWithFilters(filter)
-            .then(huts => {
-                // APPLY SEARCH BY NAME
-                let hutsFiltered = (search === "")
-                    ? huts
-                    : huts.filter(h => h.name.toLowerCase().includes(search.toLowerCase()));
-                // APPLY HUTS AROUND A POINT WITHIN RADIUS FILTER
-                hutsFiltered = (radius === null)
-                    ? hutsFiltered
-                    : hutsFiltered.filter(h => {
-                        const coordinates = h.coordinates.split(', ');
-                        const hutLatitude = coordinates[0];
-                        const hutLongitude = coordinates[1];
-                        return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hutLatitude, longitude: hutLongitude });
-                    });
-                // Set Huts After Filtered
-                setHuts(hutsFiltered);
-                // Add some delay to load smoothly
-                setTimeout(() => {
-                    setLoadingHuts(false);
-                }, 300);
-            });
+        if (loadingHuts) {
+            API.getHutsWithFilters(filter)
+                .then(huts => {
+                    // APPLY SEARCH BY NAME
+                    let hutsFiltered = (search === "")
+                        ? huts
+                        : huts.filter(h => h.name.toLowerCase().includes(search.toLowerCase()));
+                    // APPLY HUTS AROUND A POINT WITHIN RADIUS FILTER
+                    hutsFiltered = (radius === null)
+                        ? hutsFiltered
+                        : hutsFiltered.filter(h => {
+                            const coordinates = h.coordinates.split(', ');
+                            const hutLatitude = coordinates[0];
+                            const hutLongitude = coordinates[1];
+                            return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hutLatitude, longitude: hutLongitude });
+                        });
+                    // Set Huts After Filtered
+                    setHuts(hutsFiltered);
+                    // Add some delay to load smoothly
+                    setTimeout(() => {
+                        setLoadingHuts(false);
+                    }, 300);
+                });
+        }
         // eslint-disable-next-line 
     }, [filter.country, filter.province, filter.city,
     filter.hut_type.length, filter.altitude_max, filter.altitude_min,
     filter.beds_number_max, filter.beds_number_min,
-    position.lat, position.lng, radius, search]);
+    position.lat, position.lng, radius, search, loadingHuts]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {

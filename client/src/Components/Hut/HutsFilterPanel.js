@@ -71,7 +71,8 @@ function HutsFilterPanel(props) {
         setResetHutType(true);
         setResetAltitude(true);
         setResetBedsNumber(true);
-        setFilter(emptyFilter)
+        setFilter(emptyFilter);
+        setLoadingHuts(true);
     };
 
     // Filter Components
