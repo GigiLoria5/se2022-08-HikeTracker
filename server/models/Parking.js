@@ -8,13 +8,14 @@
  * @param {string} address 
  */
  class Parking{
-    constructor(id, city, province, country, coordinates, address){
+    constructor(id, city, province, country, coordinates, address, capacity){
         this.id=id;
         this.city=city;
         this.province=province;
         this.country=country;
         this.coordinates=coordinates;
         this.address=address;
+        this.capacity=capacity;
     }
 }
 

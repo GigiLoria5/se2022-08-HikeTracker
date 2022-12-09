@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import API from '../../API';
-import { Hut } from '../../Utils/Hut';
+import { Hut, validateHut } from '../../Utils/Hut';
 import { Address, translateProvince, getCity } from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
@@ -27,6 +27,7 @@ export default function AddHut(props) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
+    const [stepTwoDone, setStepTwoDone] = useState(false);
     const [formValues, setFormValues] = useState({
         country: {
             error: false,
@@ -83,6 +84,44 @@ export default function AddHut(props) {
         setLocation(new Address(addr));
         autoFill(addr);
     }
+    const handleSubmission = async (ev) => {
+        ev.preventDefault();
+
+        const hut = new Hut({
+            id: undefined, //id - assigned by backend
+            name: hutName,
+            city: city,
+            province: province,
+            country: country,
+            address: address,
+            altitude: altitude,
+            description: description,
+            beds_number: bedsNumber,
+            opening_period: undefined, //opening period - non static information
+            longitude: longitude.toString(),
+            latitude: latitude.toString(),
+            phone_number: phoneNumber,
+            email: email,
+            website: website,
+            type: type
+        }
+        );
+
+        if (!validateHut(hut)) {
+            props.setMessage({ msg: `Please, complete all the requested fields: you can leave blank only the "Optional informations"`, type: 'error' });
+            return;
+        }
+
+        const response = await API.addHut(hut).catch(e => {
+            const obj = JSON.parse(e);
+            props.setMessage({ msg: `${obj.error}!`, type: 'error' });
+        })
+
+        if (response === true) {
+            props.setMessage({ msg: `Hut correctly created` });
+            setStepTwoDone(true);
+        }
+    }
 
     const autoFill = (loc) => {
 
@@ -110,37 +149,7 @@ export default function AddHut(props) {
         setStepOneDone(false);
     }
 
-    const handleSubmission = async (ev) => {
-        ev.preventDefault();
-
-        const hut = new Hut({
-            id: undefined, //id - assigned by backend
-            name: hutName,
-            city: city,
-            province: province,
-            country: country,
-            address: address,
-            altitude: altitude,
-            description: description,
-            beds_number: bedsNumber,
-            opening_period: undefined, //opening period - non static information
-            longitude: longitude.toString(),
-            latitude: latitude.toString(),
-            phone_number: phoneNumber,
-            email: email,
-            website: website,
-            type: type
-        }
-        );
-
-        await API.addHut(hut)
-            .then(_a => navigate("/")) //navigate("/huts") when available?
-            .catch(e => {
-                const obj = JSON.parse(e);
-                props.setMessage({ msg: `${obj.error}!`, type: 'error' });
-            });
-    }
-
+    
     return (
         <Grid container>
             <ThemeProvider theme={theme}>
@@ -148,7 +157,7 @@ export default function AddHut(props) {
 
                 {/* Title */}
                 <Grid xs={12}>
-                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={thm}>
+                    <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
                         Add Hut
                     </Typography>
                 </Grid>
