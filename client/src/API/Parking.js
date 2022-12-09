@@ -53,7 +53,7 @@ async function getParkingsByRadius(lat, lon, radius) {
             p.address
         ));
 
-        parkings = parkings.filter((p) => isPointInsideRange({latitude:lat, longitude:lon}, radius, {latitude:p.latitude, longitude:p.longitude}));
+        parkings = parkings.filter((p) => {return isPointInsideRange({latitude:lat, longitude:lon}, radius, {latitude:p.latitude, longitude:p.longitude})});
         return parkings;
 
     } else {
