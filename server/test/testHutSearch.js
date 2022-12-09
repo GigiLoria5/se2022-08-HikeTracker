@@ -159,6 +159,14 @@ describe('test get hut provinces, cities MISSING/BAD PARAMETERS',()=>{
         });
     });
 
+    step('T4: GET/api/huts/filter [BAD HUT TYPE 2]', async function() {
+        await authenticatedUser
+        .get('/api/huts/filters?hut_type=' + "alpine_hut"+"&hut_type="+"wrong_hut_type")
+        .then(function(res) {
+            res.should.have.status(422);
+        });
+    });
+
     step('T6: GET/api/hut/:id [ID NOT VALID]', async function () {
         await authenticatedUser
         .get('/api/hut/8.5')
@@ -321,5 +329,33 @@ describe('test get hut GOOD',()=>{
                 });
         }
 
+    });
+
+    step('T5: GET/api/huts/filter [ALTITUDE RANGES]', async function() {
+        for (const h of huts){
+        await authenticatedUser
+        .get('/api/huts/filters?altitude_min=' + 1 +
+        "&altitude_max=" + h.altitude)
+        .then(function(res) {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+        });
+    }
+    });
+    
+    step('T5: GET/api/huts/filter [HUT TYPE 2]', async function() {
+        await authenticatedUser
+        .get('/api/huts/filters?hut_type=alpine_hut'+"&hut_type=fixed_bivouac")
+        .then(function(res) {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            for(const b of res.body){
+                if(b.type==="alpine_hut"){
+                    expect(b.type).to.equal("alpine_hut");
+                }else{
+                    expect(b.type).to.equal("fixed_bivouac");
+                }
+            }
+        });
     });
 });
