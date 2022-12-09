@@ -5,9 +5,10 @@ import HutsListCard from './HutsListCard';
 
 function HutsList(props) {
     const { huts, loadingHuts } = props;
+    const styleOnLoading = () => loadingHuts ? { textAlign: 'center', marginTop: 4 } : {};
 
     return (
-        <Grid item xs={12} lg={9} marginBottom={12}>
+        <Grid item xs={12} lg={9} marginBottom={12} sx={styleOnLoading()}>
             {loadingHuts
                 ? <CircularProgress color="success" />
                 : <Grid container spacing={2} paddingTop={2} paddingLeft={2} paddingRight={2} >

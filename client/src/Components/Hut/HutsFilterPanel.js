@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Button, ClickAwayListener, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
+import { Box, Button, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvider, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
 import API from '../../API';
@@ -62,7 +62,6 @@ function HutsFilterPanel(props) {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-        console.log(state);
         setDeviceFilterPanelOpen(state);
     };
 
@@ -154,19 +153,17 @@ function HutsFilterPanel(props) {
             {/* Filter Panel - Small Screen */}
             <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
                 <React.Fragment key={"filter-left-panel-huts"} >
-                    <ClickAwayListener>
-                        <Drawer
-                            anchor={"left"}
-                            open={deviceFilterPanelOpen}
-                            onClose={toggleFilterPanelDrawer(false)}
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}
-                            sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
-                        >
-                            {filterHiddenPanel}
-                        </Drawer>
-                    </ClickAwayListener>
+                    <Drawer
+                        anchor={"left"}
+                        open={deviceFilterPanelOpen}
+                        onClose={toggleFilterPanelDrawer(false)}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
+                    >
+                        {filterHiddenPanel}
+                    </Drawer>
                 </React.Fragment>
             </Grid>
         </>
