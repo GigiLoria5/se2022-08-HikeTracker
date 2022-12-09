@@ -79,16 +79,17 @@ router.post('/hikes',
                 const start_point = await JSON.parse(req.body.start_point);
                 const end_point = await JSON.parse(req.body.end_point);
                 let start_point_id;
-                if(start_point.type !== "hut" || start_point.type !== "parking"){
-                    start_point_id = await locationDao.addLocation(start_point);
+                if(start_point.type === "hut" || start_point.type === "parking"){
+                    start_point_id = start_point.value;
                 }else{
-                    start_point_id = start_point.value; 
+                    start_point_id = await locationDao.addLocation(start_point); 
                 }
                 let end_point_id;
-                if(end_point.type !== "hut" || end_point.type !== "parking"){
-                    end_point_id = await locationDao.addLocation(end_point);
-                }else{
+                if(end_point.type === "hut" || end_point.type === "parking"){
                     end_point_id = end_point.value;
+                    
+                }else{
+                    end_point_id = await locationDao.addLocation(end_point);
                 }
                 const hike = new Hike({
                     title:req.body.title,
