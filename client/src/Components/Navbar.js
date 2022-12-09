@@ -65,10 +65,22 @@ function MyNavbar(props) {
 
     /* SETUP HIDDEN NAV ITEMS LINKS */
     React.useEffect(() => {
-        if (isloggedIn && loggedUser.role === "local_guide")
-            setNavItems({ ...navItemsFixed, 'Platform Content': '/local-guide-page' });
-        else
+        // Clean navigation bar when user is logged out
+        if (!isloggedIn)
             setNavItems({ ...navItemsFixed });
+        else {
+            let navItemsToAdd = {};
+            /* Protected Routes only available for hikers and local guides */
+            if (isloggedIn && ["hiker", "local_guide"].includes(loggedUser.role))
+                navItemsToAdd = { ...navItemsToAdd, 'Huts': '/huts' };
+
+            /* Protected Routes only available for local guides */
+            if (isloggedIn && ["local_guide"].includes(loggedUser.role))
+                navItemsToAdd = { ...navItemsToAdd, 'Platform Content': '/local-guide-page' };
+
+            // Update navigation bar with protected routes
+            setNavItems({ ...navItemsFixed, ...navItemsToAdd });
+        }
     }, [isloggedIn, loggedUser.role]);
 
     return (
@@ -131,7 +143,7 @@ function MyNavbar(props) {
                                                     }
                                                 }}
                                             >
-                                                <MenuItem key={'hike'} component={Link2} to={"/local-guide-add-hikes"} state={{newHike:true}} onClick={handleChoice}>NEW HIKE</MenuItem>
+                                                <MenuItem key={'hike'} component={Link2} to={"/local-guide-add-hikes"} state={{ newHike: true }} onClick={handleChoice}>NEW HIKE</MenuItem>
                                                 <Divider style={{ width: '100%' }} />
                                                 <MenuItem key={'hut'} component={Link2} to={"/local-guide-add-hut"} onClick={handleChoice}>NEW HUT</MenuItem>
                                                 <Divider style={{ width: '100%' }} />
@@ -211,13 +223,13 @@ function MyNavbar(props) {
                                             </ListItem>
                                             <Collapse in={menuMobile} timeout="auto" unmountOnExit>
                                                 <List component="div" disablePadding>
-                                                    <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hikes"} state={{newHike:true}} onClick={handleDrawerToggle}>
+                                                    <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hikes"} state={{ newHike: true }} onClick={handleDrawerToggle}>
                                                         <ListItemText primary="Add hike" />
                                                     </ListItemButton>
-                                                    <ListItemButton sx={{ textAlign: 'center'}} component={Link2} to={"/local-guide-add-hut"} onClick={handleDrawerToggle}>
+                                                    <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hut"} onClick={handleDrawerToggle}>
                                                         <ListItemText primary="Add hut" />
                                                     </ListItemButton>
-                                                    <ListItemButton sx={{ textAlign: 'center'}} component={Link2} to={"/local-guide-add-parking"} onClick={handleDrawerToggle}>
+                                                    <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-parking"} onClick={handleDrawerToggle}>
                                                         <ListItemText primary="Add parking lot" />
                                                     </ListItemButton>
                                                 </List>

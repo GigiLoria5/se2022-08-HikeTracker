@@ -140,18 +140,18 @@ router.post('/hikes',
 //////                          GET                            //////
 /////////////////////////////////////////////////////////////////////
 
-// /api/countries
+// /api/hikes/countries
 // Return the countries
-router.get('/countries',
+router.get('/hikes/countries',
     async (req, res) => {
         hikeDao.getCountries()
             .then((countries) => res.status(200).json(countries))
             .catch(() => res.status(500).json({ error: `Database error while retrieving the countries` }));
     });
 
-// /api/provinces/:country
+// /api/hikes/provinces/:country
 // Return provinces by a country
-router.get('/provinces/:country',
+router.get('/hikes/provinces/:country',
     check('country').exists(),
 
     async (req, res) => {
@@ -161,9 +161,9 @@ router.get('/provinces/:country',
             .catch(() => res.status(500).json({ error: `Database error while retrieving the provinces` }));
     });
 
-// /api/cities/:province
+// /api/hikes/cities/:province
 // Return cities by a province
-router.get('/cities/:province',
+router.get('/hikes/cities/:province',
     check('province').exists(),
 
     async (req, res) => {

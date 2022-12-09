@@ -33,6 +33,7 @@ function AddParking() {
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [address, setAddress] = useState("");
+    const [capacity, setCapacity] = useState("");
     const [width, setWidth] = React.useState(window.innerWidth);
     const [formValues, setFormValues] = useState({
         country: {
@@ -48,7 +49,6 @@ function AddParking() {
             errorMessage: ""
         }
     });
-    const [capacity, setCapacity] = useState("");
 
 
     useEffect(() => {
@@ -81,13 +81,13 @@ function AddParking() {
         autoFill(addr);
     }
 
-    const autoFill = (loc) =>{
+    const autoFill = (loc) => {
 
         setCountry(loc.country);
 
-        if(loc.country === "Italy"){
+        if (loc.country === "Italy") {
             setProvince(translateProvince(loc.county));
-        }else{
+        } else {
             setProvince(loc.state);
         }
 
@@ -126,32 +126,27 @@ function AddParking() {
     const navigate = useNavigate();
 
     const reset = async () => {
-        const formValueClean =  ResetErrors(formValues);
+        const formValueClean = ResetErrors(formValues);
         setFormValues(formValueClean);
     }
 
     const printErrors = async (res) => {
-        const formValueWithErrors =  PrintCheckErrors(formValues,res);
+        const formValueWithErrors = PrintCheckErrors(formValues, res);
         setFormValues(formValueWithErrors);
     }
 
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
-        
+
         const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
         if (res === "true") {
-                await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-                    .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
+            await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
+                .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
         } else {
-                printErrors(res);
-                ev.stopPropagation();
-        }
-
-        if (!capacity) {
-            setMessage("Parking lot capacity info missing");
-            return;
+            printErrors(res);
+            ev.stopPropagation();
         }
         if (!capacity) {
             setMessage("Parking lot capacity info missing");

@@ -23,16 +23,16 @@ import { getPoints } from '../../Utils/GPX';
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
 import DifficultySelector from './AddHike/DifficultySelector';
-import { timeToHHMM } from '../../Utils/TimeFormat';
+import { timeToHHMM } from '../../Utils/TimeUtils';
 
 
 function AddHike2(props) {
     const [message, setMessage] = useState("");
-    const setStepOneDone=props.setStepOneDone
-    const computedExpectedTime=props.expectedTime
+    const setStepOneDone = props.setStepOneDone
+    const computedExpectedTime = props.expectedTime
 
-    const ascent=props.ascent
-    const length=props.length
+    const ascent = props.ascent
+    const length = props.length
 
     const [title, setTitle] = useState("");
     const [country, setCountry] = useState("");
@@ -59,9 +59,9 @@ function AddHike2(props) {
         }
     });
 
-    const selectedFile=props.selectedFile
-    const peak_altitude=props.peakAltitude
-    const setNewHike=props.setNewHike
+    const selectedFile = props.selectedFile
+    const peak_altitude = props.peakAltitude
+    const setNewHike = props.setNewHike
 
     const [refPointMessage, setRefPointMessage] = useState("");
     const [countries, setCountries] = useState([]);
@@ -79,20 +79,20 @@ function AddHike2(props) {
 
     const [points, setPoints] = useState([]);
 
-    const startPointDescription=props.startPointDescription
-    const endPointDescription=props.endPointDescription
+    const startPointDescription = props.startPointDescription
+    const endPointDescription = props.endPointDescription
 
-    const startPointGPSlat=props.startPointGPSlat
-    const startPointGPSlon=props.startPointGPSlon
+    const startPointGPSlat = props.startPointGPSlat
+    const startPointGPSlon = props.startPointGPSlon
 
-    const endPointGPSlat=props.endPointGPSlat
-    const endPointGPSlon=props.endPointGPSlon
+    const endPointGPSlat = props.endPointGPSlat
+    const endPointGPSlon = props.endPointGPSlon
 
-    const startPointType=props.startPointType
-    const endPointType=props.endPointType
+    const startPointType = props.startPointType
+    const endPointType = props.endPointType
 
-    const startPointValue=props.startPointValue
-    const endPointValue=props.endPointValue
+    const startPointValue = props.startPointValue
+    const endPointValue = props.endPointValue
 
     const Description = () => {
         const [localDescription, setLocalDescription] = React.useState(description);
@@ -379,7 +379,7 @@ function AddHike2(props) {
                                 {computedExpectedTime > 0 ?
                                     <TextField margin="normal" variant="outlined" label="Expected time" sx={{ width: '30ch', maxWidth: '30ch' }} InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment> }} value={timeToHHMM(computedExpectedTime)} disabled />
                                     :
-                                    <Stack direction="row" sx={{ width: '30ch'}} justifyContent='space-between'>
+                                    <Stack direction="row" sx={{ width: '30ch' }} justifyContent='space-between'>
                                         <TextField
                                             label="Expected time h"
                                             value={hh}
@@ -389,7 +389,7 @@ function AddHike2(props) {
                                                     if (e.target.value < 0) setHH(0);
                                                     else setHH(e.target.value);
                                                 }
-                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, ml:0, verticalAlign: 'middle', display: 'inline-flex'}} />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">h</InputAdornment>, inputProps: { min: 0, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, ml: 0, verticalAlign: 'middle', display: 'inline-flex' }} />
                                         <TextField
                                             label="Expected time min"
                                             align="right"
@@ -401,7 +401,7 @@ function AddHike2(props) {
                                                     else if (e.target.value < 0) setMM(0);
                                                     else setMM(e.target.value);
                                                 }
-                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, mr:0, verticalAlign: 'middle', display: 'inline-flex'}} step="1" />
+                                            }} type="number" InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment>, inputProps: { min: 0, max: 59, step: 1, type: "number" } }} sx={{ width: '14ch', maxWidth: '14ch', m: 1, mr: 0, verticalAlign: 'middle', display: 'inline-flex' }} step="1" />
                                     </Stack>
                                 }
 

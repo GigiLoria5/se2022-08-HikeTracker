@@ -10,7 +10,7 @@ import { splitCoordinates } from '../../Utils/GeoUtils';
 const zoomLevel = 15;
 
 function GeographicFilter(props) {
-    const { filter, setFilter, hikes, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
+    const { filter, setFilter, hikes, huts, setLoadingHikes, countryList, getProvinceList, getCityList, position, setPosition, radius, setRadius, resetGeographic, setResetGeographic } = props;
     const [isLoading, setLoading] = useState(true); // Loading state
     const [isLoadingProvince, setLoadingProvince] = useState(false);
     const [isLoadingCity, setLoadingCity] = useState(false);
@@ -195,12 +195,20 @@ function GeographicFilter(props) {
                     {/* Radius */}
                     <TextField id="outlined-number" label="Radius" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 }, endAdornment: <InputAdornment position="end">km</InputAdornment> }} value={radius !== null ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
                     {/* Reset Radius Button */}
-                    <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
-                        <CancelIcon />
-                    </IconButton>
+                    {radius
+                        ? <IconButton color="error" aria-label="reset radius" component="label" onClick={() => handleChangeRadius("")}>
+                            <CancelIcon />
+                        </IconButton>
+                        : false
+                    }
                 </Box>
                 {/* Map (coordinate picker) */}
-                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel} waypoints={hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })} />
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel} reset={resetGeographic}
+                    waypoints={hikes
+                        ? hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })
+                        : huts.map(h => { return { label: h.name, lat: splitCoordinates(h.coordinates)[0], lng: splitCoordinates(h.coordinates)[1] } })}
+                    setReloadWaypoints={setLoadingHikes}
+                />
             </Box>
         </Box>
     )

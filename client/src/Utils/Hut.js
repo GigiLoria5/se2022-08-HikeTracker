@@ -17,8 +17,8 @@
  * @param {string} website 
  * @param {string} type
  */
- class Hut{
-    constructor(hut){
+class Hut {
+    constructor(hut) {
         Object.keys(hut).forEach(key =>
             this[key] = hut[key]
         )
@@ -29,34 +29,51 @@
  * Validates a hut before sending it to the backend
  * @param {Hut} hut 
  */
-function validateHut(hut){
-    
+function validateHut(hut) {
+
     //id: don't care
     //name: not empty string
-    if(hut.name == "") return false;
+    if (hut.name === "") return false;
     //city: not empty string
-    if(hut.city == "") return false;
+    if (hut.city === "") return false;
     //province: not empty string
-    if(hut.province == "") return false;
+    if (hut.province === "") return false;
     //country: not empty string
-    if(hut.country == "") return false;
+    if (hut.country === "") return false;
     //address: not empty string
-    if(hut.address == "") return false;
+    if (hut.address === "") return false;
     //altitude: not empty string
-    if(hut.altitude == "") return false;
+    if (hut.altitude === "") return false;
     //description: not empty string
-    if(hut.description == "") return false;
+    if (hut.description === "") return false;
     //beds_number: don't care
     //opening_period: don't care
     //longitude: not empty string
-    if(hut.longitude == "") return false;
+    if (hut.longitude === "") return false;
     //latitude: not empty string
-    if(hut.latitude == "") return false;
+    if (hut.latitude === "") return false;
     //phone_number: don't care
     //email: don't care
     //website: don't care
     //type: not empty string
-    return (!hut.type == "");
+    return (!hut.type === "");
 }
 
-module.exports = { Hut, validateHut };
+const emptyFilter = {
+    "country": null, "province": null, "city": null,
+    "hut_type": [],
+    "altitude_min": null, "altitude_max": null,
+    "beds_number_min": null, "beds_number_max": null
+};
+
+const hutTypes = ['alpine_hut', 'fixed_bivouac', 'unmanaged_hut', 'hiking_hut', 'other'];
+
+const hutTypeLabel = {
+    'alpine_hut': 'Alpine Hut',
+    'fixed_bivouac': 'Fixed Bivouac',
+    'unmanaged_hut': 'Unmanaged Hut',
+    'hiking_hut': 'Hiking Hut',
+    'other': 'Uncategorized Hut'
+};
+
+module.exports = { Hut, validateHut, emptyFilter, hutTypes, hutTypeLabel };

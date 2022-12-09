@@ -10,10 +10,16 @@ const decimalHoursToTime = (hoursDecimal) => {
     const hours = Math.floor(totalMinutes / 60);
 
     return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
-}
+};
 
 function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
 }
 
-export { decimalHoursToTime };
+const timeToHHMM = (t) => {
+    const hh = Math.floor(t);
+    const mm = (t - Math.floor(t)) * 60;
+    return hh + ":" + mm.toFixed(0);
+};
+
+module.exports = { decimalHoursToTime, timeToHHMM };

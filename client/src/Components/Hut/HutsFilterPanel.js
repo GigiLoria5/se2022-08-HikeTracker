@@ -3,13 +3,12 @@ import { Box, Button, createTheme, Divider, Drawer, Grid, IconButton, ThemeProvi
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
 import API from '../../API';
+import { emptyFilter } from '../../Utils/Hut';
 import NameFilter from '../Filters/NameFilter';
 import GeographicFilter from '../Filters/GeographicFilter';
-import DifficultyFilter from '../Filters/DifficultyFilter';
-import LengthFilter from '../Filters/LengthFilter';
-import AscentFilter from '../Filters/AscentFilter';
-import ExpectedTimeFilter from '../Filters/ExpectedTimeFilter';
-import { emptyFilter } from '../../Utils/Hike';
+import HutTypeFilter from '../Filters/HutTypeFilter';
+import AltitudeFilter from '../Filters/AltitudeFilter';
+import BedsNumberFilter from '../Filters/BedsNumberFilter';
 
 const theme = createTheme({
     palette: {
@@ -19,24 +18,23 @@ const theme = createTheme({
     },
 });
 
-const HikesFilterPanel = (props) => {
-    const { filter, setFilter, setLoadingHikes, hikes, position, setPosition, radius, setRadius, setSearch } = props;
+function HutsFilterPanel(props) {
+    const { filter, setFilter, setLoadingHuts, huts, position, setPosition, radius, setRadius, setSearch } = props;
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = React.useState(false);
     const [countryList, setCountryList] = React.useState([]);
 
     const [resetSearch, setResetSearch] = React.useState(false);
     const [resetGeographic, setResetGeographic] = React.useState(false);
-    const [resetDifficulty, setResetDifficulty] = React.useState(false);
-    const [resetLength, setResetLength] = React.useState(false);
-    const [resetAscent, setResetAscent] = React.useState(false);
-    const [resetExpectedTime, setResetExpectedTime] = React.useState(false);
+    const [resetHutType, setResetHutType] = React.useState(false);
+    const [resetAltitude, setResetAltitude] = React.useState(false);
+    const [resetBedsNumber, setResetBedsNumber] = React.useState(false);
 
     useEffect(() => {
-        API.getCountries().then(countries => {
+        API.getHutsCountries().then(countries => {
             const countryListLabel = countries.map(c => c.country);
             setCountryList(countryListLabel);
         });
-    }, [hikes.length]); // dependence required for the countries of any new hikes added
+    }, [huts.length]); // dependence required for the countries of any new huts added
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -46,14 +44,14 @@ const HikesFilterPanel = (props) => {
     }, []);
 
     const getProvinceList = async (country) => {
-        return await API.getProvincesByCountry(country).then(provinces => {
+        return await API.getHutsProvincesByCountry(country).then(provinces => {
             const provinceList = provinces.map(p => p.province);
             return provinceList;
         });
     };
 
     const getCityList = async (province) => {
-        return await API.getCitiesByProvince(province).then(cities => {
+        return await API.getHutsCitiesByProvince(province).then(cities => {
             const cityList = cities.map(c => c.city);
             return cityList;
         });
@@ -70,37 +68,33 @@ const HikesFilterPanel = (props) => {
     const handleResetFilters = () => {
         setResetSearch(true);
         setResetGeographic(true);
-        setResetDifficulty(true);
-        setResetLength(true);
-        setResetAscent(true);
-        setResetExpectedTime(true);
+        setResetHutType(true);
+        setResetAltitude(true);
+        setResetBedsNumber(true);
         setFilter(emptyFilter);
-        setLoadingHikes(true);
+        setLoadingHuts(true);
     };
 
     // Filter Components
     const filterComponents = (
         <>
             {/* Search By Name */}
-            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHikes} resetSearch={resetSearch} setResetSearch={setResetSearch} label="Search by hike title..." />
+            <NameFilter setSearch={setSearch} setLoadingHikes={setLoadingHuts} resetSearch={resetSearch} setResetSearch={setResetSearch} label="Search by hut name..." />
             {/* Geographic Area Filter */}
-            <GeographicFilter filter={filter} setFilter={setFilter} hikes={hikes} setLoadingHikes={setLoadingHikes}
+            <GeographicFilter filter={filter} setFilter={setFilter} huts={huts} setLoadingHikes={setLoadingHuts}
                 resetGeographic={resetGeographic} setResetGeographic={setResetGeographic}
                 countryList={countryList} getProvinceList={getProvinceList} getCityList={getCityList}
                 position={position} setPosition={setPosition} radius={radius} setRadius={setRadius}
             />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
-            {/* Difficulty Filter */}
-            <DifficultyFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} resetDifficulty={resetDifficulty} setResetDifficulty={setResetDifficulty} />
+            {/* Hut Type Filter */}
+            <HutTypeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} resetHutType={resetHutType} setResetHutType={setResetHutType} />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
-            {/* Length Filter */}
-            <LengthFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} resetLength={resetLength} setResetLength={setResetLength} />
+            {/* Altitude Filter */}
+            <AltitudeFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetAltitude={resetAltitude} setResetAltitude={setResetAltitude} />
             <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
-            {/* Ascent Filter */}
-            <AscentFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} resetAscent={resetAscent} setResetAscent={setResetAscent} />
-            <Divider sx={{ maxWidth: 300, marginTop: 2, marginLeft: 4 }} />
-            {/* Expected Time Filter */}
-            <ExpectedTimeFilter filter={filter} setFilter={setFilter} setLoadingHikes={setLoadingHikes} hikes={hikes} resetExpectedTime={resetExpectedTime} setResetExpectedTime={setResetExpectedTime} />
+            {/* Beds Number Filter */}
+            <BedsNumberFilter filter={filter} setFilter={setFilter} setLoadingHuts={setLoadingHuts} huts={huts} resetBedsNumber={resetBedsNumber} setResetBedsNumber={setResetBedsNumber} />
         </>
     );
 
@@ -127,10 +121,10 @@ const HikesFilterPanel = (props) => {
                 </Box>
             </ThemeProvider >
             {filterComponents}
-            {/* Show Hikes Button */}
+            {/* Show Huts Button */}
             <Box component="div" sx={{ marginTop: 2, marginBottom: 2, padding: 4, paddingTop: 0, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "column" }}>
                 <Button color="success" variant="contained" onClick={toggleFilterPanelDrawer(false)} >
-                    {`Show ${hikes.length} hikes`}
+                    {`Show ${huts.length} huts`}
                 </Button>
             </Box>
         </Box >
@@ -158,7 +152,7 @@ const HikesFilterPanel = (props) => {
 
             {/* Filter Panel - Small Screen */}
             <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                <React.Fragment key={"filter-left-panel-hikes"} >
+                <React.Fragment key={"filter-left-panel-huts"} >
                     <Drawer
                         anchor={"left"}
                         open={deviceFilterPanelOpen}
@@ -174,6 +168,6 @@ const HikesFilterPanel = (props) => {
             </Grid>
         </>
     )
-};
+}
 
-export default HikesFilterPanel;
+export default HutsFilterPanel
