@@ -203,7 +203,7 @@ function GeographicFilter(props) {
                     }
                 </Box>
                 {/* Map (coordinate picker) */}
-                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel}
+                <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel} reset={resetGeographic}
                     waypoints={hikes
                         ? hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })
                         : huts.map(h => { return { label: h.name, lat: splitCoordinates(h.coordinates)[0], lng: splitCoordinates(h.coordinates)[1] } })}
