@@ -157,25 +157,23 @@ const HikesFilterPanel = (props) => {
             </Grid>
 
             {/* Filter Panel - Small Screen */}
-            {deviceFilterPanelOpen &&
-                <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
-                    <React.Fragment key={"filter-left-panel-hikes"} >
-                        <ClickAwayListener onClickAway={toggleFilterPanelDrawer(false)}>
-                            <Drawer
-                                anchor={"left"}
-                                open={deviceFilterPanelOpen}
-                                onClose={toggleFilterPanelDrawer(false)}
-                                ModalProps={{
-                                    keepMounted: true, // Better open performance on mobile.
-                                }}
-                                sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
-                            >
-                                {filterHiddenPanel}
-                            </Drawer>
-                        </ClickAwayListener>
-                    </React.Fragment>
-                </Grid>
-            }
+            <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
+                <React.Fragment key={"filter-left-panel-hikes"} >
+                    <ClickAwayListener>
+                        <Drawer
+                            anchor={"left"}
+                            open={deviceFilterPanelOpen}
+                            onClose={toggleFilterPanelDrawer(false)}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
+                            sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' } }}
+                        >
+                            {filterHiddenPanel}
+                        </Drawer>
+                    </ClickAwayListener>
+                </React.Fragment>
+            </Grid>
         </>
     )
 };
