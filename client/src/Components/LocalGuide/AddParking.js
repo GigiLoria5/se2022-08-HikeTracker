@@ -70,6 +70,7 @@ function AddParking() {
         // eslint-disable-next-line
         if (position.lat != "" && position.lng != "") {
             getLocation();
+            ResetErrors(formValues);
         }
         // eslint-disable-next-line
     }, [position])
