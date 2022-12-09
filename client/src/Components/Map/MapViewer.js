@@ -17,7 +17,7 @@ function LocationMarker(props) {
         <>
             {/* Start Point */}
             <LayersControl.Overlay checked name="Start Point">
-                <Marker position={startPoint.coordinates.split(', ')} icon={new Icon({ iconUrl: markerStart, iconSize: [29, 41], iconAnchor: [12, 41] })} >
+                <Marker position={startPoint.coordinates.split(', ')} icon={new Icon({ iconUrl: markerStart, iconSize: [29, 41], iconAnchor: [0, 41] })} >
                     <Tooltip direction="bottom" offset={[1, 0]} opacity={1}>
                         Start Point
                     </Tooltip>
@@ -26,7 +26,7 @@ function LocationMarker(props) {
 
             {/* End Point */}
             <LayersControl.Overlay checked name="End Point">
-                <Marker position={endPoint.coordinates.split(', ')} icon={new Icon({ iconUrl: markerFinish, iconSize: [29, 41], iconAnchor: [12, 41] })} >
+                <Marker position={endPoint.coordinates.split(', ')} icon={new Icon({ iconUrl: markerFinish, iconSize: [29, 41], iconAnchor: [0, 41] })} >
                     <Tooltip direction="bottom" offset={[1, 0]} opacity={1}>
                         End Point
                     </Tooltip>
@@ -41,7 +41,7 @@ function LocationMarker(props) {
                         : refPoints.map((point, index) => {
                             const pCoordinates = splitCoordinates(point.coordinates);
                             return (
-                                <Marker key={index} position={{ lat: parseFloat(pCoordinates[0]), lng: parseFloat(pCoordinates[1]) }} icon={new Icon({ iconUrl: markerLocation, iconSize: [15, 41], iconAnchor: [12, 41] })} >
+                                <Marker key={index} position={{ lat: parseFloat(pCoordinates[0]), lng: parseFloat(pCoordinates[1]) }} icon={new Icon({ iconUrl: markerLocation, iconSize: [15, 41], iconAnchor: [8, 41] })} >
                                     <Tooltip direction="bottom" offset={[-3, 0]} opacity={1}>
                                         {getPointShortDescription(point.ref_point_type, point)}
                                     </Tooltip>
