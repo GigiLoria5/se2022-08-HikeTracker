@@ -127,7 +127,7 @@ router.get('/huts/filters', [
         return res.status(401).json({ error: "Unauthorized to execute this operation!" });
     }
     HutDAO.getAllHuts()
-        .then(async (huts) => {
+        .then((huts) => {
             let result = huts;
             const equalFilters = {
                 city: city,
@@ -136,8 +136,8 @@ router.get('/huts/filters', [
             };
 
             const rangeFilters = {
-                altitude: [altitude_min, altitude_max],
-                beds_number: [beds_number_min, beds_number_max]
+                altitude: [parseInt(altitude_min), parseInt(altitude_max)],
+                beds_number: [parseInt(beds_number_min), parseInt(beds_number_max)]
             }
 
             //Filter by equal filters (city, province, country)
@@ -148,14 +148,14 @@ router.get('/huts/filters', [
             })
 
             //Filter by range filters (altitudemin-altitudemax, bedsnumbermin-bedsnumbermax)
-            result = await utilsHut.handleRangeFilters(result, rangeFilters);
+            result = utilsHut.handleRangeFilters(result, rangeFilters);
             if (result === -1) {
                 return res.status(422).json({ error: "Fields validation failed" });
             }
 
             //Filter by hut type
             if (hut_type) {
-                result = await utilsHut.handleHutType(result, hut_type);
+                result = utilsHut.handleHutType(result, hut_type);
                 if (result === -1) {
                     return res.status(422).json({ error: "Fields validation failed" });
                 }
