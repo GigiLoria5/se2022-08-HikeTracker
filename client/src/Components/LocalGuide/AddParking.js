@@ -190,8 +190,8 @@ function AddParking() {
                 <ThemeProvider theme={theme} >
 
                     <Grid xs={12}>
-                        <Typography variant="h5" marginTop={2} sx={thm} align={'center'}>
-                            ADD PARKING LOT
+                        <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+                            Add Parking Lot
                         </Typography>
                     </Grid>
                     <Grid xs={0} md={3}></Grid>
@@ -203,10 +203,11 @@ function AddParking() {
                                     Specify a position
                                 </Typography>
 
-
-                                <Typography sx={{ fontSize: 14 }} color="grey.700">
-                                    Click on the map or type the coordinates to define a parking lot
-                                </Typography>
+                                <Stack direction="row" marginBottom={2}>
+                                    <Typography sx={{ fontSize: 14 }} color="grey.700">
+                                        Click on the map or type the coordinates
+                                    </Typography>
+                                </Stack>
 
                                 {/* MAP */}
                                 <Grid xs={0} sm={1}></Grid>
@@ -234,7 +235,7 @@ function AddParking() {
 
                                     </Grid>
 
-                                    <Divider variant="middle" />
+                                    <Divider variant="middle" sx={{ width: "100%", maxWidth: "544px", marginLeft: "auto", marginRight: "auto" }} />
 
                                     <Grid xs={12} sx={thm}>
                                         <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
@@ -292,7 +293,7 @@ function AddParking() {
 
                                         </Stack>
 
-                                        <Divider variant="middle" />
+                                        <Divider variant="middle" sx={{ width: "100%", maxWidth: "544px", marginLeft: "auto", marginRight: "auto", marginTop: 2 }} />
 
                                         <Grid xs={12} sx={thm}>
                                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
@@ -311,8 +312,8 @@ function AddParking() {
 
                                 {/****************************************************SUBMIT BUTTONS********************************************************/}
                                 <Stack direction="row" justifyContent="center" alignItems="center">
-                                    <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
-                                    <Button sx={{ m: 1, mb: 4, mt: 4, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
+                                    <Button sx={{ m: 1, mb: 2, mt: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>
+                                    <Button sx={{ m: 1, mb: 2, mt: 2, minWidth: '80px' }} onClick={handleSubmission} variant="contained" color='primary'>ADD PARKING LOT</Button>
                                 </Stack>
 
                             </Paper>

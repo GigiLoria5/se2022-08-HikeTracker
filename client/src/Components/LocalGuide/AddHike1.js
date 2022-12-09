@@ -20,43 +20,43 @@ import PointsInput from './AddHike/PointsInput';
 function AddHike1(props) {
     const [message, setMessage] = useState("");
 
-    const setStepOneDone=props.setStepOneDone
+    const setStepOneDone = props.setStepOneDone
 
-    const setExpectedTime=props.setExpectedTime
-    const setAscent=props.setAscent
-    const setLength=props.setLength
+    const setExpectedTime = props.setExpectedTime
+    const setAscent = props.setAscent
+    const setLength = props.setLength
 
-    const selectedFile=props.selectedFile
-    const setSelectedFile=props.setSelectedFile
-    const setPeakAltitude=props.setPeakAltitude
+    const selectedFile = props.selectedFile
+    const setSelectedFile = props.setSelectedFile
+    const setPeakAltitude = props.setPeakAltitude
     const newHike = props.newHike
 
     const [isSelected, setIsSelected] = useState(false);
 
-    const startPointDescription=props.startPointDescription
-    const setStartPointDescription=props.setStartPointDescription
-    const endPointDescription=props.endPointDescription
-    const setEndPointDescription=props.setEndPointDescription
+    const startPointDescription = props.startPointDescription
+    const setStartPointDescription = props.setStartPointDescription
+    const endPointDescription = props.endPointDescription
+    const setEndPointDescription = props.setEndPointDescription
 
-    const startPointGPSlat=props.startPointGPSlat
-    const setStartPointGPSlat=props.setStartPointGPSlat
-    const startPointGPSlon=props.startPointGPSlon
-    const setStartPointGPSlon=props.setStartPointGPSlon
+    const startPointGPSlat = props.startPointGPSlat
+    const setStartPointGPSlat = props.setStartPointGPSlat
+    const startPointGPSlon = props.startPointGPSlon
+    const setStartPointGPSlon = props.setStartPointGPSlon
 
-    const endPointGPSlat=props.endPointGPSlat
-    const setEndPointGPSlat=props.setEndPointGPSlat
-    const endPointGPSlon=props.endPointGPSlon
-    const setEndPointGPSlon=props.setEndPointGPSlon
+    const endPointGPSlat = props.endPointGPSlat
+    const setEndPointGPSlat = props.setEndPointGPSlat
+    const endPointGPSlon = props.endPointGPSlon
+    const setEndPointGPSlon = props.setEndPointGPSlon
 
-    const startPointType=props.startPointType
-    const setStartPointType=props.setStartPointType
-    const endPointType=props.endPointType
-    const setEndPointType=props.setEndPointType
+    const startPointType = props.startPointType
+    const setStartPointType = props.setStartPointType
+    const endPointType = props.endPointType
+    const setEndPointType = props.setEndPointType
 
-    const startPointValue=props.startPointValue
-    const setStartPointValue=props.setStartPointValue
-    const endPointValue=props.endPointValue
-    const setEndPointValue=props.setEndPointValue
+    const startPointValue = props.startPointValue
+    const setStartPointValue = props.setStartPointValue
+    const endPointValue = props.endPointValue
+    const setEndPointValue = props.setEndPointValue
 
 
     const prevStartPoint = {
@@ -184,7 +184,7 @@ function AddHike1(props) {
         }
         return true;
     }
-   
+
     const thm = {
         display: 'flex',
         flexDirection: 'column',
@@ -196,8 +196,8 @@ function AddHike1(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme}>
-                    <Grid xs={12}>
-                        <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+                    <Grid xs={12} >
+                        <Typography variant="h5" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
                             Add Hike
                         </Typography>
                     </Grid>

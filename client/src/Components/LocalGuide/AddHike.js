@@ -29,7 +29,7 @@ function AddHike() {
     const [length, setLength] = useState(0);
     const [expectedTime, setExpectedTime] = useState(0.0);
     const [peakAltitude, setPeakAltitude] = useState(0);
-    const [newHike, setNewHike]=useState(true)
+    const [newHike, setNewHike] = useState(true)
 
     const theme = createTheme({
         palette: {
@@ -52,73 +52,73 @@ function AddHike() {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme}>
-                    <Grid xs={12} marginTop={3} >
-                    {
-                        stepOneDone === false ?
-                            <AddHike1
-                                setStepOneDone={setStepOneDone}
+                    <Grid xs={12} marginTop={2} >
+                        {
+                            stepOneDone === false ?
+                                <AddHike1
+                                    setStepOneDone={setStepOneDone}
 
-                                setExpectedTime={setExpectedTime}
-                                setAscent={setAscent}
-                                setLength={setLength}
-                                newHike={newHike}
+                                    setExpectedTime={setExpectedTime}
+                                    setAscent={setAscent}
+                                    setLength={setLength}
+                                    newHike={newHike}
 
-                                selectedFile={selectedFile}
-                                setSelectedFile={setSelectedFile}
-                                setPeakAltitude={setPeakAltitude}
+                                    selectedFile={selectedFile}
+                                    setSelectedFile={setSelectedFile}
+                                    setPeakAltitude={setPeakAltitude}
 
-                                startPointDescription={startPointDescription}
-                                setStartPointDescription={setStartPointDescription}
-                                endPointDescription={endPointDescription}
-                                setEndPointDescription={setEndPointDescription}
-                            
-                                startPointGPSlat={startPointGPSlat}
-                                setStartPointGPSlat={setStartPointGPSlat}
-                                startPointGPSlon={startPointGPSlon}
-                                setStartPointGPSlon={setStartPointGPSlon}
-                            
-                                endPointGPSlat={endPointGPSlat}
-                                setEndPointGPSlat={setEndPointGPSlat}
-                                endPointGPSlon={endPointGPSlon}
-                                setEndPointGPSlon={setEndPointGPSlon}
-                            
-                                startPointType={startPointType}
-                                setStartPointType={setStartPointType}
-                                endPointType={endPointType}
-                                setEndPointType={setEndPointType}
-                            
-                                startPointValue={startPointValue}
-                                setStartPointValue={setStartPointValue}
-                                endPointValue={endPointValue}
-                                setEndPointValue={setEndPointValue}  
-                            />
-                            :
-                            <AddHike2 
-                                setStepOneDone={setStepOneDone}
+                                    startPointDescription={startPointDescription}
+                                    setStartPointDescription={setStartPointDescription}
+                                    endPointDescription={endPointDescription}
+                                    setEndPointDescription={setEndPointDescription}
 
-                                expectedTime={expectedTime} 
-                                ascent={ascent}
-                                length={length}
-                                selectedFile={selectedFile}
-                                peakAltitude={peakAltitude}
-                                setNewHike={setNewHike}
+                                    startPointGPSlat={startPointGPSlat}
+                                    setStartPointGPSlat={setStartPointGPSlat}
+                                    startPointGPSlon={startPointGPSlon}
+                                    setStartPointGPSlon={setStartPointGPSlon}
 
-                                startPointDescription={startPointDescription}
-                                endPointDescription={endPointDescription}
+                                    endPointGPSlat={endPointGPSlat}
+                                    setEndPointGPSlat={setEndPointGPSlat}
+                                    endPointGPSlon={endPointGPSlon}
+                                    setEndPointGPSlon={setEndPointGPSlon}
 
-                                startPointGPSlat={startPointGPSlat}
-                                startPointGPSlon={startPointGPSlon}
-                            
-                                endPointGPSlat={endPointGPSlat}
-                                endPointGPSlon={endPointGPSlon}
-                            
-                                startPointType={startPointType}
-                                endPointType={endPointType}
-                            
-                                startPointValue={startPointValue}
-                                endPointValue={endPointValue}
-                            />
-                    }
+                                    startPointType={startPointType}
+                                    setStartPointType={setStartPointType}
+                                    endPointType={endPointType}
+                                    setEndPointType={setEndPointType}
+
+                                    startPointValue={startPointValue}
+                                    setStartPointValue={setStartPointValue}
+                                    endPointValue={endPointValue}
+                                    setEndPointValue={setEndPointValue}
+                                />
+                                :
+                                <AddHike2
+                                    setStepOneDone={setStepOneDone}
+
+                                    expectedTime={expectedTime}
+                                    ascent={ascent}
+                                    length={length}
+                                    selectedFile={selectedFile}
+                                    peakAltitude={peakAltitude}
+                                    setNewHike={setNewHike}
+
+                                    startPointDescription={startPointDescription}
+                                    endPointDescription={endPointDescription}
+
+                                    startPointGPSlat={startPointGPSlat}
+                                    startPointGPSlon={startPointGPSlon}
+
+                                    endPointGPSlat={endPointGPSlat}
+                                    endPointGPSlon={endPointGPSlon}
+
+                                    startPointType={startPointType}
+                                    endPointType={endPointType}
+
+                                    startPointValue={startPointValue}
+                                    endPointValue={endPointValue}
+                                />
+                        }
                     </Grid>
                 </ThemeProvider>
             </Grid>
