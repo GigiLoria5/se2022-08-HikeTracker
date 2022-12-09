@@ -25,7 +25,7 @@ function handleHutType(huts, hut_type) {
 //It returns the huts applying range filters
 function handleRangeFilters(result, rangeFilters) {
     for (const key in rangeFilters) {
-        if (rangeFilters[key][0] && rangeFilters[key][1]) {
+        if (rangeFilters[key][0] !== NaN && rangeFilters[key][1]) {
             if (rangeFilters[key][0] > rangeFilters[key][1]) {
                 return -1;
             }
