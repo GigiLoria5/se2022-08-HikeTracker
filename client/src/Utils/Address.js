@@ -42,7 +42,7 @@ function validateAddress(location, country, province, city) {
         }
 
         /* VALIDATE CITY  */
-        const array = [location.city, location.town, location.village];
+        const array = [location.city, location.town, location.village, location.isolated_dwelling];
         const result = validateCity(array, city);
         if (result === false) {
             return "city";
@@ -108,9 +108,9 @@ function validateCity(array, city) {
 /* Returns the city (it can be also town, village, municipality ) */
 function getCity(location) {
     let array = [];
-    if (location.country === "Italy") {
-        array = [location.city, location.town, location.village];
-    } else {
+    if(location.country==="Italy"){
+        array = [location.city, location.town, location.village, location.isolated_dwelling];
+    }else{
         array = [location.city, location.town, location.municipality, location.village];
     }
     let city = ""
