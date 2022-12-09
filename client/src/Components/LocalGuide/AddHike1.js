@@ -143,7 +143,7 @@ function AddHike1(props) {
             getParkingsHutsLists();
         }
 
-    }, [isSelected]);
+    }, [isSelected, startPointGPSlat, startPointGPSlon, endPointGPSlat, endPointGPSlon]);
 
     const theme = createTheme({
         palette: {
