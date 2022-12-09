@@ -1,6 +1,6 @@
 import { APIURL } from './APIUrl';
 import { Parking } from '../Utils/Parking';
-import { isPointInsideRange } from '../Utils/GeoUtils';
+import { isPointInsideRange, splitCoordinates } from '../Utils/GeoUtils';
 
 /* Credentials required  */
 /**
@@ -43,15 +43,20 @@ async function getParkingsByRadius(lat, lon, radius) {
     const parkingsJson = await response.json();
 
     if (response.ok) {
-        let parkings = parkingsJson.map((p) => new Parking( 
+        let parkings = parkingsJson.map((p) => {
+            const [latitude, longitude] = splitCoordinates(p.coordinates);
+            new Parking( 
             p.id, 
             p.city, 
             p.province, 
             p.country, 
-            p.longitude, 
-            p.latitude, 
+            longitude, 
+            latitude, 
             p.address
-        ));
+        )
+    });
+
+    console.log(parkings)
 
         parkings = parkings.filter((p) => {return isPointInsideRange({latitude:lat, longitude:lon}, radius, {latitude:p.latitude, longitude:p.longitude})});
         return parkings;

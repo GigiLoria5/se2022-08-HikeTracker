@@ -38,6 +38,7 @@ exports.getAllParkingLots = () => {
                     province: row.province,
                     country: row.country,
                     address: row.address,
+                    coordinates: row.coordinates
                 })));
                 resolve(parking);
             }
