@@ -339,6 +339,26 @@ describe('test get hut GOOD',()=>{
         .then(function(res) {
             res.should.have.status(200);
             res.body.should.be.a('array');
+            for(const b of res.body){
+                expect(b.altitude).to.greaterThanOrEqual(0);
+                expect(b.altitude).to.lessThanOrEqual(h.altitude);
+            }
+        });
+    }
+    });
+
+    step('T5: GET/api/huts/filter [BEDS RANGES]', async function() {
+        for (const h of huts){
+        await authenticatedUser
+        .get('/api/huts/filters?beds_number_min=' + 1 +
+        "&beds_number_max=" + h.beds_number)
+        .then(function(res) {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            for(const b of res.body){
+                expect(b.beds_number).to.greaterThanOrEqual(0);
+                expect(b.beds_number).to.lessThanOrEqual(h.beds_number);
+            }
         });
     }
     });
