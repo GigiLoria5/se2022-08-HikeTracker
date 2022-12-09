@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import API from '../../API';
-import { Hut } from '../../Utils/Hut';
+import { Hut, validateHut } from '../../Utils/Hut';
 import { Address, translateProvince, getCity } from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
@@ -27,6 +27,7 @@ export default function AddHut(props) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
+    const [stepTwoDone, setStepTwoDone] = useState(false);
     const [formValues, setFormValues] = useState({
         country: {
             error: false,
