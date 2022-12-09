@@ -195,9 +195,12 @@ function GeographicFilter(props) {
                     {/* Radius */}
                     <TextField id="outlined-number" label="Radius" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 }, endAdornment: <InputAdornment position="end">km</InputAdornment> }} value={radius !== null ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
                     {/* Reset Radius Button */}
-                    <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
-                        <CancelIcon />
-                    </IconButton>
+                    {radius
+                        ? <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
+                            <CancelIcon />
+                        </IconButton>
+                        : false
+                    }
                 </Box>
                 {/* Map (coordinate picker) */}
                 <MapLocator position={position} setPosition={setPosition} radius={radius} height={'200px'} width={'300px'} initialLat={position.lat} initialLng={position.lng} zoomLevel={zoomLevel}

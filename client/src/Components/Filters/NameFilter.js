@@ -98,9 +98,11 @@ function NameFilter(props) {
                     />
                 </Search>
                 {/* Reset Search Field */}
-                <IconButton color="error" aria-label="reset radius" component="label" sx={{ height: "56px" }} onClick={() => changeDelay("")}>
-                    <CancelIcon />
-                </IconButton>
+                {value
+                    ? <IconButton color="error" aria-label="reset radius" component="label" sx={{ height: "56px" }} onClick={() => changeDelay("")}>
+                        <CancelIcon />
+                    </IconButton>
+                    : false}
             </Box>
         </Box>
     )
