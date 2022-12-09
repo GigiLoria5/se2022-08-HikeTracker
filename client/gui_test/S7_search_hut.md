@@ -28,31 +28,27 @@
     4)  Select hyt type that returns 0 elements - OK 
     5)  Select hut types together - OK
 
-5)  Testing ranges [ERROR]
+5)  Testing ranges [PASSED]
     1)  Altitude
-        1)  Min = Max = 0 [ERROR] -> Right slider is not working
+        1)  Min = Max = 0 
         2)  Min = Max = MAX 
         3)  Min = Max in the middle 
         4)  Return 1 hut
         5)  Return multiple huts
         6)  Double click on sliders - OK
-        7)  Right slider is not effective (setting a range by using only the right slider returns all the huts, it could be a BE problem ) [ERROR]
+        7)  Sliders both effective - OK
     2) Beds number 
-        1)   Min = Max = 0 [ERROR] -> Right slider is not working
+        1)   Min = Max = 0 
         2)   Min = Max = MAX 
         3)   Min = Max in the middle
         4)   Return 1 hut
         5)   Return multiple huts
         6)   Double click on sliders
-        7)   Right slider is not effective (setting a range by using only the right slider returns all the huts, it could be a BE problem ) [ERROR]
+        7)   Sliders both effective - OK
    
-6)  Testing multiple filters together [ERROR]
+6)  Testing multiple filters together [PASSED]
     1)  Returing exaclty one element
-        1)  Right slider is not effective
-
     2)  Returning more elements 
-        1)  Right slider is not effective
-   
 
 7)  Testing interface functions [PASSED]
     1)  Go up button OK
@@ -92,34 +88,32 @@
     3)  Select one hut type that returns 0 elements - OK
     4)  Select more hut types together - OK
 
-5)  Testing ranges [ERROR]
+5)  Testing ranges [PASSED]
     1)  Altitude
-        1)  Min = Max = 0 [ERROR] -> Right slider is not working if left is set to 0
+        1)  Min = Max = 0 
         2)  Min = Max = MAX 
         3)  Min = Max in the middle 
         4)  Return 1 hut
         5)  Return 0 hut 
         6)  Return multiple huts
-        7)  Right slider is not working if left is set to 0[ERROR]
+        7)  Both sliders effective - OK
         8)  Double click on sliders - OK
     2) Beds number 
-        1)   Min = Max = 0 [ERROR] -> Right slider is not working if left is set to 0
+        1)   Min = Max = 0
         2)   Min = Max = MAX 
         3)   Min = Max in the middle
         4)   Return 1 hut
         5)   Return 0 hut 
         6)   Return multiple huts
-        7)   Right slider is not working if left is set to 0 [ERROR]
+        7)   Both sliders effective - OK
         8)   Double click on sliders - OK
 
-6)  Testing multiple filters together 
+6)  Testing multiple filters together [PASSED]
     1)  Returing exaclty one element
-        1)  Right slider is not working if left is set to 0 [ERROR]
     2)  Returning more elements 
-        1)  Right slider is not working if left is set to 0[ERROR]
 
 
-7)  Testing interface functions
+7)  Testing interface functions [PASSED]
     1)  Go up button OK
     2)  Reset filters 
         1)  When no filter is selected - OK

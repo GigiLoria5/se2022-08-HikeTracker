@@ -334,7 +334,7 @@ describe('test get hut GOOD',()=>{
     step('T5: GET/api/huts/filter [ALTITUDE RANGES]', async function() {
         for (const h of huts){
         await authenticatedUser
-        .get('/api/huts/filters?altitude_min=' + 1 +
+        .get('/api/huts/filters?altitude_min=' + 0 +
         "&altitude_max=" + h.altitude)
         .then(function(res) {
             res.should.have.status(200);
@@ -350,7 +350,7 @@ describe('test get hut GOOD',()=>{
     step('T5: GET/api/huts/filter [BEDS RANGES]', async function() {
         for (const h of huts){
         await authenticatedUser
-        .get('/api/huts/filters?beds_number_min=' + 1 +
+        .get('/api/huts/filters?beds_number_min=' + 0 +
         "&beds_number_max=" + h.beds_number)
         .then(function(res) {
             res.should.have.status(200);
@@ -358,6 +358,21 @@ describe('test get hut GOOD',()=>{
             for(const b of res.body){
                 expect(b.beds_number).to.greaterThanOrEqual(0);
                 expect(b.beds_number).to.lessThanOrEqual(h.beds_number);
+            }
+        });
+    }
+    });
+
+    step('T5: GET/api/huts/filter [BEDS RANGES MIN=MAX=0]', async function() {
+        for (const h of huts){
+        await authenticatedUser
+        .get('/api/huts/filters?beds_number_min=' + 0 +
+        "&beds_number_max=" + 0)
+        .then(function(res) {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            for(const b of res.body){
+                expect(b.beds_number).to.equal(0);
             }
         });
     }
