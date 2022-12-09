@@ -7,8 +7,8 @@ import {getAddressByCoordinates} from './API/Points';
 const API = {
     logIn, logOut, getUserInfo, addUser,
     createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters,
-    addHut, deleteHut, getHikeById, getHutsByRadius,
-    addParking, deleteParking,
+    addHut, deleteHut, getHikeById, getHutsByRadius,getHutsByRadius,
+    addParking, deleteParking, getParkingsByRadius,
     getAddressByCoordinates, getParkingsByRadius
 };
 export default API;
