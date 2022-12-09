@@ -123,7 +123,7 @@ export default function AddHutPage1(props) {
                             Click on the map or type the coordinates
                         </Typography>
                     </Stack>
-                    <Box component="form" onSubmit={handleSubmit} >
+                    <Box component="form" onSubmit={handleSubmit} sx={{ width: "80%" }}>
                         {/* MAP */}
                         <Box>
                             <MapLocator position={position} setPosition={setPosition} radius={null} height={'50vh'} width={'100'} initialLat={initialLat} initialLng={initialLng} zoomLevel={14} />
@@ -205,8 +205,6 @@ export default function AddHutPage1(props) {
                             <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
 
                         </Grid>
-
-
 
                         <Stack direction="row" justifyContent="center" alignItems="center">
                             <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>

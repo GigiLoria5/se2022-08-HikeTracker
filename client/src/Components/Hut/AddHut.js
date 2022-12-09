@@ -45,34 +45,34 @@ export default function AddHut(props) {
         },
     });
 
-    const thm = { 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        textTransform: 'uppercase', 
-        fontWeight: 600 
+    const thm = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textTransform: 'uppercase',
+        fontWeight: 600
     };
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
         const hut = new Hut({
-            id:undefined, //id - assigned by backend
-            name:hutName,
-            city:city,
-            province:province,
-            country:country,
-            address:address,
-            altitude:altitude,
-            description:description,
-            beds_number:bedsNumber,
-            opening_period:undefined, //opening period - non static information
-            longitude:longitude.toString(),
-            latitude:latitude.toString(),
-            phone_number:phoneNumber,
-            email:email,
-            website:website,
-            type:type
+            id: undefined, //id - assigned by backend
+            name: hutName,
+            city: city,
+            province: province,
+            country: country,
+            address: address,
+            altitude: altitude,
+            description: description,
+            beds_number: bedsNumber,
+            opening_period: undefined, //opening period - non static information
+            longitude: longitude.toString(),
+            latitude: latitude.toString(),
+            phone_number: phoneNumber,
+            email: email,
+            website: website,
+            type: type
         }
         );
 
@@ -87,7 +87,7 @@ export default function AddHut(props) {
         })
 
         if (response === true) {
-            props.setMessage({ msg: `Hut correctly created`});
+            props.setMessage({ msg: `Hut correctly created` });
             setStepTwoDone(true);
         }
     }
@@ -118,7 +118,7 @@ export default function AddHut(props) {
 
                 {/* Title */}
                 <Grid xs={12}>
-                    <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={thm}>
+                    <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
                         Add Hut
                     </Typography>
                 </Grid>
