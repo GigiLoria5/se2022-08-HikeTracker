@@ -258,7 +258,7 @@ function AddParking() {
                                                     setCountry(value); setProvince(''); setCity('')
                                                     reset();
                                                 }}
-                                                renderInput={(params) => <TextField required {...params} label="Country" />}
+                                                renderInput={(params) => <TextField required {...params} label="Country" error={formValues.country.error} helperText={formValues.country.error && formValues.country.errorMessage} />}
                                             />
                                             {/*PROVINCE FIELD*/}
                                             <Autocomplete
@@ -275,7 +275,7 @@ function AddParking() {
                                                     setProvince(value); setCity('')
                                                     reset();
                                                 }}
-                                                renderInput={(params) => <TextField {...params} required label="Province" />}
+                                                renderInput={(params) => <TextField required {...params} label="Province" error={formValues.province.error} helperText={formValues.province.error && formValues.province.errorMessage} />}
                                             />
                                             {/*CITY FIELD*/}
                                             <Autocomplete
@@ -292,7 +292,7 @@ function AddParking() {
                                                     setCity(value);
                                                     reset();
                                                 }}
-                                                renderInput={(params) => <TextField {...params} required label="City" />}
+                                                renderInput={(params) => <TextField required {...params} label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                             />
                                             <TextField variant="outlined" required color='primary' label="Address" sx={{ width: '30ch', maxWidth: '30ch', m: 1 }} value={address} onChange={(e) => setAddress(e.target.value)} />
 
