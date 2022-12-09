@@ -92,7 +92,6 @@ function AddParking() {
         }
 
         setCity(getCity(loc));
-
     }
 
     useEffect(() => {
@@ -252,10 +251,12 @@ function AddParking() {
                                                 disablePortal
                                                 id="combo-box-demo"
                                                 options={countries}
+                                                value={country !== "" ? country : null}
                                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                                 onChange={(e, value) => {
                                                     e.preventDefault();
                                                     setCountry(value); setProvince(''); setCity('')
+                                                    reset();
                                                 }}
                                                 renderInput={(params) => <TextField required {...params} label="Country" />}
                                             />
@@ -267,10 +268,12 @@ function AddParking() {
                                                 id="combo-box-demo2"
                                                 options={provinces}
                                                 key={country}
+                                                value={province !== "" ? province : null}
                                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                                 onChange={(e, value) => {
                                                     e.preventDefault();
                                                     setProvince(value); setCity('')
+                                                    reset();
                                                 }}
                                                 renderInput={(params) => <TextField {...params} required label="Province" />}
                                             />
@@ -282,10 +285,12 @@ function AddParking() {
                                                 id="combo-box-demo3"
                                                 options={cities}
                                                 key={[province, country]}
+                                                value={city !== "" ? city : null}
                                                 sx={{ width: '30ch', maxWidth: '30ch', m: 1 }}
                                                 onChange={(e, value) => {
                                                     e.preventDefault();
                                                     setCity(value);
+                                                    reset();
                                                 }}
                                                 renderInput={(params) => <TextField {...params} required label="City" />}
                                             />
