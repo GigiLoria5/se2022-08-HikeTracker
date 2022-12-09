@@ -29,5 +29,4 @@ class Hut {
     }
 }
 
-
 module.exports = Hut;

@@ -196,7 +196,7 @@ function GeographicFilter(props) {
                     <TextField id="outlined-number" label="Radius" fullWidth InputLabelProps={{ shrink: true, }} InputProps={{ inputProps: { min: 1 }, endAdornment: <InputAdornment position="end">km</InputAdornment> }} value={radius !== null ? radius : ""} onChange={(e) => handleChangeRadius(e.target.value)} />
                     {/* Reset Radius Button */}
                     {radius
-                        ? <IconButton color="error" aria-label="reset radius" component="label" onClick={() => setRadius(null)}>
+                        ? <IconButton color="error" aria-label="reset radius" component="label" onClick={() => handleChangeRadius("")}>
                             <CancelIcon />
                         </IconButton>
                         : false
@@ -207,6 +207,7 @@ function GeographicFilter(props) {
                     waypoints={hikes
                         ? hikes.map(h => { return { label: h.title, lat: splitCoordinates(h.start.coordinates)[0], lng: splitCoordinates(h.start.coordinates)[1] } })
                         : huts.map(h => { return { label: h.name, lat: splitCoordinates(h.coordinates)[0], lng: splitCoordinates(h.coordinates)[1] } })}
+                    setReloadWaypoints={setLoadingHikes}
                 />
             </Box>
         </Box>

@@ -7,10 +7,12 @@ import markerIconBlue from '../../Assets/Map/marker-icon-blue.png';
 import markerIconRed from '../../Assets/Map/marker-icon-red.png';
 
 function LocationMarker(props) {
-    const { position, setPosition, radius, waypoints, reset } = props;
+    const { position, setPosition, radius, waypoints, reset, setReloadWaypoints } = props;
     const map = useMapEvents({
         click(e) {
             setPosition(e.latlng);
+            if (setReloadWaypoints)
+                setReloadWaypoints(true);
             map.flyTo(e.latlng, map.getZoom());
         },
         locationfound(e) {
@@ -61,7 +63,7 @@ function LocationMarker(props) {
  * @param {[String]} props.waypoints an array of objects with label, lat and lng properties
  */
 function MapLocator(props) {
-    const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel, waypoints, reset } = props;
+    const { position, setPosition, radius, height, width, initialLat, initialLng, zoomLevel, waypoints, reset, setReloadWaypoints } = props;
 
     return (
         <MapContainer
@@ -87,7 +89,7 @@ function MapLocator(props) {
                 </LayersControl.BaseLayer>
             </LayersControl>
             {/* Map Elements */}
-            <LocationMarker position={position} setPosition={setPosition} radius={radius} waypoints={waypoints} reset={reset} />
+            <LocationMarker position={position} setPosition={setPosition} radius={radius} waypoints={waypoints} reset={reset} setReloadWaypoints={setReloadWaypoints} />
         </MapContainer>
     )
 }
