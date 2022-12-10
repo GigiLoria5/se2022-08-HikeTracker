@@ -913,4 +913,58 @@ describe('Add hike', () => {
                 res.should.have.status(400);
             });
     });
+
+    step('T23: POST/api/hikes [GOOD startpoint/endpoint hut]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point", "{\"latitude\":44.574263943359256,\"longitude\":6.982647031545639,\"description\":\"G2\",\"type\":\"hut\",\"value\":\"gps\"}")
+            .field("end_point", "{\"latitude\":44.57425086759031,\"longitude\":6.982689192518592,\"description\":\"G1\",\"type\":\"hut\",\"value\":\"1\"}")
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileGood.gpx')
+            .then(function (res) {
+                res.should.have.status(201);
+            });
+    });
+
+    step('T23.5: Delete the previous hike', async function () {
+        const hikes = await hikeDao.getAllHikes();
+        last_hike_id = hikes[0].id;
+        last_gps_track = hikes[0].gps_track;
+
+        fs.unlink('gpx_files/' + last_gps_track + '.gpx', function (err, results) {
+            if (err) console.log('File Doesnt exists');
+            else console.log('deleted!');
+        });
+
+        await hikeDao.deleteHike(last_hike_id).then(_a => {
+            hikeDao.deleteReferencePoints(last_hike_id);
+        });
+        const hikes2 = await hikeDao.getAllHikes();
+    });
 });
