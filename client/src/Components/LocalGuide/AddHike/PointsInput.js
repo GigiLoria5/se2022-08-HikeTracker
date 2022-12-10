@@ -13,7 +13,7 @@ const PointsInput = (props) => {
                 <MenuItem value={"gps"}>GPS coordinates</MenuItem>
                 <MenuItem value={'address'}>Address</MenuItem>
                 <MenuItem value={'name'}>Name</MenuItem>
-                <MenuItem value={'parking'}>Parking Lot</MenuItem>
+                <MenuItem value={'parking_lot'}>Parking Lot</MenuItem>
                 <MenuItem value={'hut'}>Hut</MenuItem>
             </Select>
             {pointType === "gps" ? (
@@ -36,7 +36,7 @@ const PointsInput = (props) => {
                 <Grid></Grid>
             )}
 
-            {pointType === "parking" ? (
+            {pointType === "parking_lot" ? (
                 <>
                     <FormControl sx={{ width: '30ch', mt: 2 }}>
                         {
@@ -89,7 +89,7 @@ const PointsInput = (props) => {
             )}
 
             {
-                ((pointType === "hut" && huts.length === 0) || (pointType === "parking" && parkings.length === 0))
+                ((pointType === "hut" && huts.length === 0) || (pointType === "parking_lot" && parkings.length === 0))
                     ? false
                     : <SmootherTextField maxWidth='30ch' label="Description" text={description} setText={setPointDescription} required={true} />
             }
