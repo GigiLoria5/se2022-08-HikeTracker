@@ -79,8 +79,8 @@ router.post('/hikes',
                 const start_point = await JSON.parse(req.body.start_point);
                 const end_point = await JSON.parse(req.body.end_point);
 
-                const start_point_id = utilsHike.setPoint(start_point);
-                const end_point_id = utilsHike.setPoint(end_point);
+                const start_point_id = await utilsHike.setPoint(start_point);
+                const end_point_id = await utilsHike.setPoint(end_point);
                 
                 const hike = new Hike({
                     title:req.body.title,
