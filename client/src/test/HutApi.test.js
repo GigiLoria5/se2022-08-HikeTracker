@@ -5,6 +5,7 @@
 
 import API from '../API.js';
 import { Hut } from '../Utils/Hut';
+import { isPointInsideRange } from '../Utils/GeoUtils';
 
 const APIURL = 'http://localhost:3001';
 
@@ -132,5 +133,30 @@ describe('frontend test: hut creation', () => {
         } catch (err){
             console.log(err);
         } 
+    })
+});
+
+describe('frontend test: get hut by radius', () => {
+
+    it('setup', async () => {
+        const user = await API.logIn({username:"g.desantis@localguide.it", password:"password"});
+    })
+      
+    it('T0: GOOD', async () => {
+        const res = await API.getHutsByRadius(44.5, 7, 100000);
+        var huts = res.filter((r) => {return isPointInsideRange({ latitude: 44.5, longitude: 7 }, 100000, { latitude: r.latitude, longitude: r.longitude })});
+        expect(res).toStrictEqual(huts);
+    })
+
+    it('T1: BAD range', async () => {
+        const res = await API.getHutsByRadius(44.5, 7, NaN);
+        expect(res).toBeInstanceOf(Array);
+        expect(res.length).toBe(0);
+    })
+
+    it('T2: BAD latitude and longitude', async () => {
+        const res = await API.getHutsByRadius(NaN, NaN, 1000000);
+        expect(res).toBeInstanceOf(Array);
+        expect(res.length).toBe(0);
     })
 });

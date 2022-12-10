@@ -5,6 +5,7 @@
 
 import API from '../API.js';
 import { Parking } from '../Utils/Parking';
+import { isPointInsideRange } from '../Utils/GeoUtils';
 
 const APIURL = 'http://localhost:3001';
 
@@ -74,4 +75,29 @@ describe('frontend test: hut creation', () => {
         } 
     })
 
+});
+
+describe('frontend test: get parking lot by radius', () => {
+
+    it('setup', async () => {
+        const user = await API.logIn({username:"g.desantis@localguide.it", password:"password"});
+    })
+      
+    it('T0: GOOD', async () => {
+        const res = await API.getParkingsByRadius(44.5, 7, 100000);
+        var huts = res.filter((r) => {return isPointInsideRange({ latitude: 44.5, longitude: 7 }, 100000, { latitude: r.latitude, longitude: r.longitude })});
+        expect(res).toStrictEqual(huts);
+    })
+
+    it('T1: BAD range', async () => {
+        const res = await API.getParkingsByRadius(44.5, 7, NaN);
+        expect(res).toBeInstanceOf(Array);
+        expect(res.length).toBe(0);
+    })
+
+    it('T2: BAD latitude and longitude', async () => {
+        const res = await API.getParkingsByRadius(NaN, NaN, 1000000);
+        expect(res).toBeInstanceOf(Array);
+        expect(res.length).toBe(0);
+    })
 });
