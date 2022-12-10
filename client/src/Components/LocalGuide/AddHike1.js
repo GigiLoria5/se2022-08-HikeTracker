@@ -129,10 +129,10 @@ function AddHike1(props) {
     useEffect( () => {
 
         const getParkingsHutsLists = async () => {
-            const startParkingList = await API.getParkingsByRadius(startPointGPSlat, startPointGPSlon, 2000);
-            const startHutsList = await API.getHutsByRadius(startPointGPSlat, startPointGPSlon, 2000);
-            const endParkingList = await API.getParkingsByRadius(endPointGPSlat, endPointGPSlon, 2000);
-            const endHutsList = await API.getHutsByRadius(endPointGPSlat, endPointGPSlon, 2000);
+            const startParkingList = await API.getParkingsByRadius(startPointGPSlat, startPointGPSlon, 200);
+            const startHutsList = await API.getHutsByRadius(startPointGPSlat, startPointGPSlon, 200);
+            const endParkingList = await API.getParkingsByRadius(endPointGPSlat, endPointGPSlon, 200);
+            const endHutsList = await API.getHutsByRadius(endPointGPSlat, endPointGPSlon, 200);
             setStartParkings(startParkingList);
             setStartHuts(startHutsList);
             setEndParkings(endParkingList);

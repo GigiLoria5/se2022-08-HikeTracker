@@ -61,7 +61,7 @@ const parseGPXnoPoints = (points) => {
 
     let dist = 0;
     for (let i = 0; i < points.length - 1; i++) {
-        dist += getDistance([points[i].lat, points[i].lon], [points[i+1].lat, points[i+1].lon]);
+        dist += getDistance([points[i].lat, points[i].lon], [points[i+1].lat, points[i+1].lon])/1000;
     }
 
     return new GPXData({

@@ -63,8 +63,8 @@ exports.addHut = (userid, hut) => {
 
 exports.checkExisting = (hut) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM hut WHERE (coordinates = ? OR (city=? AND province=? AND country=? AND address=?))';
-        db.get(sql, [hut.coordinates, hut.city, hut.province, hut.country, hut.address], (err, row) => {
+        const sql = 'SELECT * FROM hut WHERE coordinates = ?';
+        db.get(sql, [hut.coordinates], (err, row) => {
             if (err) { reject(err); }
             else if (row === undefined) {
                 resolve(false);

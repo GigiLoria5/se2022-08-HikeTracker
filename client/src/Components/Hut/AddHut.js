@@ -1,10 +1,11 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import API from '../../API';
 import { Hut } from '../../Utils/Hut';
-import {Address, translateProvince, getCity} from '../../Utils/Address';
+import { Address, translateProvince, getCity } from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 
@@ -26,7 +27,6 @@ export default function AddHut(props) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
-    const [stepTwoDone, setStepTwoDone] = useState(false);
     const [formValues, setFormValues] = useState({
         country: {
             error: false,
@@ -42,6 +42,7 @@ export default function AddHut(props) {
         }
     });
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
@@ -49,11 +50,11 @@ export default function AddHut(props) {
     }, [])
 
     useEffect(() => {
-        if(latitude !== "" && longitude !== ""){
+        if (latitude !== "" && longitude !== "") {
             getLocation();
         }
         // eslint-disable-next-line
-    }, [latitude,longitude])
+    }, [latitude, longitude])
 
     const theme = createTheme({
         palette: {
@@ -69,27 +70,27 @@ export default function AddHut(props) {
         },
     });
 
-    const thm = { 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        textTransform: 'uppercase', 
-        fontWeight: 600 
+    const thm = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textTransform: 'uppercase',
+        fontWeight: 600
     };
 
-    const getLocation = async () =>{
-        const addr= await API.getAddressByCoordinates(longitude,latitude);   // Get address information starting from coordinates
+    const getLocation = async () => {
+        const addr = await API.getAddressByCoordinates(longitude, latitude);   // Get address information starting from coordinates
         setLocation(new Address(addr));
         autoFill(addr);
     }
 
-    const autoFill = (loc) =>{
+    const autoFill = (loc) => {
 
         setCountry(loc.country);
 
-        if(loc.country === "Italy"){
+        if (loc.country === "Italy") {
             setProvince(translateProvince(loc.county));
-        }else{
+        } else {
             setProvince(loc.state);
         }
 
@@ -97,57 +98,47 @@ export default function AddHut(props) {
 
     }
 
-    const handleSubmission = async (ev) => {
-        ev.preventDefault();
-
-        const hut = new Hut({
-            id:undefined, //id - assigned by backend
-            name:hutName,
-            city:city,
-            province:province,
-            country:country,
-            address:address,
-            altitude:altitude,
-            description:description,
-            beds_number:bedsNumber,
-            opening_period:undefined, //opening period - non static information
-            longitude:longitude.toString(),
-            latitude:latitude.toString(),
-            phone_number:phoneNumber,
-            email:email,
-            website:website,
-            type:type
-        }
-        );
-
-        const response = await API.addHut(hut).catch(e => {
-            const obj = JSON.parse(e);
-            props.setMessage({ msg: `${obj.error}!`, type: 'error' });
-        })
-
-        if (response === true) {
-            props.setMessage({ msg: `Hut correctly created`});
-            setStepTwoDone(true);
-        }
-    }
-
-    const handleReset = () => {
+    const handleGoBack = () => {
+        //Deletes informations on second page when the user goes back
         setHutName("");
         setType("");
         setBedsNumber(0);
-        setCountry("");
-        setProvince("");
-        setCity("");
-        setAddress("");
-        setLatitude("");
-        setLongitude("");
-        setAltitude(0.0);
         setWebsite("");
         setEmail("");
         setPhoneNumber("");
         setDescription("");
         setStepOneDone(false);
-        setStepTwoDone(false);
+    }
+
+    const handleSubmission = async (ev) => {
+        ev.preventDefault();
+
+        const hut = new Hut({
+            id: undefined, //id - assigned by backend
+            name: hutName,
+            city: city,
+            province: province,
+            country: country,
+            address: address,
+            altitude: altitude,
+            description: description,
+            beds_number: bedsNumber,
+            opening_period: undefined, //opening period - non static information
+            longitude: longitude.toString(),
+            latitude: latitude.toString(),
+            phone_number: phoneNumber,
+            email: email,
+            website: website,
+            type: type
+        }
+        );
+
+        await API.addHut(hut)
+            .then(_a => navigate("/")) //navigate("/huts") when available?
+            .catch(e => {
+                const obj = JSON.parse(e);
+                props.setMessage({ msg: `${obj.error}!`, type: 'error' });
+            });
     }
 
     return (
@@ -179,9 +170,8 @@ export default function AddHut(props) {
                                 address={address} setAddress={setAddress}
                                 setStepOneDone={setStepOneDone}
                                 setMessage={props.setMessage}
-                                reset={handleReset} 
                                 location={location}
-                                formValues={formValues} setFormValues={setFormValues}                           
+                                formValues={formValues} setFormValues={setFormValues}
                             />
                             :
                             <AddHutPage2
@@ -193,10 +183,8 @@ export default function AddHut(props) {
                                 phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}
                                 description={description} setDescription={setDescription}
                                 handleSubmission={handleSubmission}
-                                setStepOneDone={setStepOneDone}
-                                stepTwoDone={stepTwoDone}
+                                setStepOneDone={handleGoBack}
                                 message={props.message} setMessage={props.setMessage}
-                                reset={handleReset}
                             />
                     }
 
