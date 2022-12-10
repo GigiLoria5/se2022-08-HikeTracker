@@ -33,6 +33,7 @@ async function setPoint(point) {
         point_id = await locationDao.addLocation(point); 
         point.type = "location";
     }
+    return point_id;
 }
 
 module.exports = { getPoint, setPoint };
