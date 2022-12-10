@@ -6,12 +6,12 @@
  */
 
 const assert = require('assert');
-const {timeToHHMM} = require('../src/Utils/TimeFormat.js')
+const { timeToHHMM } = require('../src/Utils/TimeUtils');
 const expect = require('chai').expect;
 
 const elevations = require('./elevations.json')
 
-describe('Time Format test', () =>{
+describe('Time Format test', () => {
     it('T0: time check 12:00', async () => {
         const res = timeToHHMM(12.0);
         expect(res).to.equal("12:0");

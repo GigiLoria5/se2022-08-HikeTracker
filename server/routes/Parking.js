@@ -22,6 +22,7 @@ router.post('/parking', [
     body('latitude').isNumeric(),
     body('longitude').isNumeric(),
     body('address').isString(),
+    body('capacity').isNumeric()
 ], async (req, res) => {
 
     try {
@@ -39,7 +40,7 @@ router.post('/parking', [
             if (user !== undefined && user.role === "local_guide") {
 
                 // Create a new parking lot object given the fields received from the client
-                const parking = new Parking(0, req.body.city, req.body.province, req.body.country, (req.body.latitude + ", " + req.body.longitude), req.body.address);
+                const parking = new Parking(0, req.body.city, req.body.province, req.body.country, (req.body.latitude + ", " + req.body.longitude), req.body.address, req.body.capacity);
 
                 // Checks if the parking lot coordinates and location infos alread exists
                 const exists = await ParkingDAO.checkExisting(parking);

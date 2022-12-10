@@ -1,51 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Fab, Grid, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import HikesFilterPanel from './HikesFilterPanel';
-import HikesList from './HikesList';
 import API from '../../API';
-import { isPointInsideRange } from '../../Utils/GeoUtils';
-import { emptyFilter } from '../../Utils/Hike';
+import { emptyFilter } from '../../Utils/Hut';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
+import HutsList from './HutsList';
+import HutsFilterPanel from './HutsFilterPanel';
+import { isPointInsideRange } from '../../Utils/GeoUtils';
 
-const HikesContainer = () => {
+function HutsContainer() {
     const [showTopBtn, setShowTopBtn] = useState(false);
-    const [hikes, setHikes] = useState([]);
+    const [huts, setHuts] = useState([]);
     const [filter, setFilter] = useState(emptyFilter);
     const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
     const [radius, setRadius] = useState(null);
     const [search, setSearch] = useState("");
-    const [loadingHikes, setLoadingHikes] = useState(true);
+    const [loadingHuts, setLoadingHuts] = useState(true);
 
     useEffect(() => {
-        if (loadingHikes) {
-            API.getHikesWithFilters(filter)
-                .then(hikes => {
+        if (loadingHuts) {
+            API.getHutsWithFilters(filter)
+                .then(huts => {
                     // APPLY SEARCH BY NAME
-                    let hikesFiltered = (search === "")
-                        ? hikes
-                        : hikes.filter(h => h.title.toLowerCase().includes(search.toLowerCase()));
-                    // APPLY HIKES AROUND A POINT WITHIN RADIUS FILTER
-                    hikesFiltered = (radius === null)
-                        ? hikesFiltered
-                        : hikesFiltered.filter(h => {
-                            const coordinates = h.start.coordinates.split(', ');
-                            const hikeLatitude = coordinates[0];
-                            const hikeLongitude = coordinates[1];
-                            return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hikeLatitude, longitude: hikeLongitude });
+                    let hutsFiltered = (search === "")
+                        ? huts
+                        : huts.filter(h => h.name.toLowerCase().includes(search.toLowerCase()));
+                    // APPLY HUTS AROUND A POINT WITHIN RADIUS FILTER
+                    hutsFiltered = (radius === null)
+                        ? hutsFiltered
+                        : hutsFiltered.filter(h => {
+                            const coordinates = h.coordinates.split(', ');
+                            const hutLatitude = coordinates[0];
+                            const hutLongitude = coordinates[1];
+                            return isPointInsideRange({ latitude: position.lat, longitude: position.lng }, radius * 1000, { latitude: hutLatitude, longitude: hutLongitude });
                         });
-                    // Set Hikes After Filtered
-                    setHikes(hikesFiltered);
+                    // Set Huts After Filtered
+                    setHuts(hutsFiltered);
                     // Add some delay to load smoothly
                     setTimeout(() => {
-                        setLoadingHikes(false);
+                        setLoadingHuts(false);
                     }, 300);
                 });
         }
         // eslint-disable-next-line 
-    }, [filter.country, filter.province, filter.city, filter.difficulty,
-    filter.track_length_min, filter.track_length_max, filter.ascent_min, filter.ascent_max, filter.expected_time_min, filter.expected_time_max,
-    position.lat, position.lng, radius, search, loadingHikes]);
+    }, [filter.country, filter.province, filter.city,
+    filter.hut_type.length, filter.altitude_max, filter.altitude_min,
+    filter.beds_number_max, filter.beds_number_min,
+    position.lat, position.lng, radius, search, loadingHuts]);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -70,16 +71,16 @@ const HikesContainer = () => {
                 {/* Title */}
                 <Grid item xs={12} >
                     <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
-                        Find your next hike
+                        Huts
                     </Typography>
                 </Grid>
 
                 {/* Filter */}
-                <HikesFilterPanel hikes={hikes} setLoadingHikes={setLoadingHikes} filter={filter} setFilter={setFilter} position={position} setPosition={setPosition}
+                <HutsFilterPanel huts={huts} setLoadingHuts={setLoadingHuts} filter={filter} setFilter={setFilter} position={position} setPosition={setPosition}
                     radius={radius} setRadius={setRadius} setSearch={setSearch} />
 
-                {/* Hikes List */}
-                <HikesList hikes={hikes} loadingHikes={loadingHikes} />
+                {/* Huts List */}
+                <HutsList huts={huts} loadingHuts={loadingHuts} />
             </Grid>
 
             {/* Scroll To Top Button */}
@@ -97,4 +98,4 @@ const HikesContainer = () => {
     );
 }
 
-export default HikesContainer
+export default HutsContainer

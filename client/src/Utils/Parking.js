@@ -10,7 +10,7 @@
  */
 
 class Parking{
-    constructor(id, city, province, country, longitude, latitude, address){
+    constructor(id, city, province, country, longitude, latitude, address, capacity){
         this.id=id;
         this.city=city;
         this.province=province;
@@ -18,6 +18,7 @@ class Parking{
         this.longitude=longitude;
         this.latitude=latitude;
         this.address=address;
+        this.capacity=capacity;
     }
 }
 
@@ -40,6 +41,7 @@ class Parking{
     //address: not empty string
     if(parking.address === "") return false;
     return true;
+
 }
 
 module.exports = { Parking, validateParking };

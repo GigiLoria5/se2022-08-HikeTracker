@@ -2,3 +2,13 @@
 /server/node_modules/
 /server/mochawesome-report
 /server/.nyc_output/
+/server/coverage/
+client/reports/test-report.xml
+server/.nyc_output/processinfo/index.json
+server/xunit.xml
+server/.nyc_output/processinfo/index.json
+client/.nyc_output/processinfo/index.json
+client/.nyc_output/be21c4b9-4c2e-4b71-8736-6f4b26d0ad31.json
+client/.nyc_output/processinfo/be21c4b9-4c2e-4b71-8736-6f4b26d0ad31.json
+client/xunit.xml
+server/reports/test-report.xml

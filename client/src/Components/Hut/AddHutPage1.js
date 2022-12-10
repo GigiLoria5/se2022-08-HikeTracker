@@ -146,24 +146,17 @@ export default function AddHutPage1(props) {
                             Click on the map or type the coordinates
                         </Typography>
                     </Stack>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ width: "80%" }}>
+                        {/* MAP */}
+                        <Box>
+                            <MapLocator position={position} setPosition={setPosition} radius={null} height={'50vh'} width={'100'} initialLat={initialLat} initialLng={initialLng} zoomLevel={14} />
+                        </Box>
 
 
-                    {/* MAP */}
-                    <Grid xs={0} sm={1}></Grid>
-                    <Grid xs={12} sm={10} >
-                        <MapLocator position={position} setPosition={setPosition} radius={null} height={'50vh'} width={'100'} initialLat={initialLat} initialLng={initialLng} zoomLevel={14} />
-                    </Grid>
-                    <Grid xs={0} sm={1}></Grid>
-
-                    <Box component="form" onSubmit={handleSubmit} >
-
-
-                    
-
-                        {/* coordinates */}
+                        {/* Geographic informations */}
                         <Grid xs={12} sx={thm}>
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                COORDINATES
+                                GPS COORDINATES
                             </Typography>
                         </Grid>
 
@@ -242,8 +235,6 @@ export default function AddHutPage1(props) {
                             <TextField variant="outlined" margin="normal" required label="Address" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} value={props.address} onChange={ev => props.setAddress(ev.target.value)} />
 
                         </Grid>
-
-
 
                         <Stack direction="row" justifyContent="center" alignItems="center">
                             <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} component={Link} to={"/"} variant="outlined" color='error'>CANCEL</Button>

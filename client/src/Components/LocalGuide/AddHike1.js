@@ -34,8 +34,6 @@ function AddHike1(props) {
 
     const [isSelected, setIsSelected] = useState(false);
 
-
-
     const startPointDescription = props.startPointDescription
     const setStartPointDescription = props.setStartPointDescription
     const endPointDescription = props.endPointDescription
@@ -247,8 +245,8 @@ function AddHike1(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme}>
-                    <Grid xs={12}>
-                        <Typography variant="h5" marginTop={2} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+                    <Grid xs={12} >
+                        <Typography variant="h5" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
                             Add Hike
                         </Typography>
                     </Grid>

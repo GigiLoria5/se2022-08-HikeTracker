@@ -4,29 +4,113 @@
 
 const db = require("./db");
 
+exports.getCountries = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT country FROM hut ORDER BY country`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const countries = rows.map((row => ({
+                    country: row.country
+                })));
+                resolve(countries);
+            }
+        });
+    });
+};
+
+exports.getProvincesByCountry = (country) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT province FROM hut WHERE country = ? ORDER BY province`;
+        db.all(sql, [country], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const provinces = rows.map((row => ({
+                    province: row.province
+                })));
+                resolve(provinces);
+            }
+        });
+    });
+};
+
+exports.getCitiesByProvince = (province) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT DISTINCT city FROM hut WHERE province = ? ORDER BY city`;
+        db.all(sql, [province], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const cities = rows.map((row => ({
+                    city: row.city
+                })));
+                resolve(cities);
+            }
+        });
+    });
+};
 
 exports.getHutById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM hut WHERE id = ?`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id AND hid = ?`;
         db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
             else {
                 const hut = rows.map((row => ({
-                    id: id,
-                    name: row.name,
+                    id: parseInt(id),
+                    name: row.hname,
                     city: row.city,
                     province: row.province,
                     country: row.country,
                     address: row.address,
-                    phone_number: row.phone_number,
+                    phone_number: row.hphone_number,
                     altitude: row.altitude,
                     description: row.description,
                     beds_number: row.beds_number,
                     opening_period: row.opening_period,
-                    coordinates: row.coordinates
+                    coordinates: row.coordinates,
+                    email: row.hemail,
+                    website: row.website,
+                    type: row.type,
+                    author_id: row.user_id,
+                    author: row.uname + " " + row.surname
                 })));
                 resolve(hut[0]);
+            }
+        });
+    });
+};
+
+exports.getAllHuts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const huts = rows.map((row => ({
+                    id: row.hid,
+                    name: row.hname,
+                    city: row.city,
+                    province: row.province,
+                    country: row.country,
+                    address: row.address,
+                    phone_number: row.hphone_number,
+                    altitude: row.altitude,
+                    description: row.description,
+                    beds_number: row.beds_number,
+                    opening_period: row.opening_period,
+                    coordinates: row.coordinates,
+                    email: row.hemail,
+                    website: row.website,
+                    type: row.type,
+                    author_id: row.user_id,
+                    author: row.uname + " " + row.surname 
+                })));
+                resolve(huts);
             }
         });
     });
