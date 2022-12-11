@@ -1,6 +1,6 @@
 # se2022-08-HikeTracker
-Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
+Application developed during the Software Engineering II course (Year 2022-23) by Group 08 at the Politecnico di Torino (Master of Science in Computer Engineering).
 
 [![Unit Tests](https://github.com/GigiLoria5/se2022-08-HikeTracker/workflows/Unit%20tests/badge.svg)](https://github.com/GigiLoria5/se2022-08-HikeTracker/actions)
 
@@ -18,7 +18,6 @@ Manual test reports in client/gui_test
 - Solving all Critical Issues
 - Solving Major Issues if there's time left
 - Backend coverage must be greater than 80%
-
 
 ## Usage
 
@@ -56,9 +55,9 @@ Manual test reports in client/gui_test
 
 - Route `/` : a simple welcome page that acts as an entry point for all users
 - Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
-- Route `/hikes/:id` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
+- Route `/hikes/:hikeId` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
 - Route `/huts` : shows authenticated users the list of huts added by local guides, with the possibility of adding filters and searches for certain fields to show a desired subset. For each hut, a certain amount of information is visible.
-- Route `/huts/:id` : shows authenticated users all information about a hut. There is also a map in the sidebar, showing the specific location of it.
+- Route `/huts/:hutId` : shows authenticated users all information about a hut. There is also a map in the sidebar, showing the specific location of it.
 
 - Route `/login`: the page contains a form composed of username and password fields and a submit button. This route allows the user to perform login operation. The results of the authentication procedure (user logged in, wrong email and password) are shown inside an alert dialogue message on top of the screen. This route is linked to sign up route, by clicking on the text down the submit button.
 - Route `/register`: the page contains a form that allows the user to define a new account, by inserting
@@ -71,45 +70,11 @@ Manual test reports in client/gui_test
   - password: compulsory, minimum lenght is 8 maximum is 64.
     At the bottom of this form there is a submit button and a link to go back to login route.
 
-- Route `/local-guide-page`: the page contains the actions a local guide can do
+- Route `/local-guide-add-hikes`: the page contains a two-step form that allows the local guide to add information about a hike, in particular some required fields are a GPX file, start point, end point, reference points and more.
 
-  - Adding a hike
-  - Adding a hut
+- Route `/local-guide-add-hut`: the page contains a two-step form that allows the local guide to add information about a hut.
 
-- Route `/local-guide-add-hikes1`: the page contains a form that allows the local guide to add a GPX file, specifying start and end point types and related information
-
-  - upload gpx file
-  - start point type: can be "gps", "address", "name"
-    - start point name: if name is selected
-    - start point address: if address is selected
-  - start point description
-  - end point type: can be "gps", "address", "name"
-    - end point name: if name is selected
-    - end point address: if address is selected
-  - start point description
-
-- Route `/local-guide-add-hikes2`: the page contains a form that allows the local guide to add information about the hike, by inserting
-
-  - title
-  - length (automatically extracted from gpx file)
-  - expected time
-    - if possible computed from gpx
-    - otherwise to be inserted manually as hours and minutes
-  - total ascent (automatically extracted from gpx file)
-  - difficulty: can be "Tourist", "Hiker", "Professional Hiker"
-  - geographical area
-    - country
-    - province
-    - city
-  - reference points: points can be added/edited clicking on the map, for each point:
-    - type: can be "gps", "address", "name"
-      - name: if name is selected
-      - address: if address is selected
-    - description
-  - description
-    At the bottom of this form there is a submit button and a button to get back to the previous page.
-
-- Route `/local-guide-add-hut`: the page contains a form that allows the local guide to add information about a hut
+- Route `/local-guide-add-parking`: the page contains a form that allows the local guide to add information about a parking lot.
 
 ## API Format
 
@@ -567,7 +532,7 @@ Manual test reports in client/gui_test
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:
-    - `401 Unauthorized to execute this operation!` (user not authorized)  
+    - `401 Unauthorized to execute this operation!` (user not authorized)
     - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the countries, or an error message in case of failure
 
@@ -586,10 +551,10 @@ Manual test reports in client/gui_test
   - Description: Return an array containing all the provinces of a specific country where huts are available. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: 
-    - `401 Unauthorized to execute this operation!` (user not authorized) 
-    - `404 Page not found` (missing parameter) 
-    - `422 Fields validation failed` (parameter error) 
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized)
+    - `404 Page not found` (missing parameter)
+    - `422 Fields validation failed` (parameter error)
     - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the provinces, or an error message in case of failure
 
@@ -610,8 +575,8 @@ Manual test reports in client/gui_test
   - Response: `200 OK` (success)
   - Error responses:
     - `401 Unauthorized to execute this operation!` (user not authorized)
-    - `404 Page not found` (missing parameter)  
-    - `422 Fields validation failed` (parameter error) 
+    - `404 Page not found` (missing parameter)
+    - `422 Fields validation failed` (parameter error)
     - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the cities, or an error message in case of failure
 
@@ -630,10 +595,10 @@ Manual test reports in client/gui_test
   - Description: Return an object contaning hut information. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: 
-    - `401 Unauthorized to execute this operation!` (user not authorized) 
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized)
     - `404 Page not found` (missing parameter)
-    - `422 Fields validation failed` (parameter error) 
+    - `422 Fields validation failed` (parameter error)
     - `500 Internal Server Error` (generic error)
   - Response body: Hut object, or an error message in case of failure
 
@@ -664,8 +629,8 @@ Manual test reports in client/gui_test
   - Description: Return an array containing all the huts after applying the specified filters. If no filters are specified, the complete list is obtained. The hut_type parameter is repeated for every filter selected about hut types (0-5 times, example:&hut_type=value&hut_type=value&hut_type=value&hut_type=value&hut_type=value). The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
-  - Error responses: 
-    - `401 Unauthorized to execute this operation!` (user not authorized) 
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized)
     - `422 Fields validation failed` (parameter error)
     - `500 Internal Server Error` (generic error)
   - Response body: An array of objects, containing all the hikes, or an error message in case of failure
@@ -831,7 +796,7 @@ Manual test reports in client/gui_test
   - _altitude_ is in meters
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
   - _user id_ is the id of the local guide that creates and manages the hut on the platform
-- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates, user_id
+- Table `parking_lot` contains: id(PK), city, province, country, address, coordinates, capacity, user_id
   - _coordinates_ includes latitude and longitude using the following format (latitude, longitude)
 - Table `location` contains: id(PK), value_type, value, description, coordinates
   - Possible value types are: name, gps, address
