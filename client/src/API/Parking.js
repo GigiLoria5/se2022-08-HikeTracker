@@ -45,14 +45,17 @@ async function getParkingsByRadius(lat, lon, radius) {
     if (response.ok) {
         let parkings = parkingsJson.map((p) => {
             const [latitude, longitude] = splitCoordinates(p.coordinates);
-            return new Parking(
-                p.id,
-                p.city,
-                p.province,
-                p.country,
-                longitude,
-                latitude,
-                p.address
+            return new Parking({
+                id:p.id,
+                city:p.city,
+                province:p.province,
+                country:p.country,
+                longitude:longitude,
+                latitude:latitude,
+                address:p.address,
+                capacity:p.capacity
+            }
+                
             )
         });
 

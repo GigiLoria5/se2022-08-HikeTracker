@@ -8,19 +8,14 @@
  * @param {string} latitude
  * @param {string} address  
  */
-
-class Parking{
-    constructor(id, city, province, country, longitude, latitude, address, capacity){
-        this.id=id;
-        this.city=city;
-        this.province=province;
-        this.country=country;
-        this.longitude=longitude;
-        this.latitude=latitude;
-        this.address=address;
-        this.capacity=capacity;
+class Parking {
+    constructor(parking) {
+        Object.keys(parking).forEach(key =>
+            this[key] = parking[key]
+        )
     }
 }
+
 
 /**
  * Validates a parking lot before sending it to the backend

@@ -153,7 +153,15 @@ function AddParking() {
             return;
         }
         //add capacity of parking here
-        await addParking(new Parking("", city, province, country, position.lng, position.lat, address, capacity))
+        await addParking(new Parking({
+            id:"", 
+            city:city,
+            province:province,
+            country:country,
+            longitude:position.lng,
+            latitude:position.lat,
+            address:address,
+            capacity:capacity}))
             .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
 
     };

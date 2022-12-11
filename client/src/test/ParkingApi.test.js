@@ -11,11 +11,51 @@ const APIURL = 'http://localhost:3001';
 
 describe('frontend test: hut creation', () => {
     
-    const p0 = new Parking(undefined, "Turin", "Turin", "Italy", "0", "12.3456", "Corso Vittorio Emanuele II", 100);
-    const p1 = new Parking(undefined, "Turin", "Turin", "Italy", "12.0000", "65.4321", "", 100); //missing address
-    const p2 = new Parking(undefined, "", "Turin", "Italy", "65.4321", "65.4321", "Corso Castelfidardo", 100); //missing city
-    const p3 = new Parking(undefined, "", "", "Italy", "65.4567", "45.4321", "Corso Duca degli Abruzzi", 100); //missing city and province
-    const p4 = new Parking(undefined, "", "", "", "10.9876", "54.3210", "Via Roma", 100); //missing city, province and country
+    const p0 = new Parking({
+        id:undefined,
+        city:"Turin",
+        province:"Turin",
+        country:"Italy",
+        latitude:"0",
+        longitude:"12.3456", 
+        address:"Corso Vittorio Emanuele II",
+        capacity:100});
+    const p1 = new Parking({
+        id:undefined,
+        city:"Turin",
+        province:"Turin",
+        country:"Italy",
+        latitude:"12.0000",
+        longitude:"65.4321", 
+        address:"",
+        capacity:100}); //missing address
+    const p2 = new Parking({
+        id:undefined,
+        city:"",
+        province:"Turin",
+        country:"Italy",
+        latitude:"12.0000",
+        longitude:"65.4321", 
+        address:"Corso Castelfidardo",
+        capacity:100}); //missing city
+    const p3 = new Parking({
+        id:undefined,
+        city:"",
+        province:"",
+        country:"Italy",
+        latitude:"12.0000",
+        longitude:"65.4321", 
+        address:"Corso Castelfidardo",
+        capacity:100}); //missing city and province
+    const p4 = new Parking({
+        id:undefined,
+        city:"",
+        province:"",
+        country:"",
+        latitude:"12.0000",
+        longitude:"65.4321", 
+        address:"Corso Castelfidardo",
+        capacity:100}); //missing city, province and country
     
     it('setup user session', async () => {
         const user = await API.logIn({username:"g.desantis@localguide.it", password:"password"});
