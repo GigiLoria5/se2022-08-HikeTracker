@@ -109,7 +109,7 @@ function AddHike2(props) {
     const startPointValue = props.startPointValue
     const endPointValue = props.endPointValue
 
-    
+
 
 
     useEffect(() => {
@@ -148,18 +148,18 @@ function AddHike2(props) {
     }, [country, province]);
 
     const getLocation = async () => {
-        const addr = await getAddressByCoordinates(startPointGPSlon,startPointGPSlat);   // Get address information starting from coordinates
+        const addr = await getAddressByCoordinates(startPointGPSlon, startPointGPSlat);   // Get address information starting from coordinates
         setLocation(new Address(addr));
         autoFill(addr);
     }
 
-    const autoFill = (loc) =>{
+    const autoFill = (loc) => {
 
         setCountry(loc.country);
 
-        if(loc.country === "Italy"){
+        if (loc.country === "Italy") {
             setProvince(translateProvince(loc.county));
-        }else{
+        } else {
             setProvince(loc.state);
         }
 
@@ -168,12 +168,12 @@ function AddHike2(props) {
     }
 
     const reset = async () => {
-        const formValueClean =  ResetErrors(formValues);
+        const formValueClean = ResetErrors(formValues);
         setFormValues(formValueClean);
     }
 
     const printErrors = async (res) => {
-        const formValueWithErrors =  PrintCheckErrors(formValues,res);
+        const formValueWithErrors = PrintCheckErrors(formValues, res);
         setFormValues(formValueWithErrors);
     }
 
@@ -211,7 +211,7 @@ function AddHike2(props) {
     };
 
     const addRefPoints = (lat, long) => {
-        if(refPoints.filter(p => (p.latitude === lat && p.longitude === long)).length > 0) return;
+        if (refPoints.filter(p => (p.latitude === lat && p.longitude === long)).length > 0) return;
         if (!addingRefPoint && !editingRefPoint) {
             setAddingRefPoint(true);
             setRefPoints([{ latitude: lat, longitude: long, description: "test" }, ...refPoints])
@@ -295,26 +295,26 @@ function AddHike2(props) {
 
         const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
-        if(res === "true"){
+        if (res === "true") {
             const hike = new Hike({
-                title:title,
-                peak_altitude:peak_altitude,
-                city:city,
-                province:province,
-                country:country,
-                description:description,
-                ascent:ascent,
-                track_length:length,
-                expected_time:computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
-                difficulty:difficultyFromState(difficulty),
-                start_point:start_point,
-                end_point:end_point,
-                reference_points:referencePoint,
-                gpx:selectedFile
+                title: title,
+                peak_altitude: peak_altitude,
+                city: city,
+                province: province,
+                country: country,
+                description: description,
+                ascent: ascent,
+                track_length: length,
+                expected_time: computedExpectedTime > 0 ? computedExpectedTime : expectedTime,
+                difficulty: difficultyFromState(difficulty),
+                start_point: start_point,
+                end_point: end_point,
+                reference_points: referencePoint,
+                gpx: selectedFile
             }
             )
             API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
-        }else{
+        } else {
             printErrors(res);
             ev.stopPropagation();
         }
@@ -426,7 +426,7 @@ function AddHike2(props) {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={countries}
-                                    value={country!==""? country : null}
+                                    value={country !== "" ? country : null}
                                     sx={{ m: 1, width: '28ch' }}
                                     onChange={(e, value) => {
                                         e.preventDefault();
@@ -442,7 +442,7 @@ function AddHike2(props) {
                                     id="combo-box-demo2"
                                     options={provinces}
                                     key={country}
-                                    value={province!==""? province : null}
+                                    value={province !== "" ? province : null}
                                     sx={{ m: 1, width: '28ch' }}
                                     onChange={(e, value) => {
                                         e.preventDefault();
@@ -464,7 +464,7 @@ function AddHike2(props) {
                                         setCity(value);
                                         reset();
                                     }}
-                                    value={city!==""? city: null}
+                                    value={city !== "" ? city : null}
                                     renderInput={(params) => <TextField required {...params} label="City" error={formValues.city.error} helperText={formValues.city.error && formValues.city.errorMessage} />}
                                 />
                             </Stack>
@@ -482,6 +482,7 @@ function AddHike2(props) {
                             <Grid xs={12} sx={thm} margin={1}>
                                 <RefPointAdd
                                     start_point={start_point}
+                                    end_point={end_point}
                                     points={points}
                                     addRefPoints={addRefPoints}
                                     editRefPoint={editRefPoint}
@@ -516,7 +517,7 @@ function AddHike2(props) {
 
                             {/****************************************************SUBMIT BUTTONS********************************************************/}
                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => {setStepOneDone(false); setNewHike(false)}} variant="contained" color='secondary'>GO BACK</Button>
+                                <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} onClick={() => { setStepOneDone(false); setNewHike(false) }} variant="contained" color='secondary'>GO BACK</Button>
                                 <Button sx={{ m: 1, mb: 2, minWidth: '80px' }} type="submit" variant="contained" color='primary'>ADD HIKE</Button>
                             </Stack>
 

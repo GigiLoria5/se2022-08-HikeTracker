@@ -4,6 +4,7 @@ import SmootherTextField from "../../SmootherTextField";
 
 function RefPointAdd(props) {
     const { start_point,
+        end_point,
         points,
         addRefPoints,
         editRefPoint,
@@ -30,6 +31,8 @@ function RefPointAdd(props) {
                 width={'100%'}
                 initialLat={start_point.latitude}
                 initialLng={start_point.longitude}
+                endLat={end_point.latitude}
+                endLng={end_point.longitude}
                 zoomLevel={15}
                 points={points}
                 addRefPoints={addRefPoints}

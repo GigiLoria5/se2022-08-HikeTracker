@@ -5,6 +5,7 @@ import { Icon } from 'leaflet';
 import Control from 'react-leaflet-custom-control'
 import locationMarker from '../../Assets/Map/location-marker.png';
 import markerStart from '../../Assets/Map/start-flag.png';
+import markerFinish from '../../Assets/Map/finish-flag.png';
 import 'leaflet/dist/leaflet.css';
 import { getClosestPoint } from '../../Utils/GeoUtils';
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
@@ -42,7 +43,7 @@ function ResetPosition(props) {
             e.preventDefault();
             map.flyTo([props.lat, props.lon], props.zoom);
         }}>
-            <LocationSearchingIcon/>
+            <LocationSearchingIcon />
         </Button>
     </Control>
 }
@@ -54,9 +55,9 @@ function ResetPosition(props) {
  * @param {Object} props.width the width of the map which should be defined as a string: 'value px' 
  */
 function RefPointMapLocator(props) {
-    
-    
-    const { height, width, initialLat, initialLng, zoomLevel, points, refpoints, addRefPoints, editRefPoint } = props;
+
+
+    const { height, width, initialLat, initialLng, endLat, endLng, zoomLevel, points, refpoints, addRefPoints, editRefPoint } = props;
     return (
         <MapContainer
             center={[initialLat, initialLng]}
@@ -84,12 +85,14 @@ function RefPointMapLocator(props) {
                 pathOptions={{ color: 'blue' }}
                 positions={points}
             />
-            <AddPoint addPoint={addRefPoints} points={points}/>
+            <AddPoint addPoint={addRefPoints} points={points} />
             {/* Map Elements */}
             {/*<LocationMarker position={position} setPosition={setPosition} radius={radius}/>*/}
             <Marker position={[initialLat, initialLng]} icon={new Icon({ iconUrl: markerStart, iconSize: [29, 41], iconAnchor: [0, 41] })} >
             </Marker >
-            <ResetPosition lat={initialLat} lon={initialLng} zoom={zoomLevel}/>
+            <Marker position={[endLat, endLng]} icon={new Icon({ iconUrl: markerFinish, iconSize: [29, 41], iconAnchor: [0, 41] })} >
+            </Marker >
+            <ResetPosition lat={initialLat} lon={initialLng} zoom={zoomLevel} />
             {refpoints ?
                 refpoints.map(a => {
                     return <RefPointMarker key={a.latitude + "." + a.longitude} latitude={a.latitude} longitude={a.longitude} editRefPoint={editRefPoint} />
