@@ -1,7 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
@@ -27,7 +26,6 @@ export default function AddHut(props) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [description, setDescription] = useState("");
     const [stepOneDone, setStepOneDone] = useState(false);
-    const [stepTwoDone, setStepTwoDone] = useState(false);
     const [formValues, setFormValues] = useState({
         country: {
             error: false,
@@ -43,7 +41,6 @@ export default function AddHut(props) {
         }
     });
 
-    const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
@@ -70,14 +67,6 @@ export default function AddHut(props) {
             }
         },
     });
-
-    const thm = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        fontWeight: 600
-    };
 
     const getLocation = async () => {
         const addr = await API.getAddressByCoordinates(longitude, latitude);   // Get address information starting from coordinates
@@ -119,7 +108,6 @@ export default function AddHut(props) {
 
         if (response === true) {
             props.setMessage({ msg: `Hut correctly created` });
-            setStepTwoDone(true);
         }
     }
 
