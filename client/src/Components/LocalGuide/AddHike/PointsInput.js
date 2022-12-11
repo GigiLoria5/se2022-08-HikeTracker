@@ -89,7 +89,7 @@ const PointsInput = (props) => {
             )}
 
             {
-                ((pointType === "hut" && huts.length === 0) || (pointType === "parking_lot" && parkings.length === 0))
+                (pointType === "hut" || pointType === "parking_lot")
                     ? false
                     : <SmootherTextField maxWidth='30ch' label="Description" text={description} setText={setPointDescription} required={true} />
             }
