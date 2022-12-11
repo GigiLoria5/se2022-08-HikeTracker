@@ -222,13 +222,13 @@ function AddHike1(props) {
             setMessage("GPX file not uploaded");
             return false;
         }
-        if (startPointType !== "hut" || startPointType !== "parking_lot") {
+        if (startPointType !== "hut" && startPointType !== "parking_lot") {
             if (!startPointDescription) {
                 setMessage("Missing point description(s)");
                 return false;
             }
         }
-        if (endPointType !== "hut" || endPointType !== "parking_lot") {
+        if (endPointType !== "hut" && endPointType !== "parking_lot") {
             if (props.endPointDescription) {
                 setMessage("Missing point description(s)");
                 return false;

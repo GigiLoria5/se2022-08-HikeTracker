@@ -36,4 +36,17 @@ async function setPoint(point) {
     return point_id;
 }
 
-module.exports = { getPoint, setPoint };
+/**
+ * 
+ * @param {*} point is a start point or an end point
+ */
+function verifyPointDescription(point){
+    if(point.type !== "hut" && point.type !== "parking_lot"){
+        if(point.description.length == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+module.exports = { getPoint, setPoint, verifyPointDescription };

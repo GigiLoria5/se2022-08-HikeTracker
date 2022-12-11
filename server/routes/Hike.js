@@ -36,14 +36,14 @@ router.post('/hikes',
         const start_point = await JSON.parse(req.body.start_point);
         if (isNaN(start_point.latitude) ||
             isNaN(start_point.longitude) ||
-            (start_point.description.length == 0)) throw new Error("Invalid start point");
+            (!utilsHike.verifyPointDescription(start_point))) throw new Error("Invalid start point");
         return true;
     }),
     check('end point').custom(async (value, { req }) => {
         const end_point = await JSON.parse(req.body.end_point);
         if (isNaN(end_point.latitude) ||
             isNaN(end_point.longitude) ||
-            (end_point.description.length == 0)) throw new Error("Invalid end point");
+            (!utilsHike.verifyPointDescription(end_point))) throw new Error("Invalid end point");
         return true;
     }),
 
