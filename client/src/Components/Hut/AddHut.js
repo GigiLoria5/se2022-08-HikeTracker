@@ -7,7 +7,7 @@ import { Hut, validateHut } from '../../Utils/Hut';
 import { Address, translateProvince, getCity } from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function AddHut(props) {
     const [hutName, setHutName] = useState("");
@@ -41,6 +41,7 @@ export default function AddHut(props) {
         }
     });
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         props.setMessage('');
@@ -108,6 +109,7 @@ export default function AddHut(props) {
 
         if (response === true) {
             props.setMessage({ msg: `Hut correctly created` });
+            navigate('/huts');
         }
     }
 
