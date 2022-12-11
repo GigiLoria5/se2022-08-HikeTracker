@@ -26,6 +26,21 @@ import DifficultySelector from './AddHike/DifficultySelector';
 import { timeToHHMM } from '../../Utils/TimeUtils';
 
 
+const Description = (props) => {
+    const [localDescription, setLocalDescription] = React.useState(props.description);
+    return <TextField
+        required
+        variant="outlined"
+        label="Description"
+        multiline rows={4}
+        margin="normal"
+        sx={{ width: "75%", maxWidth: "40ch" }}
+        value={localDescription}
+        onBlur={ev => { props.setDescription(ev.target.value) }}
+        onChange={ev => { setLocalDescription(ev.target.value) }}
+    />
+}
+
 function AddHike2(props) {
     const [message, setMessage] = useState("");
     const setStepOneDone = props.setStepOneDone
@@ -94,20 +109,7 @@ function AddHike2(props) {
     const startPointValue = props.startPointValue
     const endPointValue = props.endPointValue
 
-    const Description = () => {
-        const [localDescription, setLocalDescription] = React.useState(description);
-        return <TextField
-            required
-            variant="outlined"
-            label="Description"
-            multiline rows={4}
-            margin="normal"
-            sx={{ width: "75%", maxWidth: "40ch" }}
-            value={localDescription}
-            onBlur={ev => { setDescription(ev.target.value) }}
-            onChange={ev => { setLocalDescription(ev.target.value) }}
-        />
-    }
+    
 
 
     useEffect(() => {
