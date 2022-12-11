@@ -229,7 +229,7 @@ function AddHike1(props) {
             }
         }
         if (endPointType !== "hut" && endPointType !== "parking_lot") {
-            if (props.endPointDescription) {
+            if (!endPointDescription) {
                 setMessage("Missing point description(s)");
                 return false;
             }
