@@ -185,3 +185,35 @@ exports.deleteHutByName = (name, userid) => {
         });
     })
 }
+
+exports.getAllHuts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const huts = rows.map((row => ({
+                    id: row.hid,
+                    name: row.hname,
+                    city: row.city,
+                    province: row.province,
+                    country: row.country,
+                    address: row.address,
+                    phone_number: row.hphone_number,
+                    altitude: row.altitude,
+                    description: row.description,
+                    beds_number: row.beds_number,
+                    opening_period: row.opening_period,
+                    coordinates: row.coordinates,
+                    email: row.hemail,
+                    website: row.website,
+                    type: row.type,
+                    author_id: row.user_id,
+                    author: row.uname + " " + row.surname 
+                })));
+                resolve(huts);
+            }
+        });
+    });
+};

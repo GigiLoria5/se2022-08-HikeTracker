@@ -1,4 +1,7 @@
 import { APIURL } from './APIUrl';
+import { Parking } from '../Utils/Parking';
+import { isPointInsideRange, splitCoordinates } from '../Utils/GeoUtils';
+
 /* Credentials required  */
 /**
  *
@@ -15,15 +18,52 @@ async function addParking(parking) {
             credentials: 'include',
             body: JSON.stringify(parking),
         });
-        if(response.ok) {
+        if (response.ok) {
             return true;
         } else {
             const errDetails = await response.text();
             throw errDetails;
         }
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
+    }
+}
+
+/**
+ * 
+ * @param {*} lat 
+ * @param {*} lon 
+ * @param {*} radius (max distance in meters)
+ * @returns an array of Parking objects
+ */
+async function getParkingsByRadius(lat, lon, radius) {
+
+    const response = await fetch(new URL('/api/parking', APIURL));
+    const parkingsJson = await response.json();
+
+    if (response.ok) {
+        let parkings = parkingsJson.map((p) => {
+            const [latitude, longitude] = splitCoordinates(p.coordinates);
+            return new Parking({
+                id:p.id,
+                city:p.city,
+                province:p.province,
+                country:p.country,
+                longitude:longitude,
+                latitude:latitude,
+                address:p.address,
+                capacity:p.capacity
+            }
+                
+            )
+        });
+
+        parkings = parkings.filter((p) => { return isPointInsideRange({ latitude: lat, longitude: lon }, radius, { latitude: p.latitude, longitude: p.longitude }) });
+        return parkings;
+
+    } else {
+        throw parkingsJson;
     }
 }
 
@@ -48,4 +88,4 @@ async function deleteParking(parkingAddress) {
     }
 }
 
-export {addParking, deleteParking}
+export { addParking, getParkingsByRadius, deleteParking }

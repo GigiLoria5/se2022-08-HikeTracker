@@ -43,7 +43,7 @@ router.post('/hikes',
         const end_point = await JSON.parse(req.body.end_point);
         if (isNaN(end_point.latitude) ||
             isNaN(end_point.longitude) ||
-            (end_point.description.length == 0)) throw new Error("Invalid start point");
+            (end_point.description.length == 0)) throw new Error("Invalid end point");
         return true;
     }),
 
@@ -59,7 +59,6 @@ router.post('/hikes',
         return true;
     }),
 
-
     async (req, res) => {
 
         try {
@@ -69,7 +68,6 @@ router.post('/hikes',
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
-
             }
             if (!req.files) {
                 throw new Error("no file uploaded");
@@ -80,8 +78,10 @@ router.post('/hikes',
 
                 const start_point = await JSON.parse(req.body.start_point);
                 const end_point = await JSON.parse(req.body.end_point);
-                const start_point_id = await locationDao.addLocation(start_point);
-                const end_point_id = await locationDao.addLocation(end_point);
+
+                const start_point_id = await utilsHike.setPoint(start_point);
+                const end_point_id = await utilsHike.setPoint(end_point);
+                
                 const hike = new Hike({
                     title:req.body.title,
                     peak_altitude:req.body.peak_altitude,
@@ -94,9 +94,9 @@ router.post('/hikes',
                     expected_time:req.body.expected_time,
                     difficulty:req.body.difficulty,
                     gps_track:name,
-                    start_point_type:"location",
+                    start_point_type:start_point.type,
                     start_point_id:start_point_id,
-                    end_point_type:"location",
+                    end_point_type:end_point.type,
                     end_point_id:end_point_id
                 }
                 )

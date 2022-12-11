@@ -75,12 +75,12 @@ router.post('/parking', [
 
 // Delete a parking lot by an id
 // DELETE /api/parking/:id
-router.delete('/parking/:id',[
+router.delete('/parking/:id', [
     check('id').exists().isInt(),
 ], async (req, res) => {
 
-    try{
-        if(req.isAuthenticated()){
+    try {
+        if (req.isAuthenticated()) {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -88,25 +88,25 @@ router.delete('/parking/:id',[
             }
 
             await ParkingDAO.deleteParking(req.params.id, req.user.id)
-                .then(() =>  res.status(200).end())
+                .then(() => res.status(200).end())
                 .catch(() => res.status(500).json({ error: `Database error` }));
 
-        } else{
+        } else {
             return res.status(401).json({ error: 'Not authorized' });
         }
-    } catch(err) {
+    } catch (err) {
         return res.status(503).json({ error: err });
     }
 });
 
 // Delete a parking lot by an address
 // DELETE /api/parking/address/:address
-router.delete('/parking/address/:address',[
+router.delete('/parking/address/:address', [
     check('address').exists().isString(),
 ], async (req, res) => {
 
-    try{
-        if(req.isAuthenticated()){
+    try {
+        if (req.isAuthenticated()) {
 
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -114,15 +114,31 @@ router.delete('/parking/address/:address',[
             }
 
             await ParkingDAO.deleteParkingByAddress(req.params.address, req.user.id)
-                .then(() =>  res.status(200).end())
+                .then(() => res.status(200).end())
                 .catch(() => res.status(500).json({ error: `Database error` }));
 
-        } else{
+        } else {
             return res.status(401).json({ error: 'Not authorized' });
         }
-    } catch(err) {
+    } catch (err) {
         return res.status(503).json({ error: err });
     }
+});
+
+/////////////////////////////////////////////////////////////////////
+//////                          GET                            //////
+/////////////////////////////////////////////////////////////////////
+
+router.get('/parking', async (req, res) => {
+
+    try {
+        const parkings = await ParkingDAO.getAllParkingLots();
+        return res.status(200).json(parkings);
+    }
+    catch (err) {
+        return res.status(500).json({ error: `Database error` })
+    };
+    
 });
 
 module.exports = router;

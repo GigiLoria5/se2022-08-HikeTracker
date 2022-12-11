@@ -56,7 +56,7 @@ function validateHut(hut) {
     //email: don't care
     //website: don't care
     //type: not empty string
-    return (!hut.type === "");
+    return !(hut.type === "");
 }
 
 const emptyFilter = {

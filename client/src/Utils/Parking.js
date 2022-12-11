@@ -8,19 +8,14 @@
  * @param {string} latitude
  * @param {string} address  
  */
-
-class Parking{
-    constructor(id, city, province, country, longitude, latitude, address, capacity){
-        this.id=id;
-        this.city=city;
-        this.province=province;
-        this.country=country;
-        this.longitude=longitude;
-        this.latitude=latitude;
-        this.address=address;
-        this.capacity=capacity;
+class Parking {
+    constructor(parking) {
+        Object.keys(parking).forEach(key =>
+            this[key] = parking[key]
+        )
     }
 }
+
 
 /**
  * Validates a parking lot before sending it to the backend
@@ -29,18 +24,19 @@ class Parking{
  function validateParking(parking){
     
     //city: not empty string
-    if(parking.city == "") return false;
+    if(parking.city === "") return false;
     //province: not empty string
-    if(parking.province == "") return false;
+    if(parking.province === "") return false;
     //country: not empty string
-    if(parking.country == "") return false;
+    if(parking.country === "") return false;
     //longitude: not empty string
-    if(parking.longitude == "") return false;
+    if(parking.longitude === "") return false;
     //latitude: not empty string
-    if(parking.latitude == "") return false;
+    if(parking.latitude === "") return false;
     //address: not empty string
-    if(parking.capacity == "") return false;
-    return(!parking.address == "")
+    if(parking.address === "") return false;
+    return true;
+
 }
 
 module.exports = { Parking, validateParking };

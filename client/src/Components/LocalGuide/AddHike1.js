@@ -14,6 +14,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/system';
 import PointsInput from './AddHike/PointsInput';
+import API from './../../API'
 
 
 
@@ -75,7 +76,26 @@ function AddHike1(props) {
         value: endPointValue
     };
 
+    /************************************* TO REPLACE WITH LISTs FROM API *******************************************/
+    /********************* each element of a list has an id and a title, like shown below ***************************/
 
+    //for start points, using startPointGPSlat and startPointGPSlon, get the huts & parking lots 2km around the start point
+    //put the parking list in startParkings and the hut list in startHuts
+
+    //const startParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    //const startHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+
+    //for end points, using endPointGPSlat and endPointGPSlon, get the huts & parking lots 2km around the end point
+    //put the parking list in endParkings and the hut list in endHuts
+
+    //const endParkings = [{id:"parking1", title:"Parking of fun"},{id:"parking2", title:"Parking of yolo"}]
+    //const endHuts = [{id:"hut1", title:"Hut of fun"},{id:"hut2", title:"Hut of yolo"}]
+
+    /***************************************************************************************************************/
+    const [startParkings, setStartParkings] = useState([]);
+    const [startHuts, setStartHuts] = useState([]);
+    const [endParkings, setEndParkings] = useState([]);
+    const [endHuts, setEndHuts] = useState([]);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -104,6 +124,25 @@ function AddHike1(props) {
         // eslint-disable-next-line
     }, [newHike]);
 
+    useEffect( () => {
+
+        const getParkingsHutsLists = async () => {
+            const startParkingList = await API.getParkingsByRadius(startPointGPSlat, startPointGPSlon, 200);
+            const startHutsList = await API.getHutsByRadius(startPointGPSlat, startPointGPSlon, 200);
+            const endParkingList = await API.getParkingsByRadius(endPointGPSlat, endPointGPSlon, 200);
+            const endHutsList = await API.getHutsByRadius(endPointGPSlat, endPointGPSlon, 200);
+            setStartParkings(startParkingList);
+            setStartHuts(startHutsList);
+            setEndParkings(endParkingList);
+            setEndHuts(endHutsList);
+        };
+
+        if (isSelected) {
+            getParkingsHutsLists();
+        }
+
+    }, [isSelected, startPointGPSlat, startPointGPSlon, endPointGPSlat, endPointGPSlon]);
+
     const theme = createTheme({
         palette: {
             primary: {
@@ -129,15 +168,15 @@ function AddHike1(props) {
             setSelectedFile(event.target.files[0]);
             setIsSelected(true);
             const gpx = await parseGPX(event.target.files[0]);
-            setStartPointGPSlat(gpx.start_point_lat)
-            setStartPointGPSlon(gpx.start_point_lon)
-            setEndPointGPSlat(gpx.end_point_lat)
-            setEndPointGPSlon(gpx.end_point_lon)
+            setStartPointGPSlat(gpx.start_point_lat);
+            setStartPointGPSlon(gpx.start_point_lon);
+            setEndPointGPSlat(gpx.end_point_lat);
+            setEndPointGPSlon(gpx.end_point_lon);
             setAscent(gpx.ascent);
             setLength(gpx.length);
             setExpectedTime(gpx.expectedTime);
-            setPeakAltitude(gpx.peak_altitude)
-            setMessage("")
+            setPeakAltitude(gpx.peak_altitude);
+            setMessage("");
         }
         else {
             setSelectedFile(null);
@@ -157,6 +196,7 @@ function AddHike1(props) {
             setStartPointValue("")
         }
     }
+
 
     /* Function called on end point input click (PointsInput component) */
     const handleChange2 = (e) => {
@@ -180,6 +220,15 @@ function AddHike1(props) {
     const checkForm = () => {
         if (selectedFile == null) {
             setMessage("GPX file not uploaded");
+            return false;
+        }
+        if (!startPointDescription || !endPointDescription) {
+            setMessage("Missing point description(s)");
+            return false;
+        }
+        if (!startPointValue || !endPointValue) {
+            console.log(startPointValue)
+            setMessage("Missing point attribute(s)");
             return false;
         }
         return true;
@@ -246,7 +295,10 @@ function AddHike1(props) {
                                                 description={startPointDescription}
                                                 handleChange={handleChange1}
                                                 setPointValue={setStartPointValue}
-                                                setPointDescription={setStartPointDescription} />
+                                                setPointDescription={setStartPointDescription}
+                                                parkings={startParkings}
+                                                huts={startHuts}
+                                            />
                                         </Grid>
                                         {/*****************************************************END POINT***********************************************/}
 
@@ -260,7 +312,10 @@ function AddHike1(props) {
                                                 description={endPointDescription}
                                                 handleChange={handleChange2}
                                                 setPointValue={setEndPointValue}
-                                                setPointDescription={setEndPointDescription} />
+                                                setPointDescription={setEndPointDescription}
+                                                parkings={endParkings}
+                                                huts={endHuts}
+                                            />
                                         </Grid>
                                     </Grid>
                                 </div>

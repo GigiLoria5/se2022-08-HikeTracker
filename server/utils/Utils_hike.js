@@ -19,4 +19,21 @@ async function getPoint(type, id) {
     return res;
 }
 
-module.exports = { getPoint };
+/**
+ * 
+ * @param {*} point is a start point or an end point 
+ * @returns {*} point_id
+ */
+async function setPoint(point) {
+    let point_id;
+    if(point.type === "hut" || point.type === "parking_lot"){
+        point_id = point.value;
+    }
+    else{
+        point_id = await locationDao.addLocation(point); 
+        point.type = "location";
+    }
+    return point_id;
+}
+
+module.exports = { getPoint, setPoint };

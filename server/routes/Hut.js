@@ -292,4 +292,18 @@ router.delete('/huts/name', [body('hutName').exists().isString()], async (req, r
     }
 });
 
+/////////////////////////////////////////////////////////////////////
+//////                          GET                            //////
+/////////////////////////////////////////////////////////////////////
+
+router.get('/huts', async (req, res) => {
+    try {
+        const huts = await HutDAO.getAllHuts();
+        return res.status(200).json(huts);
+    }
+    catch (err) {
+        return res.status(500).json({ error: `Database error` })
+    };
+});
+
 module.exports = router;

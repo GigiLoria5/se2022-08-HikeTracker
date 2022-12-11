@@ -1,14 +1,14 @@
 import { logIn, logOut, getUserInfo, addUser } from './API/Authentication';
 import { createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters, getHikeById } from './API/Hikes';
-import { addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById } from './API/Hut';
-import { addParking, deleteParking } from './API/Parking';
+import { addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById, getHutsByRadius } from './API/Hut';
+import { addParking, getParkingsByRadius, deleteParking } from './API/Parking';
 import { getAddressByCoordinates } from './API/Points';
 
 const API = {
     logIn, logOut, getUserInfo, addUser,
     createHike, getCountries, getProvincesByCountry, getCitiesByProvince, getHikesWithFilters, getHikeById,
-    addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById,
-    addParking, deleteParking,
+    addHut, deleteHut, getHutsCountries, getHutsProvincesByCountry, getHutsCitiesByProvince, getHutsWithFilters, getHutById, getHutsByRadius,
+    addParking, deleteParking, getParkingsByRadius,
     getAddressByCoordinates
 };
 export default API;

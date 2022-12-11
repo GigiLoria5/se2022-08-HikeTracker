@@ -497,6 +497,30 @@ Manual test reports in client/gui_test
   }
   ```
 
+- GET `/api/parking`
+
+  - Description: Return an array containing all the parkings.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the parkings, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": 2,
+      "city": "Torino",
+      "province": "Torino",
+      "country": "Italy",
+      "latitude": 15.7,
+      "longitude": 45.4,
+      "address": "Address Test"
+    },
+    ...
+  ]
+  ```
+
 - DELETE `/api/parking/:id`
 
   - Description: Delete a parking lot by an id
@@ -710,6 +734,38 @@ Manual test reports in client/gui_test
   {
       "error": "message text"
   }
+  ```
+
+- GET `/api/huts`
+
+  - Description: Return an array containing all the huts.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses: `400 Bad Request` (parameter error) `500 Internal Server Error` (generic error)
+  - Response body: An array of objects, containing all the parkings, or an error message in case of failure
+
+  ```
+  [
+    ...,
+    {
+      "id": 1,
+      "name": "Hut test",
+      "city": "Turin",
+      "province": "Torino",
+      "country": "Italy",
+      "address": "Hut route 66",
+      "altitude": 1950 ,
+      "description": "Amazing hut in the middle of the mountains",
+      "beds_number": 10,
+      "latitude": 15.7,
+      "longitude": 45.4,
+      "phone_number" : "+393331171111",
+      "email" : "hut@hut.it",
+      "website" : "www.hut.com",
+      "type" : "alpine_hut"
+    },
+    ...
+  ]
   ```
 
 - DELETE `/api/huts`
