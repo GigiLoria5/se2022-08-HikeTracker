@@ -124,7 +124,7 @@ function AddHike1(props) {
         // eslint-disable-next-line
     }, [newHike]);
 
-    useEffect( () => {
+    useEffect(() => {
 
         const getParkingsHutsLists = async () => {
             const startParkingList = await API.getParkingsByRadius(startPointGPSlat, startPointGPSlon, 200);
@@ -222,10 +222,19 @@ function AddHike1(props) {
             setMessage("GPX file not uploaded");
             return false;
         }
-        if (!startPointDescription || !endPointDescription) {
-            setMessage("Missing point description(s)");
-            return false;
+        if (startPointType !== "hut" || startPointType !== "parking_lot") {
+            if (!startPointDescription) {
+                setMessage("Missing point description(s)");
+                return false;
+            }
         }
+        if (endPointType !== "hut" || endPointType !== "parking_lot") {
+            if (props.endPointDescription) {
+                setMessage("Missing point description(s)");
+                return false;
+            }
+        }
+        
         if (!startPointValue || !endPointValue) {
             setMessage("Missing point attribute(s)");
             return false;
