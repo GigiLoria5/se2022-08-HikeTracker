@@ -139,12 +139,10 @@ function AddParking() {
 
         const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
-        if (res === "true") {
-            await addParking(new Parking("", city, province, country, position.lng, position.lat, address))
-                .then(_a => navigate("/")).catch(err => { setMessage("Server error in creating parking"); });
-        } else {
+        if (res !== "true") {
             printErrors(res);
             ev.stopPropagation();
+            return;
         }
         if (!capacity) {
             setMessage("Parking lot capacity info missing");
