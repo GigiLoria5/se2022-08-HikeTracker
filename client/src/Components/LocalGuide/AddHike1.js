@@ -227,7 +227,6 @@ function AddHike1(props) {
             return false;
         }
         if (!startPointValue || !endPointValue) {
-            console.log(startPointValue)
             setMessage("Missing point attribute(s)");
             return false;
         }

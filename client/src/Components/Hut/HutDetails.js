@@ -19,7 +19,6 @@ function HutDetails() {
         if (hutId) {
             API.getHutById(parseInt(hutId))
                 .then(h => {
-                    console.log(h);
                     setTimeout(() => {
                         setHut(h);
                     }, 300);

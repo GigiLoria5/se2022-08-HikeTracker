@@ -182,8 +182,8 @@ router.post('/huts', [
     body('longitude').isNumeric(),
     body('altitude').isDecimal(),
     body('website').optional({ checkFalsy: true }).isURL(),
-    body('email').optional({ checkFalsy: true }).isEmail(),
-    body('phone_number').optional({ checkFalsy: true }).notEmpty().isMobilePhone(),
+    body('email').isEmail(),
+    body('phone_number').notEmpty().isMobilePhone(),
     body('description').isString(),
 ], async (req, res) => {
 
