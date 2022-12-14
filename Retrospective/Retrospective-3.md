@@ -46,7 +46,7 @@ sections:
 
 ## QUALITY MEASURES
 
-> Disclosure: due to a 2-tier server architecture choice, the presence of unit tests is highly affected as both the dao layer and the controller layer have strong dependencies (database and dao respectively). Therefore, in our definition of done, we have added integration testing, which in this architecture is the only real way of testing.
+> **Disclosure**: due to a 2-tier server architecture choice, the presence of unit tests is highly affected as both the dao layer and the controller layer have strong dependencies (database and dao respectively). Therefore, in our definition of done, we have added integration testing, which in this architecture is the only real way of testing.
 
 - Unit Testing
   - Total hours estimated: 0
@@ -75,6 +75,8 @@ sections:
     - Reliability: A
     - Security: A
     - Maintainability: A
+
+> **Technical Debt Handling Strategy**: our focus is mainly on solving all 'blocking' and 'critical' issues and ensures that we reach at least 80 % coverage on the backend part of the application. If there is time left over (from the allocated one on handling the TD), we spend it on solving the 'major' issues as well. Obviously 'blocking', 'critical' and 'major' refer to the severity levels used by SonarQube.
 
 ## ASSESSMENT
 
