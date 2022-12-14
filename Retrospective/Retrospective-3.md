@@ -73,7 +73,8 @@ sections:
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-  - ...
+  - Positive lesson: We managed to have a better organisation in this sprint with a good communication that enabled us to have easy merging operation.
+  - Negative lesson: We need to improve the learning process to be more efficient in the next sprint.
 
 - Which improvement goals set in the previous retrospective were you able to achieve?
 
@@ -86,6 +87,8 @@ sections:
   - We managed to achieve all the improvements we set out to accomplish in the last retrospective.
 
 - ## Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
+  - **Continue working in such a way:** to finish all the stories and tasks planned to do in the next sprint in the most efficient way.
+  -  **Learning:** Improve the learning process when learning something new is needed by beeing more compliant to the documentation.
 
 - ## One thing you are proud of as a Team!!
-  -
+  - Every member of the team managed to do all of the tasks they were assigned to.
