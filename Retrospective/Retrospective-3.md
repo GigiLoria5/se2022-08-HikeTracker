@@ -64,6 +64,17 @@ sections:
 - Code review
   - Total hours estimated: 5,333
   - Total hours spent: 4,833
+- Technical Debt management:
+  - Total hours estimated: 3,5
+  - Total hours spent: 3,75
+  - Hours estimated for remediation by SonarQube: 13
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues: 1,25
+  - Hours spent on remediation: 1,75
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability"): 0,4
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability):
+    - Reliability: A
+    - Security: A
+    - Maintainability: A
 
 ## ASSESSMENT
 
@@ -86,9 +97,10 @@ sections:
 
   - We managed to achieve all the improvements we set out to accomplish in the last retrospective.
 
-- ## Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - **Continue working in such a way:** to finish all the stories and tasks planned to do in the next sprint in the most efficient way.
-  -  **Learning:** Improve the learning process when learning something new is needed by beeing more compliant to the documentation.
+- Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-- ## One thing you are proud of as a Team!!
+  - **Continue working in such a way:** to finish all the stories and tasks planned to do in the next sprint in the most efficient way.
+  - **Learning:** Improve the learning process when learning something new is needed by beeing more compliant to the documentation.
+
+- One thing you are proud of as a Team!!
   - Every member of the team managed to do all of the tasks they were assigned to.
