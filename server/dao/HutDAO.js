@@ -120,7 +120,7 @@ exports.getAllHuts = () => {
 
 exports.addHut = (userid, hut) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id, picture) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id, picture) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
         db.run(sql, [
             hut.name,
             hut.city,

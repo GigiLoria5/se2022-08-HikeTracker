@@ -33,22 +33,22 @@ describe('test Add hut wrong role', () => {
     step('T2: POST/api/huts [WRONG USER ROLE]', async function () {
         await authenticatedUser
             .post('/api/huts')
-            .send({
-                "name": "Hut test",
-                "city": "Turin",
-                "province": "TO",
-                "country": "Italy",
-                "address": "Hut route 66",
-                "altitude": 1950 ,
-                "description": "Amazing hut in the middle of the mountains",
-                "beds_number": 10,
-                "latitude": 15.7,
-                "longitude": 45.4,
-                "phone_number" : "+393331171111",
-                "email" : "hut@hut.it",
-                "website" : "www.hut.com",
-                "type" : "alpine_hut"
-              })
+            .set('content-type', 'multipart/form-data')
+            .field("name", "Hut test")
+            .field("city", "Turin")
+            .field("province", "TO")
+            .field("country", "Italy")
+            .field("address", "Hut route 66")
+            .field("altitude", 1950)
+            .field("description", "Amazing hut in the middle of the mountains")
+            .field("beds_number", 10)
+            .field("latitude", 15.7)
+            .field("longitude", 45.4)
+            .field("phone_number", "+393331171111")
+            .field("email", "hut@hut.it")
+            .field("website", "www.hut.com")
+            .field("type", "alpine_hut")
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(401);
             });
@@ -57,27 +57,27 @@ describe('test Add hut wrong role', () => {
 
 describe('test Add hut other errors', () => {
 
-    let authenticatedUser = request.agent(server);
+    let authenticatedUser = chai.request.agent(server);
 
     step('T1: POST/api/huts [USER NOT AUTHENTICATED]', async function () {
         await agent
             .post('/api/huts')
-            .send({
-                "name": "Hut test",
-                "city": "Turin",
-                "province": "TO",
-                "country": "Italy",
-                "address": "Hut route 66",
-                "altitude": 1950 ,
-                "description": "Amazing hut in the middle of the mountains",
-                "beds_number": 10,
-                "latitude": 15.7,
-                "longitude": 45.4,
-                "phone_number" : "+393331171111",
-                "email" : "hut@hut.it",
-                "website" : "www.hut.com",
-                "type" : "alpine_hut"
-              })
+            .set('content-type', 'multipart/form-data')
+            .field("name", "Hut test")
+            .field("city", "Turin")
+            .field("province", "TO")
+            .field("country", "Italy")
+            .field("address", "Hut route 66")
+            .field("altitude", 1950)
+            .field("description", "Amazing hut in the middle of the mountains")
+            .field("beds_number", 10)
+            .field("latitude", 15.7)
+            .field("longitude", 45.4)
+            .field("phone_number", "+393331171111")
+            .field("email", "hut@hut.it")
+            .field("website", "www.hut.com")
+            .field("type", "alpine_hut")
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(401);
             });
@@ -122,9 +122,8 @@ describe('test Add hut other errors', () => {
 
     step('T4: POST/api/huts [city NOT VALID]', async function () {
         await authenticatedUser
-            .post('/api/huts')
-            .send({
-                "name": "Hut test",
+            .post('/api/huts').send({
+                "name": "Test Hut",
                 "city": 123,
                 "province": "TO",
                 "country": "Italy",
@@ -407,22 +406,22 @@ describe('test Add hut other errors', () => {
     step('T16: POST/api/huts [GOOD]', async function () {
         await authenticatedUser
             .post('/api/huts')
-            .send({
-                "name": "Hut test",
-                "city": "Turin",
-                "province": "TO",
-                "country": "Italy",
-                "address": "Hut route 66",
-                "altitude": 1950 ,
-                "description": "Amazing hut in the middle of the mountains",
-                "beds_number": 10,
-                "latitude": 15.7,
-                "longitude": 45.4,
-                "phone_number" : "+393331171111",
-                "email" : "hut@hut.it",
-                "website" : "www.hut.com",
-                "type" : "alpine_hut"
-              })
+            .set('content-type', 'multipart/form-data')
+            .field("name", "Hut test")
+            .field("city", "Turin")
+            .field("province", "TO")
+            .field("country", "Italy")
+            .field("address", "Hut route 66")
+            .field("altitude", 1950)
+            .field("description", "Amazing hut in the middle of the mountains")
+            .field("beds_number", 10)
+            .field("latitude", 15.7)
+            .field("longitude", 45.4)
+            .field("phone_number", "+393331171111")
+            .field("email", "hut@hut.it")
+            .field("website", "www.hut.com")
+            .field("type", "alpine_hut")
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(200);
             });
@@ -431,22 +430,22 @@ describe('test Add hut other errors', () => {
     step('T17: POST/api/huts [HUT ALREADY EXISTS]', async function () {
         await authenticatedUser
             .post('/api/huts')
-            .send({
-                "name": "Hut test",
-                "city": "Angrogna",
-                "province": "Torino",
-                "country": "Italy",
-                "address": "Barfè Superiore, 197, 10060 ",
-                "altitude": 1950 ,
-                "description": "Amazing hut in the middle of the mountains",
-                "beds_number": 10,
-                "latitude": 15.7,
-                "longitude": 45.4,
-                "phone_number" : "+393331171111",
-                "email" : "hut@hut.it",
-                "website" : "www.hut.com",
-                "type" : "alpine_hut"
-              })
+            .set('content-type', 'multipart/form-data')
+            .field("name", "Hut test")
+            .field("city", "Turin")
+            .field("province", "TO")
+            .field("country", "Italy")
+            .field("address", "Hut route 66")
+            .field("altitude", 1950)
+            .field("description", "Amazing hut in the middle of the mountains")
+            .field("beds_number", 10)
+            .field("latitude", 15.7)
+            .field("longitude", 45.4)
+            .field("phone_number", "+393331171111")
+            .field("email", "hut@hut.it")
+            .field("website", "www.hut.com")
+            .field("type", "alpine_hut")
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(422);
             });
@@ -484,22 +483,22 @@ describe('test Add hut good', () => {
     step('T2: POST/api/huts [GOOD]', async function () {
         await authenticatedUser
             .post('/api/huts')
-            .send({
-                "name": "Hut test",
-                "city": "Turin",
-                "province": "TO",
-                "country": "Italy",
-                "address": "Hut route 66",
-                "altitude": 1950 ,
-                "description": "Amazing hut in the middle of the mountains",
-                "beds_number": 10,
-                "latitude": 15.7,
-                "longitude": 45.4,
-                "phone_number" : "+393331171111",
-                "email" : "hut@hut.it",
-                "website" : "www.hut.com",
-                "type" : "alpine_hut"
-              })
+            .set('content-type', 'multipart/form-data')
+            .field("name", "Hut test")
+            .field("city", "Turin")
+            .field("province", "TO")
+            .field("country", "Italy")
+            .field("address", "Hut route 66")
+            .field("altitude", 1950)
+            .field("description", "Amazing hut in the middle of the mountains")
+            .field("beds_number", 10)
+            .field("latitude", 15.7)
+            .field("longitude", 45.4)
+            .field("phone_number", "+393331171111")
+            .field("email", "hut@hut.it")
+            .field("website", "www.hut.com")
+            .field("type", "alpine_hut")
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(200);
             });

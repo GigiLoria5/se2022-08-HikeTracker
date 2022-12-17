@@ -90,7 +90,8 @@ router.get('/hut/:id',
                     hut.picture_file = fs.readFileSync('./pictures/' + hut.picture)
                     res.status(200).json(hut);
                 })
-                .catch((_) => { res.status(500).json({ error: `Database error while retrieving the hut` }); });
+                .catch((err) => { 
+                    res.status(500).json({ error: `Database error while retrieving the hut` }); });
         } else {
             return res.status(401).json({ error: "Unauthorized to execute this operation!" });
         }
@@ -201,10 +202,10 @@ router.post('/huts', [
     try {
         // Check if the user is authenticated
         if (req.isAuthenticated()) {
-
             // Check if the body contains errors
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
             
@@ -240,7 +241,14 @@ router.post('/huts', [
                 const exists = await HutDAO.checkExisting(hut);
                 if (exists === false) {
                     // Hut is created and added
-                    await HutDAO.addHut(req.user.id, hut);
+                    
+                    const hut_id = await HutDAO.addHut(req.user.id, hut);
+                    picture.mv(`./pictures/${picture_name}`, err => {
+                        if (err) {
+                            HutDAO.deleteHut(hut_id, req.user.id);
+                            throw new Error("error saving image file");
+                        }
+                    })
                     return res.status(200).end();
 
                 } else {
