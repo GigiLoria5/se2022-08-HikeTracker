@@ -25,6 +25,7 @@
         "test": "jest",
         "test_coverage": "jest --coverage",
         "test_integration": "nyc mocha --runInBand --require mocha-steps --reporter mocha-sonarqube-reporter --timeout 30000 --exit",
+        "test_integration_ma": "nyc mocha --runInBand --require mocha-steps --reporter mochawesome --timeout 30000 --exit",
         "test_format": "nyc report --reporter=lcov --report-dir=.nyc_coverage"
     },
     "devDependencies": {

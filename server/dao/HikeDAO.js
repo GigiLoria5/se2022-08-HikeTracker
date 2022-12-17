@@ -76,7 +76,8 @@ exports.getHikeById = (id) => {
                     start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
-                    author_id: row.author_id
+                    author_id: row.author_id,
+                    picture: row.picture
                 })));
                 resolve(hike[0]);
             }
@@ -86,7 +87,7 @@ exports.getHikeById = (id) => {
 
 exports.getAllHikes = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id FROM hike ORDER BY id DESC`;
+        const sql = `SELECT id, title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id, picture FROM hike ORDER BY id DESC`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
@@ -108,7 +109,8 @@ exports.getAllHikes = () => {
                     start_point_id: row.start_point_id,
                     end_point_type: row.end_point_type,
                     end_point_id: row.end_point_id,
-                    author_id: row.author_id
+                    author_id: row.author_id,
+                    picture: row.picture
 
                 })));
                 resolve(hikes);
@@ -119,7 +121,7 @@ exports.getAllHikes = () => {
 
 exports.addHike = (hike, author_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO hike(title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO hike(title, peak_altitude, city, province, country, description, ascent, track_length, expected_time, difficulty, gps_track, start_point_type, start_point_id, end_point_type, end_point_id, author_id, picture) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.run(sql, [
             hike.title,
             hike.peak_altitude,
@@ -136,7 +138,8 @@ exports.addHike = (hike, author_id) => {
             hike.start_point_id,
             hike.end_point_type,
             hike.end_point_id,
-            author_id
+            author_id,
+            hike.picture
         ], function(err) {
             if (err) {
                 reject(err);

@@ -64,6 +64,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(201);
             });
@@ -73,8 +74,14 @@ describe('Add hike', () => {
         const hikes = await hikeDao.getAllHikes();
         last_hike_id = hikes[0].id;
         last_gps_track = hikes[0].gps_track;
+        last_image = hikes[0].picture;
 
         fs.unlink('gpx_files/' + last_gps_track + '.gpx', function (err, results) {
+            if (err) console.log('File Doesnt exists');
+            else console.log('deleted!');
+        });
+
+        fs.unlink('pictures/' + last_image, function (err, results) {
             if (err) console.log('File Doesnt exists');
             else console.log('deleted!');
         });
@@ -159,6 +166,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -199,6 +207,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -239,6 +248,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -279,6 +289,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -319,6 +330,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -358,6 +370,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -397,6 +410,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -436,6 +450,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -475,6 +490,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -514,6 +530,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -553,6 +570,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -592,6 +610,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -631,6 +650,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -670,6 +690,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -709,6 +730,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -749,6 +771,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -789,6 +812,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -829,6 +853,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -869,6 +894,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -909,6 +935,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileWrong.txt')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(400);
             });
@@ -947,6 +974,7 @@ describe('Add hike', () => {
                 ]
             }))
             .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.jpg')
             .then(function (res) {
                 res.should.have.status(201);
             });
@@ -956,8 +984,14 @@ describe('Add hike', () => {
         const hikes = await hikeDao.getAllHikes();
         last_hike_id = hikes[0].id;
         last_gps_track = hikes[0].gps_track;
+        last_image = hikes[0].picture;
 
         fs.unlink('gpx_files/' + last_gps_track + '.gpx', function (err, results) {
+            if (err) console.log('File Doesnt exists');
+            else console.log('deleted!');
+        });
+        
+        fs.unlink('pictures/' + last_image, function (err, results) {
             if (err) console.log('File Doesnt exists');
             else console.log('deleted!');
         });
@@ -966,5 +1000,147 @@ describe('Add hike', () => {
             hikeDao.deleteReferencePoints(last_hike_id);
         });
         const hikes2 = await hikeDao.getAllHikes();
+    });
+
+    step('T24: POST/api/hikes [NO PICTURE]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            // .field("title", undefined)
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileGood.gpx')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
+    });
+
+    step('T25: POST/api/hikes [GOOD WITH PNG]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            .field("title", "Ring for Monte Calvo")
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point", "{\"latitude\":44.574263943359256,\"longitude\":6.982647031545639,\"description\":\"G2\",\"type\":\"gps\",\"value\":\"gps\"}")
+            .field("end_point", "{\"latitude\":44.57425086759031,\"longitude\":6.982689192518592,\"description\":\"G1\",\"type\":\"gps\",\"value\":\"gps\"}")
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.png')
+            .then(function (res) {
+                res.should.have.status(201);
+            });
+    });
+
+    step('T25.5: Delete the previous hike', async function () {
+        const hikes = await hikeDao.getAllHikes();
+        last_hike_id = hikes[0].id;
+        last_gps_track = hikes[0].gps_track;
+        last_image = hikes[0].picture;
+
+        fs.unlink('gpx_files/' + last_gps_track + '.gpx', function (err, results) {
+            if (err) console.log('File Doesnt exists');
+            else console.log('deleted!');
+        });
+
+        fs.unlink('pictures/' + last_image, function (err, results) {
+            if (err) console.log('File Doesnt exists');
+            else console.log('deleted!');
+        });
+
+        await hikeDao.deleteHike(last_hike_id).then(_a => {
+            hikeDao.deleteReferencePoints(last_hike_id);
+        });
+        const hikes2 = await hikeDao.getAllHikes();
+    });
+
+    step('T26: POST/api/hikes [WRONG IMAGE FORMAT]', async function () {
+        await authenticatedUser
+            .post('/api/hikes')
+            .set('content-type', 'multipart/form-data')
+            // .field("title", undefined)
+            .field("peak_altitude", 1357)
+            .field("city", "Carignano")
+            .field("province", "Torino")
+            .field("country", "Italy")
+            .field("description", "It runs between ...")
+            .field("ascent", 320)
+            .field("track_length", 6.2)
+            .field("expected_time", 3.3)
+            .field("difficulty", 2)
+            .field("start_point_type", "parking_lot")
+            .field("start_point_id", 3)
+            .field("end_point_type", "location")
+            .field("end_point_id", 18)
+            .field("reference_points", JSON.stringify({
+                "points": [
+                    {
+                        "type": "hut",
+                        "id": 1
+                    },
+                    {
+                        "type": "hut",
+                        "id": 2
+                    },
+                    {
+                        "type": "location",
+                        "id": 12
+                    }
+                ]
+            }))
+            .attach('gpx', 'test/TestFileGood.gpx')
+            .attach('picture', 'test/TestImage.gif')
+            .then(function (res) {
+                res.should.have.status(400);
+            });
     });
 });
