@@ -193,7 +193,7 @@ Manual test reports in client/gui_test
   - Permissions allowed: Local guide
   - Request body: Hike description, including gpx file with gpx tag and picture with picture tag
   - gpx file size must be less than 10MB
-  - picture file size must be less than 10MB
+  - picture file size must be less than 10MB, .jpg or .png
 
   ```
   {
@@ -595,7 +595,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/hut/:id`
 
-  - Description: Return an object contaning hut information. The user must be a local_guide or an hiker.
+  - Description: Return an object contaning hut information, including cover picture. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:
@@ -623,7 +623,8 @@ Manual test reports in client/gui_test
       "website": "www.facebook.com/rifugio.barfe",
       "type": "alpine_hut",
       "author_id": 6,
-      "author": "Luigi De Russis"
+      "author": "Luigi De Russis",
+      "picture_file": ...
     }
   ```
 
@@ -665,10 +666,11 @@ Manual test reports in client/gui_test
   ```
 
 - POST `/api/huts`
-
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hut
   - Permissions allowed: Local guide
-  - Request body: Hut description
+  - Request body: Hut description, including picture
+  - picture file size must be less than 10MB, .jpg or .png
 
   ```
   {
@@ -685,8 +687,8 @@ Manual test reports in client/gui_test
     "phone_number" : "+393331171111",
     "email" : "hut@hut.it",
     "website" : "www.hut.com",
-    "type" : "alpine_hut"
-
+    "type" : "alpine_hut",
+    "picture" : ...
   }
   ```
 
