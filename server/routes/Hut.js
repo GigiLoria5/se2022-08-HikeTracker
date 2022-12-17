@@ -3,7 +3,7 @@
 // import packages and classes
 const express = require('express');
 const Hut = require('../models/Hut');
-
+const fs = require('fs');
 const { body, check, query, validationResult } = require('express-validator'); // validation middleware
 const HutDAO = require('../dao/HutDAO');
 const UserDAO = require('../dao/UserDAO');
@@ -87,6 +87,7 @@ router.get('/hut/:id',
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getHutById(req.params.id)
                 .then(async (hut) => {
+                    hut.picture_file = fs.readFileSync('./pictures/' + hut.picture)
                     res.status(200).json(hut);
                 })
                 .catch((_) => { res.status(500).json({ error: `Database error while retrieving the hut` }); });
@@ -185,6 +186,16 @@ router.post('/huts', [
     body('email').isEmail(),
     body('phone_number').notEmpty().isMobilePhone(),
     body('description').isString(),
+    check('picture file').custom(async (value, { req }) => {
+        if (!req.files) throw new Error("no file uploaded");
+        const sizeKB = req.files.picture.size / 1024;
+        if (sizeKB > 1024 * 10) throw new Error("picture file too large");
+        if (req.files.picture.mimetype != "image/jpeg" && req.files.picture.mimetype != "image/png") {
+            throw new Error("invalid picture file");
+        }
+        return true;
+    }),
+
 ], async (req, res) => {
 
     try {
@@ -196,10 +207,14 @@ router.post('/huts', [
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
+            
 
             // Checks if the user is autorized to create a new hut
             const user = await UserDAO.getUserById(req.user.id);
             if (user !== undefined && user.role === "local_guide") {
+                const picture = req.files.picture;
+                const curdate = Date.now();
+                const picture_name = curdate + "_" + picture.name;
 
                 // Create a new hut object given the fields received from the client
                 const hut = new Hut({
@@ -217,7 +232,8 @@ router.post('/huts', [
                     phone_number: req.body.phone_number,
                     email: req.body.email,
                     website: req.body.website,
-                    type: req.body.type
+                    type: req.body.type,
+                    picture: picture_name
                 })
 
                 // Checks if the hut coordinates and location infos alread exists
@@ -257,8 +273,15 @@ router.delete('/huts', [body('hutId').exists().isNumeric()], async (req, res) =>
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
 
+            const hut = await HutDAO.getHutById(req.body.hutId);
+
             await HutDAO.deleteHut(req.body.hutId, req.user.id)
-                .then(() => res.status(200).end())
+                .then(() => {
+                    fs.unlink(`./pictures/${hut.picture}`, function (err, results) {
+                        if(err) throw new Error("unexpected error")
+                    });
+                    res.status(200).end()
+                })
                 .catch(() => res.status(500).json({ error: `Database error` }));
 
 

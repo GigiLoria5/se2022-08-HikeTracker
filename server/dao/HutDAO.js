@@ -54,7 +54,7 @@ exports.getCitiesByProvince = (province) => {
 
 exports.getHutById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id AND hid = ?`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname, picture  FROM hut, user WHERE user_id=user.id AND hid = ?`;
         db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
@@ -76,7 +76,8 @@ exports.getHutById = (id) => {
                     website: row.website,
                     type: row.type,
                     author_id: row.user_id,
-                    author: row.uname + " " + row.surname
+                    author: row.uname + " " + row.surname,
+                    picture: row.picture
                 })));
                 resolve(hut[0]);
             }
@@ -86,7 +87,7 @@ exports.getHutById = (id) => {
 
 exports.getAllHuts = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname, picture  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
@@ -108,7 +109,8 @@ exports.getAllHuts = () => {
                     website: row.website,
                     type: row.type,
                     author_id: row.user_id,
-                    author: row.uname + " " + row.surname 
+                    author: row.uname + " " + row.surname,
+                    picture: picture
                 })));
                 resolve(huts);
             }
@@ -118,7 +120,7 @@ exports.getAllHuts = () => {
 
 exports.addHut = (userid, hut) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO hut(name,city,province,country,address,altitude,description,beds_number,opening_period,coordinates,phone_number,email,website,type,user_id, picture) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.run(sql, [
             hut.name,
             hut.city,
@@ -134,7 +136,8 @@ exports.addHut = (userid, hut) => {
             hut.email,
             hut.website,
             hut.type,
-            userid
+            userid,
+            hut.picture
         ],  function(err) {
             if (err) {
                 reject(err);
@@ -188,7 +191,7 @@ exports.deleteHutByName = (name, userid) => {
 
 exports.getAllHuts = () => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
+        const sql = `SELECT hut.id as hid, hut.name as hname, city, province, country, address, hut.phone_number as hphone_number, altitude, description, beds_number, opening_period, coordinates, hut.email as hemail, website, type, user_id, user.name as uname, surname, picture  FROM hut, user WHERE user_id=user.id ORDER BY hid DESC`;
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
@@ -210,7 +213,8 @@ exports.getAllHuts = () => {
                     website: row.website,
                     type: row.type,
                     author_id: row.user_id,
-                    author: row.uname + " " + row.surname 
+                    author: row.uname + " " + row.surname,
+                    picture: row.picture
                 })));
                 resolve(huts);
             }

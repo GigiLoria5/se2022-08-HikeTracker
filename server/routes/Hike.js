@@ -62,7 +62,7 @@ router.post('/hikes',
     check('picture file').custom(async (value, { req }) => {
         if (!req.files) throw new Error("no file uploaded");
         const sizeKB = req.files.picture.size / 1024;
-        if (sizeKB > 1024 * 10) throw new Error("gpx file too large");
+        if (sizeKB > 1024 * 10) throw new Error("picture file too large");
         if (req.files.picture.mimetype != "image/jpeg" && req.files.picture.mimetype != "image/png") {
             throw new Error("invalid picture file");
         }
@@ -148,7 +148,7 @@ router.post('/hikes',
                             hikeDao.deleteReferencePoints(hike_id);
                         });
                         fs.unlink(`./gpx_files/${name}.gpx`, function (err, results) {
-                            throw new Error("unexpected error")
+                            if(err) throw new Error("unexpected error")
                         });
                         throw new Error("error saving image file");
                     }
