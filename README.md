@@ -191,8 +191,9 @@ Manual test reports in client/gui_test
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hike
   - Permissions allowed: Local guide
-  - Request body: Hike description, including gpx file with gpx tag
+  - Request body: Hike description, including gpx file with gpx tag and picture with picture tag
   - gpx file size must be less than 10MB
+  - picture file size must be less than 10MB
 
   ```
   {
@@ -225,7 +226,8 @@ Manual test reports in client/gui_test
             {"latitude":44.59376471183216,"longitude":6.970151980345208,"type":"gps","value":"gps","description":"Colle Reisassetto"},{"latitude":44.605312234235114,"longitude":6.97978383606973,"type":"gps","value":"gps","description":"Punta di Fiutrusa"}
           ]
         },
-        "gpx" : ...
+        "gpx" : ...,
+        "picture" : ...
   }
   ```
 
@@ -295,7 +297,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/hike/:id`
 
-  - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
+  - Description: Return an object contaning hike information with related cover picture. If the user sending the request is an hiker also the gpx file will be sent
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
@@ -355,6 +357,7 @@ Manual test reports in client/gui_test
           }
       ],
       "author": "Martina Piccolo",
+      "picture_file" : {picture file code},
       "gpx_content": { gpx file code }
     }
   ```
