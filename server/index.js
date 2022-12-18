@@ -25,8 +25,8 @@ const corsOptions = {
     credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(bodyParser.json({limit: "15mb"}));
-app.use(bodyParser.urlencoded({limit: "15mb", extended: true, parameterLimit:50000}));
+app.use(bodyParser.json({limit: "25mb"}));
+app.use(bodyParser.urlencoded({limit: "25mb", extended: true, parameterLimit:50000}));
 
 /* Passport: set up local strategy */
 /* Given username and password, checks if the user exists using the getUser function.
