@@ -1,12 +1,18 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import React from 'react'
+import { Image } from 'mui-image'
 import { decimalHoursToTime } from '../../Utils/TimeUtils';
 
 function HikeDetailsGeneral(props) {
-    const { hike } = props;
+    const { hike, hikeImage } = props;
 
     return (
-        <Grid item xs={12} lg={7} border={"1px solid #BBBBBB"} sx={{ marginRight: { xs: "8vw", lg: 0 }, marginLeft: { xs: "6vw", lg: "12vw" }, marginTop: { xs: "3vh", lg: 0 }, padding: 4, paddingBottom: 0 }}>
+        <Grid item xs={12} lg={7} border={"1px solid #BBBBBB"} sx={{ marginRight: { xs: "8vw", lg: 0 }, marginLeft: { xs: "6vw", lg: "12vw" }, marginTop: { xs: "3vh", lg: 0 }, padding: 4, paddingTop: 3, paddingBottom: 0 }}>
+            {/* Image */}
+            <Box component="div" sx={{ width: "100%", height: "40vh", marginBottom: 3 }}>
+                <Image src={`data:image/png;base64,${hikeImage}`} height={"100%"} width={"100%"} fit={"cover"} duration={50} shiftDuration={15} />
+            </Box>
+
             <Box component="div" className={"hide-scrollbar"} display="flex" marginBottom={1}>
                 {/* Length */}
                 <Box component="div" marginRight={"5vw"}>

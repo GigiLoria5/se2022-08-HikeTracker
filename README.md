@@ -106,7 +106,7 @@ Manual test reports in client/gui_test
      "email_verified":1,
      "phone_number":"3399957495",
      "role":"hiker",
-     "token":null}
+     "token":null
   }
   ```
 
@@ -130,7 +130,7 @@ Manual test reports in client/gui_test
      "email_verified":1,
      "phone_number":"3399957495",
      "role":"hiker",
-     "token":null}
+     "token":null
   }
   ```
 
@@ -666,6 +666,7 @@ Manual test reports in client/gui_test
   ```
 
 - POST `/api/huts`
+
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hut
   - Permissions allowed: Local guide
