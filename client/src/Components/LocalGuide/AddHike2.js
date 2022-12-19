@@ -45,6 +45,9 @@ function AddHike2(props) {
     const [message, setMessage] = useState("");
     const setStepOneDone = props.setStepOneDone
     const computedExpectedTime = props.expectedTime
+    const selectedImgFile = props.selectedImgFile;
+    const setSelectedImgFile = props.setSelectedImgFile;
+    const [isImgSelected, setIsImgSelected] = useState(false);
 
     const ascent = props.ascent
     const length = props.length
@@ -286,12 +289,15 @@ function AddHike2(props) {
             setEditingRefPoint(true);
             setRefPointMessage("");
         }
-
     }
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
+        if (selectedImgFile === null) {
+            setMessage("Image not uploaded");
+            return false;
+        }
 
         const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
@@ -310,7 +316,8 @@ function AddHike2(props) {
                 start_point: start_point,
                 end_point: end_point,
                 reference_points: referencePoint,
-                gpx: selectedFile
+                gpx: selectedFile,
+                picture: selectedImgFile
             }
             )
             API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
@@ -318,8 +325,21 @@ function AddHike2(props) {
             printErrors(res);
             ev.stopPropagation();
         }
+    };
 
 
+    /* Function called on Upload press */
+    const changeHandler = async (event) => {
+        event.preventDefault();
+        if (true) { // check if img is valid
+            setSelectedImgFile(event.target.files[0]);
+            setIsImgSelected(true);
+            setMessage("");
+        } else {
+            setSelectedImgFile(null);
+            setIsImgSelected(false);
+            setMessage("Invalid image uploaded");
+        }
     };
 
     const thm = {
@@ -360,6 +380,18 @@ function AddHike2(props) {
                             </Stack>
                             <Divider style={{ width: '70%' }} />
 
+                            {/*****************************************************UPLOAD FILE***********************************************/}
+
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} >
+                                Upload an Image
+                            </Typography>
+                            <Button variant="contained" margin={2} component="label" onChange={changeHandler}>
+                                Choose a file...
+                                <input hidden accept=".jpg, .png" type="file" />
+                            </Button>
+                            <Typography sx={thm} margin={2}>{isImgSelected ? `Filename : ${selectedImgFile.name}` : null}</Typography>
+
+                            <Divider style={{ width: '70%' }} />
                             {/****************************************************GENERAL INFO***********************************************/}
 
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
