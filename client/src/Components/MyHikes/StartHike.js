@@ -82,58 +82,59 @@ function StartHike(props) {
             <Grid container >
 
                 <ThemeProvider theme={theme} >
+                    
+                        <Grid xs={12}>
+                            <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
+                                START A HIKE
+                            </Typography>
+                        </Grid>
+                        <Grid xs={0} md={3}></Grid>
+                        <Grid xs={12} md={6} marginTop={3} >
+                            <Container component="main" maxWidth="m">
+                                <Paper elevation={3} sx={{ ...thm }} >
+                                    <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textTransform: 'uppercase', m:3 }}>{title}</Typography>
+                                    
+                                    { isStarted ?
+                                    <Grid>
+                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.</Typography>
+                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: 600, m:2 }}>In progress...</Typography>
 
-                    <Grid xs={12}>
-                        <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>
-                            START A HIKE
-                        </Typography>
-                    </Grid>
-                    <Grid xs={0} md={3}></Grid>
-                    <Grid xs={12} md={6} marginTop={3} >
-                        <Container component="main" maxWidth="m">
-                            <Paper elevation={3} sx={{ ...thm }} >
-                                <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textTransform: 'uppercase', m:3 }}>{title}</Typography>
-                                
-                                { isStarted ?
-                                <Grid>
-                                    <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.</Typography>
-                                    <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: 600, m:2 }}>In progress...</Typography>
-
+                                        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>  
+                                                <DateTimePicker
+                                                label="Stop timer"
+                                                value={valueStop}
+                                                onChange={handleChangeStop}
+                                                renderInput={(params) => <TextField {...params} />}
+                                                
+                                                />  
+                                            </LocalizationProvider>
+                                            <Button  size='large' onClick={handleStop} variant="contained" color='primary'>STOP</Button>
+                                        </Stack>
+                                    </Grid>
+                                    :
                                     <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>  
                                             <DateTimePicker
-                                            label="Stop timer"
-                                            value={valueStop}
-                                            onChange={handleChangeStop}
+                                            label="Start timer"
+                                            value={valueStart}
+                                            onChange={handleChangeStart}
                                             renderInput={(params) => <TextField {...params} />}
                                             
                                             />  
                                         </LocalizationProvider>
-                                        <Button  size='large' onClick={handleStart} variant="contained" color='primary'>STOP</Button>
+                                        <Button  size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
                                     </Stack>
-                                </Grid>
-                                :
-                                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>  
-                                        <DateTimePicker
-                                        label="Start timer"
-                                        value={valueStart}
-                                        onChange={handleChangeStart}
-                                        renderInput={(params) => <TextField {...params} />}
-                                        
-                                        />  
-                                    </LocalizationProvider>
-                                    <Button  size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
-                                </Stack>
 
-                                }
+                                    }
 
-                                <Button sx={{m:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
-                            
-                            </Paper>
-                        </Container>
-                    </Grid>
-                    <Grid xs={0} md={3}></Grid>
+                                    <Button sx={{m:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
+                                
+                                </Paper>
+                            </Container>
+                        </Grid>
+                        <Grid xs={0} md={3}></Grid>
+                    
                 </ThemeProvider>
 
             </Grid >

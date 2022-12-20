@@ -33,7 +33,7 @@ function MyHikes() {
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} >
                         { isStarting ? 
-                        <StartHike setisStarting={setisStarting}/>
+                        <StartHike setisStarting={setisStarting} />
                         :
                         <HowToStart/>
                         }
