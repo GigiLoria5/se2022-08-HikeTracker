@@ -7,7 +7,7 @@ import { Hike } from "../../Utils/Hike"
 import { difficultyFromState } from '../../Utils/DifficultyMapping';
 
 
-function MyCompletedHikes(props) {
+function MyCompletedHikes() {
     const theme = createTheme({
         palette: {
             primary: {
@@ -32,7 +32,7 @@ function MyCompletedHikes(props) {
         marginBottom: 1
     };
     const hike1 = new Hike({
-        title: "Hike example title",
+        title: "Hike example 0",
         peak_altitude: "100",
         city: "city",
         province: "province",
@@ -40,11 +40,43 @@ function MyCompletedHikes(props) {
         difficulty: difficultyFromState("Hiker"),
         time: "4:20",
         date: "12/20/2022",
-        id: "1"
-    }
-    )
+        id: 1
+    })
+    const hike2 = new Hike({
+        title: "Hike example 1",
+        peak_altitude: "100",
+        city: "city",
+        province: "province",
+        country: "country",
+        difficulty: difficultyFromState("Hiker"),
+        time: "4:20",
+        date: "12/20/2022",
+        id: 2
+    })
+    const hike3 = new Hike({
+        title: "Hike example 2",
+        peak_altitude: "100",
+        city: "city",
+        province: "province",
+        country: "country",
+        difficulty: difficultyFromState("Hiker"),
+        time: "4:20",
+        date: "12/20/2022",
+        id: 3
+    })
+    const hike4 = new Hike({
+        title: "Hike example 3",
+        peak_altitude: "100",
+        city: "city",
+        province: "province",
+        country: "country",
+        difficulty: difficultyFromState("Hiker"),
+        time: "4:20",
+        date: "12/20/2022",
+        id: 4
+    })
 
-    const hikelist = [hike1, hike1, hike1, hike1]
+    const hikelist = [hike1, hike2, hike3, hike4]
     const [hikes, setHikes] = useState([]);
     const [loadingHikes, setLoadingHikes] = useState(true);
 
@@ -79,8 +111,8 @@ function MyCompletedHikes(props) {
             <Grid container >
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} sx={{ ...thm }}>
-                        <Typography variant='h4'>MY COMPLETED HIKES</Typography>
-                        <HikeListCompleted hikes={hikes} loadingHikes={loadingHikes} />
+                        <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>MY COMPLETED HIKES</Typography>
+                        <HikeListCompleted key={hikes[0]} hikes={hikes} loadingHikes={loadingHikes} />
                     </Grid>
                 </ThemeProvider>
             </Grid>

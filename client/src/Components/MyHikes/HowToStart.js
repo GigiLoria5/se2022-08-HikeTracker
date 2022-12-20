@@ -35,7 +35,7 @@ function HowToStart() {
             <Grid container >
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} sx={{ ...thm }}>
-                        <Typography variant='h4' sx={{mb:2}}>HOW TO START A HIKE ?</Typography>
+                        <Typography variant="h5" marginTop={2} sx={{nb:2, display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>HOW TO START A HIKE ?</Typography>
                         <Typography variant='h6'>
                             To start a hike, select a hike from the hike list in <Link to="/hikes" className={"link"}>Hikes</ Link>,
                         </Typography>

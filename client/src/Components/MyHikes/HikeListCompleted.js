@@ -26,7 +26,7 @@ const HikesListCompleted = (props) => {
     });
 
     return (
-        <Grid container paddingTop={2} alignItems='center'>  
+        <Grid container  alignItems='center'>  
             <Grid item xs={0} sm={2.5}></Grid>
             <Grid item xs={12}sm={7} marginBottom={12} sx={styleOnLoading()}>
                 {loadingHikes
