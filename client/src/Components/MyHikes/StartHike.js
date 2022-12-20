@@ -17,11 +17,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+
+
 function StartHike(props) {
     //const { title } = props.title;
     const title = "TITLE EXAMPLE"
     const setisStarting = props.setisStarting
     const isStarting = props.isStarting
+
+    var moment = require('moment'); // require
+    moment().format(); 
 
     const theme = createTheme({
         palette: {
@@ -54,52 +59,24 @@ function StartHike(props) {
     const [valueStop, setValueStop] = useState(dayjs(date));
     
     const getTime = (valueStart, valueStop)  => {
-        //if same date
-        if (valueStart.$y === valueStop.$y && valueStart.$D === valueStop.$D && valueStart.$M === valueStop.$M ){
-            //convert hours into minutes for valueStart and valueStop
-            var startmin = valueStart.$m + 60*(valueStart.$H)
-            var stopmin = valueStop.$m + 60*(valueStop.$H)            
-            //do a substraction valueStop - valueStart 
-            var total = stopmin - startmin
-            //convert minutes into hours and minutes
-            var nhours = ~~(total/60)
-            var nminutes = total%60
-            //return object {hours:_ ,minutes:_}
-            return ({hours: nhours, minutes: nminutes})
-        } else {
-        //if not the same date : 
-            //if same year
-            if (valueStart.$y === valueStop.$y){
-                //if same month
-                if (valueStart.$M === valueStop.$M ){
-                    //convert days in minutes + convert hours in minutes + add to minutes then same process as before
-                    var startminM = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D)
-                    var stopminM = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)
-                    var totalM = stopminM - startminM
-                    var nhoursM = ~~(totalM/60)
-                    var nminutesM = totalM%60
-                    return ({hours: nhoursM, minutes: nminutesM})
-                //if not same month
-                } else {
-                    //convert days in minutes + convert hours in minutes + convert month in minutes +  add to minutes then same process as before
-                    var startmin_M = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D) + 43800*(valueStart.$M)
-                    var stopmin_M = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)+ 43800*(valueStop.$M)
-                    var total_M = stopmin_M - startmin_M
-                    var nhours_M = ~~(total_M/60)
-                    var nminutes_M = total_M%60
-                    return ({hours: nhours_M, minutes: nminutes_M})
-                }
-            } else {
-                //convert days in minutes + convert hours in minutes + convert month in minutes + convert year in minutes +  add to minutes then same process as before
-                var startmin_y = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D) + 43800*(valueStart.$M) + 525600*(valueStart.$y)
-                var stopmin_y = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)+ 43800*(valueStop.$M) + 525600*(valueStop.$y)
-                var total_y = stopmin_y - startmin_y
-                var nhours_y = ~~(total_y/60)
-                var nminutes_y = total_y%60
-                return ({hours: nhours_y, minutes: nminutes_y})
-            }    
-        }
-    };
+        var str1 = `${dayjs(valueStart)}+0000`
+        var str2 = `${dayjs(valueStop)}+0000`
+        var now = moment(str1);
+        var expiration = moment(str2);
+        
+        // get the difference between the moments
+        const diff = expiration.diff(now);
+        console.log(diff)
+        
+        //express as a duration
+        const diffDuration = moment.duration(diff);
+        
+        // display
+        console.log("Days:", diffDuration.days());
+        console.log("Hours:", diffDuration.hours());
+        console.log("Minutes:", diffDuration.minutes());
+        return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()})
+    }
 
     //if true, the user has pressed the start button
     const [isStarted, setisStarted] = useState(false);
@@ -152,7 +129,7 @@ function StartHike(props) {
                                     <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textTransform: 'uppercase', m:3 }}>{title}</Typography>
                                     { isStarted ?
                                     <Grid>
-                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.</Typography>
+                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.</Typography>
                                         <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: 600, m:2 }}>In progress...</Typography>
 
                                         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
@@ -196,8 +173,8 @@ function StartHike(props) {
                             <DialogContent>
                                 <DialogContentText sx={{ display: "flex", flexDirection: "column", alignItems: "center"  }}>
                                     {title} <br/>
-                                    Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.<br/>
-                                    Hike finished at {valueStop.$H}:{valueStop.$m} the {valueStop.$M}/{valueStop.$D}/{valueStop.$y}.<br/>
+                                    Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.<br/>
+                                    Hike finished at {valueStop.$H}:{valueStop.$m} the {valueStop.$M+1}/{valueStop.$D}/{valueStop.$y}.<br/>
                                     You completed the hike in {getTime(valueStart, valueStop).hours} hours and {getTime(valueStart, valueStop).minutes} minutes.<br/>
                                     The list of all your completed hikes is available in "My hikes".<br/>        
                                 </DialogContentText>
