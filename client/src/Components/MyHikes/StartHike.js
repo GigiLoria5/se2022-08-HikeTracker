@@ -17,13 +17,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-
 function StartHike(props) {
     //const { title } = props.title;
-    const title = "TITLE"
+    const title = "TITLE EXAMPLE"
     const setisStarting = props.setisStarting
     const isStarting = props.isStarting
-
 
     const theme = createTheme({
         palette: {
@@ -74,21 +72,32 @@ function StartHike(props) {
             if (valueStart.$y === valueStop.$y){
                 //if same month
                 if (valueStart.$M === valueStop.$M ){
-                    //convert days in minutes + convert hours in minutes + add to minutes
+                    //convert days in minutes + convert hours in minutes + add to minutes then same process as before
                     var startminM = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D)
                     var stopminM = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)
-                    //do a substraction valueStop - valueStart 
                     var totalM = stopminM - startminM
-                    //convert minutes into hours and minutes
                     var nhoursM = ~~(totalM/60)
                     var nminutesM = totalM%60
-                    //return object {hours:_ ,minutes:_}
                     return ({hours: nhoursM, minutes: nminutesM})
-                }
-            }
-                
                 //if not same month
-                    //
+                } else {
+                    //convert days in minutes + convert hours in minutes + convert month in minutes +  add to minutes then same process as before
+                    var startmin_M = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D) + 43800*(valueStart.$M)
+                    var stopmin_M = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)+ 43800*(valueStop.$M)
+                    var total_M = stopmin_M - startmin_M
+                    var nhours_M = ~~(total_M/60)
+                    var nminutes_M = total_M%60
+                    return ({hours: nhours_M, minutes: nminutes_M})
+                }
+            } else {
+                //convert days in minutes + convert hours in minutes + convert month in minutes + convert year in minutes +  add to minutes then same process as before
+                var startmin_y = valueStart.$m + 60*(valueStart.$H) + 1440*(valueStart.$D) + 43800*(valueStart.$M) + 525600*(valueStart.$y)
+                var stopmin_y = valueStop.$m + 60*(valueStop.$H)+ 1440*(valueStop.$D)+ 43800*(valueStop.$M) + 525600*(valueStop.$y)
+                var total_y = stopmin_y - startmin_y
+                var nhours_y = ~~(total_y/60)
+                var nminutes_y = total_y%60
+                return ({hours: nhours_y, minutes: nminutes_y})
+            }    
         }
     };
 
@@ -98,11 +107,9 @@ function StartHike(props) {
     //open pop up
     const [open, setOpen] = useState(false);
 
-
     const handleChangeStart = (newValue) => {
         setValueStart(newValue);
         console.log("date:", date)
-
     };
 
     const handleChangeStop = (newValue) => {
@@ -117,22 +124,20 @@ function StartHike(props) {
         setisStarted(false)
         setisStarting(false)
         setOpen(true)
-        
     }
+
     const handleCancel = () => {
         
     }
 
     const handleClose = () => {
         setOpen(false);
-      };
+    };
 
     return(
         <div>
             <Grid container >
-
-                <ThemeProvider theme={theme} >
-                    
+                <ThemeProvider theme={theme} >    
                 {isStarting ?
                     <>
                         <Grid xs={12}>
@@ -145,7 +150,6 @@ function StartHike(props) {
                             <Container component="main" maxWidth="m">
                                 <Paper elevation={3} sx={{ ...thm }} >
                                     <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textTransform: 'uppercase', m:3 }}>{title}</Typography>
-                                    
                                     { isStarted ?
                                     <Grid>
                                         <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.</Typography>
@@ -158,7 +162,6 @@ function StartHike(props) {
                                                 value={valueStop}
                                                 onChange={handleChangeStop}
                                                 renderInput={(params) => <TextField {...params} />}
-                                                
                                                 />  
                                             </LocalizationProvider>
                                             <Button  size='large' onClick={handleStop} variant="contained" color='primary'>STOP</Button>
@@ -172,16 +175,12 @@ function StartHike(props) {
                                             value={valueStart}
                                             onChange={handleChangeStart}
                                             renderInput={(params) => <TextField {...params} />}
-                                            
                                             />  
                                         </LocalizationProvider>
                                         <Button  size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
                                     </Stack>
-
                                     }
-
                                     <Button sx={{m:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
-                                
                                 </Paper>
                             </Container>
                         </Grid>
@@ -196,13 +195,11 @@ function StartHike(props) {
                             </DialogTitle>
                             <DialogContent>
                                 <DialogContentText sx={{ display: "flex", flexDirection: "column", alignItems: "center"  }}>
-                                    
                                     {title} <br/>
                                     Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M}/{valueStart.$D}/{valueStart.$y}.<br/>
                                     Hike finished at {valueStop.$H}:{valueStop.$m} the {valueStop.$M}/{valueStop.$D}/{valueStop.$y}.<br/>
                                     You completed the hike in {getTime(valueStart, valueStop).hours} hours and {getTime(valueStart, valueStop).minutes} minutes.<br/>
-                                    The list of all your completed hikes in My hikes.<br/>        
-                                    
+                                    The list of all your completed hikes is available in "My hikes".<br/>        
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions sx={{ display: "flex", flexDirection: "column", alignItems: "center"  }}>
@@ -211,7 +208,6 @@ function StartHike(props) {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-
                 </ThemeProvider>
             </Grid >
         </div>
