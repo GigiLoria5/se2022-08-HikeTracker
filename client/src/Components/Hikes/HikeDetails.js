@@ -1,6 +1,7 @@
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { Stack } from '@mui/system';
 import API from '../../API';
 import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -39,6 +40,10 @@ function HikeDetails(props) {
     const clickHandle = event => {
         event.preventDefault();
         navigate("/hikes");
+    }
+    const clickHandleStart = event => {
+        event.preventDefault();
+        navigate("/my-hikes");
     }
 
     /* To hide/show the filter panel for small screen */
@@ -91,13 +96,17 @@ function HikeDetails(props) {
                 {/* Geographic Information */}
                 {hike === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
-                {/* Go Back Button */}
+                {/* Go Back and StartHike Buttons */}
                 < Grid item xs={12} >
-                    <Box component="div" sx={{ marginTop: 2, marginBottom: 2, padding: 4, paddingTop: 0, paddingBottom: 2, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "column" }}>
-                        <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} >
-                            Return Hikes List
-                        </Button>
-                    </Box>
+                        <Stack direction="row" justifyContent="center" alignItems="center">
+
+                            <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2}}>
+                                Return Hikes List
+                            </Button>
+                            <Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2}}>
+                                Start this hike
+                            </Button>
+                        </Stack>
                 </Grid>
             </Grid>
         </Container >

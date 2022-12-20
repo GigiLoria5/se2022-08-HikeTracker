@@ -14,6 +14,8 @@ import HikeDetails from './Components/Hikes/HikeDetails';
 import AddParking from "./Components/LocalGuide/AddParking"
 import HutsContainer from './Components/Hut/HutsContainer';
 import HutDetails from './Components/Hut/HutDetails';
+import MyHikes from './Components/MyHikes/MyHikes';
+
 
 function App() {
     /* A little Router trick */
@@ -97,6 +99,9 @@ function Root() {
                 </Route>
                 <Route path='/local-guide-add-parking' element={<ProtectedRoute rolesAllowed={['local_guide']} />} >
                     <Route path="" element={<AddParking />} />
+                </Route>
+                <Route path='/my-hikes' element={<ProtectedRoute rolesAllowed={['hiker']} />} >
+                    <Route path="" element={<MyHikes />} />
                 </Route>
             </Route>
 
