@@ -18,4 +18,10 @@ const isValidImage = (imageFile) => {
     return true;
 }
 
-module.exports = { isValidImage };
+const createMockFile = (filename, size, mimetype) => {
+    const file = new File([], filename, { type: mimetype });
+    Object.defineProperty(file, 'size', { value: size, configurable: true });
+    return file;
+}
+
+module.exports = { isValidImage, createMockFile };
