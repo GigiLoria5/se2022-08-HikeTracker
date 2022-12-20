@@ -9,6 +9,7 @@ import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
 
 function HikeDetails(props) {
+
     const { isloggedIn, loggedUser } = props;
     const { hikeId } = useParams();
     const [hike, setHike] = useState(null);
@@ -43,7 +44,7 @@ function HikeDetails(props) {
     }
     const clickHandleStart = event => {
         event.preventDefault();
-        navigate("/my-hikes");
+        navigate("/my-hikes", { state: { hike: hike , isStarting: true} })
     }
 
     /* To hide/show the filter panel for small screen */

@@ -16,14 +16,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
-
+import { useNavigate } from 'react-router-dom';
 
 function StartHike(props) {
-    //const { title } = props.title;
-    const title = "TITLE EXAMPLE"
+    const hike  = props.hike;
+    const title = hike.title;
+    //const title = "TITLE EXAMPLE"
     const setisStarting = props.setisStarting
     const isStarting = props.isStarting
+
+    const navigate = useNavigate()
 
     var moment = require('moment'); // require
     moment().format(); 
@@ -94,7 +96,7 @@ function StartHike(props) {
     }
 
     const handleCancel = () => {
-        
+        navigate(-1)
     }
 
     const handleClose = () => {
