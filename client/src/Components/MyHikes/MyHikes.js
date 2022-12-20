@@ -9,7 +9,19 @@ import { useLocation } from 'react-router-dom';
 
 function MyHikes() {
     const location = useLocation();
-    const hike = location.state.hike
+
+    //if false : user only visiting My hikes page. If true, he's starting a hike
+    const [isStarting, setisStarting] = useState(false);
+    var hike = {}
+
+    //if (location.state.isStarting){
+    //    setisStarting(location.state.isStarting)
+    //}
+
+
+    if (isStarting){
+        hike = location.state.hike
+    }
 
     const theme = createTheme({
         palette: {
@@ -28,15 +40,7 @@ function MyHikes() {
         },
     });
 
-    //if false : user only visiting My hikes page. If true, he's starting a hike
-    const [isStarting, setisStarting] = useState(false);
-
-    useEffect(() => {
-        if (location.state.isStarting){    
-            setisStarting(location.state.isStarting)
-        }
-    });
-
+    
     return(
         <div>
             <Grid container >

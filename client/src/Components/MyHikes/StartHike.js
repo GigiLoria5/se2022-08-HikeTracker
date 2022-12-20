@@ -19,11 +19,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 
 function StartHike(props) {
-    const hike  = props.hike;
-    const title = hike.title;
-    //const title = "TITLE EXAMPLE"
+    var title = ""
     const setisStarting = props.setisStarting
     const isStarting = props.isStarting
+
+    if (isStarting) {
+        title = props.hike.title;
+    } 
 
     const navigate = useNavigate()
 
