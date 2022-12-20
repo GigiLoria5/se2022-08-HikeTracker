@@ -59,22 +59,12 @@ function StartHike(props) {
     const [valueStop, setValueStop] = useState(dayjs(date));
     
     const getTime = (valueStart, valueStop)  => {
-        var str1 = `${dayjs(valueStart)}+0000`
-        var str2 = `${dayjs(valueStop)}+0000`
-        var now = moment(str1);
-        var expiration = moment(str2);
-        
+        var now = moment(`${dayjs(valueStart)}+0000`);
+        var expiration = moment(`${dayjs(valueStop)}+0000`);
         // get the difference between the moments
         const diff = expiration.diff(now);
-        console.log(diff)
-        
         //express as a duration
         const diffDuration = moment.duration(diff);
-        
-        // display
-        console.log("Days:", diffDuration.days());
-        console.log("Hours:", diffDuration.hours());
-        console.log("Minutes:", diffDuration.minutes());
         return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()})
     }
 
