@@ -565,7 +565,7 @@ describe('frontend test: hike creation', () => {
     });
 
     it('T23: invalid picture file, too large', async () => {
-        const wrongHike = { ...fakeHike, picture: createMockFile("image.jpg", 1024 * 1024 * 50 + 1, "image/jpeg") };
+        const wrongHike = { ...fakeHike, picture: createMockFile("image.jpg", 1024 * 1024 * 10 + 1, "image/jpeg") };
 
         try {
             await API.createHike(wrongHike);
@@ -576,7 +576,7 @@ describe('frontend test: hike creation', () => {
     });
 
     it('T24: invalid picture file, wrong type', async () => {
-        const wrongHike = { ...fakeHike, picture: createMockFile("image.jpg", 1024 * 1024 * 5 + 1, "image/tiff") };
+        const wrongHike = { ...fakeHike, picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/tiff") };
 
         try {
             await API.createHike(wrongHike);
@@ -584,6 +584,13 @@ describe('frontend test: hike creation', () => {
         catch (err) {
             expect(err);
         }
+    });
+
+    it('T25: correct body with png picture', async () => {
+        const correctHike = { ...fakeHike, picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 100, "image/png") };
+
+        const res = await API.createHike(correctHike);
+        expect(res).toBe(true);
     });
 
 });
