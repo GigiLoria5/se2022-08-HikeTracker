@@ -19,7 +19,7 @@ describe('test get hut WRONG ROLE',()=>{
         authenticatedUser
             .post('/api/sessions')
             .send({
-                "username": "manager@manager.com",
+                "username": "nauouejwvrmthcavxq@tmmwj.com",
                 "password": "password"
             })
             .end((err, res) => {
