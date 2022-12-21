@@ -19,9 +19,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 
 function StartHike(props) {
-    var title = ""
-    const setisStarting = props.setisStarting
-    const isStarting = props.isStarting
+    var title = "";
+    const setIsInHike = props.setIsInHike;
+    const isStarting = props.isStarting;
+    const isInHike = props.isInHike;
 
     if (isStarting) {
         title = props.hike.title;
@@ -93,7 +94,7 @@ function StartHike(props) {
     }
     const handleStop = () => {
         setisStarted(false)
-        setisStarting(false)
+        setIsInHike(false)
         setOpen(true)
     }
 
@@ -109,7 +110,7 @@ function StartHike(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme} >    
-                {isStarting ?
+                {isStarting && isInHike ?
                     <>
                         <Grid xs={12}>
                             <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>

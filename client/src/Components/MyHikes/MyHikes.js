@@ -9,19 +9,20 @@ import { useLocation } from 'react-router-dom';
 
 function MyHikes() {
     const location = useLocation();
-
+    let isStarting = false;
+    let hike = {}
+    const [isInHike, setIsInHike] = useState(true);
+    
+    if(location.state !== null){
+        isStarting = location.state.isStarting
+        hike = location.state.hike
+    }
     //if false : user only visiting My hikes page. If true, he's starting a hike
-    const [isStarting, setisStarting] = useState(false);
-    var hike = {}
 
     //if (location.state.isStarting){
     //    setisStarting(location.state.isStarting)
     //}
 
-
-    if (isStarting){
-        hike = location.state.hike
-    }
 
     const theme = createTheme({
         palette: {
@@ -47,8 +48,8 @@ function MyHikes() {
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} >
                         
-                        <StartHike setisStarting={setisStarting} isStarting={isStarting} hike={hike}/>
-                        { isStarting ? 
+                        <StartHike setIsInHike={setIsInHike} isInHike={isInHike} isStarting={isStarting} hike={hike}/>
+                        { isStarting && isInHike ? 
                         <Grid></Grid>
                         :
                         <HowToStart/>
