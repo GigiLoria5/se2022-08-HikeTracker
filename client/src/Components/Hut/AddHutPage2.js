@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { createTheme, ThemeProvider, Breadcrumbs, Divider, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Paper from "@mui/material/Paper";
@@ -11,8 +13,11 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
+
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+
+import { isValidImage } from '../../Utils/File';
 
 /**
  * 
@@ -32,7 +37,10 @@ import PhoneInput from 'react-phone-number-input';
  * 
  */
 export default function AddHutPage2(props) {
-
+    const [fileMessage, setFileMessage] = useState("");
+    const selectedImgFile = props.selectedImgFile;
+    const setSelectedImgFile = props.setSelectedImgFile;
+    const [isImgSelected, setIsImgSelected] = useState(false);
 
     const theme = createTheme({
         palette: {
@@ -55,14 +63,35 @@ export default function AddHutPage2(props) {
         alignItems: 'center',
     };
 
+    /* Function called on Upload press */
+    const changeHandler = async (event) => {
+        event.preventDefault();
+
+        const imageCheck = isValidImage(event.target.files[0]);
+        if (imageCheck === true) {
+            setSelectedImgFile(event.target.files[0]);
+            setIsImgSelected(true);
+            setFileMessage("");
+        } else {
+            setSelectedImgFile(null);
+            setIsImgSelected(false);
+            setFileMessage(imageCheck);
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
 
+        if (selectedImgFile === null) {
+            props.setMessage("Image not uploaded");
+            return false;
+        }
+
         if (form.checkValidity() === false) {
             event.stopPropagation();
         } else {
-        props.handleSubmission(event);
+            props.handleSubmission(event);
         }
     };
 
@@ -85,12 +114,26 @@ export default function AddHutPage2(props) {
                     </Breadcrumbs>
 
                     <Box component="form" onSubmit={handleSubmit}>
+                        {/* Upload Image */}
+                        <Grid xs={12} sx={thm}>
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} >
+                                UPLOAD AN IMAGE
+                            </Typography>
+                            <Button variant="contained" margin={2} component="label" onChange={changeHandler}>
+                                Choose a file...
+                                <input hidden accept=".jpg, .png" type="file" />
+                            </Button>
+                            {fileMessage !== ""
+                                ? <Alert sx={{ m: 2 }} severity="error" onClose={() => setFileMessage('')}>{fileMessage}</Alert>
+                                : <Typography sx={thm} margin={2}>{isImgSelected ? `Filename : ${selectedImgFile.name}` : null}</Typography>
+                            }
+                        </Grid>
+                        <Divider variant="middle" />
 
-
-                        {/* General informations */}
+                        {/* General information */}
                         <Grid xs={12} sx={thm}>
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                GENERAL INFORMATIONS
+                                GENERAL INFORMATION
                             </Typography>
                         </Grid>
 
@@ -147,7 +190,7 @@ export default function AddHutPage2(props) {
 
                                 {/*PHONE NUMBER FIELD*/}
                                 <Grid item sx={{ width: '30ch', maxWidth: '30ch', mt: 2, mb: 1 }}>
-                                <PhoneInput placeholder="Phone number *" sx={{ width: '30ch', maxWidth: '30ch', mt: 3, mb: 2 }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                                    <PhoneInput placeholder="Phone number *" sx={{ width: '30ch', maxWidth: '30ch', mt: 3, mb: 2 }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
                                 </Grid>
 
                             </Stack>
@@ -166,11 +209,9 @@ export default function AddHutPage2(props) {
                             <TextField variant="outlined" required multiline label="Description" rows={4} margin="normal" sx={{ width: '30ch', maxWidth: '30ch' }} value={props.description} onChange={ev => props.setDescription(ev.target.value)} />
                         </Box>
 
+                        {/* Error Message */}
                         <Grid xs={12}>
-                            {/* Error message */}
-                            {
-                                props.message && <Alert severity={props.message.type} onClose={() => props.setMessage('')}>{props.message.msg}</Alert>
-                            }
+                            {props.message && <Alert sx={{ mt: 2 }} severity="error" onClose={() => props.setMessage('')}>{props.message}</Alert>}
                         </Grid>
 
                         {/* Buttons */}

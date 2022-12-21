@@ -9,7 +9,8 @@ import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 import { useNavigate } from 'react-router-dom';
 
-export default function AddHut(props) {
+export default function AddHut() {
+    const [message, setMessage] = useState("");
     const [hutName, setHutName] = useState("");
     const [type, setType] = useState("");
     const [bedsNumber, setBedsNumber] = useState(0);
@@ -25,6 +26,7 @@ export default function AddHut(props) {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [description, setDescription] = useState("");
+    const [selectedImgFile, setSelectedImgFile] = useState(null);
     const [stepOneDone, setStepOneDone] = useState(false);
     const [formValues, setFormValues] = useState({
         country: {
@@ -44,7 +46,7 @@ export default function AddHut(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        props.setMessage('');
+        setMessage('');
         // eslint-disable-next-line
     }, [])
 
@@ -76,6 +78,7 @@ export default function AddHut(props) {
     }
     const handleSubmission = async (ev) => {
         ev.preventDefault();
+        console.log(selectedImgFile);
 
         const hut = new Hut({
             id: undefined, //id - assigned by backend
@@ -93,22 +96,23 @@ export default function AddHut(props) {
             phone_number: phoneNumber,
             email: email,
             website: website,
-            type: type
+            type: type,
+            picture: selectedImgFile
         }
         );
 
         if (!validateHut(hut)) {
-            props.setMessage({ msg: `Please, complete all the requested fields: you can leave blank only the "Optional informations"`, type: 'error' });
+            setMessage({ msg: `Please, complete all the requested fields: you can leave blank only the "Optional informations"`, type: 'error' });
             return;
         }
 
         const response = await API.addHut(hut).catch(e => {
             const obj = JSON.parse(e);
-            props.setMessage({ msg: `${obj.error}!`, type: 'error' });
+            setMessage({ msg: `${obj.error}!`, type: 'error' });
         })
 
         if (response === true) {
-            props.setMessage({ msg: `Hut correctly created` });
+            setMessage({ msg: `Hut correctly created` });
             navigate('/huts');
         }
     }
@@ -139,7 +143,7 @@ export default function AddHut(props) {
         setStepOneDone(false);
     }
 
-    
+
     return (
         <Grid container>
             <ThemeProvider theme={theme}>
@@ -168,9 +172,10 @@ export default function AddHut(props) {
                                 city={city} setCity={setCity}
                                 address={address} setAddress={setAddress}
                                 setStepOneDone={setStepOneDone}
-                                setMessage={props.setMessage}
+                                setMessage={setMessage}
                                 location={location}
-                                formValues={formValues} setFormValues={setFormValues}
+                                formValues={formValues}
+                                setFormValues={setFormValues}
                             />
                             :
                             <AddHutPage2
@@ -183,7 +188,10 @@ export default function AddHut(props) {
                                 description={description} setDescription={setDescription}
                                 handleSubmission={handleSubmission}
                                 setStepOneDone={handleGoBack}
-                                message={props.message} setMessage={props.setMessage}
+                                selectedImgFile={selectedImgFile}
+                                setSelectedImgFile={setSelectedImgFile}
+                                message={message}
+                                setMessage={setMessage}
                             />
                     }
 

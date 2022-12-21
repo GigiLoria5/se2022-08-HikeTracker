@@ -296,7 +296,7 @@ describe('frontend test: hike creation', () => {
             { "latitude": 44.59376471183216, "longitude": 6.970151980345208, "type": "gps", "value": "gps", "description": "Colle Reisassetto" }, { "latitude": 44.605312234235114, "longitude": 6.97978383606973, "type": "gps", "value": "gps", "description": "Punta di Fiutrusa" }
         ],
         gpx: createMockFile("track.gpx", 1024 * 1024 * 1 + 1, "application/gpx+xml"),
-        picture: createMockFile("image.jpg", 1024 * 1024 * 5 + 1, "image/jpeg")
+        picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/jpeg")
     });
 
     it('Hike Creation Tests Setup', async () => {

@@ -13,8 +13,8 @@ const createHike = async (hike) => {
             formData.append(c, JSON.stringify(hike[c]))
         else
             formData.append(c, hike[c]);
-
     }
+
     let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
         credentials: 'include',

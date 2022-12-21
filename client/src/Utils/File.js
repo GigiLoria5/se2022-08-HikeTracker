@@ -1,3 +1,6 @@
+// Configuration Constants 
+const MAX_IMAGE_SIZE_MB = 1;
+
 /**
  * 
  * @param {File} imageFile the image you want to validate as a file
@@ -12,8 +15,8 @@ const isValidImage = (imageFile) => {
         return "The uploaded file is not an image (.jpeg or .png format)";
     }
     const sizeKB = imageFile.size / 1024;
-    if (sizeKB > 1024 * 10)
-        return "The maximum allowed size is 10MB";
+    if (sizeKB > 1024 * MAX_IMAGE_SIZE_MB) // sizes are in KB
+        return `The maximum allowed size is ${MAX_IMAGE_SIZE_MB}MB`;
 
     return true;
 }

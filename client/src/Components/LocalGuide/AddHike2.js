@@ -361,6 +361,7 @@ function AddHike2(props) {
                     <Grid xs={0} md={2}></Grid>
                     <Grid xs={12} md={8} marginTop={3} >
                         <Paper elevation={3} sx={{ ...thm, mb: 4 }} component="form" onSubmit={handleSubmission} >
+                            {/*****************************************************Bread Crumbs***********************************************/}
                             <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                                 [
                                 <Typography key="3" color="inherit">
@@ -371,6 +372,7 @@ function AddHike2(props) {
                                 </Typography>,
                                 ];
                             </Breadcrumbs>
+                            {/*****************************************************INTRO***********************************************/}
                             <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
                                 <br />Describe the Hike<br /><br />
                             </Typography>
@@ -382,7 +384,7 @@ function AddHike2(props) {
                             <Divider style={{ width: '70%' }} />
                             {/*****************************************************UPLOAD IMAGE***********************************************/}
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} >
-                                Upload an Image
+                                UPLOAD AN IMAGE
                             </Typography>
                             <Button variant="contained" margin={2} component="label" onChange={changeHandler}>
                                 Choose a file...
@@ -395,7 +397,7 @@ function AddHike2(props) {
                             <Divider style={{ width: '70%' }} />
                             {/****************************************************GENERAL INFO***********************************************/}
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                General information
+                                GENERAL INFORMATION
                             </Typography>
 
                             {/*GENERAL INFO*/}
@@ -448,7 +450,7 @@ function AddHike2(props) {
                             {/******************************************GEOGRAPHICAL AREA***********************************************/}
 
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Geographical area
+                                GEOGRAPHICAL AREA
                             </Typography>
                             <Stack direction={{ xs: 'column', sm: 'column' }} margin={1} marginBottom={2}>
                                 {/*COUNTRY FIELD*/}
@@ -504,7 +506,7 @@ function AddHike2(props) {
                             <Divider style={{ width: '70%' }} />
 
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Reference points
+                                REFERENCE POINTS
                             </Typography>
                             <Typography sx={thm} marginBottom={0} align="center">
                                 Click on the map to add reference points on the track<br />
@@ -540,7 +542,7 @@ function AddHike2(props) {
                             {/****************************************************DESCRIPTION********************************************************/}
                             <Divider style={{ width: '70%' }} />
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Description
+                                DESCRIPTION
                             </Typography>
                             < Description description={description} setDescription={setDescription} />
 
