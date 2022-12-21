@@ -20,7 +20,7 @@ const utilsHut = require('../utils/Utils_hut');
 // Return the countries
 router.get('/huts/countries',
     async (req, res) => {
-        const usersRole = ['hiker', 'local_guide'];
+        const usersRole = ['hiker', 'local_guide', 'manager'];
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCountries()
                 .then((countries) => res.status(200).json(countries))
@@ -42,7 +42,7 @@ router.get('/huts/provinces/:country',
             return res.status(422).json({ error: "Fields validation failed!" });
         }
 
-        const usersRole = ['hiker', 'local_guide'];
+        const usersRole = ['hiker', 'local_guide', 'manager'];
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getProvincesByCountry(req.params.country)
                 .then((provinces) => res.status(200).json(provinces))
@@ -64,7 +64,7 @@ router.get('/huts/cities/:province',
             return res.status(422).json({ error: "Fields validation failed!" });
         }
 
-        const usersRole = ['hiker', 'local_guide'];
+        const usersRole = ['hiker', 'local_guide', 'manager'];
         if (usersRole.includes(req.user.role) && req.isAuthenticated()) {
             HutDAO.getCitiesByProvince(req.params.province)
                 .then((cities) => res.status(200).json(cities))
@@ -78,7 +78,7 @@ router.get('/hut/:id',
     check('id').exists().isInt(),
 
     async (req, res) => {
-        const usersRole = ['hiker', 'local_guide'];
+        const usersRole = ['hiker', 'local_guide', 'manager'];
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ error: "Fields validation failed" });
@@ -90,8 +90,9 @@ router.get('/hut/:id',
                     hut.picture_file = fs.readFileSync('./pictures/' + hut.picture)
                     res.status(200).json(hut);
                 })
-                .catch((err) => { 
-                    res.status(500).json({ error: `Database error while retrieving the hut` }); });
+                .catch((err) => {
+                    res.status(500).json({ error: `Database error while retrieving the hut` });
+                });
         } else {
             return res.status(401).json({ error: "Unauthorized to execute this operation!" });
         }
@@ -123,7 +124,7 @@ router.get('/huts/filters', [
     const beds_number_max = req.query.beds_number_max;
     const hut_type = req.query.hut_type;
 
-    const usersRole = ['hiker', 'local_guide'];
+    const usersRole = ['hiker', 'local_guide', 'manager'];
 
     if (!usersRole.includes(req.user.role) || !req.isAuthenticated()) {
         return res.status(401).json({ error: "Unauthorized to execute this operation!" });
@@ -207,7 +208,7 @@ router.post('/huts', [
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
-            
+
 
             // Checks if the user is autorized to create a new hut
             const user = await UserDAO.getUserById(req.user.id);
@@ -240,7 +241,7 @@ router.post('/huts', [
                 const exists = await HutDAO.checkExisting(hut);
                 if (exists === false) {
                     // Hut is created and added
-                    
+
                     const hut_id = await HutDAO.addHut(req.user.id, hut);
                     picture.mv(`./pictures/${picture_name}`, err => {
                         if (err) {
@@ -285,7 +286,7 @@ router.delete('/huts', [body('hutId').exists().isNumeric()], async (req, res) =>
             await HutDAO.deleteHut(req.body.hutId, req.user.id)
                 .then(() => {
                     fs.unlink(`./pictures/${hut.picture}`, function (err, results) {
-                        if(err) throw new Error("unexpected error")
+                        if (err) throw new Error("unexpected error")
                     });
                     res.status(200).end()
                 })
