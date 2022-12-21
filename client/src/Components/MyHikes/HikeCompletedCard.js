@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 export default function HikesCompletedCard(props) {
     const { hike } = props;
     const navigate = useNavigate();
-    const { id, country, province, city, difficulty, title, peak_altitude, time, date } = hike;
+    const { id, country, province, city, difficulty, title, peak_altitude, date } = hike;
+    const hours = hike.hours
+    const minutes = hike.minutes
     const difficultyLabel = ['Tourist', 'Hiker', 'Professional'];
 
     function handleNavigation() {
@@ -37,7 +39,7 @@ export default function HikesCompletedCard(props) {
                         {/* Description */}
                         <Box component="div" className="hike-card-description-wrap" marginBottom={0.2}>
                             <Typography variant="body2" color="text.secondary">
-                                You have completed this hike in {time}
+                                You have completed this hike in {hours} hours and {minutes} minutes.
                             </Typography>
                         </Box>
                     </CardContent>

@@ -40,7 +40,8 @@ function MyCompletedHikes() {
         province: "province",
         country: "country",
         difficulty: difficultyFromState("Hiker"),
-        time: "4:20",
+        hours: "4",
+        minutes: "20",
         date: "12/20/2022",
         id: 1
     })
@@ -51,7 +52,8 @@ function MyCompletedHikes() {
         province: "province",
         country: "country",
         difficulty: difficultyFromState("Hiker"),
-        time: "4:20",
+        hours: "4",
+        minutes: "20",        
         date: "12/20/2022",
         id: 2
     })
@@ -62,7 +64,8 @@ function MyCompletedHikes() {
         province: "province",
         country: "country",
         difficulty: difficultyFromState("Hiker"),
-        time: "4:20",
+        hours: "4",
+        minutes: "20",
         date: "12/20/2022",
         id: 3
     })
@@ -73,7 +76,8 @@ function MyCompletedHikes() {
         province: "province",
         country: "country",
         difficulty: difficultyFromState("Hiker"),
-        time: "4:20",
+        hours: "4",
+        minutes: "20",
         date: "12/20/2022",
         id: 4
     })
