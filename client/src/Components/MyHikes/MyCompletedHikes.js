@@ -117,8 +117,8 @@ function MyCompletedHikes() {
             <Grid container >
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} sx={{ ...thm }}>
-                        <Typography variant="h5" marginTop={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600 }}>MY COMPLETED HIKES</Typography>
-                        <HikeListCompleted key={hikes[0]} hikes={hikes} loadingHikes={loadingHikes} />
+                        <Typography variant="h5" marginTop={2} align="center" sx={{textTransform: 'uppercase', fontWeight: 600 }}>MY COMPLETED HIKES</Typography>
+                        <HikeListCompleted key={hikes.id} hikes={hikes} loadingHikes={loadingHikes} />
                     </Grid>
                 </ThemeProvider>
             </Grid>
