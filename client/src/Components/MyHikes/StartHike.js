@@ -80,12 +80,13 @@ function StartHike(props) {
         const diff = expiration.diff(now);
         //express as a duration
         const diffDuration = moment.duration(diff);
-        return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()}) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
+        return ({hours: diffDuration.hours()+diffDuration.days()*24+diffDuration.months()*730+diffDuration.years()*8760, minutes: diffDuration.minutes()}) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
     }
 
     /*Function that returns true if value start < value stop*/
     const checkTime = (valueStart, valueStop)  => {
         var now = moment(`${dayjs(valueStart)}+0000`);
+        console.log(`${dayjs(date)}+0000`)
         var expiration = moment(`${dayjs(valueStop)}+0000`);
         // get the difference between the moments
         const diff = expiration.diff(now);
@@ -158,7 +159,7 @@ function StartHike(props) {
                         <Grid xs={12} md={6} marginTop={3} >
                             <Container component="main" maxWidth="m">
                                 <Paper elevation={3} sx={{ ...thm }} >
-                                    <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textTransform: 'uppercase', m:3 }}>{title}</Typography>
+                                    <Typography variant="h6" sx={{ ...thm, textTransform: 'uppercase', m:3 }}>{title}</Typography>
                                     { isStarted ?
                                     <Grid>
                                         <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.</Typography>
@@ -189,9 +190,9 @@ function StartHike(props) {
                                         <Button  size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
                                     </Stack>
                                     }
-                                    {message && <Alert sx={{ m:2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
+                                    {message && <Alert sx={{ mb:1, mt:2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
 
-                                    <Button sx={{mb:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
+                                    <Button sx={{mt:1,mb:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
                                 </Paper>
                             </Container>
                         </Grid>
