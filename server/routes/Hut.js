@@ -183,7 +183,7 @@ router.post('/huts', [
     body('altitude').isDecimal(),
     body('website').optional({ checkFalsy: true }).isURL(),
     body('email').isEmail(),
-    body('phone_number').notEmpty().isMobilePhone(),
+    body('phone_number').notEmpty().matches(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/),
     body('description').isString(),
 ], async (req, res) => {
 

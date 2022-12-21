@@ -19,8 +19,8 @@ router.post('/users', [
     body('surname').if(body('role').isIn(['hut_worker', 'local_guide'])).notEmpty().isString(),
     body('name').isString(),
     body('surname').isString(),
-    body('phone_number').if(body('role').isIn(['hut_worker', 'local_guide'])).notEmpty().isMobilePhone(),
-    body('phone_number').if(body('phone_number').notEmpty()).isMobilePhone(),
+    body('phone_number').if(body('role').isIn(['hut_worker', 'local_guide'])).notEmpty().matches(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/),
+    body('phone_number').if(body('phone_number').notEmpty()).matches(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/),
 ], async (req, res) => {
 
     try {
