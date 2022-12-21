@@ -19,18 +19,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 
 function StartHike(props) {
-    var title = "";
+    let title = "";
     const setIsInHike = props.setIsInHike;
     const isStarting = props.isStarting;
     const isInHike = props.isInHike;
 
     if (isStarting) {
         title = props.hike.title;
+        //TO DO WITH BACK END
+        //STORE TITLE IN DB
     } 
 
     const navigate = useNavigate()
 
-    var moment = require('moment'); // require
+    var moment = require('moment'); 
     moment().format(); 
 
     const theme = createTheme({
@@ -62,7 +64,12 @@ function StartHike(props) {
 
     const [valueStart, setValueStart] = useState(dayjs(date));
     const [valueStop, setValueStop] = useState(dayjs(date));
+    const [open, setOpen] = useState(false);
     
+    /*if true, the user has pressed the start button*/
+    const [isStarted, setisStarted] = useState(false);
+    
+    /*Function to compute the total time spent in hours and minutes*/
     const getTime = (valueStart, valueStop)  => {
         var now = moment(`${dayjs(valueStart)}+0000`);
         var expiration = moment(`${dayjs(valueStop)}+0000`);
@@ -70,14 +77,8 @@ function StartHike(props) {
         const diff = expiration.diff(now);
         //express as a duration
         const diffDuration = moment.duration(diff);
-        return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()})
+        return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()}) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
     }
-
-    //if true, the user has pressed the start button
-    const [isStarted, setisStarted] = useState(false);
-    
-    //open pop up
-    const [open, setOpen] = useState(false);
 
     const handleChangeStart = (newValue) => {
         setValueStart(newValue);
@@ -90,12 +91,18 @@ function StartHike(props) {
 
     const handleStart = () => {
         setisStarted(true)
-        console.log(valueStart)
+        //TO DO WITH BACKEND :
+        //STORE VALUE START TO A DB
     }
     const handleStop = () => {
+        //TO DO WITH BACKEND :
+        //STORE VALUE STOP TO A DB ONLY IF BACKEND COMPUTES THE TIME SPENT 
+        //IF NOT, DON'T STORE IT, BUT STORE THE TIME SPENT INSTEAD AND CLEAN THE DB
         setisStarted(false)
         setIsInHike(false)
         setOpen(true)
+        //TO DO WITH BACKEND :
+        //MARK THIS HIKE AS COMPLETED IN THE DB
     }
 
     const handleCancel = () => {
@@ -105,6 +112,14 @@ function StartHike(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    //TO ADD WHEN BACK END DONE
+    //to save the state of a hike in progress even if we went on another page
+    //useEffect(() => {
+        //if there's a hike (just selected or in progress) in the DB (a title / title + value start) :
+        //set isStarting and isInHike to true
+        //if in progress, set isStarted to true
+    //});
 
     return(
         <div>

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import HowToStart from './HowToStart';
 import MyCompletedHikes from './MyCompletedHikes';
 import StartHike from './StartHike';
 import { useLocation } from 'react-router-dom';
-
 
 function MyHikes() {
     const location = useLocation();
@@ -17,13 +16,7 @@ function MyHikes() {
         isStarting = location.state.isStarting
         hike = location.state.hike
     }
-    //if false : user only visiting My hikes page. If true, he's starting a hike
-
-    //if (location.state.isStarting){
-    //    setisStarting(location.state.isStarting)
-    //}
-
-
+    
     const theme = createTheme({
         palette: {
             primary: {
@@ -41,7 +34,6 @@ function MyHikes() {
         },
     });
 
-    
     return(
         <div>
             <Grid container >

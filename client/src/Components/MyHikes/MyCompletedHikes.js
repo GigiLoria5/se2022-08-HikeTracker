@@ -31,6 +31,8 @@ function MyCompletedHikes() {
         alignItems: 'center',
         marginBottom: 1
     };
+
+    /*Hikes to delete when API will be done */
     const hike1 = new Hike({
         title: "Hike example 0",
         peak_altitude: "100",
@@ -88,9 +90,7 @@ function MyCompletedHikes() {
                     // Set Hikes Completed
                     setHikes(hikes);
                     // Add some delay to load smoothly
-                    setTimeout(() => {
-                        setLoadingHikes(false);
-                    }, 300);
+                    setTimeout( 300);
                 });
         }
     });
@@ -108,7 +108,6 @@ function MyCompletedHikes() {
         setLoadingHikes(false);
     });
     
-
     return(
         <div>
             <Grid container >
