@@ -17,6 +17,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+
 
 function StartHike(props) {
     let title = "";
@@ -65,6 +67,7 @@ function StartHike(props) {
     const [valueStart, setValueStart] = useState(dayjs(date));
     const [valueStop, setValueStop] = useState(dayjs(date));
     const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState("");
     
     /*if true, the user has pressed the start button*/
     const [isStarted, setisStarted] = useState(false);
@@ -78,6 +81,20 @@ function StartHike(props) {
         //express as a duration
         const diffDuration = moment.duration(diff);
         return ({hours: diffDuration.hours(), minutes: diffDuration.minutes()}) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
+    }
+
+    /*Function that returns true if value start < value stop*/
+    const checkTime = (valueStart, valueStop)  => {
+        var now = moment(`${dayjs(valueStart)}+0000`);
+        var expiration = moment(`${dayjs(valueStop)}+0000`);
+        // get the difference between the moments
+        const diff = expiration.diff(now);
+        if (diff <= 0){
+            return (false)
+        } else {
+            return (true)
+        }
+        
     }
 
     const handleChangeStart = (newValue) => {
@@ -95,14 +112,19 @@ function StartHike(props) {
         //STORE VALUE START TO A DB
     }
     const handleStop = () => {
-        //TO DO WITH BACKEND :
-        //STORE VALUE STOP TO A DB ONLY IF BACKEND COMPUTES THE TIME SPENT 
-        //IF NOT, DON'T STORE IT, BUT STORE THE TIME SPENT INSTEAD AND CLEAN THE DB
-        setisStarted(false)
-        setIsInHike(false)
-        setOpen(true)
-        //TO DO WITH BACKEND :
-        //MARK THIS HIKE AS COMPLETED IN THE DB
+        if (checkTime(valueStart, valueStop) === true){
+            //TO DO WITH BACKEND :
+            //STORE VALUE STOP TO A DB ONLY IF BACKEND COMPUTES THE TIME SPENT 
+            //IF NOT, DON'T STORE IT, BUT STORE THE TIME SPENT INSTEAD AND CLEAN THE DB
+            setisStarted(false)
+            setIsInHike(false)
+            setOpen(true)
+            //TO DO WITH BACKEND :
+            //MARK THIS HIKE AS COMPLETED IN THE DB
+        } else {
+            setMessage("Please select a date and time after the departure date")
+        }
+        
     }
 
     const handleCancel = () => {
@@ -167,7 +189,9 @@ function StartHike(props) {
                                         <Button  size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
                                     </Stack>
                                     }
-                                    <Button sx={{m:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
+                                    {message && <Alert sx={{ m:2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
+
+                                    <Button sx={{mb:3 ,minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>CANCEL HIKE</Button>
                                 </Paper>
                             </Container>
                         </Grid>
