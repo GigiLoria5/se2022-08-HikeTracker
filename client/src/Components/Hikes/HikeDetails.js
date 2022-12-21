@@ -6,6 +6,7 @@ import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
+import { fromImageDataToBase64String } from '../../Utils/File';
 
 function HikeDetails(props) {
     const { isloggedIn, loggedUser } = props;
@@ -23,11 +24,10 @@ function HikeDetails(props) {
             API.getHikeById(parseInt(hikeId))
                 .then((h) => {
                     setTimeout(() => {
-                        // Save Hike
+                        // Get Hike
                         setHike(h);
                         // Parse Image
-                        const base64String = window.btoa(String.fromCharCode(...new Uint8Array(h.picture_file.data)));
-                        setHikeImage(base64String);
+                        setHikeImage(fromImageDataToBase64String(h.picture_file.data));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") })

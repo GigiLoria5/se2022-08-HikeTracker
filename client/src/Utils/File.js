@@ -24,4 +24,12 @@ const createMockFile = (filename, size, mimetype) => {
     return file;
 }
 
-module.exports = { isValidImage, createMockFile };
+const fromImageDataToBase64String = (imageData) => {
+    let stringFromCharCode = "";
+    const pictureData = new Uint8Array(imageData);
+    for (let i = 0; i < pictureData.length; i += 500000)
+        stringFromCharCode += String.fromCharCode(...pictureData.slice(i * 500000, (i + 1) * 500000));
+    return window.btoa(stringFromCharCode);
+};
+
+module.exports = { isValidImage, createMockFile, fromImageDataToBase64String };
