@@ -17,6 +17,12 @@ const router = express.Router();
 
 const utilsHike = require('../utils/Utils_hike');
 
+const removeGpx = (name) => {
+    fs.unlink(name, function (err, results) {
+        if(err) throw new Error("unexpected error")
+    });
+}
+
 /////////////////////////////////////////////////////////////////////
 //////                          POST                           //////
 /////////////////////////////////////////////////////////////////////
@@ -147,9 +153,7 @@ router.post('/hikes',
                         hikeDao.deleteHike(hike_id).then(_a => {
                             hikeDao.deleteReferencePoints(hike_id);
                         });
-                        fs.unlink(`./gpx_files/${name}.gpx`, function (err, results) {
-                            if(err) throw new Error("unexpected error")
-                        });
+                        removeGpx(`./gpx_files/${name}.gpx`);
                         throw new Error("error saving image file");
                     }
                 })

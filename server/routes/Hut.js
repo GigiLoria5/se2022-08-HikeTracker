@@ -239,21 +239,19 @@ router.post('/huts', [
 
                 // Checks if the hut coordinates and location infos alread exists
                 const exists = await HutDAO.checkExisting(hut);
-                if (exists === false) {
-                    // Hut is created and added
-
-                    const hut_id = await HutDAO.addHut(req.user.id, hut);
-                    picture.mv(`./pictures/${picture_name}`, err => {
-                        if (err) {
-                            HutDAO.deleteHut(hut_id, req.user.id);
-                            throw new Error("error saving image file");
-                        }
-                    })
-                    return res.status(200).end();
-
-                } else {
+                if (exists === true) {
                     return res.status(422).json({ error: "An hut having the same location parameters already exists" });
                 }
+                // Hut is created and added
+
+                const hut_id = await HutDAO.addHut(req.user.id, hut);
+                picture.mv(`./pictures/${picture_name}`, err => {
+                    if (err) {
+                        HutDAO.deleteHut(hut_id, req.user.id);
+                        throw new Error("error saving image file");
+                    }
+                })
+                return res.status(200).end();
 
             } else {
                 return res.status(401).json({ error: "Unauthorized to execute this operation!" });
