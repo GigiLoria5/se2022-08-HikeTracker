@@ -13,8 +13,8 @@ const createHike = async (hike) => {
             formData.append(c, JSON.stringify(hike[c]))
         else
             formData.append(c, hike[c]);
-
     }
+
     let response = await fetch(APIURL + '/api/hikes', {
         method: 'POST',
         credentials: 'include',
@@ -22,24 +22,24 @@ const createHike = async (hike) => {
     });
 
     let err = new Error();
-    if (!response.ok) {
-        if (response.status === 500) {
-            err.message = "500 INTERNAL SERVER ERROR";
-            throw err;
-        }
-        else if (response.status === 422) {
-            err.message = "422 UNPROCESSABLE ENTITY";
-            throw err;
-        }
-        else if (response.status === 401) {
-            err.message = "422 UNAUTHORIZED";
-            throw err;
-        }
-        else {
-            err.message = "OTHER ERROR";
-            throw err;
-        }
+    if (response.ok) {
+        return true;
     }
+    switch (response.status) {
+        case 500:
+            err.message = "500 INTERNAL SERVER ERROR";
+            break;
+        case 422:
+            err.message = "422 UNPROCESSABLE ENTITY";
+            break;
+        case 401:
+            err.message = "401 UNAUTHORIZED";
+            break;
+        default:
+            err.message = "OTHER ERROR";
+            break;
+    }
+    throw err;
 };
 
 // get

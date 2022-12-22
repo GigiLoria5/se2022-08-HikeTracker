@@ -27,8 +27,8 @@ function AddHike1(props) {
     const setAscent = props.setAscent
     const setLength = props.setLength
 
-    const selectedFile = props.selectedFile
-    const setSelectedFile = props.setSelectedFile
+    const selectedGpxFile = props.selectedGpxFile
+    const setSelectedGpxFile = props.setSelectedGpxFile
     const setPeakAltitude = props.setPeakAltitude
     const newHike = props.newHike
 
@@ -100,7 +100,7 @@ function AddHike1(props) {
     useEffect(() => {
         window.scrollTo(0, 0)
         if (newHike === false) {
-            setSelectedFile(selectedFile);
+            setSelectedGpxFile(selectedGpxFile);
             setIsSelected(true);
             setStartPointDescription(prevStartPoint.description);
             setStartPointGPSlat(prevStartPoint.latitude);
@@ -112,7 +112,7 @@ function AddHike1(props) {
             setEndPointGPSlon(prevEndPoint.longitude);
             setEndPointType(prevEndPoint.type);
             setEndPointValue(prevEndPoint.value);
-            parseGPX(selectedFile).then(
+            parseGPX(selectedGpxFile).then(
                 gpx => {
                     setAscent(gpx.ascent);
                     setLength(gpx.length);
@@ -165,7 +165,7 @@ function AddHike1(props) {
     const changeHandler = async (event) => {
         event.preventDefault();
         if (checkValidGPX(await event.target.files[0].text())) {
-            setSelectedFile(event.target.files[0]);
+            setSelectedGpxFile(event.target.files[0]);
             setIsSelected(true);
             const gpx = await parseGPX(event.target.files[0]);
             setStartPointGPSlat(gpx.start_point_lat);
@@ -179,7 +179,7 @@ function AddHike1(props) {
             setMessage("");
         }
         else {
-            setSelectedFile(null);
+            setSelectedGpxFile(null);
             setIsSelected(false);
             setMessage("Invalid GPX file")
         }
@@ -218,7 +218,7 @@ function AddHike1(props) {
     }
     /* Functions called on form submit */
     const checkForm = () => {
-        if (selectedFile == null) {
+        if (selectedGpxFile == null) {
             setMessage("GPX file not uploaded");
             return false;
         }
@@ -234,7 +234,7 @@ function AddHike1(props) {
                 return false;
             }
         }
-        
+
         if (!startPointValue || !endPointValue) {
             setMessage("Missing point attribute(s)");
             return false;
@@ -288,7 +288,7 @@ function AddHike1(props) {
                             </Button>
                             {isSelected ? (
                                 <div>
-                                    <Typography sx={thm} margin={2}>Filename: {selectedFile && selectedFile.name}</Typography>
+                                    <Typography sx={thm} margin={2}>Filename: {selectedGpxFile && selectedGpxFile.name}</Typography>
                                     <Divider variant="middle" />
                                     <Grid container >
                                         {/*****************************************************START POINT***********************************************/}

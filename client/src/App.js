@@ -79,10 +79,10 @@ function Root() {
                 <Route path='' element={<Homepage />} />
                 <Route path='/hikes' element={<HikesContainer />} />
                 <Route path='/hikes/:hikeId' element={<HikeDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
-                <Route path='/huts' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide']} />} >
+                <Route path='/huts' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide', 'manager']} />} >
                     <Route path="" element={<HutsContainer />} />
                 </Route>
-                <Route path='/huts/:hutId' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide']} />} >
+                <Route path='/huts/:hutId' element={<ProtectedRoute rolesAllowed={['hiker', 'local_guide', 'manager']} />} >
                     <Route path="" element={<HutDetails isloggedIn={loggedIn} loggedUser={loggedUser} />} />
                 </Route>
 

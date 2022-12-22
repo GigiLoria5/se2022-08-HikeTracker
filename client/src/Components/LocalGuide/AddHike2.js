@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import API from '../../API';
+import { getAddressByCoordinates } from '../../API/Points.js'
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from "@mui/material/Button";
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import Grid from '@mui/material/Unstable_Grid2';
 import Autocomplete from '@mui/material/Autocomplete';
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs, Divider, TextField } from '@mui/material';
-import { useNavigate } from "react-router-dom";
-import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
-import { getAddressByCoordinates } from '../../API/Points.js'
-import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
-
 import InputAdornment from '@mui/material/InputAdornment';
-import API from '../../API';
-import { Hike } from "../../Utils/Hike"
 import Stack from '@mui/material/Stack';
-import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData'
-import SmootherTextField from '../SmootherTextField'
-import { difficultyFromState } from '../../Utils/DifficultyMapping';
 import Alert from '@mui/material/Alert';
-import { getPoints } from '../../Utils/GPX';
+import SmootherTextField from '../SmootherTextField';
+
 import RefPointAdd from './AddHike/RefPointAdd';
 import RefPointTable from './AddHike/RefPointTable';
 import DifficultySelector from './AddHike/DifficultySelector';
-import { timeToHHMM } from '../../Utils/TimeUtils';
 
+import { Hike } from "../../Utils/Hike";
+import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
+import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
+import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData';
+import { difficultyFromState } from '../../Utils/DifficultyMapping';
+import { getPoints } from '../../Utils/GPX';
+import { timeToHHMM } from '../../Utils/TimeUtils';
+import { isValidImage } from '../../Utils/File';
 
 const Description = (props) => {
     const [localDescription, setLocalDescription] = React.useState(props.description);
@@ -43,8 +45,12 @@ const Description = (props) => {
 
 function AddHike2(props) {
     const [message, setMessage] = useState("");
+    const [fileMessage, setFileMessage] = useState("");
     const setStepOneDone = props.setStepOneDone
     const computedExpectedTime = props.expectedTime
+    const selectedImgFile = props.selectedImgFile;
+    const setSelectedImgFile = props.setSelectedImgFile;
+    const [isImgSelected, setIsImgSelected] = useState(false);
 
     const ascent = props.ascent
     const length = props.length
@@ -108,9 +114,6 @@ function AddHike2(props) {
 
     const startPointValue = props.startPointValue
     const endPointValue = props.endPointValue
-
-
-
 
     useEffect(() => {
         getLocation();
@@ -286,12 +289,15 @@ function AddHike2(props) {
             setEditingRefPoint(true);
             setRefPointMessage("");
         }
-
     }
 
     const handleSubmission = async (ev) => {
         ev.preventDefault();
 
+        if (selectedImgFile === null) {
+            setMessage("Image not uploaded");
+            return false;
+        }
 
         const res = validateAddress(location, country, province, city); // res contains strings: "true" (no errors), "country", "province", "city" or "address"
 
@@ -310,7 +316,8 @@ function AddHike2(props) {
                 start_point: start_point,
                 end_point: end_point,
                 reference_points: referencePoint,
-                gpx: selectedFile
+                gpx: selectedFile,
+                picture: selectedImgFile
             }
             )
             API.createHike(hike).then(_a => navigate("/hikes")).catch(err => { setMessage("Server error in creating hike"); });
@@ -318,8 +325,22 @@ function AddHike2(props) {
             printErrors(res);
             ev.stopPropagation();
         }
+    };
 
+    /* Function called on Upload press */
+    const changeHandler = async (event) => {
+        event.preventDefault();
 
+        const imageCheck = isValidImage(event.target.files[0]);
+        if (imageCheck === true) {
+            setSelectedImgFile(event.target.files[0]);
+            setIsImgSelected(true);
+            setFileMessage("");
+        } else {
+            setSelectedImgFile(null);
+            setIsImgSelected(false);
+            setFileMessage(imageCheck);
+        }
     };
 
     const thm = {
@@ -340,6 +361,7 @@ function AddHike2(props) {
                     <Grid xs={0} md={2}></Grid>
                     <Grid xs={12} md={8} marginTop={3} >
                         <Paper elevation={3} sx={{ ...thm, mb: 4 }} component="form" onSubmit={handleSubmission} >
+                            {/*****************************************************Bread Crumbs***********************************************/}
                             <Breadcrumbs separator="›" aria-label="breadcrumb" marginTop={3}>
                                 [
                                 <Typography key="3" color="inherit">
@@ -350,20 +372,32 @@ function AddHike2(props) {
                                 </Typography>,
                                 ];
                             </Breadcrumbs>
+                            {/*****************************************************INTRO***********************************************/}
                             <Typography variant="h5" sx={thm} margin="normal" fontWeight={550} marginTop={1}>
                                 <br />Describe the Hike<br /><br />
                             </Typography>
                             <Stack direction="row" marginBottom={2} marginTop={1}>
                                 <Typography sx={{ fontSize: 14 }} color="grey.700">
-                                    Propose a hike that does not exist
+                                    Suggest an hike that does not already exist on HikeTracker.
                                 </Typography>
                             </Stack>
                             <Divider style={{ width: '70%' }} />
-
+                            {/*****************************************************UPLOAD IMAGE***********************************************/}
+                            <Typography align='center' variant="h6" fontWeight={520} margin={2} >
+                                UPLOAD AN IMAGE
+                            </Typography>
+                            <Button variant="contained" margin={2} component="label" onChange={changeHandler}>
+                                Choose a file...
+                                <input hidden accept=".jpg, .png" type="file" />
+                            </Button>
+                            {fileMessage !== ""
+                                ? <Alert sx={{ m: 2 }} severity="error" onClose={() => setFileMessage('')}>{fileMessage}</Alert>
+                                : <Typography sx={thm} margin={2}>{isImgSelected ? `Filename : ${selectedImgFile.name}` : null}</Typography>
+                            }
+                            <Divider style={{ width: '70%' }} />
                             {/****************************************************GENERAL INFO***********************************************/}
-
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                General information
+                                GENERAL INFORMATION
                             </Typography>
 
                             {/*GENERAL INFO*/}
@@ -416,7 +450,7 @@ function AddHike2(props) {
                             {/******************************************GEOGRAPHICAL AREA***********************************************/}
 
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Geographical area
+                                GEOGRAPHICAL AREA
                             </Typography>
                             <Stack direction={{ xs: 'column', sm: 'column' }} margin={1} marginBottom={2}>
                                 {/*COUNTRY FIELD*/}
@@ -472,7 +506,7 @@ function AddHike2(props) {
                             <Divider style={{ width: '70%' }} />
 
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Reference points
+                                REFERENCE POINTS
                             </Typography>
                             <Typography sx={thm} marginBottom={0} align="center">
                                 Click on the map to add reference points on the track<br />
@@ -508,7 +542,7 @@ function AddHike2(props) {
                             {/****************************************************DESCRIPTION********************************************************/}
                             <Divider style={{ width: '70%' }} />
                             <Typography align='center' variant="h6" fontWeight={520} margin={2} marginBottom={0}>
-                                Description
+                                DESCRIPTION
                             </Typography>
                             < Description description={description} setDescription={setDescription} />
 

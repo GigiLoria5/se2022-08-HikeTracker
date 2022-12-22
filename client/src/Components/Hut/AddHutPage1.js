@@ -15,6 +15,7 @@ import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
 import { Link } from "react-router-dom";
 import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
+import { positiveIntegerSanitizer } from '../../Utils/InputSanitizer';
 
 
 /**
@@ -43,9 +44,9 @@ export default function AddHutPage1(props) {
         props.setLatitude(position.lat);
         props.setLongitude(position.lng);
         ResetErrors(props.formValues)
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [position]);
-    
+
 
     useEffect(() => {
         getCountries().then(cn => {
@@ -98,6 +99,12 @@ export default function AddHutPage1(props) {
     const printErrors = async (res) => {
         const formValueWithErrors = PrintCheckErrors(props.formValues, res);
         props.setFormValues(formValueWithErrors);
+    }
+
+
+    const handleChangeAltitude = (newAltitude) => {
+        const newAltitudeSanitized = positiveIntegerSanitizer(newAltitude);
+        props.setAltitude(newAltitudeSanitized);
     }
 
     const handleSubmit = (event) => {
@@ -171,7 +178,7 @@ export default function AddHutPage1(props) {
                                 onChange={ev => { props.setLongitude(ev.target.value); setPosition({ lat: position.lat, lng: ev.target.value }) }} />
 
                             {/*ALTITUDE FIELD*/}
-                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} required label="Altitude" type="number" InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => props.setAltitude(ev.target.value)} />
+                            <TextField margin="normal" variant="outlined" sx={{ width: '30ch', maxWidth: '30ch', marginTop: 1 }} required label="Altitude" type="number" InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }} value={props.altitude} onChange={ev => handleChangeAltitude(ev.target.value)} />
 
                         </Grid>
                         <Divider variant="middle" />

@@ -20,7 +20,8 @@ function AddHike() {
     const [startPointType, setStartPointType] = useState("gps"); //for start point
     const [endPointType, setEndPointType] = useState("gps");// for end point
 
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedGpxFile, setSelectedGpxFile] = useState();
+    const [selectedImgFile, setSelectedImgFile] = useState(null);
 
     const [startPointValue, setStartPointValue] = useState("gps");
     const [endPointValue, setEndPointValue] = useState("gps");
@@ -63,8 +64,8 @@ function AddHike() {
                                     setLength={setLength}
                                     newHike={newHike}
 
-                                    selectedFile={selectedFile}
-                                    setSelectedFile={setSelectedFile}
+                                    selectedGpxFile={selectedGpxFile}
+                                    setSelectedGpxFile={setSelectedGpxFile}
                                     setPeakAltitude={setPeakAltitude}
 
                                     startPointDescription={startPointDescription}
@@ -99,9 +100,12 @@ function AddHike() {
                                     expectedTime={expectedTime}
                                     ascent={ascent}
                                     length={length}
-                                    selectedFile={selectedFile}
+                                    selectedFile={selectedGpxFile}
                                     peakAltitude={peakAltitude}
                                     setNewHike={setNewHike}
+
+                                    selectedImgFile={selectedImgFile}
+                                    setSelectedImgFile={setSelectedImgFile}
 
                                     startPointDescription={startPointDescription}
                                     endPointDescription={endPointDescription}

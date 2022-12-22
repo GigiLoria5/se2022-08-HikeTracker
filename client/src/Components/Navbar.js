@@ -71,7 +71,7 @@ function MyNavbar(props) {
         else {
             let navItemsToAdd = {};
             /* Protected Routes only available for hikers and local guides */
-            if (isloggedIn && ["hiker", "local_guide"].includes(loggedUser.role))
+            if (isloggedIn && ["hiker", "local_guide", 'manager'].includes(loggedUser.role))
                 navItemsToAdd = { ...navItemsToAdd, 'Huts': '/huts' };
 
             /* Protected Routes only available for local guides */
@@ -95,18 +95,18 @@ function MyNavbar(props) {
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { md: 'none' } }}
+                            sx={{ mr: 2, display: { lg: 'none' } }}
                         >
                             <MenuIcon />
                         </IconButton>
                         {/* Logo */}
-                        <Container sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, ml: 1 }} maxWidth="xs" className="navbar-container">
+                        <Container sx={{ display: { xs: 'none', lg: 'flex' }, mr: 1, ml: 1 }} maxWidth="xs" className="navbar-container">
                             <Link href="/">
                                 <Logo />
                             </Link>
                         </Container>
                         {/* Nav Links */}
-                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <Box sx={{ display: { xs: 'none', lg: 'flex' } }}>
                             {
                                 Object.entries(navItems).map(([name, route]) => (
                                     name === 'Platform Content' ?
@@ -159,7 +159,7 @@ function MyNavbar(props) {
                                 ))}
                         </Box>
                         {/* User Account Actions */}
-                        <Box sx={{ display: { xs: 'flex', md: 'flex' } }} className="box-end margin-right-32">
+                        <Box sx={{ display: { xs: 'flex', lg: 'flex' } }} className="box-end margin-right-32">
                             {isloggedIn ?
                                 <>
                                     <Grid container className="vertical-align-center" >
@@ -196,7 +196,7 @@ function MyNavbar(props) {
                             keepMounted: true, // Better open performance on mobile.
                         }}
                         sx={{
-                            display: { xs: 'block', md: 'none' },
+                            display: { xs: 'block', lg: 'none' },
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                         }}
                     >
@@ -217,20 +217,20 @@ function MyNavbar(props) {
                                         <Box key={name} >
                                             <ListItem disablePadding>
                                                 <ListItemButton sx={{ textAlign: 'center' }} onClick={handleMenuMobile}>
-                                                    <ListItemText primary="Platform Content" />
+                                                    <ListItemText primary="PLATFORM CONTENT" />
                                                     {menuMobile ? <ExpandLess /> : <ExpandMore />}
                                                 </ListItemButton>
                                             </ListItem>
                                             <Collapse in={menuMobile} timeout="auto" unmountOnExit>
                                                 <List component="div" disablePadding>
                                                     <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hikes"} state={{ newHike: true }} onClick={handleDrawerToggle}>
-                                                        <ListItemText primary="Add hike" />
+                                                        <ListItemText primary="ADD HIKE" />
                                                     </ListItemButton>
                                                     <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-hut"} onClick={handleDrawerToggle}>
-                                                        <ListItemText primary="Add hut" />
+                                                        <ListItemText primary="ADD HUT" />
                                                     </ListItemButton>
                                                     <ListItemButton sx={{ textAlign: 'center' }} component={Link2} to={"/local-guide-add-parking"} onClick={handleDrawerToggle}>
-                                                        <ListItemText primary="Add parking lot" />
+                                                        <ListItemText primary="ADD PARKING LOT" />
                                                     </ListItemButton>
                                                 </List>
                                             </Collapse>
@@ -239,7 +239,7 @@ function MyNavbar(props) {
                                         <ListItem key={name} disablePadding>
                                             <ListItemButton sx={{ textAlign: 'center' }} className={`${String(location.pathname) === String(route) ? 'active-link' : ''}`}
                                                 onClick={() => { navigate(route); }}>
-                                                <ListItemText primary={name} />
+                                                <ListItemText primary={name} sx={{ textTransform: 'uppercase' }} />
                                             </ListItemButton>
                                         </ListItem>
                                 ))}

@@ -17,6 +17,12 @@ const router = express.Router();
 
 const utilsHike = require('../utils/Utils_hike');
 
+const removeGpx = (name) => {
+    fs.unlink(name, function (err, results) {
+        if(err) throw new Error("unexpected error")
+    });
+}
+
 /////////////////////////////////////////////////////////////////////
 //////                          POST                           //////
 /////////////////////////////////////////////////////////////////////
@@ -59,6 +65,17 @@ router.post('/hikes',
         return true;
     }),
 
+    check('picture file').custom(async (value, { req }) => {
+        if (!req.files) throw new Error("no file uploaded");
+        const sizeKB = req.files.picture.size / 1024;
+        if (sizeKB > 1024 * 10) throw new Error("picture file too large");
+        if (req.files.picture.mimetype != "image/jpeg" && req.files.picture.mimetype != "image/png") {
+            throw new Error("invalid picture file");
+        }
+        return true;
+    }),
+
+
     async (req, res) => {
 
         try {
@@ -73,7 +90,10 @@ router.post('/hikes',
                 throw new Error("no file uploaded");
             } else {
                 const gpx = req.files.gpx;
-                const name = Date.now() + "_" + gpx.name.replace(/\.[^/.]+$/, "");
+                const picture = req.files.picture;
+                const curdate = Date.now();
+                const name = curdate + "_" + gpx.name.replace(/\.[^/.]+$/, "");
+                const picture_name = curdate + "_" + picture.name;
                 const author_id = req.user && req.user.id;
 
                 const start_point = await JSON.parse(req.body.start_point);
@@ -94,6 +114,7 @@ router.post('/hikes',
                     expected_time:req.body.expected_time,
                     difficulty:req.body.difficulty,
                     gps_track:name,
+                    picture:picture_name,
                     start_point_type:start_point.type,
                     start_point_id:start_point_id,
                     end_point_type:end_point.type,
@@ -125,6 +146,17 @@ router.post('/hikes',
                         throw new Error("error saving gpx file");
                     }
                 });
+
+
+                picture.mv(`./pictures/${picture_name}`, err => {
+                    if (err) {
+                        hikeDao.deleteHike(hike_id).then(_a => {
+                            hikeDao.deleteReferencePoints(hike_id);
+                        });
+                        removeGpx(`./gpx_files/${name}.gpx`);
+                        throw new Error("error saving image file");
+                    }
+                })
                 //send response
                 res.status(201).send({
                     message: 'Hike uploaded'
@@ -191,6 +223,7 @@ router.get('/hike/:id',
                 if (req.isAuthenticated() && usersRoleGpxPermission.includes(req.user.role)) {
                     hike.gpx_content = fs.readFileSync('./gpx_files/' + hike.gps_track + '.gpx', { encoding: 'utf8' });
                 }
+                hike.picture_file = fs.readFileSync('./pictures/' + hike.picture)
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
                 hike.end = await utilsHike.getPoint(hike.end_point_type, hike.end_point_id);
                 const references = await referenceDao.getReferenceByHikeId(req.params.id);

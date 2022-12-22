@@ -6,6 +6,7 @@
 import API from '../API.js';
 import { Hut } from '../Utils/Hut';
 import { isPointInsideRange } from '../Utils/GeoUtils';
+import { createMockFile } from '../Utils/File.js';
 
 const APIURL = 'http://localhost:3001';
 
@@ -27,7 +28,8 @@ describe('frontend test: hut creation', () => {
         phone_number: "3456789012",
         email: "hut0@hut.it",
         website: "www.hut1.com",
-        type: "hiking_hut"
+        type: "hiking_hut",
+        picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/jpeg")
     });
 
     let h1 = new Hut({
@@ -46,7 +48,8 @@ describe('frontend test: hut creation', () => {
         phone_number: "3456789012",
         email: "hut0@hut.it",
         website: "",
-        type: "unmanaged_hut"
+        type: "unmanaged_hut",
+        picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/png")
     });
 
     let h2 = new Hut({
@@ -65,7 +68,8 @@ describe('frontend test: hut creation', () => {
         phone_number: "3456789012",
         email: "hut2@hut.it",
         website: "www.hut1.com",
-        type: ""
+        type: "",
+        picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/png")
     });
 
     let h3 = new Hut({
@@ -84,7 +88,8 @@ describe('frontend test: hut creation', () => {
         phone_number: "3456789012",
         email: "hut2@hut.it",
         website: "www.hut1.com",
-        type: "hiking_hut"
+        type: "hiking_hut",
+        picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/jpeg")
     });
 
     it('setup', async () => {
@@ -134,6 +139,46 @@ describe('frontend test: hut creation', () => {
             console.log(err);
         }
     })
+
+    it('T6: invalid picture file, null', async () => {
+        const wrongHut = { ...h0, picture: null };
+
+        try {
+            await API.addHut(wrongHut);
+        }
+        catch (err) {
+            expect(err);
+        }
+    });
+
+    it('T7: invalid picture file, too large', async () => {
+        const wrongHut = { ...h0, picture: createMockFile("image.jpg", 1024 * 1024 * 10 + 1, "image/tiff") };
+
+        try {
+            await API.addHut(wrongHut);
+        }
+        catch (err) {
+            expect(err);
+        }
+    });
+
+    it('T8: invalid picture file, wrong type', async () => {
+        const wrongHut = { ...h0, picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 1, "image/tiff") };
+
+        try {
+            await API.addHut(wrongHut);
+        }
+        catch (err) {
+            expect(err);
+        }
+    });
+
+    it('T9: correct body with png picture', async () => {
+        const correctHut = { ...h0, picture: createMockFile("image.jpg", 1024 * 1024 * 1 - 100, "image/png") };
+
+        const res = await API.addHut(correctHut);
+        expect(res).toBe(true);
+    });
 });
 
 describe('frontend test: get hut by radius', () => {
