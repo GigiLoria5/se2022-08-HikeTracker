@@ -214,8 +214,8 @@ function StartHike(props) {
                             <DialogTitle id="responsive-dialog-title" sx={{ display: "flex",  flexDirection: "column", alignItems: "center"}}>
                             {"Well done !"}
                             </DialogTitle>
-                            <DialogContent>
-                                <DialogContentText sx={{ display: "flex", flexDirection: "column", alignItems: "center"  }}>
+                            <DialogContent sx={{...thm}}>
+                                <DialogContentText align='center' sx={{ display: "flex", flexDirection: "column", alignItems: "center"  }}>
                                     {title} <br/>
                                     Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.<br/>
                                     Hike finished at {valueStop.$H}:{valueStop.$m} the {valueStop.$M+1}/{valueStop.$D}/{valueStop.$y}.<br/>
