@@ -61,12 +61,6 @@ function StartHike(props) {
         marginBottom: 1
     };
 
-    const centertxt = {
-        display:"flex",
-        justifyContent:"center",
-        
-    }
-
     const current = new Date();
     const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}T${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`
 
@@ -105,7 +99,6 @@ function StartHike(props) {
     const handleChangeStart = (newValue) => {
         if (newValue){
             setValueStart(newValue);
-            console.log(newValue)
         }
     };
 
@@ -166,7 +159,7 @@ function StartHike(props) {
                 <ThemeProvider theme={theme} >    
                 {isStarting && isInHike ?
                     <>
-                        <Grid xs={12} sx={{...centertxt}}>
+                        <Grid xs={12} sx={{...thm}}>
                             <Typography variant="h5" align='center' marginTop={2} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
                                 START A HIKE
                             </Typography>
@@ -178,8 +171,8 @@ function StartHike(props) {
                                     <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m:3 }}>{title}</Typography>
                                     { isStarted ?
                                     <Grid>
-                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.</Typography>
-                                        <Typography variant="h6" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: 600, m:2 }}>In progress...</Typography>
+                                        <Typography variant="h6" align='center' >Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M+1}/{valueStart.$D}/{valueStart.$y}.</Typography>
+                                        <Typography variant="h6" align='center' sx={{ fontWeight: 600, m:2 }}>In progress...</Typography>
 
                                         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>  
