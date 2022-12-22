@@ -91,9 +91,8 @@ function StartHike(props) {
 
     /*Function that returns true if value start < value stop*/
     const checkTime = (valueStart, valueStop)  => {
-        var now = moment(`${dayjs(valueStart)}+0000`);
-        console.log(`${dayjs(date)}+0000`)
-        var expiration = moment(`${dayjs(valueStop)}+0000`);
+        var now = moment(dayjs(valueStart).toISOString());
+        var expiration = moment(dayjs(valueStop).toISOString());
         // get the difference between the moments
         const diff = expiration.diff(now);
         if (diff <= 0){
@@ -101,36 +100,48 @@ function StartHike(props) {
         } else {
             return (true)
         }
-        
     }
 
     const handleChangeStart = (newValue) => {
-        setValueStart(newValue);
-        console.log("date:", date)
+        if (newValue){
+            setValueStart(newValue);
+            console.log(newValue)
+        }
     };
 
     const handleChangeStop = (newValue) => {
-        setValueStop(newValue);
+        if (newValue){
+            setValueStop(newValue);
+        }    
     };
 
     const handleStart = () => {
-        setisStarted(true)
+        if (!isNaN(valueStart.$D) &&!isNaN(valueStart.$H) && !isNaN(valueStart.$M) && !isNaN(valueStart.$W) && !isNaN(valueStart.$m) && !isNaN(valueStart.$ms) && !isNaN(valueStart.$s) && !isNaN(valueStart.$y)){
+            setisStarted(true)        
+        } else {
+            setMessage("Please select a date and a time.")
+        }
+        
         //TO DO WITH BACKEND :
         //STORE VALUE START TO A DB
     }
     const handleStop = () => {
-        if (checkTime(valueStart, valueStop) === true){
-            //TO DO WITH BACKEND :
-            //STORE VALUE STOP TO A DB ONLY IF BACKEND COMPUTES THE TIME SPENT 
-            //IF NOT, DON'T STORE IT, BUT STORE THE TIME SPENT INSTEAD AND CLEAN THE DB
-            setisStarted(false)
-            setIsInHike(false)
-            setOpen(true)
-            //TO DO WITH BACKEND :
-            //MARK THIS HIKE AS COMPLETED IN THE DB
+        if (!isNaN(valueStop.$D) &&!isNaN(valueStop.$H) && !isNaN(valueStop.$M) && !isNaN(valueStop.$W) && !isNaN(valueStop.$m) && !isNaN(valueStop.$ms) && !isNaN(valueStop.$s) && !isNaN(valueStop.$y)){
+            if (checkTime(valueStart, valueStop) === true){
+                //TO DO WITH BACKEND :
+                //STORE VALUE STOP TO A DB ONLY IF BACKEND COMPUTES THE TIME SPENT 
+                //IF NOT, DON'T STORE IT, BUT STORE THE TIME SPENT INSTEAD AND CLEAN THE DB
+                setisStarted(false)
+                setIsInHike(false)
+                setOpen(true)
+                //TO DO WITH BACKEND :
+                //MARK THIS HIKE AS COMPLETED IN THE DB
+            } else {
+                setMessage("Please select a date and time after the departure date")
+            }  
         } else {
-            setMessage("Please select a date and time after the departure date")
-        }    
+            setMessage("Please select a date and a time.")
+        }  
     }
 
     const handleCancel = () => {
