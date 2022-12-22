@@ -18,6 +18,7 @@ import { useState, useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import '../../Styles/Phone.css'
 
 
 
@@ -147,12 +148,13 @@ export default function SignUp(props) {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12}>
-                                <PhoneInput
-                                    required={type !== 1 && type !== 4 ? true : false}
-                                    placeholder="Enter phone number"
-                                    value={phone_number}
-                                    defaultCountry="IT"
-                                    onChange={setPhone} />
+                                <PhoneInput 
+                                    id="phone-id" 
+                                    placeholder="Enter phone number" 
+                                    required={type !== 1 && type !== 4 ? true : false} 
+                                    value={phone_number} 
+                                    defaultCountry="IT" 
+                                    onChange={setPhone}/>
 
                             </Grid>
 

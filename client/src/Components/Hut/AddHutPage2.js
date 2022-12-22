@@ -13,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import '../../Styles/Phone.css'
 
 /**
  * 
@@ -146,8 +147,8 @@ export default function AddHutPage2(props) {
                                 <TextField margin="normal" variant="outlined" label="Email Address" required sx={{ width: '30ch', maxWidth: '30ch' }} value={props.email} name="email" autoComplete="email" type="email" onChange={ev => props.setEmail(ev.target.value)} />
 
                                 {/*PHONE NUMBER FIELD*/}
-                                <Grid item sx={{ width: '30ch', maxWidth: '30ch', mt: 2, mb: 1 }}>
-                                <PhoneInput placeholder="Phone number *" sx={{ width: '30ch', maxWidth: '30ch', mt: 3, mb: 2 }} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber} />
+                                <Grid item sx={{ width: '30ch', maxWidth: '30ch', mt: 2, mb: 1}}>
+                                <PhoneInput id="phone-id" placeholder="Phone number *" inputstyle={{width: '30 ch', maxWidth: '30ch ', mt: 3 , mb: 2}} required value={props.phoneNumber} defaultCountry="IT" onChange={props.setPhoneNumber}/>
                                 </Grid>
 
                             </Stack>
