@@ -14,7 +14,7 @@ const router = express.Router();
 //////                          GET                            //////
 /////////////////////////////////////////////////////////////////////
 
-router.get('/activity/check/:hike_id',
+router.get('/activity/:hike_id',
     check('hike_id').exists().isInt(),
 
     async (req, res) => {
@@ -39,7 +39,11 @@ router.get('/activity/check/:hike_id',
                         //Return if the user has started the hike specified by the id
                         await ActivityDAO.getActiveActivityByHikeId(req.params.hike_id, req.user.id)
                             .then(async (activity) => {
-                                res.status(200).json(activity);
+                                if(activity === false){
+                                    res.status(200).json({});
+                                }else{
+                                    res.status(200).json(activity);
+                                }
                             })
                             .catch((err) => {
                                 res.status(500).json({ error: `Database error while retrieving the activity` });
@@ -193,16 +197,23 @@ router.put('/activity/terminate',
                         const exist = await ActivityDAO.getActiveActivityByHikeId(req.body.hike_id, req.user.id);
 
                         if (exist.end_time === null && exist.start_time !== null) {
-                            var diff = Math.abs(new Date(req.body.end_time) - new Date(exist.start_time));
+                            var diff = (new Date(req.body.end_time) - new Date(exist.start_time));
 
-                            const activity = new Activity({
-                                hike_id: req.body.hike_id,
-                                end_time: req.body.end_time,
-                                duration: Math.floor((diff / 1000) / 60)
-                            });
-
-                            await ActivityDAO.terminateActivity(activity, req.user.id);
-                            return res.status(204).end();
+                            //Check if the end time is afterwards start time 
+                            if(diff>0){
+                                const diff_in_secs = Math.floor((Math.abs(diff) / 1000) / 60);
+                                const activity = new Activity({
+                                    hike_id: req.body.hike_id,
+                                    end_time: req.body.end_time,
+                                    duration: diff_in_secs
+                                });
+    
+                                await ActivityDAO.terminateActivity(activity, req.user.id);
+                                return res.status(204).end();
+                            }else{
+                                return res.status(422).json({ error: "End time must be afterwards start time!" });
+                            }
+                            
 
                         } else {
                             return res.status(404).json({ error: "No hike activity to terminate!" });
@@ -229,7 +240,7 @@ router.put('/activity/terminate',
 //////                       DELETE                            //////
 /////////////////////////////////////////////////////////////////////
 
-router.delete('/activity/hikeid/:hike_id',
+router.delete('/activity/:hike_id',
     check('hike_id').exists().isInt(),
 
     async (req, res) => {
