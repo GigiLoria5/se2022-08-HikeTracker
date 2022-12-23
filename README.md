@@ -993,7 +993,7 @@ Manual test reports in client/gui_test
   - _ref_point_type_ can be: parking_lot, location, hut
 - Table `activity` contains: id, hike_id, user_id, start_time, end_time and duration
   - start_time and end_time must follow the ISO8601 format (YYYY-MM-DD HH:MM:SS), even if SS are not required 
-  - duration is expressed in seconds  
+  - duration is expressed in minutes.seconds  
 ## Users Credentials
 
 | email                    | password | role        |

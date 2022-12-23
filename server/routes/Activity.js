@@ -182,11 +182,14 @@ router.put('/activity/terminate',
 
                         //Check if the end time is afterwards start time 
                         if (diff > 0) {
-                            const diff_in_secs = Math.floor((Math.abs(diff) / 1000) / 60);
+                            const delta = Math.abs(diff) / 1000;
+                            const minutes = Math.floor((Math.abs(diff) / 1000) / 60);
+                            const seconds = delta % 60;
+
                             const activity = new Activity({
                                 hike_id: req.body.hike_id,
                                 end_time: req.body.end_time,
-                                duration: diff_in_secs
+                                duration: minutes+"."+seconds
                             });
 
                             await ActivityDAO.terminateActivity(activity, req.user.id);
