@@ -790,6 +790,177 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
+### Activity
+- GET `/api/activity/:hike_id`
+
+  - Description: Returns the activity associated to the given hike id if is started, otherwise an empty object. The user must be an hiker.
+  - Request body: _None_
+  - Request parameters: hike_id (integer)
+  - Response: `200 OK` (success)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
+    - `503 Internal Server Error` (generic error)
+    - `500 Database Error` (sqlite database error)
+    - `422 Fields validation failed` (hike_id type is wrong or missing)
+    - `404 Not found` (specified hike id doesn't exists)
+  
+  - Response body: An activity object if there is a started activity for the logged user given the specified hike id, an empty object instead  or an error message in case of failure
+
+  ```
+  {
+    "id": 16,
+    "hike_id": 3,
+    "user_id": 1,
+    "start_time": "2022-12-30 00:00",
+    "end_time": null,
+    "duration": null
+  }
+
+  ```
+
+- GET `/api/activities/completed`
+
+  - Description: Returns an array containing the completed activities associated to the corresponding hikes. The user must be an hiker.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
+    - `503 Internal Server Error` (generic error)
+    - `500 Database Error` (database error)
+  
+  - Response body: An array of objects containing all the hikes associated to completed activities for the logged user, or an error message in case of failure.
+
+  ```
+  [
+    {
+        "id": 3,
+        "title": "Trail to Monte Ziccher",
+        "peak_altitude": 1967,
+        "city": "Craveggia",
+        "province": "Verbano-Cusio-Ossola",
+        "country": "Italy",
+        "description": "Monte Ziccher ....",
+        "ascent": 690,
+        "track_length": 6.6,
+        "expected_time": 2.1,
+        "difficulty": 2,
+        "gps_track": "3_hike_zicher",
+        "start_point_type": "hut",
+        "start_point_id": 2,
+        "end_point_type": "location",
+        "end_point_id": 4,
+        "author_id": 2,
+        "picture": "3_zicher.jpg",
+        "start_time": "2022-12-23 00:00",
+        "end_time": "2022-12-25 00:00",
+        "duration": 2880
+    },
+    {
+        "id": 3,
+        "title": "Trail to Monte Ziccher",
+        "peak_altitude": 1967,
+        "city": "Craveggia",
+        "province": "Verbano-Cusio-Ossola",
+        "country": "Italy",
+        "description": "Monte Ziccher ...",
+        "ascent": 690,
+        "track_length": 6.6,
+        "expected_time": 2.1,
+        "difficulty": 2,
+        "gps_track": "3_hike_zicher",
+        "start_point_type": "hut",
+        "start_point_id": 2,
+        "end_point_type": "location",
+        "end_point_id": 4,
+        "author_id": 2,
+        "picture": "3_zicher.jpg",
+        "start_time": "2022-12-20 00:00",
+        "end_time": "2022-12-30 00:00",
+        "duration": 14400
+    }
+  ]
+
+  ```
+- POST `/api/activity`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add activity for the given hike
+  - Permissions allowed: Hiker
+  - Request body: Activity (hike_id, start_time)
+    - start_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
+
+  ```
+  {
+    "hike_id": 3,
+    "start_time": "2022-12-30 00:00"
+  }
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `404 Not found` (Specified hike id doesn't exists)
+    - `503 Internal Server Error` (generic error)
+    - `422 Unprocessable entity` (wrong body fields or hike activity already started)
+    - `500 Database Error` (database error)
+
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+- PUT `/api/activity/terminate`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Terminate activity for the given hike
+  - Permissions allowed: Hiker
+  - Request body: Activity (hike_id, end_time)
+    - end_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
+
+  ```
+  {
+    "hike_id": 3,
+    "end_time": "2022-12-31 00:00"
+  }
+  ```
+
+  - Response: `204 No Content` (Updated)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `404 Not found` (Specified hike id doesn't exists or no activity to terminate)
+    - `503 Internal Server Error` (generic error)
+    - `422 Unprocessable entity` (wrong body fields or end time is not after start time)
+    - `500 Database Error` (database error)
+
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+- DELETE `/api/activity/:hike_id`
+
+  - Description: Delete an hut by its id
+  - Permissions allowed: Local guide
+  - Request body: _None_
+  - Request parameters: hike_id (integer)
+  - Response: `200 OK` (Deleted)
+  - Error responses:
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `422 Params validation failed` (Wrong params)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+    - `404 Not found` (Specified hike id doesn't exists or activity to delete is already terminated)
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
 
 ## Database Tables
 
@@ -820,7 +991,9 @@ Manual test reports in client/gui_test
   - _author_id_ is the local guide identifier who have added the hike description
 - Table `reference_point` contains: hike_id, ref_point_type, ref_point_id (the PK is the combination of each of them)
   - _ref_point_type_ can be: parking_lot, location, hut
-
+- Table `activity` contains: id, hike_id, user_id, start_time, end_time and duration
+  - start_time and end_time must follow the ISO8601 format (YYYY-MM-DD HH:MM:SS), even if SS are not required 
+  - duration is expressed in seconds  
 ## Users Credentials
 
 | email                    | password | role        |

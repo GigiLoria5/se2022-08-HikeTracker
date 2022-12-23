@@ -37,7 +37,7 @@ async function addActivity(activity){
  * 
  */
 async function getCompletedActivities(){
-    const url = APIURL + '/api/activity/completed';
+    const url = APIURL + '/api/activities/completed';
 
     try {
         const response = await fetch(url, {

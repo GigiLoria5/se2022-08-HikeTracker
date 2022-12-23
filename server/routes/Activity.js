@@ -68,7 +68,7 @@ router.get('/activity/:hike_id',
 
     });
 
-router.get('/activity/completed',
+router.get('/activities/completed',
 
     async (req, res) => {
         try {
@@ -143,7 +143,7 @@ router.post('/activity', [
                         });
 
                         await ActivityDAO.addActivity(activity, req.user.id);
-                        return res.status(200).end();
+                        return res.status(201).end();
 
 
                     } else {
