@@ -105,15 +105,19 @@ async function getActiveActivityByHikeId(hike_id) {
         });
         if (response.ok) {
             const res = await response.json();
+            if (res.id !== undefined){
+                return new Activity({
+                    id: res.id,
+                    hike_id: res.hike_id,
+                    user_id: res.user_id,
+                    start_time: res.start_time,
+                    end_time: res.end_time,
+                    duration: res.duration
+                });
+            }else{
+                return false;
+            }
             
-            return new Activity({
-                id: res.id,
-                hike_id: res.hike_id,
-                user_id: res.user_id,
-                start_time: res.start_time,
-                end_time: res.end_time,
-                duration: res.duration
-            });
 
         } else {
             const errDetails = await response.text();

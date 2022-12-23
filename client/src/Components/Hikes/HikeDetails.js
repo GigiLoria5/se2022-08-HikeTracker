@@ -109,9 +109,10 @@ function HikeDetails(props) {
                             <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2}}>
                                 Return Hikes List
                             </Button>
-                            <Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2}}>
+                            {props.loggedUser.role === "hiker" ? <Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2}}>
                                 Start this hike
-                            </Button>
+                            </Button> : ""}
+                            
                         </Stack>
                 </Grid>
             </Grid>

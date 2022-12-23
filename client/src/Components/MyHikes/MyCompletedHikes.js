@@ -106,7 +106,7 @@ function MyCompletedHikes() {
             // Add some delay to load smoothly
             setTimeout( 300);
         }
-    });
+    },[]);
     
     const setTimeout = (() => {
         setLoadingHikes(false);
