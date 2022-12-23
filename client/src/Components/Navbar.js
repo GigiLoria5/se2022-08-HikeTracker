@@ -73,6 +73,10 @@ function MyNavbar(props) {
             /* Protected Routes only available for hikers and local guides */
             if (isloggedIn && ["hiker", "local_guide", 'manager'].includes(loggedUser.role))
                 navItemsToAdd = { ...navItemsToAdd, 'Huts': '/huts' };
+            
+            /* Protected Routes only available for hikers*/
+            if (isloggedIn && ["hiker"].includes(loggedUser.role))
+                navItemsToAdd = { ...navItemsToAdd, 'My hikes': '/my-hikes' };
 
             /* Protected Routes only available for local guides */
             if (isloggedIn && ["local_guide"].includes(loggedUser.role))
