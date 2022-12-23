@@ -7,6 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
 import { fromImageDataToBase64String } from '../../Utils/File';
+import { Buffer } from 'buffer'
 
 function HikeDetails(props) {
     const { isloggedIn, loggedUser } = props;
@@ -27,7 +28,7 @@ function HikeDetails(props) {
                         // Get Hike
                         setHike(h);
                         // Parse Image
-                        setHikeImage(fromImageDataToBase64String(h.picture_file.data));
+                        setHikeImage(Buffer(h.picture_file).toString("base64"));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") })
