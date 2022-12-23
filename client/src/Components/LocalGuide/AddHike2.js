@@ -20,7 +20,7 @@ import RefPointTable from './AddHike/RefPointTable';
 import DifficultySelector from './AddHike/DifficultySelector';
 
 import { Hike } from "../../Utils/Hike";
-import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
+import { Address, validateAddress, translateProvince } from '../../Utils/Address';
 import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
 import { getCountries, getProvincesByCountry, getCitiesByProvince } from '../../Utils/GeoData';
 import { difficultyFromState } from '../../Utils/DifficultyMapping';
@@ -166,7 +166,7 @@ function AddHike2(props) {
             setProvince(loc.state);
         }
 
-        setCity(getCity(loc));
+        setCity(loc.city);
 
     }
 
