@@ -19,7 +19,7 @@ describe('test get hut WRONG ROLE',()=>{
         authenticatedUser
             .post('/api/sessions')
             .send({
-                "username": "manager@manager.com",
+                "username": "nauouejwvrmthcavxq@tmmwj.com",
                 "password": "password"
             })
             .end((err, res) => {
@@ -325,7 +325,8 @@ describe('test get hut GOOD',()=>{
             .get('/api/hut/'+h.id)
                 .then(function (res) {
                     res.should.have.status(200);
-                    expect(res.body).to.eql(h);
+                    for(const key in h)
+                    expect(res.body[key]).to.eql(h[key]);
                 });
         }
 

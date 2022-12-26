@@ -106,7 +106,7 @@ Manual test reports in client/gui_test
      "email_verified":1,
      "phone_number":"3399957495",
      "role":"hiker",
-     "token":null}
+     "token":null
   }
   ```
 
@@ -130,7 +130,7 @@ Manual test reports in client/gui_test
      "email_verified":1,
      "phone_number":"3399957495",
      "role":"hiker",
-     "token":null}
+     "token":null
   }
   ```
 
@@ -191,8 +191,9 @@ Manual test reports in client/gui_test
   - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hike
   - Permissions allowed: Local guide
-  - Request body: Hike description, including gpx file with gpx tag
+  - Request body: Hike description, including gpx file with gpx tag and picture with picture tag
   - gpx file size must be less than 10MB
+  - picture file size must be less than 10MB, .jpg or .png
 
   ```
   {
@@ -225,7 +226,8 @@ Manual test reports in client/gui_test
             {"latitude":44.59376471183216,"longitude":6.970151980345208,"type":"gps","value":"gps","description":"Colle Reisassetto"},{"latitude":44.605312234235114,"longitude":6.97978383606973,"type":"gps","value":"gps","description":"Punta di Fiutrusa"}
           ]
         },
-        "gpx" : ...
+        "gpx" : ...,
+        "picture" : ...
   }
   ```
 
@@ -295,7 +297,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/hike/:id`
 
-  - Description: Return an object contaning hike information. If the user sending the request is an hiker also the gpx file will be sent
+  - Description: Return an object contaning hike information with related cover picture. If the user sending the request is an hiker also the gpx file will be sent
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses: `422 Fields validation failed` (parameter error) `500 Internal Server Error` (generic error)
@@ -355,6 +357,7 @@ Manual test reports in client/gui_test
           }
       ],
       "author": "Martina Piccolo",
+      "picture_file" : {picture file code},
       "gpx_content": { gpx file code }
     }
   ```
@@ -592,7 +595,7 @@ Manual test reports in client/gui_test
 
 - GET `/api/hut/:id`
 
-  - Description: Return an object contaning hut information. The user must be a local_guide or an hiker.
+  - Description: Return an object contaning hut information, including cover picture. The user must be a local_guide or an hiker.
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:
@@ -620,7 +623,8 @@ Manual test reports in client/gui_test
       "website": "www.facebook.com/rifugio.barfe",
       "type": "alpine_hut",
       "author_id": 6,
-      "author": "Luigi De Russis"
+      "author": "Luigi De Russis",
+      "picture_file": ...
     }
   ```
 
@@ -663,9 +667,11 @@ Manual test reports in client/gui_test
 
 - POST `/api/huts`
 
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
   - Description: Add description for hut
   - Permissions allowed: Local guide
-  - Request body: Hut description
+  - Request body: Hut description, including picture
+  - picture file size must be less than 10MB, .jpg or .png
 
   ```
   {
@@ -682,8 +688,8 @@ Manual test reports in client/gui_test
     "phone_number" : "+393331171111",
     "email" : "hut@hut.it",
     "website" : "www.hut.com",
-    "type" : "alpine_hut"
-
+    "type" : "alpine_hut",
+    "picture" : ...
   }
   ```
 

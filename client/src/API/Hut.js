@@ -8,16 +8,17 @@ import { isPointInsideRange, splitCoordinates } from '../Utils/GeoUtils';
  * @param hut is a Hut descripted in ./Utils/Hut.js
  */
 async function addHut(hut) {
-    const url = APIURL + '/api/huts';
+    const formData = new FormData();
+    for (const c in hut)
+        formData.append(c, hut[c]);
+
     try {
-        const response = await fetch(url, {
+        const response = await fetch(APIURL + '/api/huts', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             credentials: 'include',
-            body: JSON.stringify(hut),
+            body: formData,
         });
+
         if (response.ok) {
             return true;
         } else {
@@ -25,9 +26,9 @@ async function addHut(hut) {
             const errDetails = await response.text();
             throw errDetails;
         }
+
     } catch (err) {
         /* Network error */
-        console.log(err);
         throw err;
     }
 }
@@ -60,8 +61,8 @@ async function getHutsByRadius(lat, lon, radius) {
                     description: h.description,
                     beds_number: h.beds_number,
                     opening_period: h.opening_period,
-                    latitude:latitude,
-                    longitude:longitude,
+                    latitude: latitude,
+                    longitude: longitude,
                     email: h.email,
                     website: h.website,
                     type: h.type,
@@ -72,7 +73,7 @@ async function getHutsByRadius(lat, lon, radius) {
             )
         });
 
-        huts = huts.filter((h) => {return isPointInsideRange({ latitude: lat, longitude: lon }, radius, { latitude: h.latitude, longitude: h.longitude })});
+        huts = huts.filter((h) => { return isPointInsideRange({ latitude: lat, longitude: lon }, radius, { latitude: h.latitude, longitude: h.longitude }) });
         return huts;
 
     } else {
@@ -163,7 +164,7 @@ async function getHutsWithFilters(filter) {
         for (let type of filter.hut_type) {
             searchParams.append("hut_type", type);
         }
-    } 
+    }
     const response = await fetch(new URL('/api/huts/filters?' + searchParams, APIURL), { credentials: 'include' });
     const hutsJson = await response.json();
     if (response.ok) {

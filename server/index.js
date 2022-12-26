@@ -11,12 +11,13 @@ const { body, validationResult } = require('express-validator'); // validation m
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+const bodyParser = require('body-parser')
 
 /* init express */
 const app = new express();
 const port = 3001;
 app.use(morgan('dev'));
-app.use(express.json());                                  //Serializes body into JSON objects 
+//app.use(express.json());                                  //Serializes body into JSON objects 
 
 /* Set up and enable cors */
 const corsOptions = {
@@ -24,6 +25,8 @@ const corsOptions = {
     credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(bodyParser.json({limit: "25mb"}));
+app.use(bodyParser.urlencoded({limit: "25mb", extended: true, parameterLimit:50000}));
 
 /* Passport: set up local strategy */
 /* Given username and password, checks if the user exists using the getUser function.

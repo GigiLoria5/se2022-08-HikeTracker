@@ -6,10 +6,13 @@ import { hutTypeLabel } from '../../Utils/Hut';
 import InfoIcon from '@mui/icons-material/Info';
 import HutDetailsGeneral from './HutDetailsGeneral';
 import HutDetailsAdditional from './HutDetailsAdditional';
+import { fromImageDataToBase64String } from '../../Utils/File';
+import { Buffer } from 'buffer'
 
 function HutDetails() {
     const { hutId } = useParams();
     const [hut, setHut] = useState(null);
+    const [hutImage, setHutImage] = useState(null);
     const [error, setError] = useState("");
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
     const navigate = useNavigate();
@@ -20,7 +23,10 @@ function HutDetails() {
             API.getHutById(parseInt(hutId))
                 .then(h => {
                     setTimeout(() => {
+                        // Get Hut
                         setHut(h);
+                        // Parse and Save Image as Base64String
+                        setHutImage(Buffer(h.picture_file).toString("base64"));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") })
@@ -52,7 +58,7 @@ function HutDetails() {
             <Grid container >
                 {/* Name or Error message */}
                 < Grid item xs={12} >
-                    {hut === null && error === ""
+                    {(hut === null || hutImage === null) && error === ""
                         ? <CircularProgress color="success" />
                         : < Typography variant="h5" className={"hide-scrollbar"} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, paddingLeft: 2, paddingRight: 2, textAlign: "center" }}>
                             {hut === null ? error : `${hut.name} | ${hut.altitude} m asl`}
@@ -85,10 +91,10 @@ function HutDetails() {
                 </Grid>
 
                 {/* General Information */}
-                {hut === null ? null : <HutDetailsGeneral hut={hut} />}
+                {hut === null || hutImage === null ? null : <HutDetailsGeneral hut={hut} hutImage={hutImage} />}
 
                 {/* Additional Information */}
-                {hut === null ? null : <HutDetailsAdditional hut={hut} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
+                {hut === null || hutImage === null ? null : <HutDetailsAdditional hut={hut} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
                 {/* Go Back Button */}
                 < Grid item xs={12} >

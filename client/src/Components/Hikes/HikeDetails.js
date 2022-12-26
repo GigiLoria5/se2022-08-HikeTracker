@@ -6,11 +6,14 @@ import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
+import { fromImageDataToBase64String } from '../../Utils/File';
+import { Buffer } from 'buffer'
 
 function HikeDetails(props) {
     const { isloggedIn, loggedUser } = props;
     const { hikeId } = useParams();
     const [hike, setHike] = useState(null);
+    const [hikeImage, setHikeImage] = useState(null);
     const [error, setError] = useState("");
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
     const navigate = useNavigate();
@@ -22,7 +25,10 @@ function HikeDetails(props) {
             API.getHikeById(parseInt(hikeId))
                 .then((h) => {
                     setTimeout(() => {
+                        // Get Hike
                         setHike(h);
+                        // Parse Image
+                        setHikeImage(Buffer(h.picture_file).toString("base64"));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") })
@@ -54,7 +60,7 @@ function HikeDetails(props) {
             <Grid container >
                 {/* Title or Error message */}
                 < Grid item xs={12} >
-                    {hike === null && error === ""
+                    {(hike === null || hikeImage === null) && error === ""
                         ? <CircularProgress color="success" />
                         : < Typography variant="h5" className={"hide-scrollbar"} marginTop={4} marginBottom={0.5} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textTransform: 'uppercase', fontWeight: 600, fontSize: { xs: '4vw', sm: "1.4rem", lg: '1.5rem' }, paddingLeft: 2, paddingRight: 2, textAlign: "center" }}>
                             {hike === null ? error : `${hike.title} | ${hike.peak_altitude} m asl`}
@@ -86,10 +92,10 @@ function HikeDetails(props) {
                 </Grid>
 
                 {/* General Information */}
-                {hike === null ? null : <HikeDetailsGeneral hike={hike} />}
+                {hike === null || hikeImage === null ? null : <HikeDetailsGeneral hike={hike} hikeImage={hikeImage} />}
 
                 {/* Geographic Information */}
-                {hike === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
+                {hike === null || hikeImage === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
                 {/* Go Back Button */}
                 < Grid item xs={12} >
