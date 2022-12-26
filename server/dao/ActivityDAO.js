@@ -20,7 +20,7 @@ exports.addActivity = (activity,user_id) => {
 
 exports.getRunningActivity = (user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM activity WHERE user_id = ? AND end_time IS NULL';
+        const sql = 'SELECT a.id,a.hike_id,a.user_id,a.start_time,a.end_time,a.duration,h.title FROM activity a JOIN hike h WHERE a.hike_id = h.id AND a.user_id = ? AND a.end_time IS NULL';
         db.get(sql, [user_id], (err, row) => {
             if (err) { reject(err); }
             else if (row === undefined) {
@@ -30,6 +30,7 @@ exports.getRunningActivity = (user_id) => {
                 const activity = new Activity({
                     id: row.id,
                     hike_id: row.hike_id,
+                    title: row.title,
                     user_id: row.user_id,
                     start_time: row.start_time,
                     end_time: row.end_time,

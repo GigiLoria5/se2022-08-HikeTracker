@@ -107,6 +107,7 @@ async function getRunningActivity() {
                 return new Activity({
                     id: res.id,
                     hike_id: res.hike_id,
+                    title: res.title,
                     user_id: res.user_id,
                     start_time: res.start_time,
                     end_time: res.end_time,

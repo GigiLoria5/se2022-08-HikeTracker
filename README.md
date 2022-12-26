@@ -808,6 +808,7 @@ Manual test reports in client/gui_test
   {
     "id": 16,
     "hike_id": 3,
+    "title": "Sentiero per Briccas da Brich",
     "user_id": 1,
     "start_time": "2022-12-30 00:00",
     "end_time": null,

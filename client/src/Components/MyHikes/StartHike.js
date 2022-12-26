@@ -23,10 +23,11 @@ import { addActivity, deleteActivity, terminateActivity, getRunningActivity } fr
 import { Activity } from '../../Utils/Activity';
 
 function StartHike(props) {
-    let title = "";
+
     const setIsInHike = props.setIsInHike;
-    const isStarting = props.isStarting;
+    const isStarting = props.isStarting; // isStarting = true if coming from hike, false if coming from navbar 
     const isInHike = props.isInHike;
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         setMessage('');
@@ -38,19 +39,30 @@ function StartHike(props) {
         // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
         await getRunningActivity()
             .then((activity) => {
-                if (activity !== false && activity.hike_id===props.hike.id) {
-                    setisStarted(true);
-                    setValueStart(dayjs(activity.start_time));
+                // hike interface, the result depend on the hike selected 
+                if(isStarting){
+                    if (activity !== false && activity.hike_id===props.hike.id) {
+                        setisStarted(true);
+                        setTitle(props.hike.title); // Title coming from selected hike
+                        setValueStart(dayjs(activity.start_time));
+                    }
+                }else{
+                // my hikes interface, no hike is selected 
+                    if (activity !== false) {
+                        setisStarted(true);
+                        setTitle(activity.title); // Title coming from be
+                        setValueStart(dayjs(activity.start_time));
+                    } 
                 }
+            
             }).catch(err => {
                 const obj = JSON.parse(err);
                 setMessage(obj.error);
             });
+        
     }
 
-    if (isStarting) {
-        title = props.hike.title;
-    }
+
 
     const navigate = useNavigate()
 
@@ -179,7 +191,8 @@ function StartHike(props) {
             await deleteActivity()
                 .then(
                     setisStarted(false),
-                    setMessage('')
+                    setMessage(''),
+                    !isStarting? setIsInHike(false): "" //After pressing cancel, if not coming from hikes, timer interface is removed 
                 ).catch(err => {
                     const obj = JSON.parse(err);
                     setMessage(obj.error);
@@ -199,7 +212,7 @@ function StartHike(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme} >
-                    {isStarting && isInHike ?
+                    {(isInHike && (isStarted || isStarting) )?
                         <>
                             <Grid xs={12} sx={{ ...thm }}>
                                 <Typography variant="h5" align='center' marginTop={2} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
