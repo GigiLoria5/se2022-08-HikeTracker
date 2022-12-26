@@ -19,7 +19,7 @@ const utilsHike = require('../utils/Utils_hike');
 
 const removeGpx = (name) => {
     fs.unlink(name, function (err, results) {
-        if(err) throw new Error("unexpected error")
+        if (err) throw new Error("unexpected error")
     });
 }
 
@@ -101,24 +101,24 @@ router.post('/hikes',
 
                 const start_point_id = await utilsHike.setPoint(start_point);
                 const end_point_id = await utilsHike.setPoint(end_point);
-                
+
                 const hike = new Hike({
-                    title:req.body.title,
-                    peak_altitude:req.body.peak_altitude,
-                    city:req.body.city,
-                    province:req.body.province,
-                    country:req.body.country,
-                    description:req.body.description,
-                    ascent:req.body.ascent,
-                    track_length:req.body.track_length,
-                    expected_time:req.body.expected_time,
-                    difficulty:req.body.difficulty,
-                    gps_track:name,
-                    picture:picture_name,
-                    start_point_type:start_point.type,
-                    start_point_id:start_point_id,
-                    end_point_type:end_point.type,
-                    end_point_id:end_point_id
+                    title: req.body.title,
+                    peak_altitude: req.body.peak_altitude,
+                    city: req.body.city,
+                    province: req.body.province,
+                    country: req.body.country,
+                    description: req.body.description,
+                    ascent: req.body.ascent,
+                    track_length: req.body.track_length,
+                    expected_time: (Math.round(req.body.expected_time * 100) / 100).toFixed(2),
+                    difficulty: req.body.difficulty,
+                    gps_track: name,
+                    picture: picture_name,
+                    start_point_type: start_point.type,
+                    start_point_id: start_point_id,
+                    end_point_type: end_point.type,
+                    end_point_id: end_point_id
                 }
                 )
                 let hike_id;
@@ -259,36 +259,36 @@ router.get('/hikes/filters', async (req, res) => {
         .then(async (hikes) => {
             let result = hikes;
             const equalFilters = {
-                city:city,
-                province:province,
-                country:country,
-                difficulty:difficulty
+                city: city,
+                province: province,
+                country: country,
+                difficulty: difficulty
             };
 
             const rangeFilters = {
-                track_length : [track_length_min, track_length_max],
+                track_length: [track_length_min, track_length_max],
                 ascent: [ascent_min, ascent_max],
                 expected_time: [expected_time_min, expected_time_max]
             }
 
             Object.keys(equalFilters).forEach(key => {
-                if(equalFilters[key]){
+                if (equalFilters[key]) {
                     result = result.filter(h => equalFilters[key] == h[key]);
                 }
             })
-            
-            for(const key in rangeFilters){
-                if(rangeFilters[key][0] && rangeFilters[key][1]){
-                    if (rangeFilters[key][0] >= 0.0 && rangeFilters[key][1] >= 0.0){
+
+            for (const key in rangeFilters) {
+                if (rangeFilters[key][0] && rangeFilters[key][1]) {
+                    if (rangeFilters[key][0] >= 0.0 && rangeFilters[key][1] >= 0.0) {
                         result = result.filter(h => h[key] >= rangeFilters[key][0] && h[key] <= rangeFilters[key][1]);
                     }
-                    else{
+                    else {
                         return res.status(400).json({ error: `Parameter error` });
                     }
                 }
             }
 
-           
+
 
             for (let hike of result) {
                 hike.start = await utilsHike.getPoint(hike.start_point_type, hike.start_point_id);
