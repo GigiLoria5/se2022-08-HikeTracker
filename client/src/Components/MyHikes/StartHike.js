@@ -202,7 +202,7 @@ function StartHike(props) {
                         <>
                             <Grid xs={12} sx={{ ...thm }}>
                                 <Typography variant="h5" align='center' marginTop={2} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-                                    START A HIKE
+                                   {isStarted? "STOP A HIKE": "START A HIKE"} 
                                 </Typography>
                             </Grid>
                             <Grid xs={0} md={3}></Grid>

@@ -22,7 +22,7 @@ function HikeDetails(props) {
     const navigate = useNavigate();
     const customIcons = customDifficultyIcons;
 
-    useEffect(() => {
+    useEffect( () => {
         // fetch /api/hike/:id
         if (hikeId) {
             API.getHikeById(parseInt(hikeId))
@@ -35,16 +35,16 @@ function HikeDetails(props) {
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") });
-
-            if (props.loggedUser.role === "hiker") {
-                checkIfStarted(); // Checks if the user is running an hike 
-            }
+            
+                if(props.loggedUser.role === "hiker"){
+                    checkIfStarted(); // Checks if the user is running an hike
+                }
 
         }
     }, [hikeId]);
 
     useEffect(() => {
-        if (props.loggedUser.role === "hiker") {
+        if(props.loggedUser.role === "hiker"){
             checkIfStarted();
         }
     }, [hike])
@@ -138,9 +138,8 @@ function HikeDetails(props) {
                         {props.loggedUser.role === "hiker" ?
                             (runningActivity === false ?
                                 (<Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
-                                    Start this hike
-                                </Button>) : "")
-
+                                Start this hike
+                                </Button> ) : 
                                 (runningActivity.hike_id === parseInt(hikeId) ?
                                     <Button variant="contained" color='error' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
                                         Stop this hike
@@ -149,7 +148,7 @@ function HikeDetails(props) {
                                         Another hike is running
                                     </Button>)
 
-                            : ""}
+                            ) : ""}
 
                     </Stack>
                 </Grid>
