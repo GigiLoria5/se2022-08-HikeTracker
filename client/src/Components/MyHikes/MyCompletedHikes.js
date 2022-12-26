@@ -104,7 +104,7 @@ function MyCompletedHikes() {
             //load hikes
             setHikes(hikelist)
             // Add some delay to load smoothly
-            setTimeout( 300);
+            setTimeout();
         }
     },[]);
     
