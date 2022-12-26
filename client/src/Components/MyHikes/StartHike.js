@@ -19,7 +19,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import { useEffect } from 'react';
-import { addActivity, deleteActivity, terminateActivtyByHikeId, getActiveActivityByHikeId } from '../../API/Activity';
+import { addActivity, deleteActivity, terminateActivity, getRunningActivity } from '../../API/Activity';
 import { Activity } from '../../Utils/Activity';
 
 function StartHike(props) {
@@ -35,10 +35,10 @@ function StartHike(props) {
     }, [])
 
     const checkIfStarted = async () => {
-        // Backend: call API addActivity to start the hike
-        await getActiveActivityByHikeId(props.hike.id)
+        // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
+        await getRunningActivity()
             .then((activity) => {
-                if (activity !== false) {
+                if (activity !== false && activity.hike_id===props.hike.id) {
                     setisStarted(true);
                     setValueStart(dayjs(activity.start_time));
                 }
@@ -152,9 +152,8 @@ function StartHike(props) {
         if (!isNaN(valueStop.$D) && !isNaN(valueStop.$H) && !isNaN(valueStop.$M) && !isNaN(valueStop.$W) && !isNaN(valueStop.$m) && !isNaN(valueStop.$ms) && !isNaN(valueStop.$s) && !isNaN(valueStop.$y)) {
             if (checkTime(valueStart, valueStop) === true) {
 
-                // Backend: call API terminateActivtyByHikeId to terminate the hike
-                await terminateActivtyByHikeId(new Activity({
-                    hike_id: props.hike.id,
+                // Backend: call API terminateActivity to terminate the hike
+                await terminateActivity(new Activity({
                     end_time: valueStop
                 }))
                     .then(
@@ -177,7 +176,7 @@ function StartHike(props) {
     const handleCancel = async () => {
         if (isStarted) {
             // Backend: call API deleteActivity 
-            await deleteActivity(props.hike.id)
+            await deleteActivity()
                 .then(
                     navigate(-1)
                 ).catch(err => {
@@ -225,7 +224,7 @@ function StartHike(props) {
                                                             renderInput={(params) => <TextField {...params} />}
                                                         />
                                                     </LocalizationProvider>
-                                                    <Button size='large' onClick={handleStop} variant="contained" color='primary'>STOP</Button>
+                                                    <Button size='large' onClick={handleStop} variant="contained" color='error'>STOP</Button>
                                                 </Stack>
                                             </Grid>
                                             :
@@ -243,7 +242,7 @@ function StartHike(props) {
                                         }
                                         {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
 
-                                        <Button sx={{ mt: 1, mb: 3, minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>{isStarted ? "CANCEL HIKE": "GO BACK" }</Button>
+                                        <Button sx={{ mt: 1, mb: 3, minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='error'>{isStarted ? "CANCEL HIKE": "GO BACK" }</Button>
                                     </Paper>
                                 </Container>
                             </Grid>

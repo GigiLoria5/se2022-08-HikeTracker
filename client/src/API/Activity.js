@@ -87,13 +87,11 @@ async function getCompletedActivities(){
 
 /**
  *
- * Returns an activity (id, hike_id, user_id, start_time, end_time, duration) if the user has started an activity given the specified hike_id,
- * or an empty object instead.
+ * Returns an activity (id, hike_id, user_id, start_time, end_time, duration) if the user is actually running an activity or an empty object instead.
  * 
- * @param hike_id
  */
-async function getActiveActivityByHikeId(hike_id) {
-    const url = APIURL + '/api/activity/' + hike_id;
+async function getRunningActivity() {
+    const url = APIURL + '/api/activity/running';
 
     try {
         const response = await fetch(url, {
@@ -132,11 +130,11 @@ async function getActiveActivityByHikeId(hike_id) {
 
 /**
  *
- * Terminates a started activity given its hike_id, specifing the end_time
+ * Terminates the actual started activity for the given user, specifing the end_time
  * 
- * @param activity contains: hike_id, end_time 
+ * @param activity contains: end_time 
  */
-async function terminateActivtyByHikeId(activity){
+async function terminateActivity(activity){
     const url = APIURL + '/api/activity/terminate';
     try {
         const response = await fetch(url, {
@@ -161,11 +159,11 @@ async function terminateActivtyByHikeId(activity){
 
 /**
  *
- * Deletes a started activity given its hike_id
+ * Deletes the actual running activity for the given user 
  * 
  */
-async function deleteActivity(hike_id) {
-    const url = APIURL + '/api/activity/' + hike_id;
+async function deleteActivity() {
+    const url = APIURL + '/api/activity/running';
     try {
         const response = await fetch(url, {
             method: 'DELETE',
@@ -186,4 +184,4 @@ async function deleteActivity(hike_id) {
 }
 
 
-export {addActivity, getActiveActivityByHikeId, terminateActivtyByHikeId, deleteActivity, getCompletedActivities}
+export {addActivity, getRunningActivity, terminateActivity, deleteActivity, getCompletedActivities}

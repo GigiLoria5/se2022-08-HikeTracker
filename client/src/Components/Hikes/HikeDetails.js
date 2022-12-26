@@ -8,6 +8,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
 import { fromImageDataToBase64String } from '../../Utils/File';
+import { getRunningActivity } from '../../API/Activity';
 
 function HikeDetails(props) {
 
@@ -16,11 +17,12 @@ function HikeDetails(props) {
     const [hike, setHike] = useState(null);
     const [hikeImage, setHikeImage] = useState(null);
     const [error, setError] = useState("");
+    const [runningActivity, setRunningActivity] = useState(false);
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
     const navigate = useNavigate();
     const customIcons = customDifficultyIcons;
 
-    useEffect(() => {
+    useEffect( () => {
         // fetch /api/hike/:id
         if (hikeId) {
             API.getHikeById(parseInt(hikeId))
@@ -32,9 +34,33 @@ function HikeDetails(props) {
                         setHikeImage(fromImageDataToBase64String(h.picture_file.data));
                     }, 300);
                 })
-                .catch(_ => { setError("The page you requested cannot be found") })
+                .catch(_ => { setError("The page you requested cannot be found") });
+            
+                if(props.loggedUser.role === "hiker"){
+                    checkIfStarted(); // Checks if the user is running an hike 
+                }
+
         }
     }, [hikeId]);
+
+    useEffect(() => {
+        if(props.loggedUser.role === "hiker"){
+            checkIfStarted();
+        }
+    }, [hike])
+
+    const checkIfStarted = async () => {
+        // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
+        await getRunningActivity()
+            .then((activity) => {
+                if (activity !== false) {
+                    setRunningActivity(activity);
+                }
+            }).catch(err => {
+                const obj = JSON.parse(err);
+                { setError(obj.error) }
+            });
+    }
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -49,7 +75,7 @@ function HikeDetails(props) {
     }
     const clickHandleStart = event => {
         event.preventDefault();
-        navigate("/my-hikes", { state: { hike: hike , isStarting: true} })
+        navigate("/my-hikes", { state: { hike: hike, isStarting: true } })
     }
 
     /* To hide/show the filter panel for small screen */
@@ -104,16 +130,27 @@ function HikeDetails(props) {
 
                 {/* Go Back and StartHike Buttons */}
                 < Grid item xs={12} >
-                        <Stack direction="row" justifyContent="center" alignItems="center">
+                    <Stack direction="row" justifyContent="center" alignItems="center">
 
-                            <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2}}>
-                                Return Hikes List
-                            </Button>
-                            {props.loggedUser.role === "hiker" ? <Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2}}>
+                        <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2 }}>
+                            Return Hikes List
+                        </Button>
+                        {props.loggedUser.role === "hiker" ?
+                            (runningActivity === false ?
+                                (<Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
                                 Start this hike
-                            </Button> : ""}
-                            
-                        </Stack>
+                                </Button> ) : 
+                                (runningActivity.hike_id === parseInt(hikeId) ?
+                                    <Button variant="contained" color='error' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
+                                        Stop this hike
+                                    </Button> :
+                                    <Button variant="contained" color='info' disabled sx={{ m: 1, mb: 2, mt: 2 }}>
+                                        Another hike is running
+                                    </Button>)
+
+                            ) : ""}
+
+                    </Stack>
                 </Grid>
             </Grid>
         </Container >
