@@ -178,7 +178,8 @@ function StartHike(props) {
             // Backend: call API deleteActivity 
             await deleteActivity()
                 .then(
-                    navigate(-1)
+                    setisStarted(false),
+                    setMessage('')
                 ).catch(err => {
                     const obj = JSON.parse(err);
                     setMessage(obj.error);
