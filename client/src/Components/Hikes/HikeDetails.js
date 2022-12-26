@@ -9,6 +9,7 @@ import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
 import { fromImageDataToBase64String } from '../../Utils/File';
 import { getRunningActivity } from '../../API/Activity';
+import RunningButtons from '../MyHikes/RunningButtons';
 
 function HikeDetails(props) {
 
@@ -136,19 +137,8 @@ function HikeDetails(props) {
                             Return Hikes List
                         </Button>
                         {props.loggedUser.role === "hiker" ?
-                            (runningActivity === false ?
-                                (<Button variant="contained" color='success' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
-                                Start this hike
-                                </Button> ) : 
-                                (runningActivity.hike_id === parseInt(hikeId) ?
-                                    <Button variant="contained" color='error' onClick={clickHandleStart} sx={{ m: 1, mb: 2, mt: 2 }}>
-                                        Stop this hike
-                                    </Button> :
-                                    <Button variant="contained" color='info' disabled sx={{ m: 1, mb: 2, mt: 2 }}>
-                                        Another hike is running
-                                    </Button>)
-
-                            ) : ""}
+                        <RunningButtons runningActivity={runningActivity} clickHandleStart={clickHandleStart} hikeId={hikeId} > </RunningButtons> : ""
+                            }
 
                     </Stack>
                 </Grid>
