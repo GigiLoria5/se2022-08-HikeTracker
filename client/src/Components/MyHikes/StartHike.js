@@ -159,13 +159,14 @@ function StartHike(props) {
                 <ThemeProvider theme={theme} >    
                 {isStarting && isInHike ?
                     <>
+                    
                         <Grid xs={12} sx={{...thm}}>
-                            <Typography variant="h5" align='center' marginTop={2} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
+                            <Typography variant="h5" align='center' marginBottom={0.5} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
                                 START A HIKE
                             </Typography>
                         </Grid>
                         <Grid xs={0} md={3}></Grid>
-                        <Grid xs={12} md={6} marginTop={3} >
+                        <Grid xs={12} md={6} marginTop={1} >
                             <Container component="main" maxWidth="m">
                                 <Paper elevation={3} sx={{ ...thm }} >
                                     <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m:3 }}>{title}</Typography>
