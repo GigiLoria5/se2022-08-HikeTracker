@@ -18,10 +18,10 @@ exports.addActivity = (activity,user_id) => {
     });
 };
 
-exports.getActiveActivityByHikeId = (hike_id, user_id) => {
+exports.getRunningActivity = (user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM activity WHERE hike_id = ? AND user_id = ? AND end_time IS NULL';
-        db.get(sql, [hike_id, user_id], (err, row) => {
+        const sql = 'SELECT * FROM activity WHERE user_id = ? AND end_time IS NULL';
+        db.get(sql, [user_id], (err, row) => {
             if (err) { reject(err); }
             else if (row === undefined) {
                 resolve(false);
@@ -43,8 +43,8 @@ exports.getActiveActivityByHikeId = (hike_id, user_id) => {
 
 exports.terminateActivity = (activity, user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE activity SET end_time = ? , duration = ? WHERE hike_id=? AND user_id=? AND duration IS NULL';
-        db.run(sql, [activity.end_time, activity.duration, activity.hike_id, user_id], (err) => {
+        const sql = 'UPDATE activity SET end_time = ? , duration = ? WHERE user_id=? AND duration IS NULL';
+        db.run(sql, [activity.end_time, activity.duration, user_id], (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -90,10 +90,10 @@ exports.getCompletedActivities = (user_id) => {
     });
 };
 
-exports.deleteActivityByHikeId = (hike_id,user_id) => {
+exports.deleteActivityByHikeId = (user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM activity WHERE hike_id = ? AND user_id = ? AND end_time IS NULL';
-        db.run(sql, [hike_id, user_id], function (err) {
+        const sql = 'DELETE FROM activity WHERE user_id = ? AND end_time IS NULL';
+        db.run(sql, [user_id], function (err) {
             if (err) {
                 reject(err);
                 return;

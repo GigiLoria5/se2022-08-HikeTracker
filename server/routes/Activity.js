@@ -14,43 +14,28 @@ const router = express.Router();
 //////                          GET                            //////
 /////////////////////////////////////////////////////////////////////
 
-router.get('/activity/:hike_id',
-    check('hike_id').exists().isInt(),
+router.get('/activity/running',
 
     async (req, res) => {
         try {
-            // Check if params contains errors
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: "Fields validation failed" });
-            }
 
             // Check if the user is authenticated and is autorized to retreieve hike activity status
             const user = await UserDAO.getUserById(req.user.id);
 
             if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
 
-
-                // Checks if the specified hike_id exists 
-                const hike = await HikeDao.getHikeById(req.params.hike_id);
-                if (hike !== undefined) {
-
-                    //Return if the user has started the hike specified by the id
-                    await ActivityDAO.getActiveActivityByHikeId(req.params.hike_id, req.user.id)
-                        .then(async (activity) => {
-                            if (activity === false) {
-                                res.status(200).json({});
-                            } else {
-                                res.status(200).json(activity);
-                            }
-                        })
-                        .catch((err) => {
-                            res.status(500).json({ error: `Database error while retrieving the activity` });
-                        });
-
-                } else {
-                    return res.status(404).json({ error: "Specified hike doesn't exists!" });
-                }
+                //Return the running activity of the user or an empty object if none is running
+                await ActivityDAO.getRunningActivity(req.user.id)
+                    .then(async (activity) => {
+                        if (activity === false) {
+                            res.status(200).json({});
+                        } else {
+                            res.status(200).json(activity);
+                        }
+                    })
+                    .catch((err) => {
+                        res.status(500).json({ error: `Database error while retrieving the activity` });
+                    });
 
             } else {
                 return res.status(401).json({ error: 'Not authorized' });
@@ -59,7 +44,6 @@ router.get('/activity/:hike_id',
         } catch (err) {
             return res.status(503).json({ error: err });
         }
-
 
     });
 
@@ -119,8 +103,9 @@ router.post('/activity', [
             const hike = await HikeDao.getHikeById(req.body.hike_id);
 
             if (hike !== undefined) {
-                //Checks if the specified hike for the given user is already started 
-                const exist = await ActivityDAO.getActiveActivityByHikeId(req.body.hike_id, req.user.id);
+
+                //Checks if the given user is not running any activity 
+                const exist = await ActivityDAO.getRunningActivity(req.user.id);
 
                 if (exist === false) {
                     const activity = new Activity({
@@ -134,7 +119,7 @@ router.post('/activity', [
 
 
                 } else {
-                    return res.status(422).json({ error: "Hike activity already started!" });
+                    return res.status(422).json({ error: "An hike activity is already started!" });
                 }
 
             } else {
@@ -154,7 +139,6 @@ router.post('/activity', [
 //////                          PUT                            //////
 /////////////////////////////////////////////////////////////////////
 router.put('/activity/terminate',
-    body('hike_id').isInt(),
     body('end_time').isISO8601(),
 
     async (req, res) => {
@@ -169,15 +153,10 @@ router.put('/activity/terminate',
             const user = await UserDAO.getUserById(req.user.id);
             if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
 
+                    //Checks if the user is actually running an hike 
+                    const exist = await ActivityDAO.getRunningActivity(req.user.id);
 
-                // Checks if the specified hike_id exists 
-                const hike = await HikeDao.getHikeById(req.body.hike_id);
-
-                if (hike !== undefined) {
-                    //Checks if the specified hike for the given user is started and not terminated
-                    const exist = await ActivityDAO.getActiveActivityByHikeId(req.body.hike_id, req.user.id);
-
-                    if (exist.end_time === null && exist.start_time !== null) {
+                    if (exist !== false) {
                         const diff = (new Date(req.body.end_time) - new Date(exist.start_time));
 
                         //Check if the end time is afterwards start time 
@@ -187,9 +166,8 @@ router.put('/activity/terminate',
                             const seconds = delta % 60;
 
                             const activity = new Activity({
-                                hike_id: req.body.hike_id,
                                 end_time: req.body.end_time,
-                                duration: minutes+"."+seconds
+                                duration: minutes + "." + seconds
                             });
 
                             await ActivityDAO.terminateActivity(activity, req.user.id);
@@ -203,9 +181,6 @@ router.put('/activity/terminate',
                         return res.status(404).json({ error: "No hike activity to terminate!" });
                     }
 
-                } else {
-                    return res.status(404).json({ error: "Specified hike doesn't exists!" });
-                }
 
 
             } else {
@@ -220,41 +195,26 @@ router.put('/activity/terminate',
 //////                       DELETE                            //////
 /////////////////////////////////////////////////////////////////////
 
-router.delete('/activity/:hike_id',
-    check('hike_id').exists().isInt(),
+router.delete('/activity/running',
 
     async (req, res) => {
         try {
-            // Check if params contains errors
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: "Fields validation failed" });
-            }
 
             // Check if the user is authenticated and the user is autorized to delete the activity started
             const user = await UserDAO.getUserById(req.user.id);
             if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
 
+                    //Check if the user has a running activity to delete
+                    const exist = await ActivityDAO.getRunningActivity(req.user.id);
 
-
-                // Checks if the specified hike_id exists 
-                const hike = await HikeDao.getHikeById(req.params.hike_id);
-                if (hike !== undefined) {
-
-                    //Check if the activity is started but not yet terminated 
-                    const exist = await ActivityDAO.getActiveActivityByHikeId(req.params.hike_id, req.user.id);
-                    if (exist.end_time === null && exist.start_time !== null) {
-
-                        await ActivityDAO.deleteActivityByHikeId(req.params.hike_id, req.user.id)
+                    if (exist!==false) {
+                        await ActivityDAO.deleteActivityByHikeId(req.user.id)
                         return res.status(200).end();
 
                     } else {
                         return res.status(404).json({ error: "No hike activity to delete!" });
                     }
 
-                } else {
-                    return res.status(404).json({ error: "Specified hike doesn't exists!" });
-                }
 
             } else {
                 return res.status(401).json({ error: 'Not authorized' });

@@ -791,20 +791,18 @@ Manual test reports in client/gui_test
   }
   ```
 ### Activity
-- GET `/api/activity/:hike_id`
+- GET `/api/activity/running`
 
-  - Description: Returns the activity associated to the given hike id if is started, otherwise an empty object. The user must be an hiker.
+  - Description: Returns the current running activity associated to the given user, otherwise an empty object. The user must be an hiker.
   - Request body: _None_
-  - Request parameters: hike_id (integer)
+  - Request parameters: _None_
   - Response: `200 OK` (success)
   - Error responses:
     - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
     - `503 Internal Server Error` (generic error)
     - `500 Database Error` (sqlite database error)
-    - `422 Fields validation failed` (hike_id type is wrong or missing)
-    - `404 Not found` (specified hike id doesn't exists)
   
-  - Response body: An activity object if there is a started activity for the logged user given the specified hike id, an empty object instead  or an error message in case of failure
+  - Response body: An activity object if the user is currently running some activity, an empty object instead or an error message in case of failure
 
   ```
   {
@@ -914,14 +912,13 @@ Manual test reports in client/gui_test
 - PUT `/api/activity/terminate`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
-  - Description: Terminate activity for the given hike
+  - Description: Terminate the currentrl running activity for the given user 
   - Permissions allowed: Hiker
-  - Request body: Activity (hike_id, end_time)
+  - Request body: Activity (end_time)
     - end_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
 
   ```
   {
-    "hike_id": 3,
     "end_time": "2022-12-31 00:00"
   }
   ```
@@ -941,19 +938,18 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
-- DELETE `/api/activity/:hike_id`
+- DELETE `/api/activity/running`
 
-  - Description: Delete an hut by its id
-  - Permissions allowed: Local guide
+  - Description: Delete the currently running activity for the given user 
+  - Permissions allowed: Hiker
   - Request body: _None_
-  - Request parameters: hike_id (integer)
+  - Request parameters: _None_
   - Response: `200 OK` (Deleted)
   - Error responses:
     - `401 Unauthorized` (not logged in or wrong permissions)
-    - `422 Params validation failed` (Wrong params)
     - `500 Database error` (Database error)
     - `503 Internal Server Error` (generic error)
-    - `404 Not found` (Specified hike id doesn't exists or activity to delete is already terminated)
+    - `404 Not found` (No activities to terminate for the given user )
   - Response body: An error message in case of failure
 
   ```
