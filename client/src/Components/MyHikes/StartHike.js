@@ -21,17 +21,38 @@ import Alert from '@mui/material/Alert';
 import { useEffect } from 'react';
 import { addActivity, deleteActivity, terminateActivity, getRunningActivity } from '../../API/Activity';
 import { Activity } from '../../Utils/Activity';
+import HowToStart from './HowToStart';
 
 function StartHike(props) {
+    const current = new Date();
+    const date = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}T${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`
 
     const setIsInHike = props.setIsInHike;
     const isStarting = props.isStarting; // isStarting = true if coming from hike, false if coming from navbar 
     const isInHike = props.isInHike;
-    const [title, setTitle] = useState("");
+    const setIsStarting = props.setIsStarting;
+    const setSaved = props.setSaved;
+    const [valueStart, setValueStart] = useState(dayjs(date));
+    const [valueStop, setValueStop] = useState(dayjs(date));
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    
 
+    /*if true, the user has pressed the start button*/
+    const [isStarted, setisStarted] = useState(false);
+    const [title, setTitle] = useState("");
+    const [hike, setHike] = useState(props.hike);
     useEffect(() => {
         setMessage('');
+        //setIsInHike(true);
+        if(!hike){
+            setIsStarting(false);
+        }
+        else{
+            setTitle(hike.title);
+        }
         checkIfStarted(); // Every time this interface is opened, it checks if the hike is already started in the db 
+        
         // eslint-disable-next-line
     }, [])
 
@@ -39,22 +60,12 @@ function StartHike(props) {
         // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
         await getRunningActivity()
             .then((activity) => {
-                // hike interface, the result depend on the hike selected 
-                if(isStarting){
-                    if (activity !== false && activity.hike_id===props.hike.id) {
-                        setisStarted(true);
-                        setTitle(props.hike.title); // Title coming from selected hike
-                        setValueStart(dayjs(activity.start_time));
-                    }
-                }else{
-                // my hikes interface, no hike is selected 
-                    if (activity !== false) {
-                        setisStarted(true);
-                        setTitle(activity.title); // Title coming from be
-                        setValueStart(dayjs(activity.start_time));
-                    } 
-                }
-            
+                if(activity !== false) {
+                    setisStarted(true);
+                    setIsStarting(false);
+                    setTitle(activity.title);
+                    setValueStart(dayjs(activity.start_time));
+                }            
             }).catch(err => {
                 const obj = JSON.parse(err);
                 setMessage(obj.error);
@@ -65,7 +76,6 @@ function StartHike(props) {
 
 
     const navigate = useNavigate()
-
     var moment = require('moment');
     moment().format();
 
@@ -93,16 +103,6 @@ function StartHike(props) {
         marginBottom: 1
     };
 
-    const current = new Date();
-    const date = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}T${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`
-
-    const [valueStart, setValueStart] = useState(dayjs(date));
-    const [valueStop, setValueStop] = useState(dayjs(date));
-    const [open, setOpen] = useState(false);
-    const [message, setMessage] = useState("");
-
-    /*if true, the user has pressed the start button*/
-    const [isStarted, setisStarted] = useState(false);
 
     /*Function to compute the total time spent in hours and minutes*/
     const getTime = (valueStart, valueStop) => {
@@ -145,11 +145,14 @@ function StartHike(props) {
         if (!isNaN(valueStart.$D) && !isNaN(valueStart.$H) && !isNaN(valueStart.$M) && !isNaN(valueStart.$W) && !isNaN(valueStart.$m) && !isNaN(valueStart.$ms) && !isNaN(valueStart.$s) && !isNaN(valueStart.$y)) {
             // Backend: call API addActivity to start the hike
             await addActivity(new Activity({
-                hike_id: props.hike.id,
+                hike_id: hike.id,
                 start_time: valueStart
             }))
-                .then(
+                .then(() =>{
                     setisStarted(true)
+                    setIsStarting(false);
+                    navigate("/my-hikes")
+                }
                 ).catch(err => {
                     const obj = JSON.parse(err);
                     setMessage(obj.error);
@@ -169,10 +172,16 @@ function StartHike(props) {
                     end_time: valueStop
                 }))
                     .then(
-                        setisStarted(false),
-                        setIsInHike(false),
-                        setOpen(true)
+                        () => {
+                            setSaved(true);
+                            setisStarted(false);
+                            setIsStarting(false);
+                            //setSaved(true);
+                            setHike({});
+                        }
+                        //setIsInHike(false)
                     ).catch(err => {
+                        console.log(err);
                         const obj = JSON.parse(err);
                         setMessage(obj.error);
                     });
@@ -184,21 +193,23 @@ function StartHike(props) {
             setMessage("Please select a date and a time.")
         }
     }
-
     const handleCancel = async () => {
         if (isStarted) {
             // Backend: call API deleteActivity 
             await deleteActivity()
-                .then(
-                    setisStarted(false),
-                    setMessage(''),
-                    !isStarting? setIsInHike(false): "" //After pressing cancel, if not coming from hikes, timer interface is removed 
+                .then(() =>{
+                    setOpen(false)
+                    //setIsInHike(false)
+                    setisStarted(false)
+                    setIsStarting(false)
+                    setHike({})}
+                    //navigate(-1)
                 ).catch(err => {
                     const obj = JSON.parse(err);
                     setMessage(obj.error);
                 });
         }else{
-            navigate(-1)
+            //navigate(-1)
         }
 
     }
@@ -212,76 +223,87 @@ function StartHike(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme} >
-                    {(isInHike && (isStarted || isStarting) )?
+                    {((isStarted || isStarting) )?
                         <>
-                            <Grid xs={12} sx={{ ...thm }}>
-                                <Typography variant="h5" align='center' marginTop={2} sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-                                   {isStarted? "STOP A HIKE": "START A HIKE"} 
-                                </Typography>
-                            </Grid>
-                            <Grid xs={0} md={3}></Grid>
-                            <Grid xs={12} md={6} marginTop={3} >
-                                <Container component="main" maxWidth="m">
-                                    <Paper elevation={3} sx={{ ...thm }} >
-                                        <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3 }}>{title}</Typography>
-                                        {isStarted ?
-                                            <Grid>
-                                                <Typography variant="h6" align='center' >Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M + 1}/{valueStart.$D}/{valueStart.$y}.</Typography>
-                                                <Typography variant="h6" align='center' sx={{ fontWeight: 600, m: 2 }}>In progress...</Typography>
-
-                                                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                        <DateTimePicker
-                                                            label="Stop timer"
-                                                            value={valueStop}
-                                                            onChange={handleChangeStop}
-                                                            renderInput={(params) => <TextField {...params} />}
-                                                        />
-                                                    </LocalizationProvider>
-                                                    <Button size='large' onClick={handleStop} variant="contained" color='error'>STOP</Button>
-                                                </Stack>
-                                            </Grid>
-                                            :
-                                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                        <Grid xs={0} md={3}></Grid>
+                        <Grid xs={12} md={6}  marginTop={1} sx={{alignItems: 'center', flexDirection:'column', display:'flex'}}>
+                            <Container component="main" maxWidth="m" >
+                                <Paper elevation={3} sx={{ ...thm }} >
+                                    <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3, fontWeight: 600 }}>{isStarted? "ONGOING HIKE: ": "START HIKE: "} {title}</Typography>
+                                    {isStarted ?
+                                        <Grid>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <DateTimePicker
+                                                        marginBottom={1}
+                                                        label="Start time"
+                                                        value={valueStart}
+                                                        disabled={true}
+                                                        onChange={() => {}}
+                                                        renderInput={(params) => <TextField {...params}/>}
+                                                    />
+                                                </LocalizationProvider>
+                                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} marginTop={3}>
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                     <DateTimePicker
-                                                        label="Start timer"
-                                                        value={valueStart}
-                                                        onChange={handleChangeStart}
+                                                        label="Stop time"
+                                                        value={valueStop}
+                                                        onChange={handleChangeStop}
                                                         renderInput={(params) => <TextField {...params} />}
                                                     />
                                                 </LocalizationProvider>
-                                                <Button size='large' onClick={handleStart} variant="contained" color='primary'>START</Button>
                                             </Stack>
-                                        }
-                                        {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
+                                        </Grid>
+                                        :
+                                        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DateTimePicker
+                                                    label="Start timer"
+                                                    value={valueStart}
+                                                    onChange={handleChangeStart}
+                                                    renderInput={(params) => <TextField {...params}
+                                                     />}
+                                                />
+                                            </LocalizationProvider>
+                                            
+                                        </Stack>
+                                    }
+                                    {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
+                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 1, mb: 3}}>
+                                    
 
-                                        <Button sx={{ mt: 1, mb: 3, minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='error'>{isStarted ? "CANCEL HIKE": "GO BACK" }</Button>
-                                    </Paper>
-                                </Container>
-                            </Grid>
-                            <Grid xs={0} md={3}></Grid>
-                        </>
+                                    {isStarted && 
+                                        <>
+                                            <Button sx={{ minWidth: '80px' }} onClick={() => setOpen(true)} variant="outlined" color='error'>DELETE HIKE</Button>
+                                            <Button  onClick={handleStop} variant="contained" color='primary'>TERMINATE</Button>
+                                        </>}
+                                    {!isStarted && <Button onClick={handleStart} variant="contained" color='primary'>START</Button>} 
+                                    </Stack>
+                                
+                                </Paper>
+                            </Container>
+                            {!isStarted && <Button sx={{ minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='error'>GO BACK</Button>}
+
+                        </Grid>
+                        <Grid xs={0} md={3}></Grid>
+                    </>
                         :
-                        <Grid></Grid>
+                        <Grid xs={12} marginTop={2} ><HowToStart/></Grid>
                     }
                     <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
-                        <DialogTitle id="responsive-dialog-title" sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            {"Well done !"}
-                        </DialogTitle>
                         <DialogContent sx={{ ...thm }}>
                             <DialogContentText align='center' sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                {title} <br />
-                                Hike started at {valueStart.$H}:{valueStart.$m} the {valueStart.$M + 1}/{valueStart.$D}/{valueStart.$y}.<br />
-                                Hike finished at {valueStop.$H}:{valueStop.$m} the {valueStop.$M + 1}/{valueStop.$D}/{valueStop.$y}.<br />
-                                You completed the hike in {getTime(valueStart, valueStop).hours} hours and {getTime(valueStart, valueStop).minutes} minutes.<br />
-                                The list of all your completed hikes is available in "My hikes".<br />
+                            <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', fontWeight: 600 }}>{title}</Typography>
+                            <Typography sx={{ mt: 1}}>{"Do you want to delete ongoing hike without saving it?"}</Typography>
                             </DialogContentText>
+                            
                         </DialogContent>
                         <DialogActions sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Button onClick={handleClose} >
-                                Close
+                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mb: 3}}>
+                            <Button onClick={handleClose} variant="contained" color='secondary'>
+                                Back
                             </Button>
+                            <Button  onClick={handleCancel} variant="contained" color='error'>DELETE</Button>
+                            </Stack>
                         </DialogActions>
                     </Dialog>
                 </ThemeProvider>

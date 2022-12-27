@@ -56,6 +56,7 @@ Manual test reports in client/gui_test
 - Route `/` : a simple welcome page that acts as an entry point for all users
 - Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
 - Route `/hikes/:hikeId` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
+- Route `/my-hikes` : shows the list of already completed hikes, together with a form (if coming from the description page of an hike) to start and end an hike
 - Route `/huts` : shows authenticated users the list of huts added by local guides, with the possibility of adding filters and searches for certain fields to show a desired subset. For each hut, a certain amount of information is visible.
 - Route `/huts/:hutId` : shows authenticated users all information about a hut. There is also a map in the sidebar, showing the specific location of it.
 

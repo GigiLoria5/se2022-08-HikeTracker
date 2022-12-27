@@ -91,6 +91,7 @@ router.post('/activity', [
         // Check if the body contains errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log(errors);
             return res.status(422).json({ error: "Fields validation failed!" });
         }
 

@@ -33,7 +33,7 @@ const HikesListCompleted = (props) => {
                     ? <CircularProgress color="success" />
                     : <Grid container spacing={2} paddingTop={2} >  
                         {hikes.map((hike) => 
-                            <Grid item xs={12} sm={valgrid} sx={{...thm}} key={hike.id} >
+                            <Grid item xs={12} sm={valgrid} sx={{...thm}} key={hike.id+hike.start_time} >
                                 <HikeCompletedCard key={hike.id} hike={hike} />
                             </Grid>
                         )}

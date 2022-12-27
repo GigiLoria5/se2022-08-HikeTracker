@@ -39,7 +39,7 @@ export default function HikesCompletedCard(props) {
                         {/* Description */}
                         <Box component="div" className="hike-card-description-wrap" marginBottom={0.2}>
                             <Typography variant="body2" color="text.secondary">
-                                You have completed this hike in {hours} hours and {minutes} minutes.
+                                You have completed this hike in {hours > 0 && <>{hours} hours and </>}{minutes} minutes.
                             </Typography>
                         </Box>
                     </CardContent>
