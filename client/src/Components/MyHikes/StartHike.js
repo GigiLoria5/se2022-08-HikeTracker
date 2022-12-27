@@ -15,7 +15,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import { useEffect } from 'react';
@@ -27,9 +26,9 @@ function StartHike(props) {
     const current = new Date();
     const date = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}T${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`
 
-    const setIsInHike = props.setIsInHike;
+
     const isStarting = props.isStarting; // isStarting = true if coming from hike, false if coming from navbar 
-    const isInHike = props.isInHike;
+
     const setIsStarting = props.setIsStarting;
     const setSaved = props.setSaved;
     const [valueStart, setValueStart] = useState(dayjs(date));
@@ -105,7 +104,7 @@ function StartHike(props) {
 
 
     /*Function to compute the total time spent in hours and minutes*/
-    const getTime = (valueStart, valueStop) => {
+    /*const getTime = (valueStart, valueStop) => {
         var now = moment(`${dayjs(valueStart)}+0000`);
         var expiration = moment(`${dayjs(valueStop)}+0000`);
         // get the difference between the moments
@@ -113,7 +112,7 @@ function StartHike(props) {
         //express as a duration
         const diffDuration = moment.duration(diff);
         return ({ hours: diffDuration.hours() + diffDuration.days() * 24 + diffDuration.months() * 730 + diffDuration.years() * 8760, minutes: diffDuration.minutes() }) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
-    }
+    }*/
 
     /*Function that returns true if value start < value stop*/
     const checkTime = (valueStart, valueStop) => {
@@ -229,7 +228,7 @@ function StartHike(props) {
                         <Grid xs={12} md={6}  marginTop={1} sx={{alignItems: 'center', flexDirection:'column', display:'flex'}}>
                             <Container component="main" maxWidth="m" >
                                 <Paper elevation={3} sx={{ ...thm }} >
-                                    <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3, fontWeight: 600 }}>{isStarted? "ONGOING HIKE: ": "START HIKE: "} {title}</Typography>
+                                    <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3, fontWeight: 600 }}>{isStarted? "ONGOING HIKE: ": "START HIKE: "} {title}</Typography>
                                     {isStarted ?
                                         <Grid>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -268,41 +267,42 @@ function StartHike(props) {
                                         </Stack>
                                     }
                                     {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
-                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 1, mb: 3}}>
+                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 3, mb: 3}}>
                                     
 
                                     {isStarted && 
                                         <>
-                                            <Button sx={{ minWidth: '80px' }} onClick={() => setOpen(true)} variant="outlined" color='error'>DELETE HIKE</Button>
+                                            <Button sx={{ minWidth: '80px' }} onClick={() => setOpen(true)} variant="outlined" color='error'>CANCEL ONGOING HIKE</Button>
                                             <Button  onClick={handleStop} variant="contained" color='primary'>TERMINATE</Button>
                                         </>}
+                                    {!isStarted && <Button sx={{ minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>GO BACK</Button>}
                                     {!isStarted && <Button onClick={handleStart} variant="contained" color='primary'>START</Button>} 
                                     </Stack>
                                 
                                 </Paper>
                             </Container>
-                            {!isStarted && <Button sx={{ minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='error'>GO BACK</Button>}
+                            
 
                         </Grid>
                         <Grid xs={0} md={3}></Grid>
                     </>
                         :
-                        <Grid xs={12} marginTop={2} ><HowToStart/></Grid>
+                        <Grid xs={12}><HowToStart/></Grid>
                     }
                     <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
                         <DialogContent sx={{ ...thm }}>
                             <DialogContentText align='center' sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Typography variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', fontWeight: 600 }}>{title}</Typography>
-                            <Typography sx={{ mt: 1}}>{"Do you want to delete ongoing hike without saving it?"}</Typography>
+                            <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', fontWeight: 600 }}>{title}</Typography>
+                            <Typography component={'span'} sx={{ mt: 1}}>{"Do you want to cancel ongoing hike without saving it?"}</Typography>
                             </DialogContentText>
                             
                         </DialogContent>
                         <DialogActions sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mb: 3}}>
-                            <Button onClick={handleClose} variant="contained" color='secondary'>
+                            <Button onClick={handleClose} variant="outlined" color='primary'>
                                 Back
                             </Button>
-                            <Button  onClick={handleCancel} variant="contained" color='error'>DELETE</Button>
+                            <Button  onClick={handleCancel} variant="contained" color='error'>CANCEL</Button>
                             </Stack>
                         </DialogActions>
                     </Dialog>

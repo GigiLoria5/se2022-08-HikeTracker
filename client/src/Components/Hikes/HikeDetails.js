@@ -130,7 +130,7 @@ function HikeDetails(props) {
                 {hike === null || hikeImage === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
                 {/* Go Back and StartHike Buttons */}
-                < Grid item xs={12} >
+                {hike === null || < Grid item xs={12} >
                     <Stack direction="row" justifyContent="center" alignItems="center">
 
                         <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2 }}>
@@ -141,7 +141,7 @@ function HikeDetails(props) {
                             }
 
                     </Stack>
-                </Grid>
+                </Grid>}
             </Grid>
         </Container >
     )

@@ -23,7 +23,7 @@ const HikesListCompleted = (props) => {
         } else {
             setValgrid(4)
         }
-    },[]);
+    },[hikes.length]);
 
     return (
         <Grid container  alignItems='center' >  
