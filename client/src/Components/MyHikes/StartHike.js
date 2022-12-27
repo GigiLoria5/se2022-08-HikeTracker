@@ -209,7 +209,7 @@ function StartHike(props) {
                     setMessage(obj.error);
                 });
         }else{
-            //navigate(-1)
+            navigate(-1)
         }
 
     }
