@@ -58,12 +58,12 @@ describe('Completed activity', () => {
             });
     });
 
-    // step('T2: GET/activities/completed [USER NOT AUTHENTICATED]', async function () {
-    //     await agent
-    //         .get('/api/activities/completed')
-    //         .then(function (res) {
-    //             res.should.have.status(401);
-    //         });
-    // });
+    step('T3: GET/activities/completed [USER NOT AUTHENTICATED]', async function () {
+        await agent
+            .get('/api/activities/completed')
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
 
 });

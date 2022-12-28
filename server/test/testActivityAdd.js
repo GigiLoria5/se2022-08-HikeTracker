@@ -149,8 +149,23 @@ describe('Add activity', () => {
             });
     });
 
-    
+    step('T12: GET/activity/running [USER NOT AUTHENTICATED]', async function () {
+        await agent
+            .get('/api/activity/running')
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
 
-
+    step('T13: POST/activity [USER NOT AUTHENTICATED]', async function () {
+        await agent
+            .post('/api/activity')
+            .set('content-type', 'multipart/form-data')
+            .field("hike_id", 1)
+            .field("start_time", "2022-12-27 07:30")
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
 
 });

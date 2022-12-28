@@ -132,15 +132,15 @@ describe('Terminate activity: wrong users', () => {
             });
     });
 
-    // step('T3: PUT/activity/terminate [USER NOT AUTHENTICATED]', async function () {
-    //     await agent
-    //         .put('/api/activity/terminate')
-    //         .set('content-type', 'multipart/form-data')
-    //         .field("end_time", "2022-12-27 22:45:00")
-    //         .then(function (res) {
-    //             res.should.have.status(401);
-    //         });
-    // });
+    step('T4: PUT/activity/terminate [USER NOT AUTHENTICATED]', async function () {
+        await agent
+            .put('/api/activity/terminate')
+            .set('content-type', 'multipart/form-data')
+            .field("end_time", "2022-12-27 22:45:00")
+            .then(function (res) {
+                res.should.have.status(401);
+            });
+    });
 
 });
 
@@ -169,7 +169,7 @@ describe('Delete activity', () => {
             });
     });
 
-    step('T0 login', (done) => {
+    step('T1.5 login', (done) => {
         authenticatedUser
             .post('/api/sessions')
             .send({
@@ -206,6 +206,14 @@ describe('Delete activity', () => {
             .delete('/api/activity/running')
             .then(function (res) {
                 res.should.have.status(200);
+            });
+    });
+
+    step('T3: DELETE/activity/running [USER NOT AUTHENTICATED] ', async function () {
+        await agent
+            .delete('/api/activity/running')
+            .then(function (res) {
+                res.should.have.status(401);
             });
     });
 
