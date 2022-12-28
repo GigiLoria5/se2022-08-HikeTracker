@@ -49,7 +49,6 @@ async function getCompletedActivities(){
         });
         if (response.ok) {
             const res = await response.json();
-            
             return res.map((a) => ({ 
                     id: a.id,
                     title: a.title,
@@ -71,7 +70,8 @@ async function getCompletedActivities(){
                     picture: a.picture,
                     start_time: a.start_time,
                     end_time: a.end_time,
-                    duration: a.duration 
+                    duration: a.duration,
+                    date: new Date(a.start_time).toDateString()
             }));
 
 

@@ -42,13 +42,13 @@ function HikeDetails(props) {
                 }
 
         }
-    }, [hikeId]);
+    }, [hikeId, props.loggedUser.role]);
 
     useEffect(() => {
         if(props.loggedUser.role === "hiker"){
             checkIfStarted();
         }
-    }, [hike])
+    }, [hike, props.loggedUser.role])
 
     const checkIfStarted = async () => {
         // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
@@ -59,7 +59,7 @@ function HikeDetails(props) {
                 }
             }).catch(err => {
                 const obj = JSON.parse(err);
-                { setError(obj.error) }
+                setError(obj.error)
             });
     }
 
@@ -101,7 +101,7 @@ function HikeDetails(props) {
                 </Grid>
 
                 {/* Difficulty+Geographic Area */}
-                {< Grid item xs={12} >
+                < Grid item xs={12} >
                     {hike === null
                         ? null
                         : <Box component="div" sx={{ display: { xs: "block", sm: "flex" }, flexDirection: "row", justifyContent: "center" }} marginBottom={1}>
@@ -116,7 +116,7 @@ function HikeDetails(props) {
                             </Box>
                         </Box>
                     }
-                </Grid>}
+                </Grid>
 
                 {/* Panel Button - Only on Small Screen */}
                 <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
@@ -130,7 +130,7 @@ function HikeDetails(props) {
                 {hike === null || hikeImage === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
                 {/* Go Back and StartHike Buttons */}
-                {hike === null || < Grid item xs={12} >
+                {hike !== null && < Grid item xs={12} >
                     <Stack direction="row" justifyContent="center" alignItems="center">
 
                         <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2 }}>
