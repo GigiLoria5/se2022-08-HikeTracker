@@ -8,8 +8,15 @@
     border:1px solid #c1c5c3;
 }
 
+#phone-id:hover {
+    outline: none !important;
+    border-radius: 5px;
+    border:1px solid black;
+}
+
 #phone-id:focus {
     outline: none !important;
     border-radius: 5px;
     border:2px solid #008037;
+    margin: -1px;
 }
