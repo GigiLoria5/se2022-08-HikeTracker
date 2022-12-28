@@ -103,3 +103,16 @@ exports.deleteActivityByHikeId = (user_id) => {
         });
     });
 }
+
+exports.deleteActivityByHikeIdTerminated = (user_id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM activity WHERE hike_id = ? AND end_time IS NOT NULL';
+        db.run(sql, [user_id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
