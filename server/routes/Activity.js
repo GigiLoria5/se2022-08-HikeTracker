@@ -141,12 +141,12 @@ router.post('/activity', [
                 }
 
 
-            } else {
-                return res.status(401).json({ error: 'Not authorized' });
             }
-        } else {
             return res.status(401).json({ error: 'Not authorized' });
+
         }
+        return res.status(401).json({ error: 'Not authorized' });
+
 
 
     } catch (err) {
@@ -196,19 +196,16 @@ router.put('/activity/terminate',
                             return res.status(422).json({ error: "End time must be afterwards start time!" });
                         }
 
-
                     } else {
                         return res.status(404).json({ error: "No hike activity to terminate!" });
                     }
 
-
-
-                } else {
-                    return res.status(401).json({ error: 'Not authorized' });
                 }
-            } else {
                 return res.status(401).json({ error: 'Not authorized' });
+
             }
+            return res.status(401).json({ error: 'Not authorized' });
+
 
         } catch (err) {
             return res.status(503).json({ error: err });
