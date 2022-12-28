@@ -20,26 +20,33 @@ router.get('/activity/running',
         try {
 
             // Check if the user is authenticated and is autorized to retreieve hike activity status
-            const user = await UserDAO.getUserById(req.user.id);
+            if (req.isAuthenticated()) {
 
-            if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
+                const user = await UserDAO.getUserById(req.user.id);
 
-                //Return the running activity of the user or an empty object if none is running
-                await ActivityDAO.getRunningActivity(req.user.id)
-                    .then(async (activity) => {
-                        if (activity === false) {
-                            res.status(200).json({});
-                        } else {
-                            res.status(200).json(activity);
-                        }
-                    })
-                    .catch((err) => {
-                        res.status(500).json({ error: `Database error while retrieving the activity` });
-                    });
+                if (user !== undefined && user.role === "hiker") {
+
+                    //Return the running activity of the user or an empty object if none is running
+                    await ActivityDAO.getRunningActivity(req.user.id)
+                        .then(async (activity) => {
+                            if (activity === false) {
+                                res.status(200).json({});
+                            } else {
+                                res.status(200).json(activity);
+                            }
+                        })
+                        .catch((err) => {
+                            res.status(500).json({ error: `Database error while retrieving the activity` });
+                        });
+
+                } else {
+                    return res.status(401).json({ error: 'Not authorized' });
+                }
 
             } else {
                 return res.status(401).json({ error: 'Not authorized' });
             }
+
 
         } catch (err) {
             return res.status(503).json({ error: err });
@@ -53,22 +60,27 @@ router.get('/activities/completed',
         try {
 
             // Check if the user is authenticated 
-            const user = await UserDAO.getUserById(req.user.id);
+            if (req.isAuthenticated()) {
+                const user = await UserDAO.getUserById(req.user.id);
 
-            // Check if the user is autorized to retreieve hike activity status
-            if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
+                // Check if the user is autorized to retreieve hike activity status
+                if (user !== undefined && user.role === "hiker") {
 
-                await ActivityDAO.getCompletedActivities(req.user.id)
-                    .then(async (activity) => {
-                        res.status(200).json(activity);
-                    })
-                    .catch((err) => {
-                        res.status(500).json({ error: `Database error while retrieving the activity` });
-                    });
+                    await ActivityDAO.getCompletedActivities(req.user.id)
+                        .then(async (activity) => {
+                            res.status(200).json(activity);
+                        })
+                        .catch((err) => {
+                            res.status(500).json({ error: `Database error while retrieving the activity` });
+                        });
 
+                } else {
+                    return res.status(401).json({ error: 'Not authorized' });
+                }
             } else {
                 return res.status(401).json({ error: 'Not authorized' });
             }
+
 
         } catch (err) {
             return res.status(503).json({ error: err });
@@ -95,42 +107,48 @@ router.post('/activity', [
             return res.status(422).json({ error: "Fields validation failed!" });
         }
 
-        // Check if the user is authenticated and is autorized to start a new hike activity
-        const user = await UserDAO.getUserById(req.user.id);
+        if (req.isAuthenticated()) {
+            // Check if the user is authenticated and is autorized to start a new hike activity
+            const user = await UserDAO.getUserById(req.user.id);
 
-        if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
+            if (user !== undefined && user.role === "hiker") {
 
-            // Checks if the specified hike_id exists 
-            const hike = await HikeDao.getHikeById(req.body.hike_id);
+                // Checks if the specified hike_id exists 
+                const hike = await HikeDao.getHikeById(req.body.hike_id);
 
-            if (hike !== undefined) {
+                if (hike !== undefined) {
 
-                //Checks if the given user is not running any activity 
-                const exist = await ActivityDAO.getRunningActivity(req.user.id);
+                    //Checks if the given user is not running any activity 
+                    const exist = await ActivityDAO.getRunningActivity(req.user.id);
 
-                if (exist === false) {
-                    const activity = new Activity({
-                        id: 0,
-                        hike_id: req.body.hike_id,
-                        start_time: req.body.start_time
-                    });
+                    if (exist === false) {
+                        const activity = new Activity({
+                            id: 0,
+                            hike_id: req.body.hike_id,
+                            start_time: req.body.start_time
+                        });
 
-                    await ActivityDAO.addActivity(activity, req.user.id);
-                    return res.status(201).end();
+                        await ActivityDAO.addActivity(activity, req.user.id);
+                        return res.status(201).end();
 
+
+                    } else {
+                        return res.status(422).json({ error: "An hike activity is already started!" });
+                    }
 
                 } else {
-                    return res.status(422).json({ error: "An hike activity is already started!" });
+                    return res.status(404).json({ error: "Specified hike doesn't exists!" });
                 }
 
+
             } else {
-                return res.status(404).json({ error: "Specified hike doesn't exists!" });
+                return res.status(401).json({ error: 'Not authorized' });
             }
-
-
         } else {
             return res.status(401).json({ error: 'Not authorized' });
         }
+
+
     } catch (err) {
         return res.status(503).json({ error: err });
     }
@@ -150,9 +168,10 @@ router.put('/activity/terminate',
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
 
-            // Check if the user is authenticated and the user is autorized to terminate an hike activity
-            const user = await UserDAO.getUserById(req.user.id);
-            if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
+            if (req.isAuthenticated()) {
+                // Check if the user is authenticated and the user is autorized to terminate an hike activity
+                const user = await UserDAO.getUserById(req.user.id);
+                if (user !== undefined && user.role === "hiker") {
 
                     //Checks if the user is actually running an hike 
                     const exist = await ActivityDAO.getRunningActivity(req.user.id);
@@ -184,9 +203,13 @@ router.put('/activity/terminate',
 
 
 
+                } else {
+                    return res.status(401).json({ error: 'Not authorized' });
+                }
             } else {
                 return res.status(401).json({ error: 'Not authorized' });
             }
+
         } catch (err) {
             return res.status(503).json({ error: err });
         }
@@ -201,14 +224,15 @@ router.delete('/activity/running',
     async (req, res) => {
         try {
 
-            // Check if the user is authenticated and the user is autorized to delete the activity started
-            const user = await UserDAO.getUserById(req.user.id);
-            if (req.isAuthenticated() && user !== undefined && user.role === "hiker") {
+            if (req.isAuthenticated()) {
+                // Check if the user is authenticated and the user is autorized to delete the activity started
+                const user = await UserDAO.getUserById(req.user.id);
+                if (user !== undefined && user.role === "hiker") {
 
                     //Check if the user has a running activity to delete
                     const exist = await ActivityDAO.getRunningActivity(req.user.id);
 
-                    if (exist!==false) {
+                    if (exist !== false) {
                         await ActivityDAO.deleteActivityByHikeId(req.user.id)
                         return res.status(200).end();
 
@@ -217,9 +241,13 @@ router.delete('/activity/running',
                     }
 
 
+                } else {
+                    return res.status(401).json({ error: 'Not authorized' });
+                }
             } else {
                 return res.status(401).json({ error: 'Not authorized' });
             }
+
 
         } catch (err) {
             return res.status(503).json({ error: err });
