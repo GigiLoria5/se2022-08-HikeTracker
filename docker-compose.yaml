@@ -4,7 +4,7 @@ services:
   server:
     container_name: hike_tracker_server
     restart: unless-stopped
-    image: ht-server:1.0.0
+    image: ht-server:3.0.0
     build:
       dockerfile: Dockerfile
       context: server
@@ -14,7 +14,7 @@ services:
   client:
     container_name: hike_tracker_client
     restart: unless-stopped
-    image: ht-client:1.0.0
+    image: ht-client:3.0.0
     build:
       dockerfile: Dockerfile
       context: client
