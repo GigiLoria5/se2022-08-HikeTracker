@@ -42,9 +42,7 @@ function validateAddress(location, country, province, city) {
         }
 
         /* VALIDATE CITY  */
-        const array = [location.city, location.town, location.village, location.isolated_dwelling];
-        const result = validateCity(array, city);
-        if (result === false) {
+        if (location.city !== city) {
             return "city";
         }
 
@@ -59,9 +57,9 @@ function validateAddress(location, country, province, city) {
         }
 
         /* VALIDATE CITY  */
-        const array = [location.city, location.town, location.municipality, location.village];
-        const result = validateCity(array, city);
-        if (result === false) return "city";
+        if (location.city !== city) {
+            return "city";
+        }
 
     }
 
@@ -77,6 +75,8 @@ function translateProvince(province) {
         case "Napoli": return "Naples";
         case "Roma": return "Rome";
         case "Firenze": return "Florence";
+        case "Valle D'Aosta": return "Aosta";
+        case "Provincia di Trento": return "Trento";
         default: return province;
     }
 }
@@ -90,37 +90,11 @@ function translateProvinceReverse(province) {
         case "Naples": return "Napoli";
         case "Rome": return "Roma";
         case "Florence": return "Firenze";
+        case "Aosta": return "Valle D'Aosta";
+        case "Trento": return "Provincia di Trento";
         default: return province;
     }
 }
 
-/* Returns true if the city selected is correct, false instead  */
-function validateCity(array, city) {
-    let result = false;
-    array.forEach(item => {
-        if (item !== undefined && (item.includes(city) || city.includes(item))) {
-            result = true;
-        }
-    });
-    return result;
-}
 
-/* Returns the city (it can be also town, village, municipality ) */
-function getCity(location) {
-    let array = [];
-    if(location.country==="Italy"){
-        array = [location.city, location.town, location.village, location.isolated_dwelling];
-    }else{
-        array = [location.city, location.town, location.municipality, location.village];
-    }
-    let city = ""
-    array.forEach(item => {
-        if (item !== undefined && city === "") {
-            city = item;
-        }
-    });
-    return city;
-}
-
-
-module.exports = { Address, validateAddress, translateProvince, getCity };
+module.exports = { Address, validateAddress, translateProvince };
