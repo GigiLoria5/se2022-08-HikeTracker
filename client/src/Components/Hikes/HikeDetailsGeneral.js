@@ -73,6 +73,32 @@ function HikeDetailsGeneral(props) {
                     </Typography>
                 </Box>
             </Box>
+
+            {/*Completed */}
+            {/* TO ADD WHEN "COMPLETED" WILL BE ADDED TO THE DATABASE : */}
+            {/*//hike.completed is the list of times the hike has been completed by the user([{date:_, hours:_, minutes:_}, {date:_, hours:_, minutes:_}])*/}
+            {/*
+
+            {hike === null ? null : (hike.completed.length > 0 ? 
+                <Box component="div" display="block" marginBottom={1}>
+                    <Box component="div" marginRight={"5vw"} marginBottom={1}>
+                        <Typography gutterBottom variant="h6" sx={{ fontWeight: 550 }} color="text.primary" margin={0}>
+                            Completed
+                        </Typography>
+                    </Box>
+                <Divider width={"100%"} />
+                <Box component="div" marginTop={2} marginRight={"2vw"}>
+                    {hike.completed.map((completed) => 
+                        <Typography gutterBottom variant="body2" color="grey.800" margin={0}>
+                            You have completed this hike the {completed.date} in {completed.hours} hours and {completed.minutes} minutes.
+                        </Typography> 
+                    )}
+                </Box>
+            </Box>
+            :
+                null
+            )}
+            */}
         </Grid>
     )
 }

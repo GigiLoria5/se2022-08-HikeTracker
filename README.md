@@ -56,6 +56,7 @@ Manual test reports in client/gui_test
 - Route `/` : a simple welcome page that acts as an entry point for all users
 - Route `/hikes` : shows the list of hikes added by local guides, with the possibility of adding filters to show a specific subset. For each hike there is a certain amount of information available, from this page you can then view the complete information on each individual hike.
 - Route `/hikes/:hikeId` : shows users all the information related to a hike. There is also a map in the sidebar, which, however, is only visible to a user authenticated as a hiker or local guide.
+- Route `/my-hikes` : shows the list of already completed hikes, together with a form (if coming from the description page of an hike) to start and end an hike
 - Route `/huts` : shows authenticated users the list of huts added by local guides, with the possibility of adding filters and searches for certain fields to show a desired subset. For each hut, a certain amount of information is visible.
 - Route `/huts/:hutId` : shows authenticated users all information about a hut. There is also a map in the sidebar, showing the specific location of it.
 
@@ -790,6 +791,174 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
+### Activity
+- GET `/api/activity/running`
+
+  - Description: Returns the current running activity associated to the given user, otherwise an empty object. The user must be an hiker.
+  - Request body: _None_
+  - Request parameters: _None_
+  - Response: `200 OK` (success)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
+    - `503 Internal Server Error` (generic error)
+    - `500 Database Error` (sqlite database error)
+  
+  - Response body: An activity object if the user is currently running some activity, an empty object instead or an error message in case of failure
+
+  ```
+  {
+    "id": 16,
+    "hike_id": 3,
+    "title": "Sentiero per Briccas da Brich",
+    "user_id": 1,
+    "start_time": "2022-12-30 00:00",
+    "end_time": null,
+    "duration": null
+  }
+
+  ```
+
+- GET `/api/activities/completed`
+
+  - Description: Returns an array containing the completed activities associated to the corresponding hikes. The user must be an hiker.
+  - Request body: _None_
+  - Response: `200 OK` (success)
+  - Error responses:
+    - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
+    - `503 Internal Server Error` (generic error)
+    - `500 Database Error` (database error)
+  
+  - Response body: An array of objects containing all the hikes associated to completed activities for the logged user, or an error message in case of failure.
+
+  ```
+  [
+    {
+        "id": 3,
+        "title": "Trail to Monte Ziccher",
+        "peak_altitude": 1967,
+        "city": "Craveggia",
+        "province": "Verbano-Cusio-Ossola",
+        "country": "Italy",
+        "description": "Monte Ziccher ....",
+        "ascent": 690,
+        "track_length": 6.6,
+        "expected_time": 2.1,
+        "difficulty": 2,
+        "gps_track": "3_hike_zicher",
+        "start_point_type": "hut",
+        "start_point_id": 2,
+        "end_point_type": "location",
+        "end_point_id": 4,
+        "author_id": 2,
+        "picture": "3_zicher.jpg",
+        "start_time": "2022-12-23 00:00",
+        "end_time": "2022-12-25 00:00",
+        "duration": 2880
+    },
+    {
+        "id": 3,
+        "title": "Trail to Monte Ziccher",
+        "peak_altitude": 1967,
+        "city": "Craveggia",
+        "province": "Verbano-Cusio-Ossola",
+        "country": "Italy",
+        "description": "Monte Ziccher ...",
+        "ascent": 690,
+        "track_length": 6.6,
+        "expected_time": 2.1,
+        "difficulty": 2,
+        "gps_track": "3_hike_zicher",
+        "start_point_type": "hut",
+        "start_point_id": 2,
+        "end_point_type": "location",
+        "end_point_id": 4,
+        "author_id": 2,
+        "picture": "3_zicher.jpg",
+        "start_time": "2022-12-20 00:00",
+        "end_time": "2022-12-30 00:00",
+        "duration": 14400
+    }
+  ]
+
+  ```
+- POST `/api/activity`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Add activity for the given hike
+  - Permissions allowed: Hiker
+  - Request body: Activity (hike_id, start_time)
+    - start_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
+
+  ```
+  {
+    "hike_id": 3,
+    "start_time": "2022-12-30 00:00"
+  }
+  ```
+
+  - Response: `201 OK` (Created)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `404 Not found` (Specified hike id doesn't exists)
+    - `503 Internal Server Error` (generic error)
+    - `422 Unprocessable entity` (wrong body fields or hike activity already started)
+    - `500 Database Error` (database error)
+
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+- PUT `/api/activity/terminate`
+
+  - Headers: ` {"Content-Type": "multipart/form-data"}`
+  - Description: Terminate the currentrl running activity for the given user 
+  - Permissions allowed: Hiker
+  - Request body: Activity (end_time)
+    - end_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
+
+  ```
+  {
+    "end_time": "2022-12-31 00:00"
+  }
+  ```
+
+  - Response: `204 No Content` (Updated)
+  - Error responses: 
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `404 Not found` (Specified hike id doesn't exists or no activity to terminate)
+    - `503 Internal Server Error` (generic error)
+    - `422 Unprocessable entity` (wrong body fields or end time is not after start time)
+    - `500 Database Error` (database error)
+
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
+- DELETE `/api/activity/running`
+
+  - Description: Delete the currently running activity for the given user 
+  - Permissions allowed: Hiker
+  - Request body: _None_
+  - Request parameters: _None_
+  - Response: `200 OK` (Deleted)
+  - Error responses:
+    - `401 Unauthorized` (not logged in or wrong permissions)
+    - `500 Database error` (Database error)
+    - `503 Internal Server Error` (generic error)
+    - `404 Not found` (No activities to terminate for the given user )
+  - Response body: An error message in case of failure
+
+  ```
+  {
+      "error": "message text"
+  }
+  ```
 
 ## Database Tables
 
@@ -820,7 +989,9 @@ Manual test reports in client/gui_test
   - _author_id_ is the local guide identifier who have added the hike description
 - Table `reference_point` contains: hike_id, ref_point_type, ref_point_id (the PK is the combination of each of them)
   - _ref_point_type_ can be: parking_lot, location, hut
-
+- Table `activity` contains: id, hike_id, user_id, start_time, end_time and duration
+  - start_time and end_time must follow the ISO8601 format (YYYY-MM-DD HH:MM:SS), even if SS are not required 
+  - duration is expressed in minutes.seconds  
 ## Users Credentials
 
 | email                    | password | role        |

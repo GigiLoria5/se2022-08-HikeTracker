@@ -307,6 +307,14 @@ router.delete('/huts/name', [body('hutName').exists().isString()], async (req, r
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: "Fields validation failed!" });
             }
+            HutDAO.getHutByName(req.body.hutName, req.user.id)
+                .then(
+                    hut => {
+                        fs.unlink(`./pictures/${hut.picture}`, function (err, results) {
+                            if (err) throw new Error("unexpected error")
+                        });
+                    }
+                )
 
             await HutDAO.deleteHutByName(req.body.hutName, req.user.id)
                 .then(() => res.status(200).end())

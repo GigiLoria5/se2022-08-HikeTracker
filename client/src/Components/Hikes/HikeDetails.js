@@ -1,25 +1,28 @@
 import { Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { Stack } from '@mui/system';
 import API from '../../API';
 import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
-import { fromImageDataToBase64String } from '../../Utils/File';
-import { Buffer } from 'buffer'
+import { getRunningActivity } from '../../API/Activity';
+import RunningButtons from '../MyHikes/RunningButtons';
 
 function HikeDetails(props) {
+
     const { isloggedIn, loggedUser } = props;
     const { hikeId } = useParams();
     const [hike, setHike] = useState(null);
     const [hikeImage, setHikeImage] = useState(null);
     const [error, setError] = useState("");
+    const [runningActivity, setRunningActivity] = useState(false);
     const [deviceFilterPanelOpen, setDeviceFilterPanelOpen] = useState(false);
     const navigate = useNavigate();
     const customIcons = customDifficultyIcons;
 
-    useEffect(() => {
+    useEffect( () => {
         // fetch /api/hike/:id
         if (hikeId) {
             API.getHikeById(parseInt(hikeId))
@@ -28,12 +31,39 @@ function HikeDetails(props) {
                         // Get Hike
                         setHike(h);
                         // Parse Image
-                        setHikeImage(Buffer(h.picture_file).toString("base64"));
+                        const uint8Array = new Uint8Array(h.picture_file.data);
+                        const data = uint8Array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
+                        setHikeImage(window.btoa(data));
+                        //setHikeImage(fromImageDataToBase64String(h.picture_file.data));
                     }, 300);
                 })
-                .catch(_ => { setError("The page you requested cannot be found") })
+                .catch(_ => { setError("The page you requested cannot be found") });
+            
+                if(props.loggedUser.role === "hiker"){
+                    checkIfStarted(); // Checks if the user is running an hike
+                }
+
         }
-    }, [hikeId]);
+    }, [hikeId, props.loggedUser.role]);
+
+    useEffect(() => {
+        if(props.loggedUser.role === "hiker"){
+            checkIfStarted();
+        }
+    }, [hike, props.loggedUser.role])
+
+    const checkIfStarted = async () => {
+        // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
+        await getRunningActivity()
+            .then((activity) => {
+                if (activity !== false) {
+                    setRunningActivity(activity);
+                }
+            }).catch(err => {
+                const obj = JSON.parse(err);
+                setError(obj.error)
+            });
+    }
 
     useEffect(() => {
         window.addEventListener("resize", () => {
@@ -45,6 +75,10 @@ function HikeDetails(props) {
     const clickHandle = event => {
         event.preventDefault();
         navigate("/hikes");
+    }
+    const clickHandleStart = event => {
+        event.preventDefault();
+        navigate("/my-hikes", { state: { hike: hike, isStarting: true } })
     }
 
     /* To hide/show the filter panel for small screen */
@@ -69,7 +103,7 @@ function HikeDetails(props) {
                 </Grid>
 
                 {/* Difficulty+Geographic Area */}
-                {< Grid item xs={12} >
+                < Grid item xs={12} >
                     {hike === null
                         ? null
                         : <Box component="div" sx={{ display: { xs: "block", sm: "flex" }, flexDirection: "row", justifyContent: "center" }} marginBottom={1}>
@@ -84,7 +118,7 @@ function HikeDetails(props) {
                             </Box>
                         </Box>
                     }
-                </Grid>}
+                </Grid>
 
                 {/* Panel Button - Only on Small Screen */}
                 <Grid item sx={{ display: { xs: 'flex', sm: 'flex', md: 'flex', lg: 'none' }, flexDirection: 'column', alignItems: 'center' }} xs={12}>
@@ -97,14 +131,19 @@ function HikeDetails(props) {
                 {/* Geographic Information */}
                 {hike === null || hikeImage === null ? null : <HikeDetailsGeo hike={hike} isloggedIn={isloggedIn} loggedUser={loggedUser} deviceFilterPanelOpen={deviceFilterPanelOpen} toggleFilterPanelDrawer={toggleFilterPanelDrawer} />}
 
-                {/* Go Back Button */}
-                < Grid item xs={12} >
-                    <Box component="div" sx={{ marginTop: 2, marginBottom: 2, padding: 4, paddingTop: 0, paddingBottom: 2, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "column" }}>
-                        <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} >
+                {/* Go Back and StartHike Buttons */}
+                {hike !== null && < Grid item xs={12} >
+                    <Stack direction="row" justifyContent="center" alignItems="center">
+
+                        <Button variant="outlined" className="back-outlined-btn" onClick={clickHandle} sx={{ m: 1, mb: 2, mt: 2 }}>
                             Return Hikes List
                         </Button>
-                    </Box>
-                </Grid>
+                        {props.loggedUser.role === "hiker" ?
+                        <RunningButtons runningActivity={runningActivity} clickHandleStart={clickHandleStart} hikeId={hikeId} > </RunningButtons> : ""
+                            }
+
+                    </Stack>
+                </Grid>}
             </Grid>
         </Container >
     )

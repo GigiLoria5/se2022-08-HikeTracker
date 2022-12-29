@@ -81,6 +81,7 @@ const userRoute = require('./routes/User.js');
 const hikeRoute = require('./routes/Hike.js');
 const hutRoute = require('./routes/Hut.js');
 const parkingRoute = require('./routes/Parking.js');
+const activityRoute = require('./routes/Activity');
 app.use(fileupload());
 
 
@@ -135,6 +136,7 @@ app.use('/api', hikeRoute);
 app.use('/api', userRoute);
 app.use('/api', hutRoute);
 app.use('/api', parkingRoute);
+app.use('/api', activityRoute);
 
 
 // activate the server
