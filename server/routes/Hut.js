@@ -310,9 +310,6 @@ router.delete('/huts/name', [body('hutName').exists().isString()], async (req, r
             HutDAO.getHutByName(req.body.hutName, req.user.id)
                 .then(
                     hut => {
-
-                        console.log(hut);
-
                         fs.unlink(`./pictures/${hut.picture}`, function (err, results) {
                             if (err) throw new Error("unexpected error")
                         });
