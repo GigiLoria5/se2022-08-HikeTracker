@@ -142,3 +142,103 @@ describe('Get completed activity frontend test', () => {
     });
     
 });
+
+describe('Add activity frontend test', () => {
+
+    it('Test Logout', async () => {
+        const user = await API.logOut();
+    });
+
+    it('T1: terminate activity [NO USER AUTHENTICATED]', async () => {
+        const activity = new Activity({end_time:"2022-12-29 09:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Not authorized\"}");
+        }
+    });
+
+    it('Test Setup [WRONG]', async () => {
+        const user = await API.logIn({ username: "manager@manager.com", password: "password" });
+    });
+
+    it('T2: terminate activity [WRONG USER ROLE]', async () => {
+        const activity = new Activity({end_time:"2022-12-29 09:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Not authorized\"}");
+        }
+    });
+
+    it('Test Setup [GOOD]', async () => {
+        const user = await API.logIn({ username: "c.basile@hiker.it", password: "password" });
+    });
+
+    it('T3: terminate activity [NO RUNNING ACTIVITY]', async () => {
+        const activity = new Activity({end_time:"2022-12-29 09:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"No hike activity to terminate!\"}");
+        }
+    });
+
+    it('T4: terminate activity [WRONG DATE 1]', async () => {
+        const activity = new Activity({end_time:"29/12/2022 09:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Fields validation failed!\"}");
+        }
+    });
+
+    it('T5: terminate activity [WRONG DATE 2]', async () => {
+        const activity = new Activity({end_time:1});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Fields validation failed!\"}");
+        }
+    });
+
+    it('T6: terminate activity [WRONG DATE 3]', async () => {
+        const activity = new Activity({end_time:"29/20/2022 09:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Fields validation failed!\"}");
+        }
+    });
+
+    it('T7: terminate activity [WRONG DATE 4]', async () => {
+        const activity = new Activity({end_time:"29/12/2022 0930"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"Fields validation failed!\"}");
+        }
+    });
+
+    it('Add activity', async () => {
+        const activity = new Activity({hike_id:1, start_time:"2022-12-29 09:00"});
+        const res = await API.addActivity(activity);
+        expect(res).toBe(true);
+    });
+
+    it('T8: terminate activity [END DATE BEFORE START DATE]', async () => {
+        const activity = new Activity({end_time:"2022-12-29 08:30"});
+        try{
+            const res = await API.terminateActivity(activity);
+        } catch(err){
+            expect(err).toBe("{\"error\":\"End time must be afterwards start time!\"}");
+        }
+    });
+
+    it('T9: terminate activity [GOOD]', async () => {
+        const activity = new Activity({end_time:"2022-12-29 09:30"});
+        const res = await API.terminateActivity(activity);
+        expect(res).toBe(true);
+    });
+    
+});
