@@ -116,3 +116,29 @@ describe('Add activity frontend test', () => {
     });
 
 });
+
+describe('Get completed activity frontend test', () => {
+
+    it('T0: login', async () => {
+        const user = await API.logIn({ username: "c.basile@hiker.it", password: "password" });
+    });
+
+    it('T1: get completed activity [GOOD]', async () => {
+        const res = await API.getCompletedActivities();
+        expect(res).toBeInstanceOf(Array);
+    });
+
+    it('T1.5: login', async () => {
+        const user = await API.logIn({ username: "manager@manager.com", password: "password" });
+    });
+
+    it('T2: get completed activity [WRONG USER ROLE]', async () => {
+        try {
+            const res = await API.getCompletedActivities();
+        }
+        catch (err) {
+            expect(err);
+        }
+    });
+    
+});
