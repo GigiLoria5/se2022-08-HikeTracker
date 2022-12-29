@@ -108,7 +108,7 @@ export default function AddHut() {
 
         const response = await API.addHut(hut).catch(e => {
             const obj = JSON.parse(e);
-            setMessage({ msg: `${obj.error}!`, type: 'error' });
+            setMessage(`${obj.error}!`);
         })
 
         if (response === true) {
