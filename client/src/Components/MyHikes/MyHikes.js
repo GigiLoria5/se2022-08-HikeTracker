@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import HowToStart from './HowToStart';
 import MyCompletedHikes from './MyCompletedHikes';
 import StartHike from './StartHike';
 import { useLocation } from 'react-router-dom';
@@ -10,7 +9,6 @@ function MyHikes() {
     const location = useLocation();
     //let isStarting = false;
     //let hike = {}
-    const [isInHike, setIsInHike] = useState(false);
     const [hike, setHike] = useState({});
     const [isStarting, setIsStarting] = useState(location.state !== null? location.state.isStarting: false);
     const [added, setAdded] = useState(false);
@@ -26,7 +24,7 @@ function MyHikes() {
     }, [])
 
     useEffect(() => {
-        if(isStarting == false){
+        if(isStarting === false){
             setAdded(true);
         }
     }, [isStarting])

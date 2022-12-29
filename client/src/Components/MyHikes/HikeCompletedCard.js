@@ -46,12 +46,12 @@ export default function HikesCompletedCard(props) {
                     </CardContent>
                 </CardActionArea>
                 {/* Date & Read More */}
-                <Box component="div" className="no-exceed" paddingLeft={2} paddingRight={2} marginBottom={0.5}>
+                <Box component="div" display="flex" paddingLeft={2} paddingRight={2} marginBottom={0.5}>
                     <Typography gutterBottom variant="body2" color="text.secondary" margin={0}>
                         {date}
                     </Typography>
                     <CardActions sx={{ padding: 0, marginLeft: "auto" }} >
-                        <Button size="small" sx={{ padding: 0 }} onClick={(event) => handleNavigation()} endIcon={<ArrowForwardIcon />}>Read More</Button>
+                        <Button size="small" sx={{ padding: 0 }} onClick={(event) => handleNavigation(event)} endIcon={<ArrowForwardIcon />}>Hike Info</Button>
                     </CardActions>
                 </Box>
             </Card>

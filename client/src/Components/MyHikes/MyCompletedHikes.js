@@ -3,8 +3,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Typography from "@mui/material/Typography";
 import HikeListCompleted from './HikeListCompleted';
-import { Hike } from "../../Utils/Hike"
-import { difficultyFromState } from '../../Utils/DifficultyMapping';
 import API from '../../API';
 import { timeToHHMM } from '../../Utils/TimeUtils';
 
@@ -35,7 +33,6 @@ function MyCompletedHikes(props) {
     };
 
 
-    const hikelist = []
     const [hikes, setHikes] = useState([]);
     const [loadingHikes, setLoadingHikes] = useState(true);
 
@@ -61,16 +58,12 @@ function MyCompletedHikes(props) {
         setLoadingHikes(true);
     }, [props.added])
     
-    const setTimeout = (() => {
-        setLoadingHikes(false);
-    });
-    
     return(
         <div>
             <Grid container >
                 <ThemeProvider theme={theme}>
                     <Grid xs={12} marginTop={2} sx={{ ...thm }}>
-                        <Typography variant="h5" marginTop={2} marginBottom={0.5} align="center" sx={{textTransform: 'uppercase', fontWeight: 600 }}>MY COMPLETED HIKES</Typography>
+                        <Typography variant="h5" marginTop={2} marginBottom={0.5} align="center" sx={{textTransform: 'uppercase', fontWeight: 600 }}>COMPLETED HIKES</Typography>
                         <HikeListCompleted key={hikes.id} hikes={hikes} loadingHikes={loadingHikes} />
                     </Grid>
                 </ThemeProvider>
