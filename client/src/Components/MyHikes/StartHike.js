@@ -35,7 +35,7 @@ function StartHike(props) {
     const [valueStop, setValueStop] = useState(dayjs(date));
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState("");
-    
+
 
     /*if true, the user has pressed the start button*/
     const [isStarted, setisStarted] = useState(false);
@@ -44,14 +44,14 @@ function StartHike(props) {
     useEffect(() => {
         setMessage('');
         //setIsInHike(true);
-        if(!hike){
+        if (!hike) {
             setIsStarting(false);
         }
-        else{
+        else {
             setTitle(hike.title);
         }
         checkIfStarted(); // Every time this interface is opened, it checks if the hike is already started in the db 
-        
+
         // eslint-disable-next-line
     }, [])
 
@@ -59,17 +59,17 @@ function StartHike(props) {
         // Backend: call API getRunningActivity to check if the activity is running and retrieve the running information
         await getRunningActivity()
             .then((activity) => {
-                if(activity !== false) {
+                if (activity !== false) {
                     setisStarted(true);
                     setIsStarting(false);
                     setTitle(activity.title);
                     setValueStart(dayjs(activity.start_time));
-                }            
+                }
             }).catch(err => {
                 const obj = JSON.parse(err);
                 setMessage(obj.error);
             });
-        
+
     }
 
 
@@ -147,7 +147,7 @@ function StartHike(props) {
                 hike_id: hike.id,
                 start_time: valueStart
             }))
-                .then(() =>{
+                .then(() => {
                     setisStarted(true)
                     setIsStarting(false);
                     navigate("/my-hikes")
@@ -196,18 +196,19 @@ function StartHike(props) {
         if (isStarted) {
             // Backend: call API deleteActivity 
             await deleteActivity()
-                .then(() =>{
+                .then(() => {
                     setOpen(false)
                     //setIsInHike(false)
                     setisStarted(false)
                     setIsStarting(false)
-                    setHike({})}
+                    setHike({})
+                }
                     //navigate(-1)
                 ).catch(err => {
                     const obj = JSON.parse(err);
                     setMessage(obj.error);
                 });
-        }else{
+        } else {
             navigate(-1)
         }
 
@@ -222,87 +223,87 @@ function StartHike(props) {
         <div>
             <Grid container >
                 <ThemeProvider theme={theme} >
-                    {((isStarted || isStarting) )?
+                    {((isStarted || isStarting)) ?
                         <>
-                        <Grid xs={0} md={3}></Grid>
-                        <Grid xs={12} md={6}  marginTop={1} sx={{alignItems: 'center', flexDirection:'column', display:'flex'}}>
-                            <Container component="main" maxWidth="m" >
-                                <Paper elevation={3} sx={{ ...thm }} >
-                                    <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3, fontWeight: 600 }}>{isStarted? "ONGOING HIKE: ": "START HIKE: "} {title}</Typography>
-                                    {isStarted ?
-                                        <Grid>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Grid xs={0} md={3}></Grid>
+                            <Grid xs={12} md={6} marginTop={1} sx={{ alignItems: 'center', flexDirection: 'column', display: 'flex' }}>
+                                <Container component="main" maxWidth="m" >
+                                    <Paper elevation={3} sx={{ ...thm }} >
+                                        <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', m: 3, fontWeight: 600 }}>{isStarted ? "ONGOING HIKE: " : "START HIKE: "} {title}</Typography>
+                                        {isStarted ?
+                                            <Grid>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                     <DateTimePicker
                                                         marginBottom={1}
                                                         label="Start time"
                                                         value={valueStart}
                                                         disabled={true}
-                                                        onChange={() => {}}
-                                                        renderInput={(params) => <TextField {...params}/>}
-                                                    />
-                                                </LocalizationProvider>
-                                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} marginTop={3}>
-                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                    <DateTimePicker
-                                                        label="Stop time"
-                                                        value={valueStop}
-                                                        onChange={handleChangeStop}
+                                                        onChange={() => { }}
                                                         renderInput={(params) => <TextField {...params} />}
                                                     />
                                                 </LocalizationProvider>
+                                                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} marginTop={3}>
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                        <DateTimePicker
+                                                            label="Stop time"
+                                                            value={valueStop}
+                                                            onChange={handleChangeStop}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                        />
+                                                    </LocalizationProvider>
+                                                </Stack>
+                                            </Grid>
+                                            :
+                                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <DateTimePicker
+                                                        label="Start timer"
+                                                        value={valueStart}
+                                                        onChange={handleChangeStart}
+                                                        renderInput={(params) => <TextField {...params}
+                                                        />}
+                                                    />
+                                                </LocalizationProvider>
+
                                             </Stack>
-                                        </Grid>
-                                        :
-                                        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DateTimePicker
-                                                    label="Start timer"
-                                                    value={valueStart}
-                                                    onChange={handleChangeStart}
-                                                    renderInput={(params) => <TextField {...params}
-                                                     />}
-                                                />
-                                            </LocalizationProvider>
-                                            
+                                        }
+                                        {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
+                                        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 3, mb: 3 }}>
+
+
+                                            {isStarted &&
+                                                <>
+                                                    <Button sx={{ minWidth: '80px' }} onClick={() => setOpen(true)} variant="outlined" color='error'>CANCEL ONGOING HIKE</Button>
+                                                    <Button onClick={handleStop} variant="contained" color='primary'>TERMINATE</Button>
+                                                </>}
+                                            {!isStarted && <Button sx={{ minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>GO BACK</Button>}
+                                            {!isStarted && <Button onClick={handleStart} variant="contained" color='primary'>START</Button>}
                                         </Stack>
-                                    }
-                                    {message && <Alert sx={{ mb: 1, mt: 2, width: 'fit-content', align: 'center' }} severity="error" onClose={() => setMessage('')}>{message}</Alert>}
-                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 3, mb: 3}}>
-                                    
 
-                                    {isStarted && 
-                                        <>
-                                            <Button sx={{ minWidth: '80px' }} onClick={() => setOpen(true)} variant="outlined" color='error'>CANCEL ONGOING HIKE</Button>
-                                            <Button  onClick={handleStop} variant="contained" color='primary'>TERMINATE</Button>
-                                        </>}
-                                    {!isStarted && <Button sx={{ minWidth: '80px' }} onClick={handleCancel} variant="outlined" color='primary'>GO BACK</Button>}
-                                    {!isStarted && <Button onClick={handleStart} variant="contained" color='primary'>START</Button>} 
-                                    </Stack>
-                                
-                                </Paper>
-                            </Container>
-                            
+                                    </Paper>
+                                </Container>
 
-                        </Grid>
-                        <Grid xs={0} md={3}></Grid>
-                    </>
+
+                            </Grid>
+                            <Grid xs={0} md={3}></Grid>
+                        </>
                         :
-                        <Grid xs={12}><HowToStart/></Grid>
+                        <Grid xs={12}><HowToStart /></Grid>
                     }
                     <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
                         <DialogContent sx={{ ...thm }}>
                             <DialogContentText align='center' sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', fontWeight: 600 }}>{title}</Typography>
-                            <Typography component={'span'} sx={{ mt: 1}}>{"Do you want to cancel ongoing hike without saving it?"}</Typography>
+                                <Typography component={'span'} variant="h6" align='center' sx={{ ...thm, textTransform: 'uppercase', fontWeight: 600 }}>{title}</Typography>
+                                <Typography component={'span'} sx={{ mt: 1 }}>{"Do you want to cancel ongoing hike without saving it?"}</Typography>
                             </DialogContentText>
-                            
+
                         </DialogContent>
                         <DialogActions sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mb: 3}}>
-                            <Button onClick={handleClose} variant="outlined" color='primary'>
-                                Back
-                            </Button>
-                            <Button  onClick={handleCancel} variant="contained" color='error'>CANCEL</Button>
+                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+                                <Button onClick={handleClose} variant="outlined" color='primary'>
+                                    Back
+                                </Button>
+                                <Button onClick={handleCancel} variant="contained" color='error'>CANCEL</Button>
                             </Stack>
                         </DialogActions>
                     </Dialog>

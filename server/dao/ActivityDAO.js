@@ -5,10 +5,10 @@ const Activity = require("../models/Activity");
 
 const db = require("./db");
 
-exports.addActivity = (activity,user_id) => {
+exports.addActivity = (activity, user_id) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO activity(hike_id,user_id,start_time) VALUES(?, ?, ?)';
-        db.run(sql, [activity.hike_id, user_id, activity.start_time], function(err) {
+        db.run(sql, [activity.hike_id, user_id, activity.start_time], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -57,7 +57,7 @@ exports.terminateActivity = (activity, user_id) => {
 
 exports.getCompletedActivities = (user_id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM activity a INNER JOIN hike h WHERE a.hike_id = h.id AND a.user_id = ? AND a.end_time IS NOT NULL`;
+        const sql = `SELECT * FROM activity a INNER JOIN hike h WHERE a.hike_id = h.id AND a.user_id = ? AND a.end_time IS NOT NULL ORDER BY a.id DESC`;
         db.all(sql, [user_id], (err, rows) => {
             if (err)
                 reject(err);
@@ -85,7 +85,7 @@ exports.getCompletedActivities = (user_id) => {
                     end_time: row.end_time,
                     duration: row.duration
                 })));
-                resolve(completed_hikes); 
+                resolve(completed_hikes);
             }
         });
     });

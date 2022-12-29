@@ -19,7 +19,7 @@ export default function HikesCompletedCard(props) {
 
     return (
         <Grid item xs={12} >
-            <Card className='card' sx={{ maxWidth: 275 }}>
+            <Card width="100%" className='card'>
                 <CardActionArea onClick={(event) => handleNavigation(event)} >
                     <CardContent >
                         {/* Location & Difficulty */}
