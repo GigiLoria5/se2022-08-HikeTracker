@@ -16,7 +16,7 @@ import { addParking } from '../../API/Parking'
 import { getAddressByCoordinates } from '../../API/Points'
 import { Parking } from '../../Utils/Parking';
 import { initialLat, initialLng } from '../../Utils/MapLocatorConstants';
-import { Address, validateAddress, translateProvince, getCity } from '../../Utils/Address';
+import { Address, validateAddress, translateProvince } from '../../Utils/Address';
 import { ResetErrors, PrintCheckErrors } from '../../Utils/PositionErrorMgmt';
 
 const zoomLevel = 15;
@@ -76,6 +76,7 @@ function AddParking() {
     const getLocation = async () => {
         const addr = await getAddressByCoordinates(position.lng, position.lat);   // Get address information starting from coordinates
         setLocation(new Address(addr));
+        console.log(addr);
         autoFill(addr);
     }
 
@@ -89,7 +90,7 @@ function AddParking() {
             setProvince(loc.state);
         }
 
-        setCity(getCity(loc));
+        setCity(loc.city);
     }
 
     useEffect(() => {

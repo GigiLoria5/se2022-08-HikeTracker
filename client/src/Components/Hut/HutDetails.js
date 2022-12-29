@@ -7,6 +7,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import HutDetailsGeneral from './HutDetailsGeneral';
 import HutDetailsAdditional from './HutDetailsAdditional';
 import { fromImageDataToBase64String } from '../../Utils/File';
+import { Buffer } from 'buffer'
 
 function HutDetails() {
     const { hutId } = useParams();
@@ -25,7 +26,7 @@ function HutDetails() {
                         // Get Hut
                         setHut(h);
                         // Parse and Save Image as Base64String
-                        setHutImage(fromImageDataToBase64String(h.picture_file.data));
+                        setHutImage(Buffer(h.picture_file).toString("base64"));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") })

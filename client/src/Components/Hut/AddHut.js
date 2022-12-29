@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Typography from "@mui/material/Typography";
 import API from '../../API';
 import { Hut, validateHut } from '../../Utils/Hut';
-import { Address, translateProvince, getCity } from '../../Utils/Address';
+import { Address, translateProvince } from '../../Utils/Address';
 import AddHutPage1 from './AddHutPage1';
 import AddHutPage2 from './AddHutPage2';
 import { useNavigate } from 'react-router-dom';
@@ -108,7 +108,7 @@ export default function AddHut() {
 
         const response = await API.addHut(hut).catch(e => {
             const obj = JSON.parse(e);
-            setMessage({ msg: `${obj.error}!`, type: 'error' });
+            setMessage(`${obj.error}!`);
         })
 
         if (response === true) {
@@ -127,7 +127,7 @@ export default function AddHut() {
             setProvince(loc.state);
         }
 
-        setCity(getCity(loc));
+        setCity(loc.city);
 
     }
 
