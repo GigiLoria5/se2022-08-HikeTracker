@@ -51,7 +51,7 @@ export default function HikesCompletedCard(props) {
                         {date}
                     </Typography>
                     <CardActions sx={{ padding: 0, marginLeft: "auto" }} >
-                        <Button size="small" sx={{ padding: 0 }} onClick={(event) => handleNavigation(event)} endIcon={<ArrowForwardIcon />}>Hike Info</Button>
+                        <Button size="small" sx={{ padding: 0, color: "#1976d2" }} onClick={(event) => handleNavigation(event)} endIcon={<ArrowForwardIcon />}>Hike Info</Button>
                     </CardActions>
                 </Box>
             </Card>
