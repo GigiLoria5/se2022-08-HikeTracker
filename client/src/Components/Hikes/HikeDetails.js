@@ -7,7 +7,6 @@ import { customDifficultyIcons } from '../../Utils/DifficultyMapping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HikeDetailsGeneral from './HikeDetailsGeneral';
 import HikeDetailsGeo from './HikeDetailsGeo';
-import { fromImageDataToBase64String } from '../../Utils/File';
 import { getRunningActivity } from '../../API/Activity';
 import RunningButtons from '../MyHikes/RunningButtons';
 
@@ -32,7 +31,10 @@ function HikeDetails(props) {
                         // Get Hike
                         setHike(h);
                         // Parse Image
-                        setHikeImage(fromImageDataToBase64String(h.picture_file.data));
+                        const uint8Array = new Uint8Array(h.picture_file.data);
+                        const data = uint8Array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
+                        setHikeImage(window.btoa(data));
+                        //setHikeImage(fromImageDataToBase64String(h.picture_file.data));
                     }, 300);
                 })
                 .catch(_ => { setError("The page you requested cannot be found") });
