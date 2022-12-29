@@ -75,7 +75,7 @@ function StartHike(props) {
 
 
     const navigate = useNavigate()
-    var moment = require('moment');
+    const moment = require('moment');
     moment().format();
 
     const theme = createTheme({
@@ -102,22 +102,10 @@ function StartHike(props) {
         marginBottom: 1
     };
 
-
-    /*Function to compute the total time spent in hours and minutes*/
-    /*const getTime = (valueStart, valueStop) => {
-        var now = moment(`${dayjs(valueStart)}+0000`);
-        var expiration = moment(`${dayjs(valueStop)}+0000`);
-        // get the difference between the moments
-        const diff = expiration.diff(now);
-        //express as a duration
-        const diffDuration = moment.duration(diff);
-        return ({ hours: diffDuration.hours() + diffDuration.days() * 24 + diffDuration.months() * 730 + diffDuration.years() * 8760, minutes: diffDuration.minutes() }) //VALUES TO STORE IN DB IN THE BACKEND DOESN'T COMPUTE THE TIME SPENT
-    }*/
-
     /*Function that returns true if value start < value stop*/
     const checkTime = (valueStart, valueStop) => {
-        var now = moment(dayjs(valueStart).toISOString());
-        var expiration = moment(dayjs(valueStop).toISOString());
+        const now = moment(dayjs(valueStart).toISOString());
+        const expiration = moment(dayjs(valueStop).toISOString());
         // get the difference between the moments
         const diff = expiration.diff(now);
         if (diff <= 0) {
