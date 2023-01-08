@@ -17,7 +17,7 @@ Manual test reports in client/gui_test
 - Solving all Blocking Issues
 - Solving all Critical Issues
 - Solving Major Issues if there's time left
-- Backend coverage must be greater than 80%
+- Backend coverage must be greater than 75-80%
 
 ## Usage
 
