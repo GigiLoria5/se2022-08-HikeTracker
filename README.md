@@ -17,7 +17,7 @@ Manual test reports in client/gui_test
 - Solving all Blocking Issues
 - Solving all Critical Issues
 - Solving Major Issues if there's time left
-- Backend coverage must be greater than 75-80%
+- Backend coverage must be greater than 80%
 
 ## Usage
 
@@ -791,7 +791,9 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
+
 ### Activity
+
 - GET `/api/activity/running`
 
   - Description: Returns the current running activity associated to the given user, otherwise an empty object. The user must be an hiker.
@@ -799,10 +801,11 @@ Manual test reports in client/gui_test
   - Request parameters: _None_
   - Response: `200 OK` (success)
   - Error responses:
+
     - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
     - `503 Internal Server Error` (generic error)
     - `500 Database Error` (sqlite database error)
-  
+
   - Response body: An activity object if the user is currently running some activity, an empty object instead or an error message in case of failure
 
   ```
@@ -824,10 +827,11 @@ Manual test reports in client/gui_test
   - Request body: _None_
   - Response: `200 OK` (success)
   - Error responses:
+
     - `401 Unauthorized to execute this operation!` (user not authorized or not logged)
     - `503 Internal Server Error` (generic error)
     - `500 Database Error` (database error)
-  
+
   - Response body: An array of objects containing all the hikes associated to completed activities for the logged user, or an error message in case of failure.
 
   ```
@@ -881,6 +885,7 @@ Manual test reports in client/gui_test
   ]
 
   ```
+
 - POST `/api/activity`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
@@ -897,7 +902,8 @@ Manual test reports in client/gui_test
   ```
 
   - Response: `201 OK` (Created)
-  - Error responses: 
+  - Error responses:
+
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `404 Not found` (Specified hike id doesn't exists)
     - `503 Internal Server Error` (generic error)
@@ -911,10 +917,11 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
+
 - PUT `/api/activity/terminate`
 
   - Headers: ` {"Content-Type": "multipart/form-data"}`
-  - Description: Terminate the currentrl running activity for the given user 
+  - Description: Terminate the currentrl running activity for the given user
   - Permissions allowed: Hiker
   - Request body: Activity (end_time)
     - end_time must follow ISO8601 format (YYYY-MM-DD HH:MM:SS), even if seconds are not required
@@ -926,7 +933,8 @@ Manual test reports in client/gui_test
   ```
 
   - Response: `204 No Content` (Updated)
-  - Error responses: 
+  - Error responses:
+
     - `401 Unauthorized` (not logged in or wrong permissions)
     - `404 Not found` (Specified hike id doesn't exists or no activity to terminate)
     - `503 Internal Server Error` (generic error)
@@ -940,9 +948,10 @@ Manual test reports in client/gui_test
       "error": "message text"
   }
   ```
+
 - DELETE `/api/activity/running`
 
-  - Description: Delete the currently running activity for the given user 
+  - Description: Delete the currently running activity for the given user
   - Permissions allowed: Hiker
   - Request body: _None_
   - Request parameters: _None_
@@ -990,8 +999,9 @@ Manual test reports in client/gui_test
 - Table `reference_point` contains: hike_id, ref_point_type, ref_point_id (the PK is the combination of each of them)
   - _ref_point_type_ can be: parking_lot, location, hut
 - Table `activity` contains: id, hike_id, user_id, start_time, end_time and duration
-  - start_time and end_time must follow the ISO8601 format (YYYY-MM-DD HH:MM:SS), even if SS are not required 
-  - duration is expressed in minutes.seconds  
+  - start_time and end_time must follow the ISO8601 format (YYYY-MM-DD HH:MM:SS), even if SS are not required
+  - duration is expressed in minutes.seconds
+
 ## Users Credentials
 
 | email                    | password | role        |
