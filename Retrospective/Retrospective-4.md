@@ -83,25 +83,24 @@ sections:
 
 - What caused your errors in estimation (if any)?
 
-  -
+  - The errors in estimation were caused by improving the original decided design of the new web page, which proved to be unattractive once implemented. 
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-  - Positive lesson: .
-  - Negative lesson: .
+  - Positive lesson: We were able to face problems arised during the sprint without exceding too much our time budget.
+  - Negative lesson: We should use better tools to produce our hi-fi design prototypes.
 
 - Which improvement goals set in the previous retrospective were you able to achieve?
 
-  -
+  - We were able to continue working in efficient way and accomplish all the planned stories.
 
 - Which ones you were not able to achieve? Why?
 
-  - We managed to achieve all the improvements we set out to accomplish in the last retrospective.
+  - We weren't able to improve learning process just because there were nothing new to learn.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-  - **...:** .
-  - **...:** .
+  - **Change prototype tool:** use Figma instead of Canva to create more realistic prototypes.
 
 - One thing you are proud of as a Team!!
-  -
+  - We were able to reorganize the work by reassigning tasks to team members in order to finish the last fixes
